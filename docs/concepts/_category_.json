@@ -1,0 +1,9 @@
+{
+  "label": "Concepts",
+  "position": 2,
+  "link": {
+    "type": "generated-index",
+    "title": "Концепции",
+    "description": "Архитектура, оркестрация агентов и адаптеры LLM."
+  }
+}
