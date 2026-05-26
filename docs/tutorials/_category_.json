@@ -1,0 +1,9 @@
+{
+  "label": "Tutorials",
+  "position": 4,
+  "link": {
+    "type": "generated-index",
+    "title": "Туториалы",
+    "description": "Практические сценарии: CRM, BrowserBridge и плагины."
+  }
+}
