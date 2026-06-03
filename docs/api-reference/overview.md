@@ -23,9 +23,7 @@ Bearer-токен:
 - **Board API key** — ключ пользователя Board (управление компанией, агентами, approvals).
 - **Agent API key** — создаётся `POST /api/agents/:agentId/keys` (ответ содержит секрет один раз); агент может вызывать ограниченный набор маршрутов (`/api/agents/me/*`, wakeup себя и т.д.).
 
-Дополнительно: опциональный заголовок run-id в actor (в коде server — `x-paperclip-run-id`[^legacy-header]).
-
-[^legacy-header]: Имя заголовка в `server/src/middleware/auth.ts` — legacy; в новых клиентах передавайте только если host уже ожидает это поле.
+Дополнительно: опциональный HTTP-заголовок идентификатора run в actor middleware (`server/src/middleware/auth.ts`, чтение `runIdHeader`). Имя заголовка в коде — legacy; передавайте только если ваш клиент или адаптер уже ожидает это поле (см. `cli/src/client/http.ts`, `packages/adapter-utils`).
 
 Тела запросов — `application/json`, если не указано иное. Ответы об ошибках чаще всего `{ "error": "<текст>" }` (`HttpError`, Zod) — **нет** единого каталога кодов вида `INVALID_REQUEST` для всего API.
 

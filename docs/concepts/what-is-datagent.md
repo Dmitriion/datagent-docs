@@ -43,7 +43,7 @@ Datagent **не является** фреймворком постройки а�
 | Исполнение LLM | Вызов моделей | Адаптеры + heartbeat; OAuth/IAM в `adapter_oauth_tokens`; [LLM-адаптеры](./llm-adapters.md) |
 | Каналы | Вход/выход вне Board | [Bitrix24 imbot](../integrations/bitrix24.md), [Telegram](../integrations/telegram.md), [BrowserBridge](../tutorials/browserbridge-setup.md) |
 
-[^tg]: Плагин Telegram Datagent; npm-пакет для установки — `paperclip-plugin-telegram` (см. [Технические идентификаторы](../integrations/telegram.md#технические-идентификаторы)).
+[^tg]: Плагин Telegram Datagent; установка — Plugin Manager или npm, ключ `datagent.plugin-telegram` (см. [Технические идентификаторы](../integrations/telegram.md#технические-идентификаторы)).
 
 ## Роли пользователей
 
