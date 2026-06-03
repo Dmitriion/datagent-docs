@@ -5,6 +5,9 @@ description: "Истории для оператора и руководител
 sidebar_position: 1
 ---
 
+import DocNextSteps from '@site/src/components/DocNextSteps';
+import {guidesIndexNextSteps} from '@site/src/components/DocNextSteps/presets';
+
 За один вечер вы поймёте, **зачем** Datagent в компании: не «ещё один чат», а **control plane** — кто работает, что запущено и где ждёт ваше решение. Board и API на одном адресе (по умолчанию **http://localhost:3100**); каждый запуск агента — **heartbeat run** с журналом. Self-hosted: данные остаются у вас.
 
 Ниже — **учебник из историй**, не справочник API. Читайте, как сценарии коллег, которые завтра откроют Board как рабочий инструмент.
@@ -99,4 +102,12 @@ flowchart LR
 
 Мы не обещаем то, чего нет в продукте. Экспериментальные возможности помечены в главах.
 
+## С чего начать учебник
+
+1. [Быстрый старт](../getting-started/quickstart) — если Board ещё не открывали.
+2. [Первый день в Board](./01-first-day) — оператор: одобрения, задачи, wakeup.
+3. Дальше — по порядку глав 2–8 или [шпаргалка](./playbook-index) под вашу ситуацию.
+
 **Следующая глава:** [Первый день в Board](./01-first-day)
+
+<DocNextSteps heading="Дальше по документации" items={guidesIndexNextSteps} />

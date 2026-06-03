@@ -121,12 +121,16 @@ const config: Config = {
           label: 'Документация',
         },
         {
-          to: '/docs/tutorials/automate-crm',
-          label: 'Туториалы',
+          to: '/docs/getting-started/quickstart',
+          label: 'Начало',
           position: 'left',
         },
-        {to: '/blog', label: 'Блог', position: 'left'},
         {to: '/docs/guides', label: 'Руководство', position: 'left'},
+        {
+          to: '/docs/concepts/what-is-datagent',
+          label: 'Платформа',
+          position: 'left',
+        },
       ],
     },
     footer: {
@@ -137,8 +141,17 @@ const config: Config = {
           items: [
             {label: 'Быстрый старт', to: '/docs/getting-started/quickstart'},
             {label: 'Введение', to: '/docs/intro'},
+            {label: 'Учебник', to: '/docs/guides'},
             {label: 'Концепции', to: '/docs/concepts/what-is-datagent'},
             {label: 'API', to: '/docs/api-reference/overview'},
+            {label: 'Решение проблем', to: '/docs/troubleshooting'},
+          ],
+        },
+        {
+          title: 'Ещё',
+          items: [
+            {label: 'Туториалы', to: '/docs/tutorials/automate-crm'},
+            {label: 'Блог', to: '/blog'},
           ],
         },
         {

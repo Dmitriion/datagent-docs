@@ -136,6 +136,6 @@ System prompt агента (пример — без несуществующих
 ## Связанные разделы
 
 - [Архитектура платформы](../concepts/agent-architecture.md) — plugins, heartbeat, worker manager.
-- [Быстрый старт](../getting-started/quickstart.md) — `:3100`, установка из монорепо.
+- [Быстрый старт](../getting-started/quickstart) — `:3100`, установка из монорепо.
 - [Автоматизация CRM](../tutorials/automate-crm.md) — туториал (содержит устаревшие `bitrix24_*` tools; см. отчёт ниже при синхронизации docs).
 - [Telegram](./telegram.md) — апрувы и уведомления (отдельный плагин).

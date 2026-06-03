@@ -5,7 +5,7 @@ sidebar_label: Первый агент
 description: Первый агент в Board на :3100 — gigachat_local или yandexgpt_local, tools из плагинов, wakeup и heartbeat run.
 ---
 
-Создайте агента в Board, запустите **heartbeat run** и посмотрите результат. Нужен [быстрый старт](./quickstart.md): `pnpm dev`, `PORT=3100`, `SERVE_UI=false` — UI и API на **http://localhost:3100**.
+Создайте агента в Board, запустите **heartbeat run** и посмотрите результат. Нужен [быстрый старт](./quickstart): `pnpm dev`, `PORT=3100`, `SERVE_UI=false` — UI и API на **http://localhost:3100**.
 
 ## URL Board
 
