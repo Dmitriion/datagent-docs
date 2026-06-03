@@ -1,69 +1,68 @@
 ---
 title: Когда задача — это файл Excel или презентация
 sidebar_label: '7. Документы'
-description: История Марии — Office Plugin на issue, inspect, plan, apply для xlsx и inspect для pptx под одобрением.
+description: "Office Plugin на задаче — inspect, plan, apply для xlsx и проверка pptx под одобрением."
 sidebar_position: 8
 ---
 
-## Герой и боль
+**Мария** получает `.xlsx` с планом продаж и `.pptx` для правок. «Скинь в чат с моделью» — таблица ломается, слайды не те. Здесь агент работает с **файлом на задаче**, а вы в любой момент видите **план и одобрение**.
 
-**Мария** получает `.xlsx` с планом продаж и `.pptx` для правок формулировок. «Скинь в ChatGPT» — таблица ломается, слайды не те. Ей нужен агент, который работает с **файлом на задаче**, а она в любой момент видит, **что изменилось**.
-
-## До и после
+## Было и стало
 
 | Было | Стало |
 | --- | --- |
-| Ручная правка + копия «финал2» | **apply** на копии, новое вложение |
+| Ручная правка + «финал2» | **apply** на копии, новое вложение |
 | Нет плана изменений | `plan_workbook_changes` + [одобрение](./04-trust-and-approval) |
-| PPTX «на глаз» | `inspect_powerpoint_document`, validate, preview |
+| PPTX «на глаз» | inspect, validate, preview |
 
-## Сюжет: книга продаж
+## Как пройти книгу продаж в Excel
 
-**Шаг 1.** Мария прикрепляет `plan-may.xlsx` к issue, assignee — «Оформитель таблиц».
+**Шаг 1.** Прикрепите `plan-may.xlsx` к задаче, assignee — «Оформитель таблиц».
 
-**Шаг 2.** Агент вызывает `datagent.excel-workbench:inspect_workbook` — структура, issues, semantic map (не shell `officecli` — только plugin tools).
+**Шаг 2.** Агент вызывает `datagent.excel-workbench:inspect_workbook` — структура, issues, semantic map (только plugin tools, не shell `officecli`).
 
 **Шаг 3.** `plan_workbook_changes` с intent: «Добавить столбец „Факт май“, формулы только на листе Summary».
 
-**Шаг 4.** Мария одобряет план в Board.
+**Шаг 4.** Вы одобряете план в Board.
 
-**Шаг 5.** `apply_workbook_changes` — результат как новое вложение. `render_workbook_preview` — превью для проверки глазами.
+**Шаг 5.** `apply_workbook_changes` — результат как новое вложение. `render_workbook_preview` — превью для глаз.
 
-**Шаг 6.** `validate_workbook_quality` — финальный gate; при успехе — work product или комментарий на issue.
+**Шаг 6.** `validate_workbook_quality` — финальный gate; при успехе — work product или комментарий на задаче.
 
-**Шаг 7.** Отдельно `.pptx`: `inspect_powerpoint_document`, `validate_powerpoint_document`, `render_powerpoint_preview`. **Plan/apply для pptx в manifest нет** — честно: правки слайдов через полный цикл Excel не переносятся.
+**Шаг 7.** Для `.pptx`: `inspect_powerpoint_document`, `validate_powerpoint_document`, `render_powerpoint_preview`. **Plan/apply для pptx в manifest нет** — полный цикл как у Excel на слайды не переносится.
 
 ```mermaid
 flowchart TB
-  Attach[Вложение на issue] --> Inspect[inspect_workbook]
+  Attach[Вложение на задаче] --> Inspect[inspect_workbook]
   Inspect --> Plan[plan_workbook_changes]
   Plan --> Appr{Одобрение?}
   Appr -->|да| Apply[apply на копии]
   Apply --> Out[Новое вложение]
 ```
 
-## Момент ценности
+## Где виден control plane
 
-Алексей открывает issue и видит **цепочку**: план → одобрение → файл. Не «Мария сказала, бот сделал», а **control plane** с журналом tools.
+Алексей открывает задачу и видит **цепочку**: план → одобрение → файл. Не «Мария сказала, бот сделал», а журнал tools.
 
-Лимит вложения: **50 MiB** (`maxAttachmentBytes` в конфиге плагина). Сессии во временной папке worker с TTL.
+Лимит вложения: **50 MiB** (`maxAttachmentBytes` в конфиге плагина). Сессии worker — во временной папке с TTL.
 
-## Типичные ошибки
+## Что ломает работу с файлами
 
 :::warning
-- Просить агента «запусти officecli в терминале» — запрещено; только tools.
-- Ждать автоправку pptx как у Excel — проверьте [Office Plugin](../office/excel-pptx).
-- Править исходник без одобрения при включённом `requireApprovalForDestructive`.
+- «Запусти officecli в терминале» — запрещено; только tools плагина.
+- Автоправка pptx как у Excel — см. [Office Plugin](../office/excel-pptx).
+- Правка исходника без одобрения при `requireApprovalForDestructive`.
 :::
 
 ## Быстрая победа за 5 минут
 
 :::tip
-Тестовый `.xlsx` на issue → попросите агента только `inspect_workbook` → прочитайте outline в ответе. Без apply вы уже видите ценность.
+Тестовый `.xlsx` на задаче → попросите только `inspect_workbook` → прочитайте outline. Без apply уже видна ценность.
 :::
 
 ## Что дальше
 
-- [1С в контуре](./08-1c-bridge)
+**Следующая глава:** [1С в контуре](./08-1c-bridge)
+
 - [Office Plugin — техдок](../office/excel-pptx)
 - [Одобрения](./04-trust-and-approval)
