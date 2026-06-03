@@ -3,7 +3,6 @@ id: intro
 title: Добро пожаловать в Datagent
 sidebar_label: Введение
 description: Документация Datagent — control plane для AI-агентов на server :3100, heartbeat, плагины и интеграции GigaChat, YandexGPT, Bitrix24, Telegram.
-sidebar_position: 1
 ---
 
 Datagent — **control plane** для AI-агентов в компаниях: Board UI, API на `server`, исполнение run через **heartbeat**, LLM-адаптеры и плагины в child-process. Монорепозиторий (pnpm): `server`, `ui`, `cli`, `packages/db`, `packages/adapters/*`, `packages/plugins/*`. Данные — **PostgreSQL** (embedded или `DATABASE_URL`); память агентов и OAuth токены адаптеров — в БД instance, не в отдельном Runner-сервисе.
@@ -14,11 +13,12 @@ Datagent — **control plane** для AI-агентов в компаниях: B
 
 | Шаг | Раздел | Что получите |
 | --- | --- | --- |
-| 1 | [Быстрый старт](./getting-started/quickstart) | `pnpm dev`, Board и API на **http://localhost:3100** |
-| 2 | [Первый агент](./getting-started/first-agent) | Агент `gigachat_local` / `yandexgpt_local`, wakeup, heartbeat run |
-| 3 | [Учебник по агентам](./guides) | Истории для оператора и руководителя: от первого входа до результата под контролем |
-| 4 | [Архитектура](./concepts/agent-architecture) | Слои server / ui / adapters / plugins |
-| 5 | [Что такое Datagent](./concepts/what-is-datagent) | Термины и роль продукта |
+| 1 | [Установка](./getting-started/installation) | Node 20+, pnpm, PostgreSQL (или embedded в dev) |
+| 2 | [Быстрый старт](./getting-started/quickstart) | `pnpm dev`, Board и API на **http://localhost:3100** |
+| 3 | [Первый агент](./getting-started/first-agent) | Агент `gigachat_local` / `yandexgpt_local`, wakeup, heartbeat run |
+| 4 | [Учебник](./guides) | Истории для оператора и руководителя: Board, одобрения, Офис |
+| 5 | [Концепции](./concepts/what-is-datagent) | Термины, архитектура, как устроен heartbeat |
+| 6 | [API](./api-reference/overview) | Wakeup, runs, issues, plugins |
 
 ## Ключевые возможности
 
