@@ -2,53 +2,67 @@
 
 > Операционная платформа (control plane) для AI-агентов. Self-hosted. API и Board на порту 3100, heartbeat, плагины.
 
-## Начало
+Canonical site: https://docs.datagent.ru/
 
-- [Введение](https://docs.datagent.ru/docs/intro)
-- [Быстрый старт](https://docs.datagent.ru/docs/getting-started/quickstart)
-- [Установка](https://docs.datagent.ru/docs/getting-started/installation)
-- [Первый агент](https://docs.datagent.ru/docs/getting-started/first-agent)
+## Ограничения для агентов (важно)
 
-## Учебник по работе с платформой
+- Board и API на одном origin: **http://localhost:3100** (dev), не отдельный порт :3200.
+- Запуск run: **POST /api/agents/:id/wakeup** и heartbeat-runs; публичного **POST /api/runs** нет.
+- Память и OAuth — в PostgreSQL instance, не отдельный Runner-сервис.
+- В пользовательском тексте: **Телеграм**, не Telegram.
+- «Офис» — experimental (`enableOffice`); не выдумывать tools вне manifest плагинов.
 
-- [Обложка](https://docs.datagent.ru/docs/guides)
-- [1. Первый день в Board](https://docs.datagent.ru/docs/guides/01-first-day)
-- [2. Команда агентов](https://docs.datagent.ru/docs/guides/02-your-team)
-- [3. Одна задача](https://docs.datagent.ru/docs/guides/03-one-task)
-- [4. Одобрения](https://docs.datagent.ru/docs/guides/04-trust-and-approval)
-- [5. Пространство «Офис»](https://docs.datagent.ru/docs/guides/05-office-field)
-- [6. Каналы Bitrix24 и Телеграм](https://docs.datagent.ru/docs/guides/06-channels)
-- [7. Документы Excel/PPTX](https://docs.datagent.ru/docs/guides/07-documents)
-- [8. 1С в контуре](https://docs.datagent.ru/docs/guides/08-1c-bridge)
-- [Шпаргалка](https://docs.datagent.ru/docs/guides/playbook-index)
+## Get Started
 
-## Концепции
+- https://docs.datagent.ru/docs/intro
+- https://docs.datagent.ru/docs/getting-started/installation
+- https://docs.datagent.ru/docs/getting-started/quickstart
+- https://docs.datagent.ru/docs/getting-started/first-agent
 
-- [Что такое Datagent](https://docs.datagent.ru/docs/concepts/what-is-datagent)
-- [Архитектура](https://docs.datagent.ru/docs/concepts/agent-architecture)
-- [Как это работает](https://docs.datagent.ru/docs/concepts/how-it-works)
-- [LLM-адаптеры](https://docs.datagent.ru/docs/concepts/llm-adapters)
+## Guides (operator / manager)
 
-## Офис и документы
+- https://docs.datagent.ru/docs/guides
+- https://docs.datagent.ru/docs/guides/01-first-day
+- https://docs.datagent.ru/docs/guides/02-your-team
+- https://docs.datagent.ru/docs/guides/03-one-task
+- https://docs.datagent.ru/docs/guides/04-trust-and-approval
+- https://docs.datagent.ru/docs/guides/05-office-field
+- https://docs.datagent.ru/docs/guides/06-channels
+- https://docs.datagent.ru/docs/guides/07-documents
+- https://docs.datagent.ru/docs/guides/08-1c-bridge
+- https://docs.datagent.ru/docs/guides/playbook-index
 
-- [Пространство «Офис»](https://docs.datagent.ru/docs/office/overview)
-- [1С Коннектор](https://docs.datagent.ru/docs/office/1c-connector)
-- [Excel и PowerPoint (Office Plugin)](https://docs.datagent.ru/docs/office/excel-pptx)
+## Concepts
 
-## Интеграции
+- https://docs.datagent.ru/docs/concepts/what-is-datagent
+- https://docs.datagent.ru/docs/concepts/how-it-works
+- https://docs.datagent.ru/docs/concepts/agent-architecture
+- https://docs.datagent.ru/docs/concepts/llm-adapters
 
-- [GigaChat](https://docs.datagent.ru/docs/integrations/gigachat)
-- [YandexGPT](https://docs.datagent.ru/docs/integrations/yandexgpt)
-- [Bitrix24](https://docs.datagent.ru/docs/integrations/bitrix24)
-- [Telegram](https://docs.datagent.ru/docs/integrations/telegram)
+## Integrations
 
-## API и туториалы
+- https://docs.datagent.ru/docs/integrations/gigachat
+- https://docs.datagent.ru/docs/integrations/yandexgpt
+- https://docs.datagent.ru/docs/integrations/bitrix24
+- https://docs.datagent.ru/docs/integrations/telegram
 
-- [Обзор API](https://docs.datagent.ru/docs/api-reference/overview)
-- [Автоматизация CRM](https://docs.datagent.ru/docs/tutorials/automate-crm)
-- [BrowserBridge](https://docs.datagent.ru/docs/tutorials/browserbridge-setup)
-- [Создание плагина](https://docs.datagent.ru/docs/tutorials/build-plugin)
+## Office
 
-## Changelog
+- https://docs.datagent.ru/docs/office/overview
+- https://docs.datagent.ru/docs/office/1c-connector
+- https://docs.datagent.ru/docs/office/excel-pptx
 
-- [История версий](https://docs.datagent.ru/docs/changelog)
+## API
+
+- https://docs.datagent.ru/docs/api-reference/overview
+
+## Tutorials
+
+- https://docs.datagent.ru/docs/tutorials/browserbridge-setup
+- https://docs.datagent.ru/docs/tutorials/build-plugin
+- https://docs.datagent.ru/docs/tutorials/automate-crm
+
+## Help
+
+- https://docs.datagent.ru/docs/troubleshooting
+- https://docs.datagent.ru/docs/changelog

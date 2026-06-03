@@ -209,7 +209,7 @@ curl -s -H "Authorization: Bearer ${TOKEN}" \
 
 ## Связанные разделы
 
-- [Быстрый старт](../getting-started/quickstart.md) — `:3100`, `pnpm dev`
+- [Быстрый старт](../getting-started/quickstart) — `:3100`, `pnpm dev`
 - [Установка](../getting-started/installation.md) — `SERVE_UI`, БД
 - [Архитектура](../concepts/agent-architecture.md) — heartbeat, plugins, adapters
 - [Создание плагина](../tutorials/build-plugin.md) — tools и install API

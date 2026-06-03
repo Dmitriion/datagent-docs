@@ -36,7 +36,7 @@ pnpm --filter @datagent/browserbridge-local exec playwright install chromium
 
 ## Установка в монорепозитории
 
-Из корня checkout Datagent (см. [Установку](../getting-started/installation.md) и [Быстрый старт](../getting-started/quickstart.md)):
+Из корня checkout Datagent (см. [Установку](../getting-started/installation.md) и [Быстрый старт](../getting-started/quickstart)):
 
 ```bash
 pnpm install
@@ -213,5 +213,5 @@ Tool **`browser_snapshot`** в коде **отсутствует** (вместо
 ## Связанные разделы
 
 - [Архитектура платформы](../concepts/agent-architecture.md) — BrowserBridge, plugins, heartbeat.
-- [Быстрый старт](../getting-started/quickstart.md) — `pnpm dev`, `:3100`.
+- [Быстрый старт](../getting-started/quickstart) — `pnpm dev`, `:3100`.
 - [Установка](../getting-started/installation.md) — монорепо и `.env` instance.

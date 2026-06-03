@@ -11,7 +11,7 @@ description: Сценарий Datagent — imbot bridge (bitrix-poll), binding �
 
 ## Предварительные условия
 
-- [Быстрый старт](../getting-started/quickstart.md) — `http://localhost:3100`, `pnpm dev`.
+- [Быстрый старт](../getting-started/quickstart) — `http://localhost:3100`, `pnpm dev`.
 - Bitrix24: входящий REST webhook, scope **imbot** (+ user/department/disk по гайду).
 - Плагины: `datagent.bitrix24` и **плагин Telegram Datagent**[^tg-npm].
 - Агент: `gigachat_local` или `yandexgpt_local`, модель `gigachat/GigaChat-2-Pro` или `yandexgpt/rc`.

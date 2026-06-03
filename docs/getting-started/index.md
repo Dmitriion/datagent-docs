@@ -8,7 +8,7 @@ draft: true
 
 Раздел **Getting Started** ведёт от пустого хоста до первого **heartbeat run** агента. Datagent поднимается как **один процесс** `server` на `PORT` (по умолчанию **3100**): REST `/api/*` и Board на том же origin в dev (`SERVE_UI=false` + Vite middleware). См. [Архитектура](../concepts/agent-architecture.md).
 
-Рекомендуемый порядок: [Установка](./installation.md) → [Быстрый старт](./quickstart.md) → [Первый агент](./first-agent.md). Окружение уже есть — сразу [Быстрый старт](./quickstart.md).
+Рекомендуемый порядок: [Установка](./installation.md) → [Быстрый старт](./quickstart) → [Первый агент](./first-agent.md). Окружение уже есть — сразу [Быстрый старт](./quickstart).
 
 ## Что понадобится
 

@@ -119,6 +119,12 @@ const sidebars: SidebarsConfig = {
       },
       items: ['api-reference/overview'],
     },
+    {
+      type: 'category',
+      label: 'Справка',
+      collapsed: true,
+      items: ['troubleshooting'],
+    },
     'changelog',
   ],
 };
