@@ -101,8 +101,8 @@ graph TB
 ![Вкладка агентов](/img/guides/stories/05-office-supervisor-04-agents-tab.webp)
 *Шаг 4 — roster.*
 
-![Approval](/img/guides/stories/05-office-supervisor-05-approval.webp)
-*Шаг 5 — решение в Board.*
+![Inbox одобрений Board](/img/guides/stories/05-office-supervisor-05-approval.webp)
+*Шаг 5 — очередь одобрений (переход из Офиса в Board).*
 
 :::info Эксперимент
 `enableOffice` — флаг instance. Без него пункта «Офис» в меню нет. Техника: [Пространство «Офис»](../office/overview).

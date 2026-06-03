@@ -121,6 +121,37 @@ export async function seedGuideDemo(request, boardUrl, companyId) {
   if (!analyst && agents[0]) analyst = agents.find((a) => a.status === 'running') ?? agents[0];
   if (!pendingHire) pendingHire = agents.find((a) => a.status === 'pending_approval');
 
+  const patchAgentStatus = async (agentId, status) => {
+    const res = await request.patch(url(`/api/agents/${agentId}`), { data: { status } });
+    return res.ok();
+  };
+
+  if (analyst?.id) {
+    await patchAgentStatus(analyst.id, 'running');
+    analyst.status = 'running';
+  } else {
+    const existingAnalyst = agents.find((a) => a.name === DEMO.agentAnalyst.name);
+    if (existingAnalyst?.id) {
+      await patchAgentStatus(existingAnalyst.id, 'running');
+      existingAnalyst.status = 'running';
+      analyst = existingAnalyst;
+      log.push({ step: 'agent-analyst-running', id: analyst.id, reused: true });
+    }
+  }
+
+  let pendingAgent = agents.find((a) => a.status === 'pending_approval');
+  if (!pendingAgent) {
+    const hireTarget = pendingHire
+      ?? agents.find((a) => a.name.includes('оформитель') && a.status === 'idle')
+      ?? agents.find((a) => a.status === 'idle' && a.id !== analyst?.id);
+    if (hireTarget?.id) {
+      await patchAgentStatus(hireTarget.id, 'pending_approval');
+      pendingAgent = { ...hireTarget, status: 'pending_approval' };
+      log.push({ step: 'agent-pending-approval', id: pendingAgent.id, patched: true });
+    }
+  }
+  if (pendingAgent) pendingHire = pendingAgent;
+
   const issuesRes = await request.get(url(`/api/companies/${companyId}/issues`));
   let issues = issuesRes.ok() ? await issuesRes.json() : [];
 
@@ -279,7 +310,7 @@ export async function seedGuideDemo(request, boardUrl, companyId) {
 
   return {
     log,
-    agents: { analyst, pendingHire, error: agentError, all: agents },
+    agents: { analyst, pendingHire, pending: pendingHire, error: agentError, all: agents },
     issues: { active: issueActive, waiting: issueWaiting, all: issues },
     approvals: { pending: approvalPending, resolved: approvalResolved, rejected: approvalRejected, all: approvals },
   };
