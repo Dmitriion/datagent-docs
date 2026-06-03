@@ -1,7 +1,16 @@
 /**
  * Extended Board screenshot capture for docs/guides.
- * Run: node scripts/capture-guide-screenshots.mjs
- * Env: BOARD_URL, COMPANY_PREFIX, SKIP_SEED=1, ONLY_IDS=G02,A01
+ *
+ * Run from datagent-docs root:
+ *   node scripts/capture-guide-screenshots.mjs
+ *
+ * Env:
+ *   BOARD_URL          — default http://localhost:3100
+ *   COMPANY_PREFIX     — e.g. CMP (auto-detect CMP/TES if unset)
+ *   STORAGE_STATE_PATH — Playwright storageState (default %TEMP%/datagent-board-auth.json)
+ *   SKIP_SEED=1        — skip API seed; reuse existing demo data
+ *   ONLY_IDS=I07,P05   — capture only listed shot ids (comma-separated)
+ *   SKIP_IDS=G01a,X03  — skip listed ids even when otherwise runnable
  */
 import { createRequire } from 'node:module';
 import fs from 'node:fs';
@@ -14,7 +23,8 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DOCS_ROOT = path.resolve(__dirname, '..');
 const DATAGENT_ROOT = path.resolve(DOCS_ROOT, '..', 'Datagent');
 const OUT_ROOT = path.join(DOCS_ROOT, 'static', 'img', 'guides');
-const AUTH_STATE = path.join(os.tmpdir(), 'datagent-board-auth.json');
+const AUTH_STATE = process.env.STORAGE_STATE_PATH?.trim()
+  || path.join(os.tmpdir(), 'datagent-board-auth.json');
 const REPORT_PATH = path.join(DOCS_ROOT, 'scripts', 'capture-guide-screenshots-report.json');
 
 const require = createRequire(path.join(DATAGENT_ROOT, 'package.json'));
@@ -27,6 +37,9 @@ const VIEWPORT_NARROW = { width: 1280, height: 800 };
 const VIEWPORT_MOBILE = { width: 390, height: 844 };
 const WEBP_QUALITY = 90;
 const ONLY_IDS = process.env.ONLY_IDS?.split(',').map((s) => s.trim()).filter(Boolean);
+const SKIP_IDS = new Set(
+  process.env.SKIP_IDS?.split(',').map((s) => s.trim()).filter(Boolean) ?? [],
+);
 
 async function fetchJson(url) {
   const res = await fetch(url);
@@ -145,6 +158,7 @@ function record(entry) {
 }
 
 function shouldRun(id) {
+  if (SKIP_IDS.has(id)) return false;
   return !ONLY_IDS?.length || ONLY_IDS.includes(id);
 }
 
@@ -161,6 +175,14 @@ async function runShot(ctx, spec) {
     record({ ...spec, file, status: 'OK', type: spec.type ?? 'B' });
   } catch (err) {
     record({ ...spec, status: 'FAIL', reason: String(err) });
+  } finally {
+    if (spec.teardown) {
+      try {
+        await spec.teardown(page, ctx);
+      } catch (teardownErr) {
+        console.warn('teardown', spec.id, teardownErr);
+      }
+    }
   }
 }
 
@@ -345,9 +367,17 @@ const SHOTS = [
     file: 'agents/08-run-error.webp',
     chapter: '02-your-team',
     type: 'C',
-    skip: () => true,
-    skipReason: 'no safe failed run seeded',
-    capture: async () => '',
+    skip: (demo) => !demo.agents.error?.id,
+    skipReason: 'error demo agent not seeded',
+    capture: async (page, ctx) => {
+      await gotoCompany(page, ctx.prefix, '/agents/error');
+      const row = page.getByRole('link', { name: /Демо-агент \(ошибка\)|failed run/i }).first();
+      if (await row.isVisible().catch(() => false)) {
+        return captureMain(page, 'agents/08-run-error.webp', { locator: row });
+      }
+      const main = page.locator('main').first();
+      return captureMain(page, 'agents/08-run-error.webp', { locator: main });
+    },
   },
   {
     id: 'A09',
@@ -454,9 +484,21 @@ const SHOTS = [
     file: 'issues/07-attachments.webp',
     chapter: '07-documents',
     type: 'C',
-    skip: () => true,
-    skipReason: 'no attachment uploaded in seed',
-    capture: async () => '',
+    skip: (demo) => !demo.issues.active?.id,
+    skipReason: 'no active demo issue',
+    capture: async (page, ctx) => {
+      await gotoCompany(page, ctx.prefix, issueRoute(ctx.demo));
+      const section = page.locator('h3').filter({ hasText: /вложен|attachment/i }).first();
+      const block = section.locator('xpath=ancestor::div[contains(@class,"border")]').first();
+      if (await block.isVisible().catch(() => false)) {
+        return captureMain(page, 'issues/07-attachments.webp', { locator: block });
+      }
+      const link = page.getByRole('link', { name: /demo-plan\.pdf|\.pdf/i }).first();
+      if (await link.isVisible().catch(() => false)) {
+        return captureMain(page, 'issues/07-attachments.webp', { locator: link.locator('xpath=ancestor::div[1]') });
+      }
+      return captureMain(page, 'issues/07-attachments.webp');
+    },
   },
   {
     id: 'I08',
@@ -543,9 +585,13 @@ const SHOTS = [
     file: 'approvals/05-rejected.webp',
     chapter: '04-trust-and-approval',
     type: 'B',
-    skip: () => true,
+    skip: (demo) => !demo.approvals.rejected?.id,
     skipReason: 'rejected approval not seeded',
-    capture: async () => '',
+    capture: async (page, ctx) => {
+      const id = ctx.demo.approvals.rejected.id;
+      await gotoCompany(page, ctx.prefix, `/approvals/${id}`);
+      return captureMain(page, 'approvals/05-rejected.webp');
+    },
   },
   {
     id: 'P06',
@@ -721,9 +767,20 @@ const SHOTS = [
     file: 'office/10-disabled-state.webp',
     chapter: 'office/overview',
     type: 'A',
-    skip: () => true,
-    skipReason: 'enableOffice is on; disabling would mutate instance',
-    capture: async () => '',
+    capture: async (page) => {
+      await page.goto(`${BOARD_URL}/instance/settings/experimental`, {
+        waitUntil: 'domcontentloaded',
+        timeout: 45_000,
+      });
+      await waitStable(page);
+      await hideCursor(page);
+      const block = page.locator('h2').filter({ hasText: /офис|office/i }).first();
+      const section = block.locator('xpath=ancestor::div[contains(@class,"border") or contains(@class,"rounded")]').first();
+      if (await section.isVisible().catch(() => false)) {
+        return captureMain(page, 'office/10-disabled-state.webp', { locator: section });
+      }
+      return captureMain(page, 'office/10-disabled-state.webp');
+    },
   },
   // --- Misc ---
   {
@@ -760,9 +817,16 @@ const SHOTS = [
     file: 'board/07-empty-states.webp',
     chapter: 'index',
     type: 'B',
-    skip: () => true,
-    skipReason: 'demo seeded with agents/issues',
-    capture: async () => '',
+    capture: async (page, { prefix }) => {
+      await gotoCompany(page, prefix, '/agents/paused');
+      await page.waitForTimeout(300);
+      const empty = page.locator('[data-slot="empty-state"], .empty-state').first();
+      if (await empty.isVisible().catch(() => false)) {
+        return captureMain(page, 'board/07-empty-states.webp', { locator: empty });
+      }
+      const main = page.locator('main').first();
+      return captureMain(page, 'board/07-empty-states.webp', { locator: main });
+    },
   },
   {
     id: 'B10',
@@ -881,11 +945,16 @@ async function main() {
     const issues = await fetchJson(`${BOARD_URL}/api/companies/${companyId}/issues`);
     const approvals = await fetchJson(`${BOARD_URL}/api/companies/${companyId}/approvals`);
     demo = {
-      agents: { analyst: agents[0], all: agents },
+      agents: {
+        analyst: agents.find((a) => a.status === 'running') ?? agents[0],
+        error: agents.find((a) => a.status === 'error' || a.name?.includes('ошибка')),
+        all: agents,
+      },
       issues: { active: issues[0], waiting: issues[1], all: issues },
       approvals: {
         pending: approvals.find((a) => a.status === 'pending'),
         resolved: approvals.find((a) => a.status === 'approved'),
+        rejected: approvals.find((a) => a.status === 'rejected'),
         all: approvals,
       },
       log: [],
