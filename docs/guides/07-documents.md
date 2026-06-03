@@ -23,9 +23,13 @@ sidebar_position: 8
 
 **Шаг 1.** Прикрепите `plan-may.xlsx` к задаче, assignee — «Оформитель таблиц».
 
+![Вложения на задаче CMP-2](/img/guides/issues/07-attachments.webp)
+
+*Рис. 2 — PDF или xlsx на карточке issue; демо: `demo-plan.pdf`.*
+
 ![Диалог в задаче перед plan](/img/guides/issues/04-thread-middle.webp)
 
-*Рис. 2 — контекст для агента до вызова excel-workbench tools.*
+*Рис. 3 — контекст для агента до вызова excel-workbench tools.*
 
 **Шаг 2.** Агент вызывает `datagent.excel-workbench:inspect_workbook` — структура, issues, semantic map (только plugin tools, не shell `officecli`).
 
@@ -35,7 +39,7 @@ sidebar_position: 8
 
 ![Деталь согласования на plan Excel](/img/guides/approvals/02-detail.webp)
 
-*Рис. 3 — одобрение перед `apply_workbook_changes`.*
+*Рис. 4 — одобрение перед `apply_workbook_changes`.*
 
 **Шаг 5.** `apply_workbook_changes` — результат как новое вложение. `render_workbook_preview` — превью для глаз.
 

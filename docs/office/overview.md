@@ -155,7 +155,11 @@ Office **не** хранит отдельную БД. Клиент (`OfficePage`
 
 ## Ограничения
 
-- Без `enableOffice` маршрут недоступен.
+![Флаг enableOffice в экспериментальных настройках instance](/img/guides/office/10-disabled-state.webp)
+
+*Без включённого `enableOffice` пункт «Офис» в sidebar не появится — флаг меняет администратор instance.*
+
+- Без `enableOffice` маршрут `/office` недоступен.
 - Масштаб 100+ агентов — частично оптимизирован (roster, perf overlay); полный NOC-режим в roadmap.
 - Игровые XP/mood — **presentational**, не отчётность.
 - Office Chat может показывать preview-баннер — не считайте все сценарии чата production-ready без проверки вашей сборки.
