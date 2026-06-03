@@ -9,14 +9,18 @@
 - [Установка](https://docs.datagent.ru/docs/getting-started/installation)
 - [Первый агент](https://docs.datagent.ru/docs/getting-started/first-agent)
 
-## Работа с платформой
+## Учебник по работе с платформой
 
-- [Обзор](https://docs.datagent.ru/docs/guides)
-- [Основы Board](https://docs.datagent.ru/docs/guides/board-basics)
-- [Агенты](https://docs.datagent.ru/docs/guides/agents)
-- [Задачи и диалоги](https://docs.datagent.ru/docs/guides/issues-and-dialogs)
-- [Одобрения](https://docs.datagent.ru/docs/guides/approvals)
-- [Что могут агенты](https://docs.datagent.ru/docs/guides/what-agents-can-do)
+- [Обложка](https://docs.datagent.ru/docs/guides)
+- [1. Первый день в Board](https://docs.datagent.ru/docs/guides/01-first-day)
+- [2. Команда агентов](https://docs.datagent.ru/docs/guides/02-your-team)
+- [3. Одна задача](https://docs.datagent.ru/docs/guides/03-one-task)
+- [4. Одобрения](https://docs.datagent.ru/docs/guides/04-trust-and-approval)
+- [5. Пространство «Офис»](https://docs.datagent.ru/docs/guides/05-office-field)
+- [6. Каналы Bitrix24 и Телеграм](https://docs.datagent.ru/docs/guides/06-channels)
+- [7. Документы Excel/PPTX](https://docs.datagent.ru/docs/guides/07-documents)
+- [8. 1С в контуре](https://docs.datagent.ru/docs/guides/08-1c-bridge)
+- [Шпаргалка](https://docs.datagent.ru/docs/guides/playbook-index)
 
 ## Концепции
 

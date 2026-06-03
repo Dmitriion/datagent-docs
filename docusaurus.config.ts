@@ -52,6 +52,8 @@ const config: Config = {
         docs: {
           sidebarPath: './sidebars.ts',
           routeBasePath: 'docs',
+          // Сохраняем префиксы 01-, 02-… в URL учебника (guides/01-first-day).
+          numberPrefixParser: false,
         },
         blog: {
           showReadingTime: true,
