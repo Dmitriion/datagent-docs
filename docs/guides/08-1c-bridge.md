@@ -7,6 +7,10 @@ sidebar_position: 9
 
 **Алексей** слышал: «Подключите 1С к агентам». **Дмитрий**, инженер, не хочет отдавать учётку «чату». Здесь — **контролируемый HTTP MCP** к опубликованной базе и установка расширения, без обещания «агент в задаче проводит документы».
 
+![Страница 1С-коннектор в Board](/img/guides/1c/connector-page.webp)
+
+*Рис. 1 — upstream URL, test-connection и cursor-config для IDE.*
+
 ## Было и стало
 
 | Было | Стало |
@@ -23,9 +27,9 @@ sidebar_position: 9
 
 **Шаг 3.** В Board: `upstreamMcpUrl`, proxy на `:8010` (по умолчанию), **test-connection**.
 
-![Страница плагина 1С-коннектор в Board](/img/guides/1c/connector-page.webp)
+![Настройки компании — вкладка плагинов](/img/guides/board/05-settings.webp)
 
-*Настройка proxy и проверка связи — в Board; tools 1С вызываются из IDE через MCP.*
+*Рис. 2 — установка `datagent.1c-connector` через Plugin Manager.*
 
 **Шаг 4.** Копирует **cursor-config** в MCP Cursor. Разработка в IDE; tools — с upstream 1С.
 

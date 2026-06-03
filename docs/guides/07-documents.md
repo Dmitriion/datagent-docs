@@ -7,6 +7,10 @@ sidebar_position: 8
 
 **Мария** получает `.xlsx` с планом продаж и `.pptx` для правок. «Скинь в чат с моделью» — таблица ломается, слайды не те. Здесь агент работает с **файлом на задаче**, а вы в любой момент видите **план и одобрение**.
 
+![Задача — контейнер для Office Plugin](/img/guides/issues/03-issue-header.webp)
+
+*Рис. 1 — issue держит вложения и цепочку plan → approval → apply.*
+
 ## Было и стало
 
 | Было | Стало |
@@ -19,15 +23,19 @@ sidebar_position: 8
 
 **Шаг 1.** Прикрепите `plan-may.xlsx` к задаче, assignee — «Оформитель таблиц».
 
-![Задача с вложениями — старт цепочки Office Plugin](/img/guides/documents/issue-empty.webp)
+![Диалог в задаче перед plan](/img/guides/issues/04-thread-middle.webp)
 
-*Файл на задаче — вход для inspect, plan и apply под одобрением.*
+*Рис. 2 — контекст для агента до вызова excel-workbench tools.*
 
 **Шаг 2.** Агент вызывает `datagent.excel-workbench:inspect_workbook` — структура, issues, semantic map (только plugin tools, не shell `officecli`).
 
 **Шаг 3.** `plan_workbook_changes` с intent: «Добавить столбец „Факт май“, формулы только на листе Summary».
 
 **Шаг 4.** Вы одобряете план в Board.
+
+![Деталь согласования на plan Excel](/img/guides/approvals/02-detail.webp)
+
+*Рис. 3 — одобрение перед `apply_workbook_changes`.*
 
 **Шаг 5.** `apply_workbook_changes` — результат как новое вложение. `render_workbook_preview` — превью для глаз.
 
@@ -47,6 +55,20 @@ flowchart TB
 ## Где виден control plane
 
 Алексей открывает задачу и видит **цепочку**: план → одобрение → файл. Не «Мария сказала, бот сделал», а журнал tools.
+
+## Сквозная история: Excel на задаче
+
+![Issue](/img/guides/stories/06-excel-office-01-issue.webp)
+*Шаг 1 — задача с контекстом.*
+
+![Approval](/img/guides/stories/06-excel-office-02-approval.webp)
+*Шаг 2 — согласование плана.*
+
+![Inbox](/img/guides/stories/06-excel-office-03-inbox.webp)
+*Шаг 3 — очередь согласований.*
+
+![Плагины](/img/guides/stories/06-excel-office-04-plugins.webp)
+*Шаг 4 — Office Plugin в настройках компании.*
 
 Лимит вложения: **50 MiB** (`maxAttachmentBytes` в конфиге плагина). Сессии worker — во временной папке с TTL.
 
