@@ -1,7 +1,7 @@
 ---
 id: telegram
 title: Telegram
-sidebar_label: Telegram
+sidebar_label: Телеграм
 description: Плагин Telegram Datagent — уведомления, команды бота, апрувы Board и agent tools через long polling Bot API.
 ---
 

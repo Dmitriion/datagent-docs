@@ -16,8 +16,9 @@ Datagent — **control plane** для AI-агентов в компаниях: B
 | --- | --- | --- |
 | 1 | [Быстрый старт](./getting-started/quickstart) | `pnpm dev`, Board и API на **http://localhost:3100** |
 | 2 | [Первый агент](./getting-started/first-agent) | Агент `gigachat_local` / `yandexgpt_local`, wakeup, heartbeat run |
-| 3 | [Архитектура](./concepts/agent-architecture) | Слои server / ui / adapters / plugins |
-| 4 | [Что такое Datagent](./concepts/what-is-datagent) | Термины и роль продукта |
+| 3 | [Работа с платформой](./guides) | Board, агенты, задачи, одобрения — для оператора |
+| 4 | [Архитектура](./concepts/agent-architecture) | Слои server / ui / adapters / plugins |
+| 5 | [Что такое Datagent](./concepts/what-is-datagent) | Термины и роль продукта |
 
 ## Ключевые возможности
 
@@ -25,7 +26,8 @@ Datagent — **control plane** для AI-агентов в компаниях: B
 - **LLM** — [GigaChat](./integrations/gigachat) (`gigachat_local`, OpenCode + OAuth), [YandexGPT](./integrations/yandexgpt) (`yandexgpt_local`, IAM + `folderId`), универсальный [OpenCode](./concepts/llm-adapters) (`opencode_local`).
 - **Плагины** — tools и jobs в отдельных worker-процессах (`PluginWorkerManager`); установка через Plugin Manager / `datagent plugin install`.
 - **Bitrix24** — [imbot bridge](./integrations/bitrix24): polling `bitrix-poll`, binding агента, ответы в чат (без CRM tools `bitrix24_*` в manifest).
-- **Telegram** — [плагин Telegram Datagent](./integrations/telegram): long poll `getUpdates`, уведомления, апрувы Board, inbound в issues.
+- **Телеграм** — [плагин Telegram Datagent](./integrations/telegram): long poll `getUpdates`, уведомления, апрувы Board, inbound в issues.
+- **Руководство пользователя** — [работа с платформой](./guides): агенты, задачи, одобрения, возможности и границы.
 - **BrowserBridge** — [локальный демон](./tutorials/browserbridge-setup) `datagent-bridge` и plugin tools `datagent.browserbridge:browser_*` (tunnel с server).
 - **Офис и документы** — [пространство «Офис»](./office/overview) (Operator View), [1С Коннектор](./office/1c-connector) (MCP proxy), [Office Plugin](./office/excel-pptx) (Excel / Word / PPTX через OfficeCLI).
 
@@ -61,6 +63,5 @@ flowchart TB
 
 ## Нужна помощь?
 
-- Репозиторий документации: [github.com/Dmitriion/datagent-docs](https://github.com/Dmitriion/datagent-docs)
-- Продукт: [github.com/Dmitriion/datagent](https://github.com/Dmitriion/datagent)
+- [Сайт Datagent](https://datagent.ru)
 - [История версий](./changelog)

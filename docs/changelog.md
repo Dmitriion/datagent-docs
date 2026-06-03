@@ -1,19 +1,24 @@
 ---
 id: changelog
-title: Changelog
-sidebar_label: Changelog
-description: История изменений Datagent и документации — Docusaurus, выравнивание с server/API, BrowserBridge, GA.
+title: История версий
+sidebar_label: История версий
+description: История изменений Datagent и документации — выравнивание с server/API, BrowserBridge, офис и интеграции.
 sidebar_position: 2
 ---
 
-Все заметные изменения Datagent и этой документации фиксируются здесь. Формат — [Keep a Changelog](https://keepachangelog.com/ru/1.1.0/), версии документации следуют [Semantic Versioning](https://semver.org/lang/ru/).
+Здесь — заметные изменения продукта и документации Datagent.
 
-## [1.3.0] — 2026-06-03
+## [1.2.1] — 2026-05-26
 
 ### Added
 
-- Раздел [Офис и документы](./office/overview): [пространство «Офис»](./office/overview), [1С Коннектор](./office/1c-connector), [Office Plugin Excel/PPTX](./office/excel-pptx) — по коду `ui/src/pages/office/`, `packages/plugins/plugin-1c-connector`, `packages/plugins/plugin-excel-workbench`.
-- Карточка «Офис и документы» на главной; ссылки в [введении](./intro) и `static/llms.txt`.
+- Раздел [Работа с платформой](./guides) — руководство для оператора: Board, агенты, задачи, одобрения, возможности агентов.
+
+### Changed
+
+- Сайт docs: убраны ссылки на GitHub из navbar и footer; упрощена [история версий](./changelog).
+- Footer «Интеграции»: ссылки **1С** и **Телеграм**; блок «Сообщество» с репозиториями удалён.
+- Отключена кнопка «Редактировать на GitHub» на страницах документации.
 
 ## [1.2.0] — 2026-06-03
 
@@ -21,7 +26,7 @@ sidebar_position: 2
 
 - Публичный сайт документации на Docusaurus 3 (`docs.datagent.ru`).
 - Разделы Getting Started, Concepts, Integrations, Tutorials, API Reference.
-- CI-деплой на GitHub Pages с CNAME.
+- Публикация документации на `docs.datagent.ru` (CNAME).
 - Гайды интеграций: [GigaChat](./integrations/gigachat), [YandexGPT](./integrations/yandexgpt), [Bitrix24](./integrations/bitrix24), [Telegram](./integrations/telegram).
 - Туториалы: [BrowserBridge](./tutorials/browserbridge-setup), [плагин](./tutorials/build-plugin), [Bitrix24 → Telegram](./tutorials/automate-crm).
 - [Обзор REST API](./api-reference/overview) по фактическим маршрутам `server/src/routes/*` и `app.ts`.
@@ -65,7 +70,3 @@ sidebar_position: 2
 - Плагин **Telegram** — уведомления, команды, апрувы Board.
 - PostgreSQL + схема `packages/db`; память агентов (pgvector на внешнем Postgres).
 - Board UI: компании, агенты, issues, просмотр heartbeat runs.
-
-[1.2.0]: https://github.com/Dmitriion/datagent-docs/compare/v1.1.0...v1.2.0
-[1.1.0]: https://github.com/Dmitriion/datagent-docs/compare/v1.0.0...v1.1.0
-[1.0.0]: https://github.com/Dmitriion/datagent-docs/releases/tag/v1.0.0
