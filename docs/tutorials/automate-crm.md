@@ -53,7 +53,7 @@ System prompt:
 
 ## Шаг 3. Плагин Telegram Datagent (long poll)
 
-[^tg-npm]: Технический npm-пакет для установки: `paperclip-plugin-telegram` (алиас → `datagent.plugin-telegram`). См. [Технические идентификаторы](../integrations/telegram.md#технические-идентификаторы).
+[^tg-npm]: Ключ registry: `datagent.plugin-telegram`; алиасы npm — [Технические идентификаторы](../integrations/telegram.md#технические-идентификаторы).
 
 1. BotFather → token → company secret → `telegramBotTokenRef`.
 2. Plugin Manager → установить плагин Telegram Datagent[^tg-npm] → **Company → Telegram Settings**.

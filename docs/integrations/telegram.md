@@ -171,16 +171,15 @@ curl -X POST http://127.0.0.1:3100/api/plugins/install \
 - [Быстрый старт](../getting-started/quickstart.md) — `:3100`, Plugin Manager.
 - [Bitrix24 → Telegram](../tutorials/automate-crm.md) — imbot + long poll.
 
-[^tg-fields]: Имена полей в schema npm-пакета: `paperclipBaseUrl`, `paperclipPublicUrl`, `paperclipBoardApiTokenRef` (legacy); в UI отображаются как поля Datagent.
+[^tg-fields]: В schema npm-пакета эти три поля могут иметь legacy-имена; в Board UI — URL API Datagent, публичный URL и secret ref токена Board (см. manifest установленного пакета).
 
 ## Технические идентификаторы
 
 | Идентификатор | Значение |
 | --- | --- |
 | Ключ в registry Datagent | `datagent.plugin-telegram` |
-| npm-пакет | `paperclip-plugin-telegram` |
-| Алиас при установке (legacy) | `paperclip-plugin-telegram` → `datagent.plugin-telegram` (`packages/shared/src/constants/plugin-keys.ts`) |
-| CLI / REST install | `pnpm datagent plugin install paperclip-plugin-telegram` или `{"packageName":"paperclip-plugin-telegram"}` |
+| npm / install | Предпочтительно `datagent.plugin-telegram`; устаревшие имена пакетов сопоставляются в `packages/shared/src/constants/plugin-keys.ts` |
+| CLI / REST install | `pnpm datagent plugin install datagent.plugin-telegram` или `{"packageName":"datagent.plugin-telegram"}` |
 | Слот UI настроек | `telegram-settings` |
 
-Имена полей config в schema npm-пакета — `paperclipBaseUrl`, `paperclipPublicUrl`, `paperclipBoardApiTokenRef` (legacy идентификаторы, не бренд продукта).
+Поля config в schema опубликованного npm-пакета могут использовать legacy-префикс в именах (см. manifest пакета в Plugin Manager); в Board UI — URL инстанса Datagent, публичный URL и ссылка на secret API-токена Board.
