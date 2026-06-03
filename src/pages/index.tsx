@@ -1,31 +1,35 @@
 import type {ReactNode} from 'react';
 import clsx from 'clsx';
 import Link from '@docusaurus/Link';
-import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
 import Heading from '@theme/Heading';
+import HomePaths from '@site/src/components/HomePaths';
 
 import styles from './index.module.css';
 
-function HomepageHeader() {
-  const {siteConfig} = useDocusaurusContext();
+function HomepageHero() {
   return (
-    <header className={clsx('hero hero--primary', styles.heroBanner)}>
-      <div className="container">
-        <Heading as="h1" className="hero__title">
-          {siteConfig.title}
+    <header className={clsx(styles.hero)}>
+      <div className={clsx('container', styles.heroInner)}>
+        <p className={styles.eyebrow}>Control plane · self-hosted</p>
+        <Heading as="h1" className={clsx(styles.heroTitle, 'text-gradient')}>
+          Документация Datagent
         </Heading>
-        <p className="hero__subtitle">{siteConfig.tagline}</p>
-        <div className={styles.buttons}>
+        <p className={styles.heroSubline}>
+          Операционная платформа для AI-агентов: Board, API на{' '}
+          <code>:3100</code>, heartbeat и плагины. Прозрачное исполнение для
+          оператора и инженера.
+        </p>
+        <div className={styles.heroButtons}>
           <Link
-            className="button button--secondary button--lg"
+            className="button button--primary button--lg"
             to="/docs/getting-started/quickstart">
             Быстрый старт
           </Link>
           <Link
-            className="button button--outline button--secondary button--lg"
-            to="/docs/concepts/what-is-datagent">
-            Концепции
+            className={clsx('button button--outline button--lg', styles.ghostOnDark)}
+            to="/docs/intro">
+            Введение
           </Link>
         </div>
       </div>
@@ -36,27 +40,14 @@ function HomepageHeader() {
 export default function Home(): ReactNode {
   return (
     <Layout
-      title="Datagent Docs"
-      description="Документация AI-оркестратора Datagent для российского МСБ — GigaChat, YandexGPT, Bitrix24, BrowserBridge.">
-      <HomepageHeader />
-      <main className="container margin-vert--lg">
-        <div className="row">
-          <div className="col col--4">
-            <h3>Getting Started</h3>
-            <p>Установка, переменные окружения и первый агент в Board.</p>
-            <Link to="/docs/getting-started/installation">Установка →</Link>
-          </div>
-          <div className="col col--4">
-            <h3>Интеграции</h3>
-            <p>Bitrix24, Telegram и российские LLM из коробки.</p>
-            <Link to="/docs/integrations/bitrix24">Bitrix24 →</Link>
-          </div>
-          <div className="col col--4">
-            <h3>API</h3>
-            <p>Запуск run из ваших систем через REST.</p>
-            <Link to="/docs/api-reference/overview">REST API →</Link>
-          </div>
-        </div>
+      title="Документация Datagent"
+      description="Документация операционной платформы Datagent: установка, control plane, API :3100, GigaChat, YandexGPT, Bitrix24, BrowserBridge.">
+      <a href="#main-content" className="skip-to-content">
+        Перейти к содержимому
+      </a>
+      <HomepageHero />
+      <main id="main-content">
+        <HomePaths />
       </main>
     </Layout>
   );

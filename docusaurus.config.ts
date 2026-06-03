@@ -4,8 +4,9 @@ import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
   title: 'Datagent Docs',
-  tagline: 'AI-оркестратор бизнес-процессов для российского МСБ',
-  favicon: 'img/favicon.ico',
+  tagline:
+    'Операционная платформа для AI-агентов. Self-hosted. До первого одобрения — 10 минут.',
+  favicon: 'img/brand/favicon-light.svg',
 
   future: {
     v4: true,
@@ -28,7 +29,21 @@ const config: Config = {
     mermaid: true,
   },
 
-  themes: ['@docusaurus/theme-mermaid'],
+  themes: [
+    '@docusaurus/theme-mermaid',
+    [
+      require.resolve('@easyops-cn/docusaurus-search-local'),
+      {
+        hashed: true,
+        language: ['ru', 'en'],
+        highlightSearchTermsOnTargetPage: true,
+        explicitSearchResultPath: true,
+        docsRouteBasePath: 'docs',
+        blogRouteBasePath: 'blog',
+        searchBarShortcutHint: false,
+      },
+    ],
+  ],
 
   presets: [
     [
@@ -51,38 +66,71 @@ const config: Config = {
           onUntruncatedBlogPosts: 'warn',
         },
         theme: {
-          customCss: './src/css/custom.css',
+          customCss: [
+            './src/css/custom.css',
+            './src/css/doc-content.css',
+          ],
         },
       } satisfies Preset.Options,
     ],
   ],
 
+  headTags: [
+    {
+      tagName: 'meta',
+      attributes: {
+        property: 'og:locale',
+        content: 'ru_RU',
+      },
+    },
+    {
+      tagName: 'link',
+      attributes: {
+        rel: 'alternate',
+        type: 'application/llms.txt',
+        href: '/llms.txt',
+      },
+    },
+  ],
+
   themeConfig: {
-    image: 'img/docusaurus-social-card.jpg',
+    image: 'img/og-datagent-docs.svg',
+    metadata: [
+      {
+        name: 'description',
+        content:
+          'Документация Datagent — control plane для AI-агентов: установка, API :3100, интеграции GigaChat, YandexGPT, Bitrix24.',
+      },
+    ],
     colorMode: {
-      defaultMode: 'dark',
+      defaultMode: 'light',
       disableSwitch: false,
-      respectPrefersColorScheme: false,
+      respectPrefersColorScheme: true,
     },
     navbar: {
       title: 'Datagent Docs',
       logo: {
         alt: 'Datagent',
-        src: 'img/datagent-logo.svg',
+        src: 'img/brand/mark-header.svg',
       },
       items: [
         {
           type: 'docSidebar',
           sidebarId: 'docsSidebar',
           position: 'left',
-          label: 'Docs',
+          label: 'Документация',
         },
         {
           to: '/docs/tutorials/automate-crm',
-          label: 'Tutorials',
+          label: 'Туториалы',
           position: 'left',
         },
-        {to: '/blog', label: 'Blog', position: 'left'},
+        {to: '/blog', label: 'Блог', position: 'left'},
+        {
+          href: 'https://github.com/Dmitriion/datagent',
+          label: 'Продукт',
+          position: 'right',
+        },
         {
           href: 'https://github.com/Dmitriion/datagent-docs',
           label: 'GitHub',
@@ -97,32 +145,42 @@ const config: Config = {
           title: 'Документация',
           items: [
             {label: 'Быстрый старт', to: '/docs/getting-started/quickstart'},
+            {label: 'Введение', to: '/docs/intro'},
             {label: 'Концепции', to: '/docs/concepts/what-is-datagent'},
             {label: 'API', to: '/docs/api-reference/overview'},
           ],
         },
         {
-          title: 'Продукт',
+          title: 'Интеграции',
           items: [
-            {label: 'Сайт Datagent', href: 'https://datagent.ru'},
-            {label: 'GitHub', href: 'https://github.com/Dmitriion/datagent-docs'},
+            {label: 'GigaChat', to: '/docs/integrations/gigachat'},
+            {label: 'YandexGPT', to: '/docs/integrations/yandexgpt'},
+            {label: 'Bitrix24', to: '/docs/integrations/bitrix24'},
+            {label: 'Telegram', to: '/docs/integrations/telegram'},
+          ],
+        },
+        {
+          title: 'Сообщество',
+          items: [
+            {
+              label: 'Репозиторий docs',
+              href: 'https://github.com/Dmitriion/datagent-docs',
+            },
+            {
+              label: 'Сообщить об ошибке',
+              href: 'https://github.com/Dmitriion/datagent-docs/issues',
+            },
+            {label: 'Продукт (GitHub)', href: 'https://github.com/Dmitriion/datagent'},
           ],
         },
       ],
-      copyright: `© ${new Date().getFullYear()} Datagent. Документация распространяется под лицензией проекта.`,
+      copyright: `© ${new Date().getFullYear()} Datagent. Документация проекта.`,
     },
     prism: {
       theme: prismThemes.github,
       darkTheme: prismThemes.dracula,
       additionalLanguages: ['bash', 'json', 'typescript'],
     },
-    // TODO: подключить Algolia DocSearch после регистрации индекса
-    // algolia: {
-    //   appId: 'YOUR_APP_ID',
-    //   apiKey: 'YOUR_SEARCH_API_KEY',
-    //   indexName: 'datagent',
-    //   contextualSearch: true,
-    // },
   } satisfies Preset.ThemeConfig,
 };
 

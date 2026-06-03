@@ -1,0 +1,35 @@
+# Datagent Docs (RU)
+
+> Операционная платформа (control plane) для AI-агентов. Self-hosted. API и Board на порту 3100, heartbeat, плагины.
+
+## Начало
+
+- [Введение](https://docs.datagent.ru/docs/intro)
+- [Быстрый старт](https://docs.datagent.ru/docs/getting-started/quickstart)
+- [Установка](https://docs.datagent.ru/docs/getting-started/installation)
+- [Первый агент](https://docs.datagent.ru/docs/getting-started/first-agent)
+
+## Концепции
+
+- [Что такое Datagent](https://docs.datagent.ru/docs/concepts/what-is-datagent)
+- [Архитектура](https://docs.datagent.ru/docs/concepts/agent-architecture)
+- [Как это работает](https://docs.datagent.ru/docs/concepts/how-it-works)
+- [LLM-адаптеры](https://docs.datagent.ru/docs/concepts/llm-adapters)
+
+## Интеграции
+
+- [GigaChat](https://docs.datagent.ru/docs/integrations/gigachat)
+- [YandexGPT](https://docs.datagent.ru/docs/integrations/yandexgpt)
+- [Bitrix24](https://docs.datagent.ru/docs/integrations/bitrix24)
+- [Telegram](https://docs.datagent.ru/docs/integrations/telegram)
+
+## API и туториалы
+
+- [Обзор API](https://docs.datagent.ru/docs/api-reference/overview)
+- [Автоматизация CRM](https://docs.datagent.ru/docs/tutorials/automate-crm)
+- [BrowserBridge](https://docs.datagent.ru/docs/tutorials/browserbridge-setup)
+- [Создание плагина](https://docs.datagent.ru/docs/tutorials/build-plugin)
+
+## Changelog
+
+- [История версий](https://docs.datagent.ru/docs/changelog)
