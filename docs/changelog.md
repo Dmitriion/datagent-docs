@@ -8,6 +8,17 @@ sidebar_position: 2
 
 Здесь — заметные изменения продукта и документации Datagent.
 
+## [1.4.0] — 2026-06-03
+
+### Added
+
+- **Учебник** в `docs/guides/`: восемь глав-пользовательских историй + [шпаргалка](./guides/playbook-index); обложка с journey и таблицей «30 / 60 / 90 минут».
+
+### Changed
+
+- Категория sidebar: «Учебник»; переписаны `docs/guides/*` (удалены `board-basics`, `agents`, `issues-and-dialogs`, `approvals`, `what-agents-can-do`).
+- [Введение](./intro) и главная — карточка учебника с продающим описанием.
+
 ## [1.2.1] — 2026-05-26
 
 ### Added
