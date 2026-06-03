@@ -21,6 +21,10 @@ sidebar_position: 6
 
 **Шаг 2.** Sidebar → **«Офис»** → `/{префикс}/office`.
 
+![Пространство «Офис»: поле агентов и панели](/img/guides/office/operator-view.webp)
+
+*Operator View — KPI, столы агентов и вкладки без обхода десятка списков.*
+
 **Шаг 3.** В toolbar — огонёк связи, **Standup**, **KPI**, **Shield** с числом внимания.
 
 **Шаг 4.** На поле: пульс у двух агентов (active run), amber у одного (**pending_approval**).

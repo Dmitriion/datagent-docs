@@ -19,6 +19,10 @@ sidebar_position: 8
 
 **Шаг 1.** Прикрепите `plan-may.xlsx` к задаче, assignee — «Оформитель таблиц».
 
+![Задача с вложениями — старт цепочки Office Plugin](/img/guides/documents/issue-empty.webp)
+
+*Файл на задаче — вход для inspect, plan и apply под одобрением.*
+
 **Шаг 2.** Агент вызывает `datagent.excel-workbench:inspect_workbook` — структура, issues, semantic map (только plugin tools, не shell `officecli`).
 
 **Шаг 3.** `plan_workbook_changes` с intent: «Добавить столбец „Факт май“, формулы только на листе Summary».
