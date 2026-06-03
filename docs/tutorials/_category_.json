@@ -4,6 +4,6 @@
   "link": {
     "type": "generated-index",
     "title": "Туториалы",
-    "description": "Практические сценарии: CRM, BrowserBridge и плагины."
+    "description": "Практика: BrowserBridge, свой плагин (JSON-RPC), Bitrix24 imbot → Telegram."
   }
 }

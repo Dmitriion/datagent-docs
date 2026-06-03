@@ -2,44 +2,61 @@
 id: intro
 title: Добро пожаловать в Datagent
 sidebar_label: Введение
-description: Официальная документация Datagent — AI-оркестратора бизнес-процессов для российского МСБ с интеграциями Bitrix24, GigaChat и YandexGPT.
+description: Документация Datagent — control plane для AI-агентов на server :3100, heartbeat, плагины и интеграции GigaChat, YandexGPT, Bitrix24, Telegram.
 sidebar_position: 1
 ---
 
-Datagent — это AI-агентный оркестратор для автоматизации рутинных бизнес-процессов в российских компаниях малого и среднего бизнеса. Платформа объединяет LLM (GigaChat, YandexGPT), CRM Bitrix24, мессенджер Telegram и управление браузером через BrowserBridge на базе Playwright и CDP. Технический стек: Node.js монорепозиторий, PostgreSQL и pgvector для памяти агентов.
+Datagent — **control plane** для AI-агентов в компаниях: Board UI, API на `server`, исполнение run через **heartbeat**, LLM-адаптеры и плагины в child-process. Монорепозиторий (pnpm): `server`, `ui`, `cli`, `packages/db`, `packages/adapters/*`, `packages/plugins/*`. Данные — **PostgreSQL** (embedded или `DATABASE_URL`); память агентов и OAuth токены адаптеров — в БД instance, не в отдельном Runner-сервисе.
 
-Эта документация рассчитана на инженеров, которые разворачивают и настраивают систему, и на владельцев бизнеса, которым нужно понять возможности без погружения в код. Здесь вы найдёте установку, архитектуру, интеграции и пошаговые туториалы.
+Документация для инженеров (развёртывание, API, плагины) и для владельцев бизнеса (сценарии интеграций без кода).
 
 ## С чего начать
 
 | Шаг | Раздел | Что получите |
 | --- | --- | --- |
-| 1 | [Быстрый старт](./getting-started/quickstart) | Рабочий стенд за 15–20 минут |
-| 2 | [Первый агент](./getting-started/first-agent) | Задача через Board UI |
-| 3 | [Что такое Datagent](./concepts/what-is-datagent) | Термины и место продукта в стеке |
+| 1 | [Быстрый старт](./getting-started/quickstart) | `pnpm dev`, Board и API на **http://localhost:3100** |
+| 2 | [Первый агент](./getting-started/first-agent) | Агент `gigachat_local` / `yandexgpt_local`, wakeup, heartbeat run |
+| 3 | [Архитектура](./concepts/agent-architecture) | Слои server / ui / adapters / plugins |
+| 4 | [Что такое Datagent](./concepts/what-is-datagent) | Термины и роль продукта |
 
 ## Ключевые возможности
 
-- **Оркестрация агентов** — цепочки шагов с вызовом tools и плагинов.
-- **Российские LLM** — адаптеры GigaChat и YandexGPT с OAuth/IAM.
-- **Интеграции** — Bitrix24 REST, Telegram Bot API, выгрузки 1С.
-- **BrowserBridge** — безопасное управление браузером агентом (порт `9247`).
+- **Компании, агенты, issues** — задачи и диалоги в Board; run через `POST /api/agents/:id/wakeup` и `heartbeat-runs` (публичного `POST /api/runs` нет).
+- **LLM** — [GigaChat](./integrations/gigachat) (`gigachat_local`, OpenCode + OAuth), [YandexGPT](./integrations/yandexgpt) (`yandexgpt_local`, IAM + `folderId`), универсальный [OpenCode](./concepts/llm-adapters) (`opencode_local`).
+- **Плагины** — tools и jobs в отдельных worker-процессах (`PluginWorkerManager`); установка через Plugin Manager / `datagent plugin install`.
+- **Bitrix24** — [imbot bridge](./integrations/bitrix24): polling `bitrix-poll`, binding агента, ответы в чат (без CRM tools `bitrix24_*` в manifest).
+- **Telegram** — [плагин Telegram Datagent](./integrations/telegram): long poll `getUpdates`, уведомления, апрувы Board, inbound в issues.
+- **BrowserBridge** — [локальный демон](./tutorials/browserbridge-setup) `datagent-bridge` и plugin tools `datagent.browserbridge:browser_*` (tunnel с server).
 
 ## Архитектура в двух словах
 
+Один HTTP-процесс на **`PORT`** (по умолчанию **3100**): API ` /api/*` и Board на том же origin в dev (`SERVE_UI=false` + Vite middleware). Отдельного Board на `:3200`, Redis/BullMQ для run и пакета `packages/core` **нет**.
+
 ```mermaid
-flowchart LR
-  Board[Board UI] --> API[API Server]
-  API --> Runner[Agent Runner]
-  Runner --> LLM[LLM Adapter]
-  Runner --> Tools[Tool Dispatch]
-  Tools --> Plugins[Plugins]
-  Tools --> Bridge[BrowserBridge]
+flowchart TB
+  UI["Board @datagent/ui"] --> API["server Express /api"]
+  CLI["datagent CLI"] --> API
+  API --> HB["heartbeatService"]
+  HB --> Adp["gigachat_local · yandexgpt_local · opencode_local"]
+  HB --> PWM["PluginWorkerManager"]
+  PWM --> Plg["bitrix24 · telegram · browserbridge · …"]
+  API --> BB["BrowserBridge tunnel"]
+  API --> PG["PostgreSQL"]
 ```
 
-Подробнее: [Как это работает](./concepts/how-it-works) и [Архитектура агента](./concepts/agent-architecture).
+Подробнее: [Как это работает](./concepts/how-it-works), [Обзор API](./api-reference/overview).
+
+## Интеграции и туториалы
+
+| Тема | Документ |
+| --- | --- |
+| REST API, wakeup, plugins | [Обзор API](./api-reference/overview) |
+| Чат Bitrix → Telegram | [Туториал](./tutorials/automate-crm) |
+| BrowserBridge | [Настройка](./tutorials/browserbridge-setup) |
+| Свой плагин | [Создание плагина](./tutorials/build-plugin) |
 
 ## Нужна помощь?
 
 - Репозиторий документации: [github.com/Dmitriion/datagent-docs](https://github.com/Dmitriion/datagent-docs)
-- Changelog: [История версий](./changelog)
+- Продукт: [github.com/Dmitriion/datagent](https://github.com/Dmitriion/datagent)
+- [История версий](./changelog)

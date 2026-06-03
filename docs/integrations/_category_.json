@@ -4,6 +4,6 @@
   "link": {
     "type": "generated-index",
     "title": "Интеграции",
-    "description": "Подключение Bitrix24, GigaChat, YandexGPT и Telegram."
+    "description": "GigaChat и YandexGPT (адаптеры), Bitrix24 imbot bridge, плагин Telegram (long poll)."
   }
 }
