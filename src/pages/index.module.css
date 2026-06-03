@@ -1,23 +1,84 @@
-/**
- * CSS files with the .module.css suffix will be treated as CSS modules
- * and scoped locally.
- */
-
-.heroBanner {
-  padding: 4rem 0;
-  text-align: center;
+.hero {
+  background: var(--color-hero-bg);
+  color: var(--color-hero-text);
+  padding: clamp(3rem, 8vw, 5rem) 0;
   position: relative;
   overflow: hidden;
 }
 
-@media screen and (max-width: 996px) {
-  .heroBanner {
-    padding: 2rem;
-  }
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 80% 60% at 70% 20%,
+    var(--color-primary-glow),
+    transparent 70%
+  );
+  pointer-events: none;
 }
 
-.buttons {
+.heroInner {
+  position: relative;
+  z-index: 1;
+  max-width: 42rem;
+}
+
+.eyebrow {
+  font-size: var(--text-small);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-hero-muted);
+  margin: 0 0 1rem;
+}
+
+.heroTitle {
+  font-family: var(--font-display);
+  font-size: var(--text-display);
+  font-weight: 800;
+  line-height: 1.1;
+  margin: 0 0 1rem;
+  text-wrap: balance;
+}
+
+.heroSubline {
+  font-size: var(--text-body);
+  line-height: 1.6;
+  color: var(--color-hero-muted);
+  margin: 0 0 1.75rem;
+  max-width: 36rem;
+}
+
+.heroSubline code {
+  background: var(--color-hero-surface);
+  color: var(--color-hero-text);
+  padding: 0.1em 0.35em;
+  border-radius: var(--radius-sm);
+  font-size: 0.9em;
+}
+
+.heroButtons {
   display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
   align-items: center;
-  justify-content: center;
+}
+
+.ghostOnDark {
+  --ifm-button-background-color: transparent;
+  --ifm-button-border-color: oklch(0.78 0.02 250 / 0.5);
+  color: var(--color-hero-text) !important;
+}
+
+.ghostOnDark:hover {
+  background: var(--color-hero-surface);
+  border-color: var(--color-hero-muted);
+  color: var(--color-hero-text) !important;
+}
+
+@media screen and (max-width: 996px) {
+  .hero {
+    padding: 2.5rem 0;
+  }
 }

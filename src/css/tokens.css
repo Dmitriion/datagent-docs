@@ -1,0 +1,82 @@
+/**
+ * Datagent design tokens (v1) — synced with landing assets/css/tokens.css.
+ * OKLCH for theme-aware UI; vendored for datagent-docs.
+ */
+:root {
+  color-scheme: light;
+
+  /* Primary */
+  --color-primary: oklch(0.42 0.08 192);
+  --color-primary-hover: oklch(0.36 0.09 192);
+  --color-primary-soft: oklch(0.94 0.035 192);
+  --color-primary-glow: oklch(0.55 0.12 192 / 0.35);
+  --color-focus: oklch(0.5 0.12 192);
+  --color-accent: oklch(0.72 0.14 75);
+
+  /* Neutrals — light */
+  --color-bg: #f5f4f0;
+  --color-bg-alt: #efeeea;
+  --color-surface-elevated: #ffffff;
+  --color-inset: #f0efec;
+  --color-border: oklch(0.88 0.006 95);
+  --color-text: #1c1b18;
+  --color-text-muted: #6f6e69;
+  --color-text-inverse: #faf9f6;
+
+  /* Ink hero */
+  --color-hero-bg: oklch(0.17 0.03 250);
+  --color-hero-surface: oklch(0.22 0.03 250);
+  --color-hero-text: oklch(0.97 0.01 95);
+  --color-hero-muted: oklch(0.78 0.02 250);
+
+  /* Semantic */
+  --color-error: oklch(0.55 0.2 25);
+  --color-error-bg: oklch(0.95 0.04 25);
+
+  /* Typography */
+  --font-display: 'Cabinet Grotesk', system-ui, sans-serif;
+  --font-body: 'Satoshi', system-ui, sans-serif;
+  --text-display: clamp(2.25rem, 4vw + 1rem, 4.25rem);
+  --text-h2: clamp(1.625rem, 2vw + 1rem, 2.5rem);
+  --text-body: 1.0625rem;
+  --text-ui: 0.9375rem;
+  --text-small: 0.8125rem;
+
+  /* Layout */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-pill: 999px;
+  --space-section: clamp(3rem, 6vw, 5rem);
+
+  /* Elevation */
+  --shadow-sm: 0 1px 2px oklch(0.2 0.02 250 / 0.06);
+  --shadow-md: 0 4px 12px oklch(0.2 0.02 250 / 0.08);
+  --shadow-lg: 0 12px 32px oklch(0.2 0.02 250 / 0.12);
+
+  /* Motion */
+  --duration: 180ms;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+[data-theme='dark'] {
+  color-scheme: dark;
+
+  --color-primary: oklch(0.64 0.1 192);
+  --color-primary-hover: oklch(0.58 0.11 192);
+  --color-primary-soft: oklch(0.28 0.04 192);
+  --color-primary-glow: oklch(0.55 0.12 192 / 0.25);
+  --color-focus: oklch(0.68 0.12 192);
+
+  --color-bg: oklch(0.18 0.02 250);
+  --color-bg-alt: oklch(0.2 0.02 250);
+  --color-surface-elevated: oklch(0.22 0.025 250);
+  --color-inset: oklch(0.16 0.02 250);
+  --color-border: oklch(0.32 0.02 250);
+  --color-text: oklch(0.94 0.01 95);
+  --color-text-muted: oklch(0.72 0.02 250);
+
+  --color-hero-bg: oklch(0.14 0.03 250);
+  --color-hero-surface: oklch(0.2 0.03 250);
+}
