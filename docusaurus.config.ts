@@ -40,7 +40,7 @@ const config: Config = {
         explicitSearchResultPath: true,
         docsRouteBasePath: 'docs',
         blogRouteBasePath: 'blog',
-        searchBarShortcutHint: false,
+        searchBarShortcutHint: true,
       },
     ],
   ],
