@@ -1,0 +1,16 @@
+{
+  "boardUrl": "http://localhost:3100",
+  "companyPrefix": "CMP",
+  "companyId": "<uuid>",
+  "companyName": "ООО ПРИМЕР",
+  "authStatePath": "/tmp/datagent-board-auth.json",
+  "viewportMain": { "width": 1440, "height": 900 },
+  "seedLog": [{ "step": "experimental", "ok": true, "status": 200 }],
+  "counts": { "ok": 72, "skip": 6, "fail": 0, "total": 78 },
+  "results": [
+    { "id": "G02", "file": "board/02-nav-overview-full.webp", "chapter": "01-first-day", "status": "OK", "type": "A" },
+    { "id": "G01a", "file": "board/01-onboarding-step.webp", "chapter": "index", "status": "SKIP", "reason": "onboarding already completed on instance" },
+    { "id": "A02", "file": "agents/02-filters.webp", "chapter": "02-your-team", "status": "SKIP", "reason": "agents list has no dedicated search field in current UI" },
+    { "id": "I09", "file": "issues/09-channel-inbound.webp", "chapter": "06-channels", "status": "SKIP", "reason": "no Bitrix/Telegram inbound badge on demo issue" }
+  ]
+}

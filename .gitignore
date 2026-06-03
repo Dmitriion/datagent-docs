@@ -20,4 +20,3 @@ yarn-debug.log*
 yarn-error.log*
 
 scripts/capture-guide-screenshots-report.json
-scripts/capture-guide-screenshots-report.example.json
