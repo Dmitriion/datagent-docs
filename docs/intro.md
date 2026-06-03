@@ -27,6 +27,7 @@ Datagent — **control plane** для AI-агентов в компаниях: B
 - **Bitrix24** — [imbot bridge](./integrations/bitrix24): polling `bitrix-poll`, binding агента, ответы в чат (без CRM tools `bitrix24_*` в manifest).
 - **Telegram** — [плагин Telegram Datagent](./integrations/telegram): long poll `getUpdates`, уведомления, апрувы Board, inbound в issues.
 - **BrowserBridge** — [локальный демон](./tutorials/browserbridge-setup) `datagent-bridge` и plugin tools `datagent.browserbridge:browser_*` (tunnel с server).
+- **Офис и документы** — [пространство «Офис»](./office/overview) (Operator View), [1С Коннектор](./office/1c-connector) (MCP proxy), [Office Plugin](./office/excel-pptx) (Excel / Word / PPTX через OfficeCLI).
 
 ## Архитектура в двух словах
 
@@ -46,11 +47,14 @@ flowchart TB
 
 Подробнее: [Как это работает](./concepts/how-it-works), [Обзор API](./api-reference/overview).
 
-## Интеграции и туториалы
+## Интеграции, офис и туториалы
 
 | Тема | Документ |
 | --- | --- |
 | REST API, wakeup, plugins | [Обзор API](./api-reference/overview) |
+| Пространство «Офис» в Board | [Обзор «Офис»](./office/overview) |
+| 1С MCP (Cursor, proxy) | [1С Коннектор](./office/1c-connector) |
+| Excel / PPTX на задаче | [Office Plugin](./office/excel-pptx) |
 | Чат Bitrix → Telegram | [Туториал](./tutorials/automate-crm) |
 | BrowserBridge | [Настройка](./tutorials/browserbridge-setup) |
 | Свой плагин | [Создание плагина](./tutorials/build-plugin) |

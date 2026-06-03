@@ -22,6 +22,12 @@ const paths = [
     tag: 'LLM и CRM',
   },
   {
+    title: 'Офис и документы',
+    description: 'Пространство «Офис», 1С MCP-коннектор и Office Plugin для Excel/PPTX.',
+    to: '/docs/office/overview',
+    tag: 'Оператору',
+  },
+  {
     title: 'Туториалы',
     description: 'CRM-автоматизация, BrowserBridge и свой плагин.',
     to: '/docs/tutorials/automate-crm',

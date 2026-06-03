@@ -16,6 +16,12 @@
 - [Как это работает](https://docs.datagent.ru/docs/concepts/how-it-works)
 - [LLM-адаптеры](https://docs.datagent.ru/docs/concepts/llm-adapters)
 
+## Офис и документы
+
+- [Пространство «Офис»](https://docs.datagent.ru/docs/office/overview)
+- [1С Коннектор](https://docs.datagent.ru/docs/office/1c-connector)
+- [Excel и PowerPoint (Office Plugin)](https://docs.datagent.ru/docs/office/excel-pptx)
+
 ## Интеграции
 
 - [GigaChat](https://docs.datagent.ru/docs/integrations/gigachat)

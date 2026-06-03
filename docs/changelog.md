@@ -8,6 +8,13 @@ sidebar_position: 2
 
 Все заметные изменения Datagent и этой документации фиксируются здесь. Формат — [Keep a Changelog](https://keepachangelog.com/ru/1.1.0/), версии документации следуют [Semantic Versioning](https://semver.org/lang/ru/).
 
+## [1.3.0] — 2026-06-03
+
+### Added
+
+- Раздел [Офис и документы](./office/overview): [пространство «Офис»](./office/overview), [1С Коннектор](./office/1c-connector), [Office Plugin Excel/PPTX](./office/excel-pptx) — по коду `ui/src/pages/office/`, `packages/plugins/plugin-1c-connector`, `packages/plugins/plugin-excel-workbench`.
+- Карточка «Офис и документы» на главной; ссылки в [введении](./intro) и `static/llms.txt`.
+
 ## [1.2.0] — 2026-06-03
 
 ### Added
