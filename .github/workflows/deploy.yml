@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -37,10 +37,26 @@ jobs:
       - name: Verify Pages artifact is Docusaurus build
         run: test -f build/index.html && ! grep -q "Локальный запуск" build/index.html
 
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v4
+
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: build
+
+      - name: Publish build to gh-pages branch (fallback)
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build
+          publish_branch: gh-pages
+          force_orphan: true
+          cname: docs.datagent.ru
+
+      - name: Remind if site still shows README
+        run: |
+          echo "::warning title=Pages Source::Если на https://docs.datagent.ru виден README — в Settings → Pages выберите Source: GitHub Actions ИЛИ Branch gh-pages / (root). Сейчас часто ошибочно: main / (root)."
 
   deploy:
     needs: build
