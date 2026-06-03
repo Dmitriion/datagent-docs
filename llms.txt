@@ -1,0 +1,54 @@
+# Datagent Docs (RU)
+
+> Операционная платформа (control plane) для AI-агентов. Self-hosted. API и Board на порту 3100, heartbeat, плагины.
+
+## Начало
+
+- [Введение](https://docs.datagent.ru/docs/intro)
+- [Быстрый старт](https://docs.datagent.ru/docs/getting-started/quickstart)
+- [Установка](https://docs.datagent.ru/docs/getting-started/installation)
+- [Первый агент](https://docs.datagent.ru/docs/getting-started/first-agent)
+
+## Учебник по работе с платформой
+
+- [Обложка](https://docs.datagent.ru/docs/guides)
+- [1. Первый день в Board](https://docs.datagent.ru/docs/guides/01-first-day)
+- [2. Команда агентов](https://docs.datagent.ru/docs/guides/02-your-team)
+- [3. Одна задача](https://docs.datagent.ru/docs/guides/03-one-task)
+- [4. Одобрения](https://docs.datagent.ru/docs/guides/04-trust-and-approval)
+- [5. Пространство «Офис»](https://docs.datagent.ru/docs/guides/05-office-field)
+- [6. Каналы Bitrix24 и Телеграм](https://docs.datagent.ru/docs/guides/06-channels)
+- [7. Документы Excel/PPTX](https://docs.datagent.ru/docs/guides/07-documents)
+- [8. 1С в контуре](https://docs.datagent.ru/docs/guides/08-1c-bridge)
+- [Шпаргалка](https://docs.datagent.ru/docs/guides/playbook-index)
+
+## Концепции
+
+- [Что такое Datagent](https://docs.datagent.ru/docs/concepts/what-is-datagent)
+- [Архитектура](https://docs.datagent.ru/docs/concepts/agent-architecture)
+- [Как это работает](https://docs.datagent.ru/docs/concepts/how-it-works)
+- [LLM-адаптеры](https://docs.datagent.ru/docs/concepts/llm-adapters)
+
+## Офис и документы
+
+- [Пространство «Офис»](https://docs.datagent.ru/docs/office/overview)
+- [1С Коннектор](https://docs.datagent.ru/docs/office/1c-connector)
+- [Excel и PowerPoint (Office Plugin)](https://docs.datagent.ru/docs/office/excel-pptx)
+
+## Интеграции
+
+- [GigaChat](https://docs.datagent.ru/docs/integrations/gigachat)
+- [YandexGPT](https://docs.datagent.ru/docs/integrations/yandexgpt)
+- [Bitrix24](https://docs.datagent.ru/docs/integrations/bitrix24)
+- [Telegram](https://docs.datagent.ru/docs/integrations/telegram)
+
+## API и туториалы
+
+- [Обзор API](https://docs.datagent.ru/docs/api-reference/overview)
+- [Автоматизация CRM](https://docs.datagent.ru/docs/tutorials/automate-crm)
+- [BrowserBridge](https://docs.datagent.ru/docs/tutorials/browserbridge-setup)
+- [Создание плагина](https://docs.datagent.ru/docs/tutorials/build-plugin)
+
+## Changelog
+
+- [История версий](https://docs.datagent.ru/docs/changelog)
