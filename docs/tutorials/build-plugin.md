@@ -260,7 +260,7 @@ Board → **Agent** → Tools → включите namespaced tool (наприм
 ## Связанные разделы
 
 - [Архитектура платформы](../concepts/agent-architecture.md) — heartbeat, PluginWorkerManager, plugins.
-- [Быстрый старт](../getting-started/quickstart.md) — `pnpm dev`, `:3100`.
+- [Быстрый старт](../getting-started/quickstart) — `pnpm dev`, `:3100`.
 - [Установка](../getting-started/installation.md) — монорепо workspaces.
 - [Bitrix24 Bridge](../integrations/bitrix24.md) — jobs, apiRoutes, без CRM tools.
 - [Настройка BrowserBridge](./browserbridge-setup.md) — manifest tools + worker.

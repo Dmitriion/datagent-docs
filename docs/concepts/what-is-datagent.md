@@ -108,7 +108,7 @@ Datagent сочетает в **одной** self-hosted платформе contr
 ## Развёртывание
 
 - **Self-hosted / on-prem / VPC:** основной режим; instance на хосте или в контейнере заказчика.
-- **Один HTTP-порт** (`PORT=3100`): API и Board на одном origin в dev; см. [Установка](../getting-started/installation.md), [Быстрый старт](../getting-started/quickstart.md).
+- **Один HTTP-порт** (`PORT=3100`): API и Board на одном origin в dev; см. [Установка](../getting-started/installation.md), [Быстрый старт](../getting-started/quickstart).
 - **PostgreSQL:** внешний `DATABASE_URL` или **embedded** Postgres при онбординге без внешней БД.
 - **Секреты:** company/agent `secret_ref`; корневой `.env` — instance (`BETTER_AUTH_SECRET`, `PORT`, …), не ключи LLM по умолчанию.
 - Режимы: `local_trusted` (dev) и `authenticated` (Better Auth).
@@ -148,4 +148,4 @@ Datagent **не**:
 - [Архитектура](./agent-architecture.md) — слои и пакеты
 - [LLM-адаптеры](./llm-adapters.md) — GigaChat, YandexGPT, OpenCode
 - [Обзор API](../api-reference/overview.md) — wakeup, plugins, heartbeat-runs
-- [Быстрый старт](../getting-started/quickstart.md)
+- [Быстрый старт](../getting-started/quickstart)

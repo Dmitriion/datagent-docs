@@ -32,7 +32,7 @@ flowchart LR
 ## Установка в Datagent
 
 1. **Plugin Manager** → установить плагин Telegram → включить для instance.
-2. Либо из корня checkout Datagent (см. [Быстрый старт](../getting-started/quickstart.md)):
+2. Либо из корня checkout Datagent (см. [Быстрый старт](../getting-started/quickstart)):
 
 ```bash
 pnpm datagent plugin install <npm-пакет из раздела «Технические идентификаторы»>
@@ -168,7 +168,7 @@ curl -X POST http://127.0.0.1:3100/api/plugins/install \
 
 - [Bitrix24 Bridge](./bitrix24.md) — чат-боты Bitrix (отдельный плагин).
 - [Архитектура платформы](../concepts/agent-architecture.md) — heartbeat, PluginWorkerManager.
-- [Быстрый старт](../getting-started/quickstart.md) — `:3100`, Plugin Manager.
+- [Быстрый старт](../getting-started/quickstart) — `:3100`, Plugin Manager.
 - [Bitrix24 → Telegram](../tutorials/automate-crm.md) — imbot + long poll.
 
 [^tg-fields]: В schema npm-пакета эти три поля могут иметь legacy-имена; в Board UI — URL API Datagent, публичный URL и secret ref токена Board (см. manifest установленного пакета).

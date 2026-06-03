@@ -5,6 +5,9 @@ description: "Первый вход в Board — задачи, агенты Data
 sidebar_position: 2
 ---
 
+import DocNextSteps from '@site/src/components/DocNextSteps';
+import {firstDayNextSteps} from '@site/src/components/DocNextSteps/presets';
+
 **Мария**, операционный менеджер, только что получила доступ после пилота. Раньше она гоняла запросы в личных чатах с ботом — ответы терялись, непонятно, кто что запускал. В этой главе вы пройдёте с ней **первые 20 минут**: один экран, где видны **задачи**, **агенты** и **очередь решений**.
 
 ![Board: панель компании, sidebar и рабочая область](/img/guides/board/02-nav-overview-full.webp)
@@ -126,5 +129,4 @@ journey
 
 **Следующая глава:** [Команда агентов, которая не срывает сроки](./02-your-team)
 
-- Техника: [Первый агент](../getting-started/first-agent)
-- Термины: [Что такое Datagent](../concepts/what-is-datagent)
+<DocNextSteps items={firstDayNextSteps} />

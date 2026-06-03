@@ -66,4 +66,4 @@ openai/gpt-5.2-codex
 - [YandexGPT](../integrations/yandexgpt.md) — `YANDEX_SA_KEY_JSON`, `folderId`, `yandexgpt/rc`
 - [Как это работает](./how-it-works.md) — heartbeat run и tool dispatch
 - [Первый агент](../getting-started/first-agent.md) — выбор адаптера в Board
-- [Быстрый старт](../getting-started/quickstart.md)
+- [Быстрый старт](../getting-started/quickstart)

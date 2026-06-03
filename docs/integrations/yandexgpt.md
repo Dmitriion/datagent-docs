@@ -118,6 +118,6 @@ Default: `yandexgpt/rc` (`DEFAULT_YANDEXGPT_MODEL_VARIANT`).
 
 - [GigaChat (Сбер)](./gigachat.md) — парный российский провайдер, OAuth + OpenCode.
 - [Архитектура платформы](../concepts/agent-architecture.md) — server, adapters, heartbeat.
-- [Быстрый старт](../getting-started/quickstart.md) — стенд на `:3100`.
+- [Быстрый старт](../getting-started/quickstart) — стенд на `:3100`.
 
 Сравнение провайдеров → [LLM-адаптеры](../concepts/llm-adapters.md).

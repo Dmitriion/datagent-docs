@@ -112,6 +112,6 @@ curl -sS -X POST "${GIGACHAT_OAUTH_URL:-https://ngw.devices.sberbank.ru:9443/api
 ## Связанные разделы
 
 - [Архитектура платформы](../concepts/agent-architecture.md) — server, adapters, heartbeat, plugins.
-- [Быстрый старт](../getting-started/quickstart.md) — поднять стенд на `:3100`.
+- [Быстрый старт](../getting-started/quickstart) — поднять стенд на `:3100`.
 
 Сравнение провайдеров → [LLM-адаптеры](../concepts/llm-adapters.md).
