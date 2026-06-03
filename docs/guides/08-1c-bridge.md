@@ -23,6 +23,10 @@ sidebar_position: 9
 
 **Шаг 3.** В Board: `upstreamMcpUrl`, proxy на `:8010` (по умолчанию), **test-connection**.
 
+![Страница плагина 1С-коннектор в Board](/img/guides/1c/connector-page.webp)
+
+*Настройка proxy и проверка связи — в Board; tools 1С вызываются из IDE через MCP.*
+
 **Шаг 4.** Копирует **cursor-config** в MCP Cursor. Разработка в IDE; tools — с upstream 1С.
 
 **Шаг 5.** Мария в Board ведёт **задачи** с агентами по тексту и файлам. Сверка с 1С — через deliverables людей, не через tool в run.
