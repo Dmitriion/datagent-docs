@@ -16,7 +16,7 @@ Datagent — **control plane** для AI-агентов в компаниях: B
 | --- | --- | --- |
 | 1 | [Быстрый старт](./getting-started/quickstart) | `pnpm dev`, Board и API на **http://localhost:3100** |
 | 2 | [Первый агент](./getting-started/first-agent) | Агент `gigachat_local` / `yandexgpt_local`, wakeup, heartbeat run |
-| 3 | [Учебник по агентам](./guides) | Пользовательские истории: Board, команда, задача, одобрения, Офис |
+| 3 | [Учебник по агентам](./guides) | Истории для оператора и руководителя: от первого входа до результата под контролем |
 | 4 | [Архитектура](./concepts/agent-architecture) | Слои server / ui / adapters / plugins |
 | 5 | [Что такое Datagent](./concepts/what-is-datagent) | Термины и роль продукта |
 
@@ -27,7 +27,7 @@ Datagent — **control plane** для AI-агентов в компаниях: B
 - **Плагины** — tools и jobs в отдельных worker-процессах (`PluginWorkerManager`); установка через Plugin Manager / `datagent plugin install`.
 - **Bitrix24** — [imbot bridge](./integrations/bitrix24): polling `bitrix-poll`, binding агента, ответы в чат (без CRM tools `bitrix24_*` в manifest).
 - **Телеграм** — [плагин Telegram Datagent](./integrations/telegram): long poll `getUpdates`, уведомления, апрувы Board, inbound в issues.
-- **Учебник** — [работа с платформой](./guides): истории для оператора и руководителя, от первого входа до результата под контролем.
+- **Учебник** — [работа с платформой](./guides): восемь глав и шпаргалка; Board, одобрения и Офис без «чата без памяти».
 - **BrowserBridge** — [локальный демон](./tutorials/browserbridge-setup) `datagent-bridge` и plugin tools `datagent.browserbridge:browser_*` (tunnel с server).
 - **Офис и документы** — [пространство «Офис»](./office/overview) (Operator View), [1С Коннектор](./office/1c-connector) (MCP proxy), [Office Plugin](./office/excel-pptx) (Excel / Word / PPTX через OfficeCLI).
 
