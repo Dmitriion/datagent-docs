@@ -3,7 +3,6 @@ id: changelog
 title: История версий
 sidebar_label: История версий
 description: История изменений Datagent и документации — выравнивание с server/API, BrowserBridge, офис и интеграции.
-sidebar_position: 2
 ---
 
 Здесь — заметные изменения продукта и документации Datagent.

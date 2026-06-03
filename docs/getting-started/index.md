@@ -3,6 +3,7 @@ id: getting-started-index
 title: Начало работы
 sidebar_label: Обзор
 description: Getting Started Datagent — установка, pnpm dev на :3100, первый агент и heartbeat run через Board.
+draft: true
 ---
 
 Раздел **Getting Started** ведёт от пустого хоста до первого **heartbeat run** агента. Datagent поднимается как **один процесс** `server` на `PORT` (по умолчанию **3100**): REST `/api/*` и Board на том же origin в dev (`SERVE_UI=false` + Vite middleware). См. [Архитектура](../concepts/agent-architecture.md).

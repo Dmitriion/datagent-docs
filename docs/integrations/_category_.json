@@ -1,9 +1,9 @@
 {
-  "label": "Integrations",
-  "position": 3,
+  "label": "Интеграции",
+  "position": 4,
   "link": {
     "type": "generated-index",
     "title": "Интеграции",
-    "description": "GigaChat и YandexGPT (адаптеры), Bitrix24 imbot bridge, плагин Телеграм (long poll)."
+    "description": "GigaChat, YandexGPT, Bitrix24 и Телеграм."
   }
 }
