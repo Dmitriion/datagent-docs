@@ -73,13 +73,29 @@ async function hideCursor(page) {
 
 async function setTheme(page, mode) {
   await page.evaluate((theme) => {
-    document.documentElement.setAttribute('data-theme', theme);
-    document.documentElement.classList.toggle('dark', theme === 'dark');
+    const root = document.documentElement;
+    root.setAttribute('data-theme', theme);
+    root.classList.toggle('dark', theme === 'dark');
+    root.style.colorScheme = theme === 'dark' ? 'dark' : 'light';
     try {
-      localStorage.setItem('theme', theme);
+      localStorage.setItem('paperclip.theme', theme);
     } catch {
-      /* cross-origin or pre-navigation */
+      /* restricted */
     }
+  }, mode);
+}
+
+async function installThemeInitScript(context, mode) {
+  await context.addInitScript((theme) => {
+    try {
+      localStorage.setItem('paperclip.theme', theme);
+    } catch {
+      /* restricted */
+    }
+    const root = document.documentElement;
+    root.setAttribute('data-theme', theme);
+    root.classList.toggle('dark', theme === 'dark');
+    root.style.colorScheme = theme === 'dark' ? 'dark' : 'light';
   }, mode);
 }
 
@@ -133,7 +149,9 @@ async function gotoCompany(page, prefix, route) {
   await maskPii(page);
 }
 
-async function captureMain(page, relPath, { fullPage = false, locator = null, clip = undefined } = {}) {
+const OFFICE_MIN_WEBP_BYTES = 10_000;
+
+async function captureMain(page, relPath, { fullPage = false, locator = null, clip = undefined, minBytes = 0 } = {}) {
   const out = path.join(OUT_ROOT, relPath);
   let buf;
   if (locator) {
@@ -145,7 +163,128 @@ async function captureMain(page, relPath, { fullPage = false, locator = null, cl
     buf = await png(page, shotOpts);
   }
   await saveWebp(buf, out);
+  const size = fs.statSync(out).size;
+  const floor = minBytes || 0;
+  if (floor > 0 && size < floor) {
+    throw new Error(`${relPath} too small (${size} bytes, min ${floor})`);
+  }
   return relPath;
+}
+
+let officeDeskModeApplied = false;
+
+async function ensureOfficeDeskMode(page) {
+  if (officeDeskModeApplied) return;
+  const res = await page.request.patch(`${BOARD_URL}/api/instance/settings/experimental`, {
+    data: { enableOfficeSimulation: false },
+  });
+  if (!res.ok()) {
+    throw new Error(`enableOfficeSimulation=false failed: ${res.status()} ${await res.text()}`);
+  }
+  officeDeskModeApplied = true;
+}
+
+async function gotoOfficeReady(page, prefix, { theme = 'light' } = {}) {
+  await ensureOfficeDeskMode(page);
+  await setTheme(page, theme);
+  await page.goto(companyUrl(prefix, '/office'), { waitUntil: 'domcontentloaded', timeout: 45_000 });
+  await page.waitForLoadState('networkidle', { timeout: 30_000 }).catch(() => {});
+  if (!page.url().includes('/office')) {
+    throw new Error(`Office route unavailable (redirected to ${page.url()}) — enableOffice?`);
+  }
+  await page.locator('.office-page').first().waitFor({ state: 'visible', timeout: 45_000 });
+  await waitStable(page);
+  await hideCursor(page);
+  await maskPii(page);
+
+  const projectCanvas = page.locator('[data-testid="office-project-canvas"]');
+  if (await projectCanvas.isVisible().catch(() => false)) {
+    await page.locator('[data-testid="office-layout-toggle"] button').first().click({ timeout: 8000 });
+    await page.waitForTimeout(900);
+  }
+
+  const viewport = page.locator('[data-testid="office-viewport"]');
+  await viewport.waitFor({ state: 'visible', timeout: 30_000 });
+  await page.locator('[data-testid="office-kpi-bar"], [data-testid="office-connection-status"]').first()
+    .waitFor({ state: 'visible', timeout: 20_000 });
+  await page.waitForFunction(
+    () => {
+      const desk = document.querySelector('.agent-desk-root[data-agent-status]');
+      return desk && getComputedStyle(desk).display !== 'none';
+    },
+    { timeout: 30_000 },
+  );
+  await page.waitForTimeout(1200);
+
+  const bg = await page.evaluate(() => {
+    const vp = document.querySelector('[data-testid="office-viewport"]');
+    return vp ? getComputedStyle(vp).backgroundColor : null;
+  });
+  if (theme === 'light') {
+    const rgb = bg?.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+    if (rgb) {
+      const [, r, g, b] = rgb.map(Number);
+      if (r < 180 || g < 180 || b < 180) {
+        throw new Error(`Office viewport not light theme (bg=${bg})`);
+      }
+    }
+  }
+}
+
+async function locateAgentDesk(page, agentId) {
+  const desk = page.locator(`.agent-desk-root[data-agent-id="${agentId}"]`).first();
+  await desk.waitFor({ state: 'visible', timeout: 20_000 });
+  return desk;
+}
+
+async function captureAgentDeskCrop(page, relPath, agentId, minBytes = 10_000) {
+  await locateAgentDesk(page, agentId);
+  const clip = await page.evaluate((id) => {
+    const el = document.querySelector(`.agent-desk-root[data-agent-id="${id}"]`);
+    if (!el) return null;
+    const r = el.getBoundingClientRect();
+    const w = 880;
+    const h = 620;
+    return {
+      x: Math.max(0, r.x + r.width / 2 - w / 2),
+      y: Math.max(0, r.y + r.height / 2 - h / 2),
+      width: w,
+      height: h,
+    };
+  }, agentId);
+  if (!clip) throw new Error(`desk clip missing for ${agentId}`);
+  return captureMain(page, relPath, { clip, minBytes });
+}
+
+async function locateAgentOnFloor(page, agentId) {
+  const root = page.locator(`[data-agent-id="${agentId}"]`).first();
+  await root.waitFor({ state: 'visible', timeout: 20_000 });
+  return root;
+}
+
+async function captureOfficeToolbar(page, relPath) {
+  const body = page.locator('.office-page-body').first();
+  await body.waitFor({ state: 'visible', timeout: 10_000 });
+  const box = await body.boundingBox();
+  if (!box) throw new Error('office-page-body box missing');
+  return captureMain(page, relPath, {
+    clip: { x: box.x, y: box.y, width: Math.min(box.width, 1200), height: Math.min(200, box.height) },
+    minBytes: 10_000,
+  });
+}
+
+function verifyOfficeWebpSizes() {
+  const dir = path.join(OUT_ROOT, 'office');
+  if (!fs.existsSync(dir)) return;
+  const bad = [];
+  for (const name of fs.readdirSync(dir)) {
+    if (!name.endsWith('.webp')) continue;
+    const size = fs.statSync(path.join(dir, name)).size;
+    if (size < OFFICE_MIN_WEBP_BYTES) bad.push({ name, size });
+  }
+  if (bad.length) {
+    throw new Error(`Office webp size check failed: ${JSON.stringify(bad)}`);
+  }
 }
 
 /** @type {import('./lib/guide-screenshot-types.mjs').ShotResult[]} */
@@ -627,10 +766,13 @@ const SHOTS = [
     chapter: '05-office-field',
     type: 'A',
     capture: async (page, { prefix }) => {
-      await gotoCompany(page, prefix, '/office');
-      await page.locator('[data-testid="office-viewport"], .office-page').first()
-        .waitFor({ state: 'visible', timeout: 20_000 }).catch(() => {});
-      return captureMain(page, 'office/01-virtual-office-full.webp', { fullPage: true });
+      await gotoOfficeReady(page, prefix);
+      const frame = page.locator('.office-page').first();
+      await frame.waitFor({ state: 'visible', timeout: 15_000 });
+      return captureMain(page, 'office/01-virtual-office-full.webp', {
+        locator: frame,
+        minBytes: 15_000,
+      });
     },
   },
   {
@@ -639,10 +781,14 @@ const SHOTS = [
     chapter: '05-office-field',
     type: 'A',
     theme: 'dark',
-    capture: async (page, ctx) => {
-      await setTheme(page, 'dark');
-      await gotoCompany(page, ctx.prefix, '/office');
-      return captureMain(page, 'office/01-virtual-office-full-dark.webp', { fullPage: true });
+    capture: async (page, { prefix }) => {
+      await gotoOfficeReady(page, prefix, { theme: 'dark' });
+      const frame = page.locator('.office-page').first();
+      await frame.waitFor({ state: 'visible', timeout: 15_000 });
+      return captureMain(page, 'office/01-virtual-office-full-dark.webp', {
+        locator: frame,
+        minBytes: 10_000,
+      });
     },
   },
   {
@@ -650,14 +796,11 @@ const SHOTS = [
     file: 'office/02-agent-running.webp',
     chapter: '05-office-field',
     type: 'C',
-    capture: async (page, ctx) => {
-      await gotoCompany(page, ctx.prefix, '/office');
-      await page.waitForTimeout(800);
-      const running = page.locator('[data-agent-status="running"]').first();
-      if (await running.isVisible().catch(() => false)) {
-        return captureMain(page, 'office/02-agent-running.webp', { locator: running });
-      }
-      return captureMain(page, 'office/02-agent-running.webp');
+    capture: async (page, { prefix, demo }) => {
+      await gotoOfficeReady(page, prefix);
+      const agentId = demo.agents.analyst?.id;
+      if (!agentId) throw new Error('no running analyst in seed');
+      return captureAgentDeskCrop(page, 'office/02-agent-running.webp', agentId);
     },
   },
   {
@@ -665,14 +808,11 @@ const SHOTS = [
     file: 'office/03-agent-awaiting-approval.webp',
     chapter: '05-office-field',
     type: 'C',
-    capture: async (page, { prefix }) => {
-      await gotoCompany(page, prefix, '/office');
-      await page.waitForTimeout(800);
-      const pending = page.locator('[data-agent-status="pending_approval"]').first();
-      if (await pending.isVisible().catch(() => false)) {
-        return captureMain(page, 'office/03-agent-awaiting-approval.webp', { locator: pending });
-      }
-      return captureMain(page, 'office/03-agent-awaiting-approval.webp');
+    capture: async (page, { prefix, demo }) => {
+      await gotoOfficeReady(page, prefix);
+      const agentId = demo.agents.pending?.id ?? demo.agents.pendingHire?.id;
+      if (!agentId) throw new Error('no pending_approval agent in seed');
+      return captureAgentDeskCrop(page, 'office/03-agent-awaiting-approval.webp', agentId);
     },
   },
   {
@@ -681,12 +821,8 @@ const SHOTS = [
     chapter: 'office/overview',
     type: 'C',
     capture: async (page, { prefix }) => {
-      await gotoCompany(page, prefix, '/office');
-      const toolbar = page.locator('[data-testid="office-kpi-bar"], [data-testid="office-connection-status"]').first();
-      if (await toolbar.isVisible().catch(() => false)) {
-        return captureMain(page, 'office/04-legend.webp', { locator: page.locator('.office-toolbar, header').first() });
-      }
-      return captureMain(page, 'office/04-legend.webp');
+      await gotoOfficeReady(page, prefix);
+      return captureOfficeToolbar(page, 'office/04-legend.webp');
     },
   },
   {
@@ -694,32 +830,45 @@ const SHOTS = [
     file: 'office/05-agent-sidepanel.webp',
     chapter: 'office/overview',
     type: 'C',
-    setup: async (page, { prefix }) => {
-      await gotoCompany(page, prefix, '/office');
-      const desk = page.locator('.agent-desk-hit, .agent-desk-root').first();
-      if (await desk.isVisible().catch(() => false)) await desk.click({ timeout: 5000 });
-      await page.waitForTimeout(500);
+    capture: async (page, { prefix, demo }) => {
+      await gotoOfficeReady(page, prefix);
+      const agentId = demo.agents.analyst?.id ?? demo.agents.pending?.id;
+      if (!agentId) throw new Error('no agent for side panel');
+      const hit = page.locator(`.agent-desk-root[data-agent-id="${agentId}"] .agent-desk-hit`).first();
+      await hit.click({ timeout: 8000 });
+      await page.waitForTimeout(700);
+      const panel = page.locator('[data-testid="office-agent-panel"]').first();
+      await panel.waitFor({ state: 'visible', timeout: 12_000 });
+      const box = await panel.boundingBox();
+      if (!box) throw new Error('office-agent-panel box missing');
+      const pad = 12;
+      return captureMain(page, 'office/05-agent-sidepanel.webp', {
+        clip: {
+          x: Math.max(0, box.x - pad),
+          y: Math.max(0, box.y - pad),
+          width: box.width + pad * 2,
+          height: box.height + pad * 2,
+        },
+        minBytes: 10_000,
+      });
     },
-    capture: async (page) => captureMain(page, 'office/05-agent-sidepanel.webp'),
   },
   {
     id: 'O06',
     file: 'office/06-office-chat-full.webp',
     chapter: '05-office-field',
     type: 'B',
-    setup: async (page, { prefix }) => {
-      await gotoCompany(page, prefix, '/office');
+    capture: async (page, { prefix }) => {
+      await gotoOfficeReady(page, prefix);
       const tab = page.locator('[data-testid="office-edge-tab-chat"]');
-      if (await tab.isVisible().catch(() => false)) await tab.click();
-      await page.waitForTimeout(600);
-    },
-    capture: async (page) => {
+      await tab.click({ timeout: 8000 });
+      await page.waitForTimeout(700);
       const panel = page.locator('[data-testid="office-chat-panel"]');
-      await panel.waitFor({ state: 'visible', timeout: 12_000 }).catch(() => {});
-      if (await panel.isVisible().catch(() => false)) {
-        return captureMain(page, 'office/06-office-chat-full.webp', { locator: panel });
-      }
-      return captureMain(page, 'office/06-office-chat-full.webp');
+      await panel.waitFor({ state: 'visible', timeout: 15_000 });
+      return captureMain(page, 'office/06-office-chat-full.webp', {
+        locator: panel,
+        minBytes: 10_000,
+      });
     },
   },
   {
@@ -727,18 +876,23 @@ const SHOTS = [
     file: 'office/07-office-chat-compose.webp',
     chapter: '05-office-field',
     type: 'C',
-    setup: async (page, { prefix }) => {
-      await gotoCompany(page, prefix, '/office');
-      await page.locator('[data-testid="office-edge-tab-chat"]').click({ timeout: 8000 }).catch(() => {});
-      await page.waitForTimeout(500);
-    },
-    capture: async (page) => {
-      const composer = page.locator('[data-testid="office-chat-composer"]');
-      await composer.waitFor({ state: 'visible', timeout: 12_000 }).catch(() => {});
-      if (await composer.isVisible().catch(() => false)) {
-        return captureMain(page, 'office/07-office-chat-compose.webp', { locator: composer });
+    capture: async (page, { prefix }) => {
+      await gotoOfficeReady(page, prefix);
+      await page.locator('[data-testid="office-edge-tab-chat"]').click({ timeout: 8000 });
+      await page.waitForTimeout(900);
+      const panel = page.locator('[data-testid="office-chat-panel"]');
+      await panel.waitFor({ state: 'visible', timeout: 15_000 });
+      const composer = panel.locator('[data-testid="office-chat-composer"]').first();
+      await composer.waitFor({ state: 'visible', timeout: 15_000 });
+      const input = composer.locator('textarea').first();
+      if (await input.isVisible().catch(() => false)) {
+        await input.fill('Пример: сводка по клиенту «Север» готова?');
       }
-      return captureMain(page, 'office/07-office-chat-compose.webp');
+      await page.waitForTimeout(300);
+      return captureMain(page, 'office/07-office-chat-compose.webp', {
+        locator: panel,
+        minBytes: 10_000,
+      });
     },
   },
   {
@@ -755,12 +909,17 @@ const SHOTS = [
     file: 'office/09-drilldown-link.webp',
     chapter: 'office/overview',
     type: 'C',
-    setup: async (page, { prefix }) => {
-      await gotoCompany(page, prefix, '/office');
-      await page.locator('[data-testid="office-edge-tab-agents"]').click({ timeout: 8000 }).catch(() => {});
-      await page.waitForTimeout(400);
+    capture: async (page, { prefix }) => {
+      await gotoOfficeReady(page, prefix);
+      await page.locator('[data-testid="office-edge-tab-agents"]').click({ timeout: 8000 });
+      await page.waitForTimeout(700);
+      const roster = page.locator('[data-testid="office-agents-panel"], .office-edge-panel').first();
+      await roster.waitFor({ state: 'visible', timeout: 12_000 });
+      return captureMain(page, 'office/09-drilldown-link.webp', {
+        locator: roster,
+        minBytes: 10_000,
+      });
     },
-    capture: async (page) => captureMain(page, 'office/09-drilldown-link.webp'),
   },
   {
     id: 'O10',
@@ -879,7 +1038,7 @@ async function captureStories(ctx) {
     { id: 'S5-04', file: 'stories/05-office-supervisor-04-agents-tab.webp', route: '/office', setup: async (p) => {
       await p.locator('[data-testid="office-edge-tab-agents"]').click().catch(() => {});
     } },
-    { id: 'S5-05', file: 'stories/05-office-supervisor-05-approval.webp', route: `/approvals/${demo.approvals.pending?.id ?? ''}` },
+    { id: 'S5-05', file: 'stories/05-office-supervisor-05-approval.webp', route: '/approvals/pending' },
     { id: 'S6-01', file: 'stories/06-excel-office-01-issue.webp', route: issueRoute(demo) },
     { id: 'S6-02', file: 'stories/06-excel-office-02-approval.webp', route: `/approvals/${demo.approvals.pending?.id ?? ''}` },
     { id: 'S6-03', file: 'stories/06-excel-office-03-inbox.webp', route: '/approvals/pending' },
@@ -893,9 +1052,14 @@ async function captureStories(ctx) {
         record({ id: step.id, file: step.file, chapter: 'stories', status: 'SKIP', reason: 'missing route data' });
         continue;
       }
-      await gotoCompany(page, prefix, step.route);
+      if (step.route === '/office') {
+        await gotoOfficeReady(page, prefix);
+      } else {
+        await gotoCompany(page, prefix, step.route);
+      }
       if (step.setup) await step.setup(page);
-      await captureMain(page, step.file);
+      const minBytes = step.route === '/office' || step.route?.includes('/approvals') ? 10_000 : 0;
+      await captureMain(page, step.file, { minBytes });
       record({ id: step.id, file: step.file, chapter: 'stories', type: 'A', status: 'OK' });
     } catch (err) {
       record({ id: step.id, file: step.file, chapter: 'stories', status: 'FAIL', reason: String(err) });
@@ -932,6 +1096,7 @@ async function main() {
     colorScheme: 'light',
     storageState: AUTH_STATE,
   });
+  await installThemeInitScript(desktop, 'light');
   const page = await desktop.newPage();
   await authenticate(page, prefix);
   await setTheme(page, 'light');
@@ -994,18 +1159,28 @@ async function main() {
   }
   await mobileCtx.close();
 
-  const darkPage = await (await browser.newContext({
+  const darkCtx = await browser.newContext({
     viewport: VIEWPORT_MAIN,
     locale: 'ru-RU',
     colorScheme: 'dark',
     storageState: AUTH_STATE,
-  })).newPage();
+  });
+  await installThemeInitScript(darkCtx, 'dark');
+  const darkPage = await darkCtx.newPage();
   for (const spec of SHOTS.filter((s) => s.theme === 'dark')) {
     await runShot({ ...ctx, page: darkPage }, spec);
   }
-  await darkPage.context().close();
+  await darkCtx.close();
 
   await captureStories(ctx);
+
+  try {
+    verifyOfficeWebpSizes();
+    console.log('Office webp size check: OK');
+  } catch (err) {
+    console.error(err.message);
+    if (!process.env.ALLOW_SMALL_OFFICE_WEBP) process.exitCode = 1;
+  }
 
   await desktop.close();
   await browser.close();
