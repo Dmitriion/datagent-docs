@@ -2,85 +2,101 @@
 id: first-agent
 title: Первый агент
 sidebar_label: Первый агент
-description: Туториал по созданию первого агента в Board UI Datagent — настройка промпта, запуск задачи и просмотр результата run.
+description: Первый агент в Board на :3100 — gigachat_local или yandexgpt_local, tools из плагинов, wakeup и heartbeat run.
 ---
 
-В этом туториале вы создадите агента «Помощник по лидам» в Board UI, запустите тестовую задачу и разберёте результат в панели run. Предполагается, что [быстрый старт](./quickstart) уже выполнен.
+Создайте агента в Board, запустите **heartbeat run** и посмотрите результат. Нужен [быстрый старт](./quickstart.md): `pnpm dev`, `PORT=3100`, `SERVE_UI=false` — UI и API на **http://localhost:3100**.
 
-## Создать агента в Board
+## URL Board
 
-1. Откройте `http://localhost:3200` и войдите в workspace.
-2. **Agents** → **New Agent**.
-3. Заполните поля:
+После онбординга маршруты компании идут с **префиксом issue** (`issuePrefix`):
+
+```text
+http://localhost:3100/{issuePrefix}/agents/new
+http://localhost:3100/{issuePrefix}/agents/{agentId}
+http://localhost:3100/{issuePrefix}/issues/{issueRef}
+```
+
+Без компании Board перенаправит на `/onboarding`. Корневые `/agents/...` редиректятся на префикс выбранной компании (`ui/src/App.tsx`).
+
+## Создать агента
+
+1. Откройте Board на `:3100`, выберите **company**.
+2. **Agents** → **New Agent** (`/{issuePrefix}/agents/new`).
+3. Поля:
 
 | Поле | Значение |
 | --- | --- |
 | Name | `lead-helper` |
-| Model | `GigaChat-Pro` или `YandexGPT Pro` |
-| Tools | `bitrix24_list_leads`, `telegram_send_message` (если интеграции настроены) |
+| Adapter type | `gigachat_local` или `yandexgpt_local` |
+| Model | `gigachat/GigaChat-2-Pro` или `yandexgpt/rc` |
+| folderId | Только Yandex — ID каталога YC (`b1g…`) |
+| Environment | `GIGACHAT_CLIENT_ID` + `GIGACHAT_CLIENT_SECRET` или `YANDEX_SA_KEY_JSON` (**secret_ref**) |
 
-4. System prompt (пример):
+4. **Tools** — только из **включённых** плагинов instance (например `datagent.browserbridge:*` после установки BrowserBridge). Интеграции Bitrix24 и Telegram **не** добавляют CRM/messenger tools в список агента — они работают через issues и bridge ([Bitrix24](../integrations/bitrix24.md), [Telegram](../integrations/telegram.md)).
 
-```text
-Ты ассистент отдела продаж. Отвечай кратко на русском.
-При запросе «новые лиды» вызывай bitrix24_list_leads и суммируй топ-5.
-```
-
-5. Нажмите **Save**.
-
-## Запустить задачу
-
-На вкладке **Playground** введите:
+5. System prompt (пример):
 
 ```text
-Покажи новые лиды за сегодня и предложи текст напоминания менеджеру.
+Ты ассистент. Отвечай кратко на русском.
+Используй только tools, которые видишь в конфигурации агента.
 ```
 
-Нажмите **Run**. Board создаст `run` и покажет live-лог tool-вызовов.
+6. **Save**. Проверка адаптера: **Test environment** на уровне компании (`POST /api/companies/:companyId/adapters/:type/test-environment`).
 
-## Посмотреть результат
+Модели и OAuth: [GigaChat](../integrations/gigachat.md), [YandexGPT](../integrations/yandexgpt.md), сводка — [LLM-адаптеры](../concepts/llm-adapters.md).
 
-После завершения статус сменится на `succeeded` или `failed`:
+## Запустить run
+
+На карточке агента или в issue — **Run** / **Wakeup**. Пример задачи:
+
+```text
+Составь чек-лист из трёх пунктов для звонка новому клиенту.
+```
+
+Server создаёт **heartbeat run** (события адаптера и tools в UI).
+
+## Результат
 
 ```mermaid
 sequenceDiagram
   participant U as Пользователь
-  participant B as Board UI
-  participant A as API / Runner
-  participant L as LLM
-  U->>B: Run task
-  B->>A: POST /runs
-  A->>L: completion + tools
-  L-->>A: tool calls
-  A-->>B: SSE / poll status
-  B-->>U: Final answer + trace
+  participant B as Board :3100
+  participant A as POST /api/agents/:id/wakeup
+  participant H as heartbeatService
+  participant L as OpenCode adapter
+  U->>B: Wakeup
+  B->>A: JSON body source on_demand
+  A->>H: heartbeat_runs
+  H->>L: gigachat_local / yandexgpt_local
+  L-->>H: llm + tool steps
+  H-->>B: events / log
+  B-->>U: ответ
 ```
 
-В панели **Trace** видны:
-
-- токены и latency по шагам;
-- JSON аргументов каждого tool;
-- финальный ответ агента.
-
-Экспорт: **Download JSON** — пригодится для отладки в поддержке.
-
-## REST-эквивалент
-
-Тот же run через API:
+Статусы: `queued`, `running`, `succeeded`, `failed`. Лог API:
 
 ```bash
-curl -X POST http://localhost:3100/runs \
+curl -s "http://127.0.0.1:3100/api/heartbeat-runs/<RUN_ID>/log"
+```
+
+## REST (тот же run)
+
+```bash
+export AGENT_ID="<uuid-агента>"
+curl -s -X POST "http://127.0.0.1:3100/api/agents/${AGENT_ID}/wakeup" \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer <api_token>" \
   -d '{
-    "agentId": "agt_01HYZ8K3QW2M9N4P6R7S8T0V",
-    "input": "Покажи новые лиды за сегодня"
+    "source": "on_demand",
+    "reason": "first-agent tutorial",
+    "payload": { "note": "Чек-лист для звонка" }
   }'
 ```
 
-Детали полей: [API Reference](../api-reference/overview).
+Статус: `GET http://127.0.0.1:3100/api/heartbeat-runs/<RUN_ID>`. Публичного `POST /api/runs` нет — [Обзор API](../api-reference/overview.md).
 
 ## Что дальше
 
-- [Автоматизация CRM](../tutorials/automate-crm)
-- [Подключение Bitrix24](../integrations/bitrix24)
+- [Чат Bitrix24 → Telegram](../tutorials/automate-crm.md)
+- [Bitrix24](../integrations/bitrix24.md)
+- [Как это работает](../concepts/how-it-works.md)

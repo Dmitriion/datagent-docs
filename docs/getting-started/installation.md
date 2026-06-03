@@ -2,37 +2,106 @@
 id: installation
 title: Установка
 sidebar_label: Установка
-description: Системные требования и пошаговая установка Datagent — Node 20, pnpm 9, PostgreSQL 15 с pgvector, Docker Compose.
+description: Системные требования и установка Datagent — CLI onboard, Docker Compose или сборка из исходников.
 ---
 
-Установка Datagent рассчитана на Linux-сервер или macOS в dev. Продакшен обычно разворачивают через Docker Compose или Kubernetes; здесь — базовый bare-metal/VM сценарий.
+На этой странице — как получить работающий экземпляр Datagent. Интерактивная настройка компании и первого агента — в [Быстром старте](./quickstart).
 
 ## Системные требования
 
 | Ресурс | Минимум | Рекомендуется |
 | --- | --- | --- |
 | CPU | 2 vCPU | 4 vCPU |
-| RAM | 4 GB | 8 GB (с BrowserBridge + Chromium) |
+| RAM | 4 GB | 8 GB (с BrowserBridge и Chromium) |
 | Диск | 20 GB SSD | 40 GB SSD |
-| Node.js | 20.x LTS | 20.x LTS |
-| pnpm | 9.x | 9.x |
-| PostgreSQL | 15+ | 16 |
-| Расширения БД | `pgvector` 0.5+ | `pgvector` 0.7+ |
+| Node.js | 20+ | 20 LTS |
+| pnpm | 9.15+ (в репозитории: 9.15.4) | как в `packageManager` репозитория |
+| PostgreSQL | не обязателен для старта | 15–17 с `pgvector` для production RAG |
+| ОС | Linux, macOS | Windows — через WSL2 |
 
-Сеть: исходящий HTTPS к `ngw.devices.sberbank.ru` (GigaChat), `llm.api.cloud.yandex.net` (YandexGPT), при необходимости — к порталу Bitrix24.
+По умолчанию Datagent поднимает **встроенную PostgreSQL** в каталоге instance (`~/.datagent`). Отдельный сервер БД нужен, если вы задаёте `DATABASE_URL` или разворачиваете production с внешней БД и pgvector для памяти.
 
-## Пошаговая установка
+Сеть (по желанию): исходящий HTTPS к провайдерам LLM (GigaChat, YandexGPT и др.) и к вашим интеграциям.
 
-### 1. Node.js и pnpm
+## Способ 1 — CLI (рекомендуется)
+
+Open-core. Аккаунт Datagent Cloud не нужен. Node.js 20+ должен быть установлен.
 
 ```bash
-curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
-sudo apt-get install -y nodejs
-corepack enable
-corepack prepare pnpm@9.15.0 --activate
+npx datagent onboard --yes
 ```
 
-### 2. PostgreSQL с pgvector
+После онбординга API и Board UI доступны на **`http://localhost:3100`** (один порт: UI отдаётся через API, см. `SERVE_UI` в dev).
+
+Приватный доступ по LAN или Tailscale:
+
+```bash
+npx datagent onboard --yes --bind lan
+# или:
+npx datagent onboard --yes --bind tailnet
+```
+
+Данные instance, embedded БД и миграции создаются автоматически. Повторный запуск с `--yes` на уже настроенном instance сохраняет config и только стартует сервер.
+
+Проверка здоровья instance:
+
+```bash
+datagent doctor
+```
+
+## Способ 2 — Docker Compose
+
+Без локальной установки Node/pnpm:
+
+```bash
+git clone https://github.com/Dmitriion/datagent.git
+cd datagent
+docker compose -f docker/docker-compose.quickstart.yml up --build
+```
+
+Откройте [http://localhost:3100](http://localhost:3100). Перед запуском задайте `BETTER_AUTH_SECRET` (в compose он обязателен). Данные по умолчанию монтируются в `./data/docker-datagent`.
+
+Переопределение порта и каталога данных:
+
+```bash
+DATAGENT_PORT=3200 DATAGENT_DATA_DIR=../data/pc \
+  docker compose -f docker/docker-compose.quickstart.yml up --build
+```
+
+## Способ 3 — из исходников
+
+Для разработки и кастомных деплоев:
+
+```bash
+git clone https://github.com/Dmitriion/datagent.git
+cd datagent
+corepack enable
+corepack prepare pnpm@9.15.4 --activate
+pnpm install
+pnpm dev
+```
+
+- API: `http://localhost:3100`
+- UI в dev — с того же origin, что и API (`pnpm dev` поднимает server + Vite HMR)
+- Встроенная PostgreSQL и миграции применяются при первом старте
+
+Онбординг из монорепозитория:
+
+```bash
+pnpm datagent onboard --yes
+```
+
+Production-сборка:
+
+```bash
+pnpm build
+pnpm db:migrate
+# запуск через datagent run / ваш process manager
+```
+
+## Внешняя PostgreSQL (опционально)
+
+Если нужен отдельный Postgres (например, для production RAG с pgvector):
 
 ```bash
 docker run -d --name datagent-pg \
@@ -43,50 +112,57 @@ docker run -d --name datagent-pg \
   pgvector/pgvector:pg16
 ```
 
-Включите расширение:
+В БД:
 
 ```sql
 CREATE EXTENSION IF NOT EXISTS vector;
 ```
 
-### 3. Клонирование и сборка
+Скопируйте пример окружения и укажите строку подключения:
 
 ```bash
-git clone https://github.com/Dmitriion/datagent.git /opt/datagent
-cd /opt/datagent
-pnpm install --frozen-lockfile
-pnpm build
+cp .env.example .env
 ```
 
-### 4. Конфигурация окружения
-
-Файл `/opt/datagent/.env`:
+Минимальный набор из `.env.example` в корне репозитория:
 
 ```env
-NODE_ENV=production
-DATABASE_URL=postgresql://datagent:datagent@127.0.0.1:5432/datagent
-API_PORT=3100
-BOARD_PORT=3200
-JWT_SECRET=<сгенерируйте: openssl rand -hex 32>
-
-BROWSERBRIDGE_URL=http://127.0.0.1:9247
+DATABASE_URL=postgres://datagent:datagent@localhost:5432/datagent
+PORT=3100
+SERVE_UI=false
+BETTER_AUTH_SECRET=datagent-dev-secret-change-me
 ```
 
-### 5. Миграции и systemd (опционально)
+| Переменная | Назначение |
+| --- | --- |
+| `DATABASE_URL` | Внешний Postgres; без неё — embedded БД в `DATAGENT_HOME` |
+| `PORT` | Порт HTTP API (по умолчанию `3100`) |
+| `SERVE_UI` | `false` — UI через dev middleware; в production обычно встроенная раздача статики |
+| `BETTER_AUTH_SECRET` | Секрет сессий Better Auth; в `authenticated` также используется для agent JWT (или задайте `DATAGENT_AGENT_JWT_SECRET`) |
+
+Для production замените `BETTER_AUTH_SECRET` на криптостойкое значение, например `openssl rand -hex 32`. Режимы `local_trusted` / `authenticated` и bind (`loopback`, `lan`, `tailnet`) задаются при `datagent onboard` или через `DATAGENT_DEPLOYMENT_MODE`, `DATAGENT_BIND` — подробнее в upstream: `docs/deploy/overview.md` в репозитории Datagent.
+
+Миграции схемы:
 
 ```bash
-pnpm --filter @datagent/db migrate
-sudo cp deploy/datagent-api.service /etc/systemd/system/
-sudo systemctl enable --now datagent-api datagent-board
+pnpm db:migrate
 ```
 
 ## Проверка установки
 
 ```bash
-curl http://127.0.0.1:3100/health
-pnpm --filter @datagent/api exec node -e "require('pg').Pool({connectionString:process.env.DATABASE_URL}).query('SELECT 1').then(()=>console.log('db ok'))"
+curl -s http://127.0.0.1:3100/health
+```
+
+Ожидается JSON со статусом instance (детали зависят от режима `local_trusted` / `authenticated`).
+
+При внешней БД:
+
+```bash
+# DATABASE_URL должен быть в окружении или в .env instance
+pnpm db:migrate
 ```
 
 ## Следующий шаг
 
-[Быстрый старт](./quickstart) — если нужен интерактивный dev без systemd.
+[Быстрый старт](./quickstart) — первая компания, агент и run в Board UI.
