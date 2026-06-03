@@ -16,8 +16,14 @@ const paths = [
     tag: 'Платформа',
   },
   {
+    title: 'Работа с платформой',
+    description: 'Board, агенты, задачи, одобрения — для оператора и менеджера.',
+    to: '/docs/guides',
+    tag: 'Пользователям',
+  },
+  {
     title: 'Интеграции',
-    description: 'GigaChat, YandexGPT, Bitrix24, Telegram из коробки.',
+    description: 'GigaChat, YandexGPT, Bitrix24, Телеграм из коробки.',
     to: '/docs/integrations/gigachat',
     tag: 'LLM и CRM',
   },

@@ -52,7 +52,6 @@ const config: Config = {
         docs: {
           sidebarPath: './sidebars.ts',
           routeBasePath: 'docs',
-          editUrl: 'https://github.com/Dmitriion/datagent-docs/tree/main/',
         },
         blog: {
           showReadingTime: true,
@@ -60,7 +59,6 @@ const config: Config = {
             type: ['rss', 'atom'],
             xslt: true,
           },
-          editUrl: 'https://github.com/Dmitriion/datagent-docs/tree/main/',
           onInlineTags: 'warn',
           onInlineAuthors: 'warn',
           onUntruncatedBlogPosts: 'warn',
@@ -126,16 +124,7 @@ const config: Config = {
           position: 'left',
         },
         {to: '/blog', label: 'Блог', position: 'left'},
-        {
-          href: 'https://github.com/Dmitriion/datagent',
-          label: 'Продукт',
-          position: 'right',
-        },
-        {
-          href: 'https://github.com/Dmitriion/datagent-docs',
-          label: 'GitHub',
-          position: 'right',
-        },
+        {to: '/docs/guides', label: 'Руководство', position: 'left'},
       ],
     },
     footer: {
@@ -156,21 +145,8 @@ const config: Config = {
             {label: 'GigaChat', to: '/docs/integrations/gigachat'},
             {label: 'YandexGPT', to: '/docs/integrations/yandexgpt'},
             {label: 'Bitrix24', to: '/docs/integrations/bitrix24'},
-            {label: 'Telegram', to: '/docs/integrations/telegram'},
-          ],
-        },
-        {
-          title: 'Сообщество',
-          items: [
-            {
-              label: 'Репозиторий docs',
-              href: 'https://github.com/Dmitriion/datagent-docs',
-            },
-            {
-              label: 'Сообщить об ошибке',
-              href: 'https://github.com/Dmitriion/datagent-docs/issues',
-            },
-            {label: 'Продукт (GitHub)', href: 'https://github.com/Dmitriion/datagent'},
+            {label: '1С', to: '/docs/office/1c-connector'},
+            {label: 'Телеграм', to: '/docs/integrations/telegram'},
           ],
         },
       ],

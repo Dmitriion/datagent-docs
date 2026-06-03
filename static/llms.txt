@@ -9,6 +9,15 @@
 - [Установка](https://docs.datagent.ru/docs/getting-started/installation)
 - [Первый агент](https://docs.datagent.ru/docs/getting-started/first-agent)
 
+## Работа с платформой
+
+- [Обзор](https://docs.datagent.ru/docs/guides)
+- [Основы Board](https://docs.datagent.ru/docs/guides/board-basics)
+- [Агенты](https://docs.datagent.ru/docs/guides/agents)
+- [Задачи и диалоги](https://docs.datagent.ru/docs/guides/issues-and-dialogs)
+- [Одобрения](https://docs.datagent.ru/docs/guides/approvals)
+- [Что могут агенты](https://docs.datagent.ru/docs/guides/what-agents-can-do)
+
 ## Концепции
 
 - [Что такое Datagent](https://docs.datagent.ru/docs/concepts/what-is-datagent)
