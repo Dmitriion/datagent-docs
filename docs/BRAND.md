@@ -2,6 +2,8 @@
 
 Краткая выжимка для контрибьюторов `datagent-docs`. Источник правды в продукте: `datagent/assets/css/tokens.css`, `assets/img/brand/`.
 
+Синхронизировано с `datagent/assets/` (2026-06-03; SVG из `docs/images/` — `assets/img/brand/` в checkout продукта отсутствует).
+
 ## Цвета
 
 Используйте CSS-переменные из `static/css/tokens.css`, не хардкодите HEX в компонентах.
