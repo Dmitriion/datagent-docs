@@ -53,6 +53,10 @@ sidebar_position: 5
 
 **Шаг 6.** При отклонении run не доделывает спорный шаг; уточняете задачу и запускаете снова.
 
+![Согласование в статусе rejected](/img/guides/approvals/05-rejected.webp)
+
+*Рис. 7 — после «Отклонить» запись остаётся в истории с вашей пометкой.*
+
 ```mermaid
 sequenceDiagram
   participant A as Агент
