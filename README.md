@@ -37,10 +37,10 @@ Workflow **Deploy docs to GitHub Pages** может быть зелёным, н�
 
 **Вариант A (рекомендуется):** **Settings → Pages → Build and deployment → Source → GitHub Actions**, затем **Actions → Deploy docs to GitHub Pages → Run workflow**.
 
-**Вариант B (если Actions недоступен):** **Source → Deploy from a branch → `gh-pages` / `(root)`** (не `main`). Ветку `gh-pages` обновляет тот же workflow после каждого push в `main`.
+**Вариант B (если Actions недоступен):** **Source → Deploy from a branch → `gh-pages` / `(root)`**, затем **Actions → Publish gh-pages branch (fallback) → Run workflow** (не пушить `gh-pages` из основного deploy — иначе красный «pages build and deployment» при Source = GitHub Actions).
 
 **Нельзя** оставлять **Branch `main` / `(root)`**.
 
 ### Автоматический деплой
 
-Push в `main` → [deploy.yml](.github/workflows/deploy.yml): `npm run build` → `deploy-pages` + публикация в ветку `gh-pages`.
+Push в `main` → [deploy.yml](.github/workflows/deploy.yml): `npm run build` → `deploy-pages` (GitHub Actions). Ветку `gh-pages` — только через [deploy-gh-pages-branch.yml](.github/workflows/deploy-gh-pages-branch.yml) при fallback.

@@ -45,18 +45,9 @@ jobs:
         with:
           path: build
 
-      - name: Publish build to gh-pages branch (fallback)
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build
-          publish_branch: gh-pages
-          force_orphan: true
-          cname: docs.datagent.ru
-
       - name: Remind if site still shows README
         run: |
-          echo "::warning title=Pages Source::Если на https://docs.datagent.ru виден README — в Settings → Pages выберите Source: GitHub Actions ИЛИ Branch gh-pages / (root). Сейчас часто ошибочно: main / (root)."
+          echo "::warning title=Pages Source::Если на https://docs.datagent.ru виден README — в Settings → Pages выберите Source: GitHub Actions (рекомендуется). Fallback: workflow «Publish gh-pages branch» + Source gh-pages / (root). Нельзя: main / (root)."
 
   deploy:
     needs: build
