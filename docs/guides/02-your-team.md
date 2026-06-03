@@ -7,6 +7,10 @@ sidebar_position: 3
 
 **Алексей** отвечает за операционку и инициативу по агентам. Команда хочет «одного на всё» — без рамок получается хаос: один лезет в браузер, другой пишет простыни, третий не видит политику компании. Здесь вы соберёте **команду ролей** с понятными границами.
 
+![Список агентов компании — обзор ростера](/img/guides/agents/01-list-full.webp)
+
+*Рис. 1 — все агенты компании: роль, адаптер и последняя активность.*
+
 ## Было и стало
 
 | Было | Стало |
@@ -21,6 +25,10 @@ sidebar_position: 3
 
 **Шаг 2.** Создайте **«Аналитик переписки»** — адаптер `gigachat_local` или `yandexgpt_local`, короткий system prompt: «русский, структура, без выдуманных цифр».
 
+![Форма создания нового агента](/img/guides/agents/09-edit-form.webp)
+
+*Рис. 2 — мастер/форма нового агента: имя, адаптер, инструкции.*
+
 **Шаг 3.** Второй агент — **«Оформитель таблиц»**: те же LLM, в tools только `datagent.excel-workbench:*` после [Office Plugin](../office/excel-pptx).
 
 **Шаг 4.** Третий — **«Внутренний исследователь»** с [BrowserBridge](../tutorials/browserbridge-setup): tools `datagent.browserbridge:browser_*`, правило «не отправлять формы без одобрения».
@@ -31,9 +39,29 @@ sidebar_position: 3
 
 **Шаг 7.** В пятницу откройте список агентов: у кого последний run `failed` — разбор с инженером, не «перезагрузи страницу».
 
-![Список агентов компании](/img/guides/team/agents-list.webp)
+![Карточка агента: модель, статус, tools](/img/guides/agents/03-card-overview.webp)
 
-*Список агентов — кто в ростере, какая модель и когда был последний run.*
+*Рис. 3 — обзор агента перед запуском run.*
+
+![Вкладка инструкций (system prompt)](/img/guides/agents/04-system-prompt.webp)
+
+*Рис. 4 — bundle инструкций; секреты держите в secret_ref, не в тексте.*
+
+![Конфигурация: tools и адаптер](/img/guides/agents/05-tools-list.webp)
+
+*Рис. 5 — какие plugin tools выданы агенту.*
+
+![Кнопка «Запустить heartbeat» на карточке](/img/guides/agents/06-wakeup-button.webp)
+
+*Рис. 6 — явный Wakeup с карточки агента.*
+
+![Журнал последних run](/img/guides/agents/07-runs-log.webp)
+
+*Рис. 7 — статусы run: running, succeeded, failed.*
+
+![Мобильный список агентов](/img/guides/agents/10-list-mobile.webp)
+
+*Рис. 8 — ростер на телефоне.*
 
 ```mermaid
 flowchart TB
@@ -53,6 +81,24 @@ flowchart TB
 ## Где вы управляете возможностями
 
 Вы задаёте не только промпт, но и **границы**: агент не вызовет tool, которого нет в manifest плагина. Нет вымышленных `bitrix24_list_leads` — только сценарии из [Bitrix24](../integrations/bitrix24).
+
+![Фокус на таблице агентов](/img/guides/agents/01-list-focus.webp)
+
+*Рис. 9 — сравнение ролей в одном списке.*
+
+## Сквозная история: менеджер запускает агента
+
+![Список → карточка](/img/guides/stories/02-manager-run-01-agents.webp)
+*Шаг 1 — выбрать агента в ростере.*
+
+![Карточка агента](/img/guides/stories/02-manager-run-02-card.webp)
+*Шаг 2 — проверить модель и tools.*
+
+![Wakeup](/img/guides/stories/02-manager-run-03-wakeup.webp)
+*Шаг 3 — запустить heartbeat.*
+
+![Журнал run](/img/guides/stories/02-manager-run-04-runs.webp)
+*Шаг 4 — прочитать шаги в журнале.*
 
 ## Что не стоит делать на старте
 

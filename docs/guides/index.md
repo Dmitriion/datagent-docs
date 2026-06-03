@@ -9,6 +9,18 @@ sidebar_position: 1
 
 Ниже — **учебник из историй**, не справочник API. Читайте, как сценарии коллег, которые завтра откроют Board как рабочий инструмент.
 
+![Board — навигация компании](/img/guides/board/02-nav-overview-full.webp)
+
+*Обложка: control plane на `:3100` — задачи, агенты, согласования.*
+
+![Ростер агентов](/img/guides/agents/01-list-full.webp)
+
+*Команда агентов с моделями и tools.*
+
+![Виртуальный офис](/img/guides/office/01-virtual-office-full.webp)
+
+*Operator View при `enableOffice` — поле и KPI.*
+
 ## Для кого
 
 | Читатель | Что получите |
@@ -28,6 +40,16 @@ sidebar_position: 1
 :::tip Первый раз в продукте?
 [Быстрый старт](../getting-started/quickstart) и [первый агент](../getting-started/first-agent) — 15–20 минут. Затем [первый день в Board](./01-first-day).
 :::
+
+## Поиск и вход
+
+![Глобальный поиск Board](/img/guides/board/04-search.webp)
+
+*Быстрый переход к задаче или агенту.*
+
+![Выбор компании](/img/guides/board/00-company-picker.webp)
+
+*Если компаний несколько — picker перед входом в префикс.*
 
 ## Путь читателя
 

@@ -6,6 +6,10 @@ description: Operator View в Board — виртуальный open-space, KPI, 
 
 Пространство **«Офис»** — presentation layer control plane Datagent для операционного руководителя: команда AI-агентов на «поле», статусы run, очередь одобрений и лента событий. Это **не** замена Board Issues и **не** редактор Excel/PowerPoint — документы и tools Office Plugin живут на карточке задачи (см. [Excel и PowerPoint](./excel-pptx.md)).
 
+![Виртуальный офис — полный вид поля](/img/guides/office/01-virtual-office-full.webp)
+
+*Operator View: canvas 1800×1100, toolbar и edge tabs.*
+
 ## Зачем это в Datagent
 
 | Роль | Что получает |
@@ -46,6 +50,10 @@ flowchart LR
 
 ### Верхняя панель (toolbar)
 
+![KPI-чипы и индикатор связи](/img/guides/office/04-legend.webp)
+
+*Toolbar: connection status, Standup, KPI, Shield + N.*
+
 - Подключение к control plane (огонёк).
 - **Standup** — расписание и запуск ритуала на поле.
 - **KPI-чипы** — агрегаты по компании (in_progress, активные run и т.д.).
@@ -70,7 +78,31 @@ flowchart LR
 - **Канбан** — обзор задач в контексте офиса (не полная замена Issues).
 - **Чат** — диалоги оператора с коллегами и подключёнными агентами (сегменты «Диалоги» / «Задачи» / «Агенты»).
 
+![Панель чата офиса](/img/guides/office/06-office-chat-full.webp)
+
+*Office chat — см. preview-баннер в UI, если сценарий не production.*
+
+![Composer сообщения](/img/guides/office/07-office-chat-compose.webp)
+
+*Поле ввода в канал чата.*
+
+![Вкладка «Агенты» с поля](/img/guides/office/09-drilldown-link.webp)
+
+*Roster без ухода с Operator View.*
+
 ### Индикаторы на поле
+
+![Агент в running на столе](/img/guides/office/02-agent-running.webp)
+
+*Статус running / активный run — пульс на спрайте.*
+
+![Агент pending_approval](/img/guides/office/03-agent-awaiting-approval.webp)
+
+*Amber / pending_approval — решение в Board.*
+
+![Карточка после клика по столу](/img/guides/office/05-agent-sidepanel.webp)
+
+*Drilldown: hire, issue, run.*
 
 | Индикатор | Смысл |
 | --- | --- |
