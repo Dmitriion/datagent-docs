@@ -5,27 +5,29 @@ sidebar_label: LLM-адаптеры
 description: Сравнение GigaChat, YandexGPT и OpenCode в Datagent — тип адаптера, auth, model id, кэш токенов в PostgreSQL и исполнение через OpenCode.
 ---
 
-Datagent подключает облачные и multi-provider LLM через пакеты `packages/adapters/*`. Сервер регистрирует модули в `server/src/adapters/registry.ts` и вызывает их из **heartbeat** (см. [Архитектура](./agent-architecture.md)). Российские провайдеры **GigaChat** и **YandexGPT** — тонкие обёртки над `@datagent/adapter-opencode-local`: тот же **OpenCode CLI**, плюс обмен учётных данных на стороне server. Универсальный путь без отдельного OAuth-слоя — **`opencode_local`**.
+Datagent подключает облачные и multi-provider LLM через пакеты `packages/adapters/*`. **Сервер** регистрирует модули в `server/src/adapters/registry.ts` и вызывает их из **heartbeat** (см. [Архитектура](./agent-architecture.md)). **Менеджер** в Board выбирает тип адаптера и модель для агента; **оператор** только запускает run — не меняет OAuth и ключи в интерфейсе задачи.
+
+Российские провайдеры **GigaChat** и **YandexGPT** — обёртки над `@datagent/adapter-opencode-local`: тот же **OpenCode CLI**, плюс обмен учётных данных на стороне server. Универсальный путь без отдельного OAuth-слоя Datagent — **`opencode_local`**.
 
 ## Сравнительная таблица
 
 | | **GigaChat (Сбер)** | **YandexGPT** | **OpenCode (local)** |
 | --- | --- | --- | --- |
-| **Adapter type** | `gigachat_local` | `yandexgpt_local` | `opencode_local` |
+| **Тип адаптера** | `gigachat_local` | `yandexgpt_local` | `opencode_local` |
 | **Пакет** | `packages/adapters/gigachat-local` | `packages/adapters/yandexgpt-local` | `packages/adapters/opencode-local` |
 | **Авторизация** | OAuth 2.0 client credentials: `GIGACHAT_CLIENT_ID` + `GIGACHAT_CLIENT_SECRET` в env агента (`secret_ref`); scope по умолчанию `GIGACHAT_API_PERS` | IAM: полный JSON ключа SA в `YANDEX_SA_KEY_JSON` (`secret_ref`); JWT → `iam.api.cloud.yandex.net` | Ключи/токены провайдеров в env агента (например `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`) — как требует OpenCode; **без** `adapter_oauth_tokens` |
 | **Кэш в PostgreSQL** | Да — `adapter_oauth_tokens`, provider `gigachat`; TTL ~30 мин, refresh за 120 с до истечения | Да — provider `yandexgpt`; IAM ~12 ч, refresh за 30 мин | Нет — server не кэширует OAuth для этого типа |
 | **Примеры model id** | `gigachat/GigaChat-2-Pro`, `gigachat/GigaChat-2-Max` | `yandexgpt/rc` (tools), `yandexgpt-lite/rc`; в run → `gpt://{folderId}/yandexgpt/rc` | `openai/gpt-5.2-codex` (default), `openai/gpt-5.4`, … формат `provider/model` |
 | **Доп. поля config** | — | `folderId` (каталог YC, обязателен) | — |
 | **Inference** | Через **OpenCode CLI** (`@datagent/adapter-opencode-local`); не прямой REST Chat из Board | То же + proxy `x-folder-id` (`YANDEXGPT_PROXY_DISABLED=1` отключает proxy) | Нативный OpenCode |
-| **Tool-use** | Conditional — проверить на своих credentials ([гайд](../integrations/gigachat.md)) | Conditional — `yandexgpt/rc`; Lite без tools ([гайд](../integrations/yandexgpt.md)) | Зависит от провайдера в OpenCode |
+| **Tool-use** | Условно — проверить на своих credentials ([гайд](../integrations/gigachat.md)) | Условно — `yandexgpt/rc`; Lite без tools ([гайд](../integrations/yandexgpt.md)) | Зависит от провайдера в OpenCode |
 | **Конфиг YAML** | Нет `config/llm/*.yaml` — только `adapterConfig` агента в Board/API | То же | То же |
 
-Подробная настройка: [GigaChat](../integrations/gigachat.md), [YandexGPT](../integrations/yandexgpt.md). Общая схема адаптеров и heartbeat — [Архитектура](./agent-architecture.md).
+Подробная настройка: [GigaChat](../integrations/gigachat.md), [YandexGPT](../integrations/yandexgpt.md). Общая схема — [Архитектура](./agent-architecture.md).
 
 ## Кэш токенов (GigaChat и YandexGPT)
 
-Оба адаптера используют `server/src/services/adapter-oauth-tokens.ts`:
+Оба адаптера используют `server/src/services/adapter-oauth-tokens.ts`. **Система** обновляет токены до run; **оператор** не вставляет access token в задачу.
 
 | Провайдер | Таблица | Ключ кэша | Инъекция в env перед run |
 | --- | --- | --- | --- |
@@ -33,6 +35,8 @@ Datagent подключает облачные и multi-provider LLM через 
 | YandexGPT | `adapter_oauth_tokens` | hash SA | `OPENAI_API_KEY`, `YANDEX_IAM_TOKEN`, `OPENAI_BASE_URL` |
 
 Токены хранятся **шифрованно** в PostgreSQL instance, не в Redis. При смене secrets server может инвалидировать записи (`invalidateGigaChatTokens` / `invalidateYandexGPTTokens`).
+
+**Не делайте:** копировать ключи в system prompt или комментарии задачи — утечка в переписку и журнал run.
 
 ## Конфигурация в Board
 
@@ -56,9 +60,11 @@ openai/gpt-5.2-codex
 | Несколько облачных провайдеров через один CLI | `opencode_local` + `provider/model` |
 | Self-hosted OpenAI-compatible endpoint | `opencode_local`, ключи в env OpenCode |
 
+Перед production с tool calling сверьте поведение на **своих** ключах — заявления провайдеров и фактический JSONL OpenCode могут расходиться.
+
 ## Tool calling
 
-У **GigaChat** и **YandexGPT** инструменты идут через OpenCode JSONL, не через отдельный REST-слой Datagent. Для Yandex tool calls заявлены только на `yandexgpt/rc`. Перед production tool-use сверьте поведение на своих ключах (см. integration-гайды).
+У **GigaChat** и **YandexGPT** инструменты идут через OpenCode JSONL, не через отдельный REST-слой Datagent. Для Yandex tool calls заявлены на `yandexgpt/rc`. Если агент «не видит» tools — проверьте модель, manifest плагина и журнал run, а не только текст промпта.
 
 ## Связанные разделы
 
