@@ -168,6 +168,6 @@ Office **не** хранит отдельную БД. Клиент (`OfficePage`
 
 - [Быстрый старт](../getting-started/quickstart) — Board на `:3100`
 - [Архитектура агентов](../concepts/agent-architecture) — heartbeat и слои
-- [1С Коннектор](./1c-connector.md) — MCP к учётной системе (отдельно от «Офиса»)
+- [1С Коннектор](../integrations/1c-connector) — MCP к учётной системе (отдельная интеграция, не часть «Офиса»)
 - [Excel и PowerPoint](./excel-pptx.md) — Office Plugin на задаче
 - [Создание плагина](../tutorials/build-plugin.md) — Plugin SDK

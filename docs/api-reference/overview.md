@@ -214,4 +214,4 @@ curl -s -H "Authorization: Bearer ${TOKEN}" \
 - [Архитектура](../concepts/agent-architecture.md) — heartbeat, plugins, adapters
 - [Создание плагина](../tutorials/build-plugin.md) — tools и install API
 - [Bitrix24](../integrations/bitrix24.md) — bridge без CRM REST tools
-- [BrowserBridge](../tutorials/browserbridge-setup.md) — local service + tunnel API
+- [BrowserBridge](../integrations/browserbridge.md) — plugin tools и API server; [установка](../browser/setup)

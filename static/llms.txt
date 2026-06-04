@@ -11,6 +11,8 @@ Canonical site: https://docs.datagent.ru/
 - Память и OAuth — в PostgreSQL instance, не отдельный Runner-сервис.
 - В пользовательском тексте: **Телеграм**, не Telegram.
 - «Офис» — experimental (`enableOffice`); не выдумывать tools вне manifest плагинов.
+- 1С: **нет** `datagent.1c-connector:*` в heartbeat; MCP для IDE.
+- BrowserBridge: agent tools `datagent.browserbridge:browser_*` в heartbeat.
 
 ## Get Started
 
@@ -39,17 +41,24 @@ Canonical site: https://docs.datagent.ru/
 - https://docs.datagent.ru/docs/concepts/agent-architecture
 - https://docs.datagent.ru/docs/concepts/llm-adapters
 
-## Integrations
+## Integrations (developers)
 
 - https://docs.datagent.ru/docs/integrations/gigachat
 - https://docs.datagent.ru/docs/integrations/yandexgpt
 - https://docs.datagent.ru/docs/integrations/bitrix24
 - https://docs.datagent.ru/docs/integrations/telegram
+- https://docs.datagent.ru/docs/integrations/1c-connector
+- https://docs.datagent.ru/docs/integrations/browserbridge
+
+## Browser management
+
+- https://docs.datagent.ru/docs/browser
+- https://docs.datagent.ru/docs/browser/overview
+- https://docs.datagent.ru/docs/browser/setup
 
 ## Office
 
 - https://docs.datagent.ru/docs/office/overview
-- https://docs.datagent.ru/docs/office/1c-connector
 - https://docs.datagent.ru/docs/office/excel-pptx
 
 ## API
@@ -58,7 +67,6 @@ Canonical site: https://docs.datagent.ru/
 
 ## Tutorials
 
-- https://docs.datagent.ru/docs/tutorials/browserbridge-setup
 - https://docs.datagent.ru/docs/tutorials/build-plugin
 - https://docs.datagent.ru/docs/tutorials/automate-crm
 

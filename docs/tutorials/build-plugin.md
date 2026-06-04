@@ -13,7 +13,7 @@ description: Туториал Plugin SDK Datagent — manifest.ts, worker в chi
 | --- | --- | --- |
 | **Plugin** | `packages/plugins/*`, npm-пакет из каталога | Worker + опционально UI; tools, webhooks, jobs, bridge |
 | **LLM adapter** | `packages/adapters/*` | Модель и runtime агента (OpenCode upstream) — см. [LLM-адаптеры](../concepts/llm-adapters.md) |
-| **BrowserBridge** | `packages/plugins/plugin-browserbridge` + `packages/browserbridge-local` | 10 tools `browser_*` — см. [Настройка BrowserBridge](./browserbridge-setup.md) |
+| **BrowserBridge** | `packages/plugins/plugin-browserbridge` + `packages/browserbridge-local` | 10 tools `browser_*` — см. [BrowserBridge](../integrations/browserbridge.md) |
 | **Внешний connector** | npm через Plugin Manager | Например Telegram — см. [Telegram](../integrations/telegram.md) (не шаблон SDK в монорепо) |
 
 Производственный пример bridge **без** agent tools в manifest: [Bitrix24](../integrations/bitrix24.md) (`datagent.bitrix24`, polling imbot, issues).
@@ -263,4 +263,4 @@ Board → **Agent** → Tools → включите namespaced tool (наприм
 - [Быстрый старт](../getting-started/quickstart) — `pnpm dev`, `:3100`.
 - [Установка](../getting-started/installation.md) — монорепо workspaces.
 - [Bitrix24 Bridge](../integrations/bitrix24.md) — jobs, apiRoutes, без CRM tools.
-- [Настройка BrowserBridge](./browserbridge-setup.md) — manifest tools + worker.
+- [BrowserBridge](../integrations/browserbridge.md) — manifest tools + worker; [установка](../browser/setup.md).

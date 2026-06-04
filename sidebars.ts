@@ -75,7 +75,22 @@ const sidebars: SidebarsConfig = {
         'integrations/yandexgpt',
         'integrations/bitrix24',
         'integrations/telegram',
+        'integrations/1c-connector',
+        'integrations/browserbridge',
       ],
+    },
+    {
+      type: 'category',
+      label: 'Управление браузером',
+      collapsed: true,
+      link: {
+        type: 'generated-index',
+        slug: 'browser',
+        title: 'Управление браузером',
+        description:
+          'Эксплуатация BrowserBridge: Local Service, CDP, tunnel и диагностика.',
+      },
+      items: ['browser/overview', 'browser/setup'],
     },
     {
       type: 'category',
@@ -86,9 +101,9 @@ const sidebars: SidebarsConfig = {
         slug: 'office',
         title: 'Офис и документы',
         description:
-          'Пространство «Офис», 1С MCP-коннектор и Office Plugin для Excel/PPTX.',
+          'Пространство «Офис» в Board и Office Plugin для Excel/PPTX.',
       },
-      items: ['office/overview', 'office/1c-connector', 'office/excel-pptx'],
+      items: ['office/overview', 'office/excel-pptx'],
     },
     {
       type: 'category',
@@ -98,14 +113,9 @@ const sidebars: SidebarsConfig = {
         type: 'generated-index',
         slug: 'tutorials',
         title: 'Туториалы',
-        description:
-          'BrowserBridge, свой плагин и сценарий Bitrix24 → Телеграм.',
+        description: 'Свой плагин и сценарий Bitrix24 → Телеграм.',
       },
-      items: [
-        'tutorials/browserbridge-setup',
-        'tutorials/build-plugin',
-        'tutorials/automate-crm',
-      ],
+      items: ['tutorials/build-plugin', 'tutorials/automate-crm'],
     },
     {
       type: 'category',
