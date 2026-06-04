@@ -124,6 +124,15 @@ CREATE EXTENSION IF NOT EXISTS vector;
 cp .env.example .env
 ```
 
+:::warning Только для локальной разработки
+Значения ниже — **демо-пароли**, не используйте их в production. Перед выводом в сеть:
+
+- задайте `BETTER_AUTH_SECRET` через `openssl rand -hex 32`;
+- смените пароль Postgres и строку `DATABASE_URL`;
+- включите режим **`authenticated`** (не `local_trusted`);
+- не открывайте порт `3100` в интернет без TLS и reverse proxy.
+:::
+
 Минимальный набор из `.env.example` в корне репозитория:
 
 ```env

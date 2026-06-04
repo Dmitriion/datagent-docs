@@ -4,6 +4,10 @@
  * Run from datagent-docs root:
  *   node scripts/capture-guide-screenshots.mjs
  *
+ * Security: run only against a local demo instance (local_trusted). Do not use
+ * production Board URLs — storageState may contain session cookies. Never commit
+ * STORAGE_STATE_PATH, capture-guide-screenshots-report.json, or screenshots with real data.
+ *
  * Env:
  *   BOARD_URL          — default http://localhost:3100
  *   COMPANY_PREFIX     — e.g. CMP (auto-detect CMP/TES if unset)
