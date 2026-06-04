@@ -1,0 +1,9 @@
+{
+  "label": "Управление браузером",
+  "position": 5,
+  "link": {
+    "type": "generated-index",
+    "title": "Управление браузером",
+    "description": "Эксплуатация BrowserBridge: Local Service, CDP, tunnel, policy и диагностика на рабочей станции."
+  }
+}

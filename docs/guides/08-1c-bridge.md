@@ -21,7 +21,7 @@ sidebar_position: 9
 
 ## Как подключить за два дня
 
-**Шаг 1. Установите плагин.** Дмитрий ставит `datagent.1c-connector` ([1С Коннектор](../office/1c-connector)) через Plugin Manager.  
+**Шаг 1. Установите плагин.** Дмитрий ставит `datagent.1c-connector` ([1С Коннектор](../integrations/1c-connector)) через Plugin Manager.  
 *Результат:* в Board появляется страница коннектора и proxy worker.
 
 **Шаг 2. Опубликуйте MCP в 1С.** В базе — расширение `MCP_Server.cfe`, HTTP MCP (`/hs/...`) с Basic auth по политике безопасности.  
@@ -64,7 +64,7 @@ flowchart LR
 
 - **Операторам:** «агент в задаче выгрузит регистр» — в manifest нет agent tools для 1С в heartbeat.
 - **Смешивать с [Office Plugin](./07-documents)** — другой плагин, другие tools (Excel/PPTX).
-- **Забыть IIS redirect на POST** для MCP — без этого test-connection и Cursor будут падать; детали в [техдоке коннектора](../office/1c-connector).
+- **Забыть IIS redirect на POST** для MCP — без этого test-connection и Cursor будут падать; детали в [техдоке коннектора](../integrations/1c-connector).
 
 ## Быстрая победа за 5 минут
 
@@ -72,6 +72,6 @@ flowchart LR
 
 ## Что дальше
 
-- [1С Коннектор — техдок](../office/1c-connector)
+- [1С Коннектор — техдок](../integrations/1c-connector)
 - [Шпаргалка](./playbook-index)
 - [Создание плагина](../tutorials/build-plugin) — свой bridge по тому же принципу

@@ -45,6 +45,24 @@ const config: Config = {
     ],
   ],
 
+  plugins: [
+    [
+      '@docusaurus/plugin-client-redirects',
+      {
+        redirects: [
+          {
+            from: '/docs/office/1c-connector',
+            to: '/docs/integrations/1c-connector',
+          },
+          {
+            from: '/docs/tutorials/browserbridge-setup',
+            to: '/docs/browser/setup',
+          },
+        ],
+      },
+    ],
+  ],
+
   presets: [
     [
       'classic',
@@ -160,7 +178,8 @@ const config: Config = {
             {label: 'GigaChat', to: '/docs/integrations/gigachat'},
             {label: 'YandexGPT', to: '/docs/integrations/yandexgpt'},
             {label: 'Bitrix24', to: '/docs/integrations/bitrix24'},
-            {label: '1С', to: '/docs/office/1c-connector'},
+            {label: '1С', to: '/docs/integrations/1c-connector'},
+            {label: 'BrowserBridge', to: '/docs/integrations/browserbridge'},
             {label: 'Телеграм', to: '/docs/integrations/telegram'},
           ],
         },

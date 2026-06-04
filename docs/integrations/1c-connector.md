@@ -1,10 +1,11 @@
 ---
+id: 1c-connector
 title: 1С Коннектор
-sidebar_label: 1С Коннектор
+sidebar_label: 1С
 description: Плагин datagent.1c-connector — HTTP MCP proxy к 1С, расширение MCP_Server.cfe, настройка в Board и подключение Cursor. Без agent tools в heartbeat.
 ---
 
-**1С Коннектор** (`datagent.1c-connector`) даёт управляемый мост между публикацией 1С (HTTP MCP) и клиентами MCP — в первую очередь **Cursor**. Плагин **не** регистрирует tools в Datagent heartbeat: агент Board **не** вызывает `datagent.1c-connector:*` через `POST /api/agents/me/plugin-tools/execute`.
+**1С Коннектор** (`datagent.1c-connector`) — техническая интеграция для разработчиков и инженеров: управляемый мост между публикацией 1С (HTTP MCP) и клиентами MCP (в первую очередь **Cursor**). Плагин **не** регистрирует tools в Datagent heartbeat: агент Board **не** вызывает `datagent.1c-connector:*` через `POST /api/agents/me/plugin-tools/execute`. Операторы работают в задачах; вызов 1С — из IDE через MCP.
 
 ## Зачем это в Datagent
 
@@ -15,7 +16,7 @@ description: Плагин datagent.1c-connector — HTTP MCP proxy к 1С, ра�
 - отдаёт готовый фрагмент `mcp.json` для Cursor;
 - проверяет доступность upstream (health, list tools).
 
-Связь с control plane: настройки instance/company, Board UI, API routes плагина на том же server `:3100`.
+Связь с control plane: настройки instance/company, Board UI, API routes плагина на том же server `:3100`. Продуктовый контекст для менеджеров — [1С в контуре](../guides/08-1c-bridge).
 
 ## Статус
 
@@ -91,9 +92,7 @@ sequenceDiagram
 
 URL задаётся как **база infobase** или полный путь к MCP, например `https://host/app` или endpoint вида `http://host:port/mcp/`. Парсинг — `parseOneCEndpoint` в worker.
 
-:::warning IIS и редиректы
-При 301/302 POST не должен превращаться в GET (типичная ошибка IIS). Плагин следует редиректам вручную и сохраняет POST для JSON-RPC.
-:::
+**IIS и редиректы:** при 301/302 POST не должен превращаться в GET (типичная ошибка IIS). Плагин следует редиректам вручную и сохраняет POST для JSON-RPC.
 
 ## Установка и включение
 
@@ -129,7 +128,7 @@ pnpm datagent plugin install packages/plugins/plugin-1c-connector
 
 Действия UI: **test-connection**, **restart-proxy** (`ACTION_KEYS` в worker).
 
-Секреты 1С (логин/пароль) проходят через OAuth-подобный flow proxy для MCP-сессий (in-memory maps в worker) — не храните пароли в markdown issue.
+Секреты 1С (логин/пароль) проходят через OAuth-подобный flow proxy для MCP-сессий (in-memory maps в worker) — не храните пароли в тексте задачи.
 
 ## HTTP API плагина (Board)
 
@@ -154,9 +153,7 @@ pnpm datagent plugin install packages/plugins/plugin-1c-connector
 
 В статусе connector отображаются `lastListToolsCount`, `lastListToolsError` (диагностика).
 
-:::info Для инженера
 Публичный контракт MCP — transport Streamable HTTP и SSE (`mcp-transport-host.ts`). OAuth helper endpoints на proxy для сессий Cursor.
-:::
 
 ## Типовые сценарии
 
@@ -167,8 +164,8 @@ pnpm datagent plugin install packages/plugins/plugin-1c-connector
 ## Ограничения и безопасность
 
 - Proxy слушает сеть согласно `proxyListenHost` — в проде ограничьте firewall.
-- Учётные данные 1С — только для сессий MCP; не логируйте в issues.
-- Плагин **не** заменает администрирование прав 1С — разрешите только нужные операции в конфигурации 1С.
+- Учётные данные 1С — только для сессий MCP; не логируйте в задачах.
+- Плагин **не** замена администрирования прав 1С — разрешите только нужные операции в конфигурации 1С.
 - Нет встроенного сценария «задача в Board → wakeup → tool 1С в heartbeat» без отдельной интеграции.
 
 ## Диагностика
@@ -184,7 +181,7 @@ pnpm datagent plugin install packages/plugins/plugin-1c-connector
 
 ## Связанные разделы
 
-- [Обзор «Офис»](./overview.md) — Operator View (другое пространство UI)
+- [1С в контуре (учебник)](../guides/08-1c-bridge) — ожидания для руководителя и оператора
 - [Создание плагина](../tutorials/build-plugin.md) — manifest, worker, capabilities
 - [Обзор API](../api-reference/overview) — plugin host и heartbeat
 - [Быстрый старт](../getting-started/quickstart)

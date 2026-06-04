@@ -41,7 +41,7 @@ sidebar_position: 10
 | run `failed` | Адаптер, секреты, timeout tool | [Первый агент](../getting-started/first-agent) |
 | tool не виден агенту | Плагин не установлен или не выдан в manifest | [build-plugin](../tutorials/build-plugin) |
 | Office apply «висит» | Очередь согласований не разобрана | [4. Одобрения](./04-trust-and-approval) |
-| 1С upstream down | Публикация, auth, IIS redirect | [1С Коннектор](../office/1c-connector) |
+| 1С upstream down | Публикация, auth, IIS redirect | [1С Коннектор](../integrations/1c-connector) |
 
 ## Чего нет в продукте (не обещайте)
 

@@ -4,6 +4,6 @@
   "link": {
     "type": "generated-index",
     "title": "Интеграции",
-    "description": "GigaChat, YandexGPT, Bitrix24 и Телеграм."
+    "description": "Техническая документация интеграций для разработчиков: LLM, каналы, 1С MCP, BrowserBridge."
   }
 }

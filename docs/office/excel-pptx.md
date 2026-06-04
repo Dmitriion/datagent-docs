@@ -210,7 +210,7 @@ Managed skills (примеры): `office-plugin`, `excel-workbench`, `excel-work
 ## Связанные разделы
 
 - [Обзор «Офис»](./overview.md)
-- [1С Коннектор](./1c-connector.md)
+- [1С Коннектор](../integrations/1c-connector)
 - [Создание плагина](../tutorials/build-plugin.md)
 - [Обзор API](../api-reference/overview)
 - [Архитектура агентов](../concepts/agent-architecture)

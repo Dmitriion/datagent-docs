@@ -38,7 +38,7 @@ Datagent — **control plane** для AI-агентов в компании: Boa
 - **Плагины** — tools в worker-процессах; `datagent plugin install`.
 - **Bitrix24** и **Телеграм** — входящие в issues, ответы агента в канал.
 - **Офис** (experimental) — [Operator View](./office/overview) при `enableOffice`.
-- **1С, Excel/PPTX** — [коннектор](./office/1c-connector), [Office Plugin](./office/excel-pptx).
+- **1С (MCP)** — [коннектор](./integrations/1c-connector); **Excel/PPTX** — [Office Plugin](./office/excel-pptx).
 
 ## Архитектура в двух словах
 
@@ -60,7 +60,7 @@ flowchart TB
 | Тема | Документ |
 | --- | --- |
 | REST API | [Обзор API](./api-reference/overview) |
-| BrowserBridge | [Настройка](./tutorials/browserbridge-setup) |
+| BrowserBridge | [Интеграция](./integrations/browserbridge) · [Установка](./browser/setup) |
 | Свой плагин | [Создание плагина](./tutorials/build-plugin) |
 | Bitrix24 → Телеграм | [Туториал](./tutorials/automate-crm) |
 

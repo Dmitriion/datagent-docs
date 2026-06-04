@@ -7,6 +7,19 @@ description: История изменений Datagent и документац�
 
 Здесь — заметные изменения продукта и документации Datagent.
 
+## [1.5.0] — 2026-06-04
+
+### Added
+
+- **Интеграции:** [1С Коннектор](./integrations/1c-connector), [BrowserBridge](./integrations/browserbridge) — техдок для разработчиков.
+- Раздел [Управление браузером](./browser): [обзор](./browser/overview), [установка и настройка](./browser/setup).
+
+### Changed
+
+- Техдок 1С перенесён из [Офис](./office/overview) в **Интеграции**; редирект с `/docs/office/1c-connector`.
+- Туториал BrowserBridge перенесён в **Управление браузером**; редирект с `/docs/tutorials/browserbridge-setup`.
+- Sidebar, footer, `static/llms.txt` — обновлены ссылки.
+
 ## [1.4.0] — 2026-06-03
 
 ### Added
@@ -38,7 +51,7 @@ description: История изменений Datagent и документац�
 - Разделы Getting Started, Concepts, Integrations, Tutorials, API Reference.
 - Публикация документации на `docs.datagent.ru` (CNAME).
 - Гайды интеграций: [GigaChat](./integrations/gigachat), [YandexGPT](./integrations/yandexgpt), [Bitrix24](./integrations/bitrix24), [Telegram](./integrations/telegram).
-- Туториалы: [BrowserBridge](./tutorials/browserbridge-setup), [плагин](./tutorials/build-plugin), [Bitrix24 → Telegram](./tutorials/automate-crm).
+- Туториалы: [BrowserBridge](./browser/setup), [плагин](./tutorials/build-plugin), [Bitrix24 → Telegram](./tutorials/automate-crm).
 - [Обзор REST API](./api-reference/overview) по фактическим маршрутам `server/src/routes/*` и `app.ts`.
 
 ### Changed

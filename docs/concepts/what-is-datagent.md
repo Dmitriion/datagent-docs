@@ -41,7 +41,7 @@ Datagent **не является** фреймворком постройки а�
 | Наблюдаемость | Структура «кто кому подчинён», статусы | Org chart (`/org`), агенты, задачи, heartbeat run, Operator View «Офис» |
 | Расширяемость | Интеграции без форка `server` | Plugins (`PluginWorkerManager`), реестр adapters, MCP-сервер `@datagent/mcp-server` (REST-обёртка) |
 | Исполнение LLM | Вызов моделей | Адаптеры + heartbeat; OAuth/IAM в `adapter_oauth_tokens`; [LLM-адаптеры](./llm-adapters.md) |
-| Каналы | Вход и выход вне Board | [Bitrix24 imbot](../integrations/bitrix24.md), [Телеграм](../integrations/telegram.md), [BrowserBridge](../tutorials/browserbridge-setup.md) |
+| Каналы | Вход и выход вне Board | [Bitrix24 imbot](../integrations/bitrix24.md), [Телеграм](../integrations/telegram.md), [BrowserBridge](../integrations/browserbridge.md) |
 
 [^tg]: Плагин Телеграм Datagent; установка — Plugin Manager или npm, ключ `datagent.plugin-telegram` (см. [Технические идентификаторы](../integrations/telegram.md#технические-идентификаторы)).
 
@@ -81,7 +81,7 @@ Datagent **не является** фреймворком постройки а�
 | **YandexGPT** | `yandexgpt_local`, IAM, `folderId`, OpenCode | — | [yandexgpt.md](../integrations/yandexgpt.md) |
 | **Bitrix24** | Плагин `datagent.bitrix24`: imbot, polling `bitrix-poll`, задачи, привязка агента к линии | **Не** штатный CRM REST (`crm.lead.*`) — диалог и задачи, не воронка | [bitrix24.md](../integrations/bitrix24.md) |
 | **Телеграм** | Плагин Datagent: long poll `getUpdates`, одобрения, входящие в задачи | **Не** замена Board; решение в control plane | [telegram.md](../integrations/telegram.md) |
-| **BrowserBridge** | `datagent.browserbridge:*` + tunnel | Не обход CAPTCHA / ToS сайтов | [browserbridge-setup.md](../tutorials/browserbridge-setup.md) |
+| **BrowserBridge** | `datagent.browserbridge:*` + tunnel | Не обход CAPTCHA / ToS сайтов | [browserbridge.md](../integrations/browserbridge.md) |
 
 Опциональные ссылки на ERP в ответах Bitrix-плагина (`@@erp-links`) — настройка портала, **не** отдельная «выгрузка 1С» как ядро продукта. Коннектор 1С в монорепо может существовать как плагин; в базовой документации он не на уровне Bitrix24/Телеграм.
 
