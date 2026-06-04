@@ -65,6 +65,10 @@ pnpm install
 cp .env.example .env
 ```
 
+:::warning Dev-секреты
+`BETTER_AUTH_SECRET=datagent-dev-secret-change-me` — **только для локального стенда**. В production сгенерируйте свой секрет (`openssl rand -hex 32`) и используйте режим **`authenticated`**. Не коммитьте файл `.env` в git.
+:::
+
 Минимум для quickstart:
 
 ```env
