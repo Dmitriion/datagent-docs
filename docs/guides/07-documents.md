@@ -5,47 +5,51 @@ description: "Office Plugin на задаче — inspect, plan, apply для xl
 sidebar_position: 8
 ---
 
-**Мария** получает `.xlsx` с планом продаж и `.pptx` для правок. «Скинь в чат с моделью» — таблица ломается, слайды не те. Здесь агент работает с **файлом на задаче**, а вы в любой момент видите **план и одобрение**.
+**Мария** получает `.xlsx` с планом продаж и `.pptx` для правок. Схема «скинь в чат с моделью» ломает таблицы и слайды. В Datagent агент работает с **файлом на задаче**: вы в любой момент видите **план изменений** и проходите **одобрение** до применения — как в [главе про согласования](./04-trust-and-approval).
 
 ![Задача — контейнер для Office Plugin](/img/guides/issues/03-issue-header.webp)
 
-*Рис. 1 — issue держит вложения и цепочку plan → approval → apply.*
+*Рис. 1 — задача держит вложения и цепочку plan → одобрение → apply.*
 
 ## Было и стало
 
 | Было | Стало |
 | --- | --- |
-| Ручная правка + «финал2» | **apply** на копии, новое вложение |
-| Нет плана изменений | `plan_workbook_changes` + [одобрение](./04-trust-and-approval) |
-| PPTX «на глаз» | inspect, validate, preview |
+| Ручная правка и файлы «финал2», «финал3» | **apply** на копии, новое вложение на задаче |
+| Нет плана — непонятно, что изменится | `plan_workbook_changes` + одобрение оператора |
+| PPTX «на глаз» в чате | inspect, validate, preview через plugin tools |
 
 ## Как пройти книгу продаж в Excel
 
-**Шаг 1.** Прикрепите `plan-may.xlsx` к задаче, assignee — «Оформитель таблиц».
+**Шаг 1. Подготовьте задачу.** Прикрепите `plan-may.xlsx`, assignee — «Оформитель таблиц». В описании укажите intent: какие листы трогать.  
+*Результат:* агент видит файл в том же контексте, что и оператор.
 
 ![Вложения на задаче CMP-2](/img/guides/issues/07-attachments.webp)
 
-*Рис. 2 — PDF или xlsx на карточке issue; демо: `demo-plan.pdf`.*
+*Рис. 2 — PDF или xlsx на карточке; демо: `demo-plan.pdf`.*
 
 ![Диалог в задаче перед plan](/img/guides/issues/04-thread-middle.webp)
 
 *Рис. 3 — контекст для агента до вызова excel-workbench tools.*
 
-**Шаг 2.** Агент вызывает `datagent.excel-workbench:inspect_workbook` — структура, issues, semantic map (только plugin tools, не shell `officecli`).
+**Шаг 2. Агент inspect.** Вызов `datagent.excel-workbench:inspect_workbook` — структура, issues, semantic map. Только tools плагина, не shell `officecli` в терминале.  
+*Результат:* вы понимаете, что агент «видит» в файле, до правок.
 
-**Шаг 3.** `plan_workbook_changes` с intent: «Добавить столбец „Факт май“, формулы только на листе Summary».
+**Шаг 3. Агент plan.** `plan_workbook_changes` с intent, например: «Добавить столбец „Факт май“, формулы только на листе Summary».  
+*Результат:* изменения описаны до apply; система может запросить одобрение.
 
-**Шаг 4.** Вы одобряете план в Board.
+**Шаг 4. Оператор одобряет.** План попадает в **Согласования**; вы читаете задачу и вложение, затем «Одобрить» или «Отклонить».
 
 ![Деталь согласования на plan Excel](/img/guides/approvals/02-detail.webp)
 
 *Рис. 4 — одобрение перед `apply_workbook_changes`.*
 
-**Шаг 5.** `apply_workbook_changes` — результат как новое вложение. `render_workbook_preview` — превью для глаз.
+**Шаг 5. Агент apply.** `apply_workbook_changes` — результат как **новое вложение**; `render_workbook_preview` — превью для проверки глазами.  
+*Результат:* исходник на задаче сохраняет историю; рабочая копия — отдельно.
 
-**Шаг 6.** `validate_workbook_quality` — финальный gate; при успехе — work product или комментарий на задаче.
+**Шаг 6. Контроль качества.** `validate_workbook_quality` — финальный gate; при успехе — work product или комментарий на задаче.
 
-**Шаг 7.** Для `.pptx`: `inspect_powerpoint_document`, `validate_powerpoint_document`, `render_powerpoint_preview`. **Plan/apply для pptx в manifest нет** — полный цикл как у Excel на слайды не переносится.
+**Шаг 7. Презентации `.pptx`.** `inspect_powerpoint_document`, `validate_powerpoint_document`, `render_powerpoint_preview`. **Plan/apply для pptx в manifest нет** — полный цикл как у Excel на слайды не переносится; не обещайте коллегам автоправку слайдов по тому же сценарию.
 
 ```mermaid
 flowchart TB
@@ -58,7 +62,7 @@ flowchart TB
 
 ## Где виден control plane
 
-Алексей открывает задачу и видит **цепочку**: план → одобрение → файл. Не «Мария сказала, бот сделал», а журнал tools.
+Алексей открывает задачу и видит **цепочку**: план → одобрение → файл. Не «Мария сказала, бот сделал», а журнал tools и run — удобно для аудита и разбора ошибок.
 
 ## Сквозная история: Excel на задаче
 
@@ -78,17 +82,13 @@ flowchart TB
 
 ## Что ломает работу с файлами
 
-:::warning
-- «Запусти officecli в терминале» — запрещено; только tools плагина.
-- Автоправка pptx как у Excel — см. [Office Plugin](../office/excel-pptx).
-- Правка исходника без одобрения при `requireApprovalForDestructive`.
-:::
+- **Запускать `officecli` в терминале «в обход»** — запрещено политикой; только tools плагина в run.
+- **Ждать автоправку pptx как у Excel** — см. [Office Plugin](../office/excel-pptx); сценарии разные.
+- **Править исходник без одобрения** при включённом `requireApprovalForDestructive` — run остановится или отклонит шаг.
 
 ## Быстрая победа за 5 минут
 
-:::tip
-Тестовый `.xlsx` на задаче → попросите только `inspect_workbook` → прочитайте outline. Без apply уже видна ценность.
-:::
+Тестовый `.xlsx` на задаче → попросите агента выполнить только `inspect_workbook` → прочитайте outline в ответе. Без apply уже видна ценность: структура файла без риска изменений.
 
 ## Что дальше
 
