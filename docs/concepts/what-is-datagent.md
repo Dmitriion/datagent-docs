@@ -5,28 +5,28 @@ sidebar_label: Что такое Datagent
 description: "Справочное определение Datagent — операционная платформа (control plane) для AI-агентов, heartbeat, подотчётность, память, затраты, плагины; не фреймворк для сборки агентов."
 ---
 
-**Datagent** — операционная платформа (*control plane*) для компаний, в которых работают AI-агенты: реестр агентов, задачи (**issues**), запуски (**heartbeat runs**), подотчётность, память, учёт затрат и интеграции. Продукт предназначен для **эксплуатации** уже настроенных агентов и связанных процессов, а не для замены библиотек вроде LangGraph или CrewAI при разработке графа агента с нуля.
+**Datagent** — операционная платформа (*control plane*) для компаний, где уже работают или будут работать AI-агенты. Платформа держит в одном контуре реестр агентов, **задачи**, запуски (**heartbeat run**), подотчётность, память, учёт затрат и интеграции. Продукт рассчитан на **эксплуатацию** настроенных агентов и связанных процессов — а не на замену библиотек вроде LangGraph или CrewAI, если вы с нуля проектируете граф агента в своём приложении.
 
-Datagent **не является** фреймворком постройки агентов: он не подменяет код оркестрации в приложении заказчика. Слой исполнения — **адаптеры** (OpenCode, CLI-сессии и др.) и **плагины**; платформа координирует wakeup, контекст, approvals и наблюдаемость. Аналогия: observability-стек над приложением — отдельный операционный слой над runtime агентов.
+Datagent **не является** фреймворком постройки агентов: он не подменяет код оркестрации у заказчика. Исполнение дают **адаптеры** (OpenCode, CLI-сессии и др.) и **плагины**; платформа координирует wakeup, контекст, одобрения и наблюдаемость. Удобная аналогия: слой observability над приложением — отдельный операционный уровень **над** runtime агентов, а не вместо него.
 
-Организации с требованиями **self-hosted**, хранением данных у заказчика и российскими LLM (**GigaChat**, **YandexGPT** через адаптеры `gigachat_local` / `yandexgpt_local`) могут развернуть один instance Datagent (`server` + Board) на своей инфраструктуре. Это не единственный возможный профиль заказчика, но соответствует текущей реализации интеграций и адаптеров в репозитории.
+Организации с требованиями **self-hosted**, хранением данных у себя и российскими LLM (**GigaChat**, **YandexGPT** через адаптеры `gigachat_local` / `yandexgpt_local`) могут развернуть один instance Datagent (`server` + Board) на своей инфраструктуре. Это не единственный профиль заказчика, но он хорошо совпадает с текущими интеграциями и адаптерами в репозитории.
 
 ## Контекст
 
-В 2026 году индустриальный фокус смещается от демонстрации «умного чата» к **управляемости действий агентов**: кто что запустил, что стоило, что требует человеческого решения, как восстановиться после сбоя. Datagent адресует этот слой — governance и operations — а не только создание промпта и вызов модели.
+В 2026 году фокус смещается от демо «умного чата» к **управляемости действий агентов**: кто что запустил, сколько это стоило, где нужно решение человека, как восстановиться после сбоя. Datagent закрывает этот слой — governance и operations — а не только написание промпта и один вызов модели. Для оператора и руководителя это означает единую историю по **задаче** и прозрачный **run**, а не переписку без журнала.
 
 ## Определения
 
 | Термин | Значение |
 | --- | --- |
-| **Control plane** | Центральное ПО Datagent (`server`, Board, `cli`): компании, агенты, issues, runs, approvals, память, плагины — без отдельного сервиса «Agent Runner» |
-| **Agent** | Сущность в компании: тип адаптера, модель, env (`secret_ref`), включённые plugin tools, политики |
+| **Control plane** | Центральное ПО Datagent (`server`, Board, `cli`): компании, агенты, задачи, run, одобрения, память, плагины — без отдельного сервиса «Agent Runner» |
+| **Агент** | Сущность в компании: тип адаптера, модель, env (`secret_ref`), включённые plugin tools, политики |
 | **Heartbeat run** | Одно исполнение агента; планирует `heartbeatService`, хранится в `heartbeat_runs`; запуск — `POST /api/agents/:id/wakeup` |
-| **Issue** | Задача или диалог (комментарии, документы, assignee); источник — Board, API или bridge (Bitrix24, Telegram inbound) |
+| **Задача (issue)** | Тема работы или диалог: переписка, документы, исполнитель; источник — Board, API или bridge (Bitrix24, входящие из Телеграм) |
 | **Tool** | Операция плагина с JSON-schema; имя `pluginId:toolName` (например `datagent.browserbridge:browser_navigate`) |
-| **Plugin** | Расширение в child-process (JSON-RPC stdio): manifest, worker, опционально UI; установка через Plugin Manager |
-| **Adapter** | Модуль LLM/runtime в `packages/adapters/*` (`gigachat_local`, `yandexgpt_local`, `opencode_local`, …); inference через OpenCode upstream для российских адаптеров |
-| **Approval** | Запрос человеческого решения (`request_board_approval`, `browser_action`, …); маршруты `/api/.../approvals`, UI Approvals |
+| **Plugin** | Расширение в дочернем процессе (JSON-RPC stdio): manifest, worker, опционально UI; установка через Plugin Manager |
+| **Адаптер** | Модуль LLM/runtime в `packages/adapters/*` (`gigachat_local`, `yandexgpt_local`, `opencode_local`, …); для российских адаптеров inference через OpenCode upstream |
+| **Одобрение (approval)** | Запрос решения человека (`request_board_approval`, `browser_action`, …); маршруты `/api/.../approvals`, раздел Board «Согласования» |
 | **Knowledge Fabric** | Продуктовое имя корпоративной памяти и контекста; **реализация:** LLM Memory control plane — PostgreSQL, при production RAG — **pgvector**; API `/api/companies/:companyId/memory/*` |
 | **Board** | Веб-интерфейс `@datagent/ui` на том же HTTP-origin, что API (порт `PORT`, по умолчанию **3100**) |
 
@@ -34,32 +34,30 @@ Datagent **не является** фреймворком постройки а�
 
 | Слой (видение) | Назначение | Реализация (кратко) |
 | --- | --- | --- |
-| Подотчётность | Решения человека до рискованных действий агента | Approvals API + Board (`/approvals`); типы в shared constants; Telegram-плагин для уведомлений[^tg] |
-| Восстановление | Понимание «жив ли» агент, отмена/повтор run | `heartbeatService`, `heartbeat-runs`, cancel, recovery/issues в control plane; см. [Как это работает](./how-it-works.md) |
+| Подотчётность | Решение человека до рискованных действий агента | API одобрений + Board (`/approvals`); типы в shared constants; плагин Телеграм для уведомлений[^tg] |
+| Восстановление | Понять, «жив ли» агент; отменить или повторить run | `heartbeatService`, `heartbeat-runs`, cancel, recovery/issues в control plane; см. [Как это работает](./how-it-works.md) |
 | Knowledge Fabric | Долговременный контекст компании | Memory routes, Gardener, bindings; pgvector на внешнем Postgres; [Архитектура](./agent-architecture.md) |
-| Управление затратами | Бюджеты и расход токенов | Routes `costs`, UI `CompanyBudget` (учёт на уровне компании/агентов) |
-| Наблюдаемость | Структура «кто кому подчинён», статусы | Org chart (`/org`), агенты, issues, heartbeat runs, Office view (операторский UI) |
-| Расширяемость | Интеграции без форка `server` | Plugins (`PluginWorkerManager`), adapters registry, MCP-сервер `@datagent/mcp-server` (REST-обёртка) |
+| Управление затратами | Бюджеты и расход токенов | Routes `costs`, UI `CompanyBudget` (учёт на уровне компании и агентов) |
+| Наблюдаемость | Структура «кто кому подчинён», статусы | Org chart (`/org`), агенты, задачи, heartbeat run, Operator View «Офис» |
+| Расширяемость | Интеграции без форка `server` | Plugins (`PluginWorkerManager`), реестр adapters, MCP-сервер `@datagent/mcp-server` (REST-обёртка) |
 | Исполнение LLM | Вызов моделей | Адаптеры + heartbeat; OAuth/IAM в `adapter_oauth_tokens`; [LLM-адаптеры](./llm-adapters.md) |
-| Каналы | Вход/выход вне Board | [Bitrix24 imbot](../integrations/bitrix24.md), [Telegram](../integrations/telegram.md), [BrowserBridge](../tutorials/browserbridge-setup.md) |
+| Каналы | Вход и выход вне Board | [Bitrix24 imbot](../integrations/bitrix24.md), [Телеграм](../integrations/telegram.md), [BrowserBridge](../tutorials/browserbridge-setup.md) |
 
-[^tg]: Плагин Telegram Datagent; установка — Plugin Manager или npm, ключ `datagent.plugin-telegram` (см. [Технические идентификаторы](../integrations/telegram.md#технические-идентификаторы)).
+[^tg]: Плагин Телеграм Datagent; установка — Plugin Manager или npm, ключ `datagent.plugin-telegram` (см. [Технические идентификаторы](../integrations/telegram.md#технические-идентификаторы)).
 
 ## Роли пользователей
 
-Модель продукта (не оргдолжности в HR): три уровня взаимодействия с одним instance.
+Ниже — **роли в продукте** (не должности в HR). Один человек может совмещать несколько уровней; разграничение доступа — через Better Auth и membership компании (`local_trusted` / `authenticated`).
 
 | Уровень | Задача | Интерфейс Datagent |
 | --- | --- | --- |
-| **Оператор** | Принимать решения, следить за задачами и run, эскалации | Issues, Approvals (inbox), комментарии, Office/статусы агентов, уведомления Telegram |
-| **Тренер / менеджер** | Настраивать агентов, связки, бюджеты, оргструктуру | Board: агенты, org chart, company settings, Bitrix24/Telegram settings, память (политики/bindings) |
+| **Оператор** | Принимать решения, вести задачи и run, эскалировать | Задачи, **входящие** согласований, комментарии, статусы в «Офисе», уведомления в Телеграм |
+| **Тренер / менеджер** | Настраивать агентов, связки, бюджеты, оргструктуру | Board: агенты, org chart, настройки компании, Bitrix24/Телеграм, память (политики/bindings) |
 | **Инженер** | Развёртывание, плагины, адаптеры, секреты, API | `cli` (`onboard`, `doctor`), Plugin Manager, instance settings, [Обзор API](../api-reference/overview.md), [Создание плагина](../tutorials/build-plugin.md) |
-
-Один человек может совмещать роли; разграничение прав — через Better Auth и membership компании (`local_trusted` / `authenticated`).
 
 ## Технические компоненты
 
-Монорепозиторий pnpm (см. [Архитектура](./agent-architecture.md)):
+Монорепозиторий pnpm (подробнее — [Архитектура](./agent-architecture.md)):
 
 | Компонент | Путь / пакет | Функция |
 | --- | --- | --- |
@@ -73,19 +71,21 @@ Datagent **не является** фреймворком постройки а�
 | BrowserBridge local | `packages/browserbridge-local` | CLI `datagent-bridge`, порт **9247** (локальный демон) |
 | MCP | `packages/mcp-server` | stdio-сервер поверх REST `/api` |
 
-**Запуск run:** Board или API → `POST /api/agents/:id/wakeup` → `heartbeat_runs` → adapter + `POST /api/plugins/tools/execute` (отладка tools). Публичного **`POST /api/runs`** нет. Очередь run — записи в **PostgreSQL**, не BullMQ/Redis как обязательный стек.
+**Запуск run:** Board или API → `POST /api/agents/:id/wakeup` → `heartbeat_runs` → adapter + при отладке `POST /api/plugins/tools/execute`. Публичного **`POST /api/runs`** нет. Очередь run — записи в **PostgreSQL**, не обязательный стек BullMQ/Redis.
 
 ## Интеграции (факт)
 
-| Интеграция | Что делает | Документация |
-| --- | --- | --- |
-| **GigaChat** | `gigachat_local`, OAuth, OpenCode | [gigachat.md](../integrations/gigachat.md) |
-| **YandexGPT** | `yandexgpt_local`, IAM, `folderId`, OpenCode | [yandexgpt.md](../integrations/yandexgpt.md) |
-| **Bitrix24** | Плагин `datagent.bitrix24`: imbot, polling `bitrix-poll`, issues, binding агента; **не** `crm.lead.*` | [bitrix24.md](../integrations/bitrix24.md) |
-| **Telegram** | Плагин Datagent: long poll `getUpdates`, апрувы, inbound | [telegram.md](../integrations/telegram.md) |
-| **BrowserBridge** | `datagent.browserbridge:*` + tunnel | [browserbridge-setup.md](../tutorials/browserbridge-setup.md) |
+| Интеграция | Что даёт | Ограничение (честные ожидания) | Документация |
+| --- | --- | --- | --- |
+| **GigaChat** | `gigachat_local`, OAuth, OpenCode | — | [gigachat.md](../integrations/gigachat.md) |
+| **YandexGPT** | `yandexgpt_local`, IAM, `folderId`, OpenCode | — | [yandexgpt.md](../integrations/yandexgpt.md) |
+| **Bitrix24** | Плагин `datagent.bitrix24`: imbot, polling `bitrix-poll`, задачи, привязка агента к линии | **Не** штатный CRM REST (`crm.lead.*`) — диалог и задачи, не воронка | [bitrix24.md](../integrations/bitrix24.md) |
+| **Телеграм** | Плагин Datagent: long poll `getUpdates`, одобрения, входящие в задачи | **Не** замена Board; решение в control plane | [telegram.md](../integrations/telegram.md) |
+| **BrowserBridge** | `datagent.browserbridge:*` + tunnel | Не обход CAPTCHA / ToS сайтов | [browserbridge-setup.md](../tutorials/browserbridge-setup.md) |
 
-Опциональные ссылки на ERP в ответах Bitrix-плагина (`@@erp-links`) — конфигурация портала, **не** отдельная «выгрузка 1С» как ядро продукта. Отдельный коннектор 1С в монорепо может существовать как плагин; в базовой документации не считается штатной интеграцией уровня Bitrix24/Telegram.
+Опциональные ссылки на ERP в ответах Bitrix-плагина (`@@erp-links`) — настройка портала, **не** отдельная «выгрузка 1С» как ядро продукта. Коннектор 1С в монорепо может существовать как плагин; в базовой документации он не на уровне Bitrix24/Телеграм.
+
+**Как формулировать ожидания по каналам:** «Мы подключили диалог и управление процессом в Datagent, а не полную CRM». Агент не выгрузит воронку Bitrix24 без отдельной интеграции и своих tools в manifest.
 
 ## Сравнение с аналогами
 
@@ -94,16 +94,16 @@ Datagent **не является** фреймворком постройки а�
 | Критерий | Datagent | n8n / Dify | LangGraph | CrewAI | Класс «task board» / ad-hoc |
 | --- | --- | --- | --- | --- | --- |
 | Operator UI для агентов компании | ✅ | частично | ❌ | частично | частично |
-| Governance / approvals | ✅ | частично | ❌ | ❌ | ❌ |
+| Governance / одобрения | ✅ | частично | ❌ | ❌ | ❌ |
 | Self-hosted, данные у заказчика | ✅ | частично | ✅ (как lib) | ✅ (как lib) | ❌ |
-| Корпоративная memory (RAG слой) | ✅ | частично | самописно | самописно | ❌ |
+| Корпоративная memory (RAG-слой) | ✅ | частично | самописно | самописно | ❌ |
 | Cost / token control на компанию | ✅ | частично | ❌ | ❌ | ❌ |
 | Recovery / heartbeat observability | ✅ | частично | самописно | самописно | ❌ |
 | Российские LLM (GigaChat, YandexGPT) | ✅ | HTTP nodes | custom | custom | ❌ |
-| Bitrix24 imbot → issues | ✅ | custom | custom | custom | ❌ |
+| Bitrix24 imbot → задачи | ✅ | custom | custom | custom | ❌ |
 | Plugin tools + browser bridge | ✅ | nodes | code | code | ❌ |
 
-Datagent сочетает в **одной** self-hosted платформе control plane, UI и ряд интеграций. LangGraph, CrewAI и n8n остаются релевантными на слое **построения** workflow или графа; Datagent позиционируется **над** ними как эксплуатационный слой (как платформа наблюдаемости над приложением, а не замена приложению).
+Datagent собирает в **одной** self-hosted платформе control plane, UI и ряд интеграций. LangGraph, CrewAI и n8n остаются релевантными там, где вы **строите** workflow или граф; Datagent позиционируется **над** ними как эксплуатационный слой.
 
 ## Развёртывание
 
@@ -113,24 +113,24 @@ Datagent сочетает в **одной** self-hosted платформе contr
 - **Секреты:** company/agent `secret_ref`; корневой `.env` — instance (`BETTER_AUTH_SECRET`, `PORT`, …), не ключи LLM по умолчанию.
 - Режимы: `local_trusted` (dev) и `authenticated` (Better Auth).
 
-Облачный managed-хостинг может предлагаться отдельно как продуктовая услуга; контракт развёртывания в open-source репозитории описывает прежде всего self-hosted instance.
+Облачный managed-хостинг может предлагаться отдельно; контракт в open-source репозитории описывает прежде всего self-hosted instance.
 
 ## Цели продукта
 
-Ориентиры развития (не гарантии текущей сборки):
+Ориентиры развития (не гарантии каждой сборки):
 
-- Сократить время до первого осмысленного approval в новой компании: целевой **time-to-first-approval** — менее 10 минут при типовом онбординге.
-- Сохранить прозрачность: оператор видит агентов, runs и затраты без чтения логов адаптера.
+- Сократить время до первого осмысленного одобрения в новой компании: целевой **time-to-first-approval** — менее 10 минут при типовом онбординге.
+- Сохранить прозрачность: оператор видит агентов, run и затраты без чтения сырых логов адаптера.
 
 ## Ограничения
 
 Datagent **не**:
 
-- заменяет ETL, DWH или полноценную CRM-систему;
-- предоставляет штатный доступ к Bitrix24 CRM REST (`crm.lead.*`) через плагин `datagent.bitrix24` — только **imbot** и issues;
+- заменяет ETL, DWH или полноценную CRM;
+- даёт штатный доступ к Bitrix24 CRM REST (`crm.lead.*`) через `datagent.bitrix24` — только **imbot** и задачи;
 - обходит CAPTCHA и нарушает ToS сайтов через BrowserBridge;
 - требует отдельного порта Board `:3200` в стандартном dev (`pnpm dev` на **3100**);
-- экспонирует `POST /api/runs` как публичный API run (используется wakeup / `heartbeat-runs`).
+- экспонирует `POST /api/runs` как публичный API (используется wakeup / `heartbeat-runs`).
 
 ## Планы (roadmap)
 
@@ -138,7 +138,7 @@ Datagent **не**:
 
 - Стабилизация и документирование широкого REST API control plane (внутренняя оценка порядка **~400** маршрутов — не публичный SLA по числу endpoints).
 - Расширение каталога **MCP**-инструментов (цель **30+** специализированных tools к **Q4 2026**); базовый пакет `@datagent/mcp-server` уже оборачивает часть `/api`.
-- Углубление Operator View / Office и сценариев handoff между людьми и агентами.
+- Углубление Operator View / «Офис» и сценариев handoff между людьми и агентами.
 - Расширение федерации памяти и policy-presets (см. планы в репозитории Datagent `doc/plans/*`).
 - OKR-метрики adoption и cost visibility — продуктовые, не часть open-source tarball.
 
