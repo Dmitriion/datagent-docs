@@ -51,7 +51,8 @@ flowchart TB
   end
   subgraph agent [Heartbeat agent]
     JWT["POST /api/agents/me/plugin-tools/execute"]
-    Prompt["datagentPluginTools в prompt opt-in"]
+    Prompt["datagentPluginTools в prompt default on"]
+    MCP["datagent-plugins MCP cursor-local"]
   end
   subgraph host [server]
     PWM["PluginWorkerManager"]
@@ -64,6 +65,7 @@ flowchart TB
   end
   Tab --> Exec --> Disp --> PWM --> EW
   JWT --> Disp
+  MCP --> JWT
   EW --> CLI
   EW --> Tmp
 ```
@@ -90,7 +92,7 @@ sequenceDiagram
 ## Установка
 
 1. Board → **Plugins** → install path `packages/plugins/plugin-excel-workbench` или `pnpm datagent plugin install …`.
-2. Включить для **company**.
+2. Включить для **company** (или **Skills → Каталог → Сообщество** → установить `xlsx`/`pptx` → **Открыть** в библиотеке; host auto-enable при ready instance).
 3. На хосте **plugin worker** установить `officecli` в `PATH` (или `officecliBinaryPath` в company config).
 
 ```bash
@@ -184,7 +186,20 @@ X-Datagent-Run-Id: <heartbeat_run_uuid>
 }
 ```
 
-Опционально: `DATAGENT_PLUGIN_TOOLS_IN_HEARTBEAT=1` — descriptors в prompt (`datagentPluginTools`).
+По умолчанию descriptors в prompt (`datagentPluginTools`, migration 0114). Отключение: company setting или `DATAGENT_PLUGIN_TOOLS_IN_HEARTBEAT=0`.
+
+**cursor-local:** virtual MCP `datagent-plugins` — native tool calls без REST URL в ответе агента (см. `doc/plans/plugin-tools-mcp-bridge-spike.md` в репозитории Datagent).
+
+## Автономные host-gates
+
+| Событие | Поведение |
+| --- | --- |
+| Install office skill из каталога | Auto-enable company plugin + activity `plugin.company_auto_enabled` |
+| Heartbeat prepare run | Preflight readiness — run не стартует при blockers; remediation wakeup |
+| Upload `.pptx` | `deliverable:pending_validation` + wakeup `validate_powerpoint_document` |
+| Run без validate после pptx attach | Post-run continuation `pptx_deliverable_validation_retry` |
+
+Подробнее: `doc/guides/excel-workbench.md` §Remediation в репозитории Datagent.
 
 ## Типовые сценарии
 
@@ -205,7 +220,7 @@ X-Datagent-Run-Id: <heartbeat_run_uuid>
 
 Файлы сессий — временный каталог worker; TTL — `sessionTtlHours`.
 
-Managed skills (примеры): `office-plugin`, `excel-workbench`, `excel-workbench-operator`, `excel-board-report`, `excel-inventory-export`.
+Managed skills (примеры): `office-plugin`, `excel-workbench`, `excel-workbench-operator`, `excel-board-report`, `excel-inventory-export`. В каталоге Board также **community skills** `xlsx`, `pptx`, `excel-analysis` и др. — они описывают plugin-first runtime (`datagent.excel-workbench:*`), не shell `officecli`; см. `doc/community-skills-acceptance.md` в репозитории Datagent.
 
 ## Связанные разделы
 
@@ -216,5 +231,5 @@ Managed skills (примеры): `office-plugin`, `excel-workbench`, `excel-work
 - [Архитектура агентов](../concepts/agent-architecture)
 
 :::tip Оператору
-Перед run агента прикрепите `.xlsx`/`.pptx` к issue и включите плагин для компании. Проверьте, что worker в статусе ready в Plugin Manager.
+Перед run прикрепите `.xlsx`/`.pptx` к issue. Плагин для компании включается автоматически при установке office skill из каталога (если instance ready); иначе — кнопка в панели capabilities на странице Skills. Worker должен быть `ready` в Plugin Manager.
 :::

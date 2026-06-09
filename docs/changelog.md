@@ -7,6 +7,14 @@ description: История изменений Datagent и документац�
 
 Здесь — заметные изменения продукта и документации Datagent.
 
+## [1.5.1] — 2026-06-09
+
+### Changed
+
+- [Первый агент](./getting-started/first-agent): раздел **Каталог навыков** — вкладки От Datagent / Сообщество / Все, CTA **Установить** / **Открыть**, права и post-install checklist.
+- [Архитектура агента](./concepts/agent-architecture): актуальный состав manifest (25 skills: 5 bundled + 3 optional + 17 community).
+- [Excel и PowerPoint](./office/excel-pptx): путь установки через **Skills → Каталог**.
+
 ## [1.5.0] — 2026-06-04
 
 ### Added

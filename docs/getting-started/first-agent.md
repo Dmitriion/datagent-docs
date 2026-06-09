@@ -17,7 +17,7 @@ http://localhost:3100/{issuePrefix}/agents/{agentId}
 http://localhost:3100/{issuePrefix}/issues/{issueRef}
 ```
 
-Без компании Board перенаправит на `/onboarding`. Корневые `/agents/...` редиректятся на префикс выбранной компании (`ui/src/App.tsx`).
+Без компании Board перенаправит на `/onboarding` — полноэкранный landing (форма слева, анимация офиса справа) и кнопка запуска модального мастера из 4 шагов. В режиме `local_trusted` при нуле компаний мастер может открыться сразу поверх landing. Вход по ссылке приглашения — `/invite/:token`; отдельный вход — `/auth`. Техническая спецификация оболочки: `doc/spec/entry-ui.md` в репозитории Datagent. Корневые `/agents/...` редиректятся на префикс выбранной компании (`ui/src/App.tsx`).
 
 ## Создать агента
 
@@ -94,6 +94,22 @@ curl -s -X POST "http://127.0.0.1:3100/api/agents/${AGENT_ID}/wakeup" \
 ```
 
 Статус: `GET http://127.0.0.1:3100/api/heartbeat-runs/<RUN_ID>`. Публичного `POST /api/runs` нет — [Обзор API](../api-reference/overview.md).
+
+## Каталог навыков (опционально)
+
+На странице **Skills** компании откройте **Каталог** (`/{префикс}/skills/catalog`) — из sidebar, через Cmd+K («Открыть каталог навыков») или из карточки агента при назначении skill.
+
+| Вкладка | Содержимое |
+| --- | --- |
+| **От Datagent** | Встроенные bundled и optional skills (документация, QA, PR workflow и т.д.) |
+| **Сообщество** | 17 community skills (Excel, презентации, data, BI) |
+| **Все** | Полный список |
+
+На карточке: **Установить** — навык ещё не в библиотеке компании; **Открыть** — уже установлен (переход в библиотеку). Установка требует права создавать агентов (`agents:create`). После установки откроется страница навыка с чеклистом настройки (`?setup=1`).
+
+### Office skills
+
+Для Excel/PowerPoint установите community skill (`xlsx`, `pptx`, …) из вкладки **Сообщество**. Host при успешной установке **автоматически включает** plugin `datagent.excel-workbench` для компании (если instance plugin в статусе `ready`). Перед run проверьте панель capabilities: blockers и кнопка «Включить для компании» при необходимости. Подробнее: [Excel и PowerPoint](../office/excel-pptx.md).
 
 ## Что дальше
 

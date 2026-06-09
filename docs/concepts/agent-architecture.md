@@ -79,7 +79,7 @@ flowchart TB
 | **BrowserBridge** | `packages/browserbridge-local` | Локальный демон `datagent-bridge` (CDP / Playwright); сервер подключается через tunnel/WebSocket, браузер не в процессе API. |
 | **Infrastructure** | `packages/db`, embedded Postgres, Better Auth | Схема и миграции в `packages/db`; БД — embedded или внешний Postgres; сессии — Better Auth (`BETTER_AUTH_SECRET`). |
 
-Дополнительно: `packages/adapter-utils`, `packages/mcp-server`, `packages/skills-catalog` — утилиты адаптеров, MCP и каталог skills.
+Дополнительные workspace-пакеты: `packages/adapter-utils`, `packages/mcp-server`, `packages/skills-catalog` — утилиты адаптеров, MCP и каталог skills (**25** записей в manifest: 5 bundled + 3 optional + 17 community; Board `/{prefix}/skills/catalog`); приёмка и вендоринг — в репозитории Datagent: `doc/community-skills-acceptance.md`, `doc/community-skills-vendoring.md`.
 
 ## Client Layer (`ui`)
 
@@ -105,6 +105,21 @@ flowchart TB
 ## Plugins
 
 Плагины объявляют manifest и tools; host общается с worker по JSON-RPC 2.0 (stdio). **Менеджер** включает плагин в компании и выдаёт tools агенту; **агент** вызывает только то, что есть в manifest.
+
+Агент вызывает plugin tools через `POST /api/agents/me/plugin-tools/execute` (run JWT). Descriptors попадают в heartbeat **по умолчанию** (`plugin_tools_in_heartbeat`). Для `cursor_local` дополнительно доступен native MCP `datagent-plugins` (proxy на тот же route).
+
+## Community skills и автономные host-gates
+
+Каталог **17 community skills** (`packages/skills-catalog`) связывает office skills с plugin `datagent.excel-workbench` через `requires: plugin:…` в frontmatter.
+
+| Этап | Механизм |
+| --- | --- |
+| Install skill | `POST …/skills/install-catalog` → auto-enable company plugin (`plugin-company-auto-enable.ts`) |
+| Observability | `GET …/capabilities`, `GET …/skills/:id/readiness` (blockers + remediation) |
+| Перед run | Preflight в `heartbeat.ts` — не запускать adapter при blockers |
+| Deliverable | xlsx: auto-validate после apply; pptx: attachment gate + post-run continuation |
+
+Control plane **оркестрирует**, worker **исполняет** OfficeCLI. Оператор в happy path не жмёт Validate/Enable — только governance opt-in (approvals, instance admin). Детали: [Excel и PowerPoint](../office/excel-pptx.md), канон приёмки в репозитории Datagent — `doc/community-skills-acceptance.md` v2.8.
 
 ## BrowserBridge
 
