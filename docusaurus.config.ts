@@ -3,7 +3,7 @@ import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
-  title: 'Документация Datagent',
+  title: 'Datagent',
   tagline:
     'Единый центр управления ИИ-агентами в компании. Облачная версия на app.datagent.ru.',
   favicon: 'img/brand/favicon-light.svg',
@@ -151,7 +151,7 @@ const config: Config = {
       isCloseable: true,
     },
     navbar: {
-      title: 'Документация Datagent',
+      title: 'Datagent',
       logo: {
         alt: 'Логотип Datagent',
         src: 'img/brand/mark-header.svg',
@@ -173,6 +173,7 @@ const config: Config = {
           to: '/docs/concepts/what-is-datagent',
           label: 'О платформе',
           position: 'left',
+          className: 'navbar__link--hide-lg',
         },
         {
           href: 'https://app.datagent.ru',
@@ -184,6 +185,7 @@ const config: Config = {
           href: 'https://datagent.ru',
           label: 'Сайт',
           position: 'right',
+          className: 'navbar__link--hide-md',
         },
       ],
     },

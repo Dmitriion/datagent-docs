@@ -19,7 +19,7 @@ const CARDS = [
     title: 'Начало работы',
     desc: 'Первый агент за 5 минут — регистрация, модель, запуск.',
     href: '/docs/cloud/getting-started',
-    featured: true,
+    accent: true,
   },
   {
     icon: '💡',
@@ -38,7 +38,7 @@ const CARDS = [
     title: 'Интеграции',
     desc: 'Bitrix24, 1С, GigaChat, Telegram.',
     href: '/docs/integrations/bitrix24',
-    featured: true,
+    accent: true,
   },
   {
     icon: '🏢',
@@ -69,7 +69,7 @@ const CARDS = [
 export default function Home(): ReactNode {
   return (
     <Layout
-      title="Документация Datagent"
+      title="Datagent"
       description="Запустите AI-агентов для бизнеса за 5 минут. Bitrix24, 1С, GigaChat, Telegram — из коробки.">
       <main className={styles.homePage}>
         <section className={styles.hero} aria-labelledby="home-title">
@@ -77,7 +77,6 @@ export default function Home(): ReactNode {
             <div className={styles.heroCopy}>
               <p className={styles.eyebrow}>Облачная платформа · app.datagent.ru</p>
               <h1 id="home-title" className={styles.heroTitle}>
-                Документация{' '}
                 <span className="text-gradient">Datagent</span>
               </h1>
               <p className={styles.heroSubline}>
@@ -179,7 +178,7 @@ export default function Home(): ReactNode {
                 key={card.href}
                 className={clsx(
                   styles.docCard,
-                  'featured' in card && card.featured && styles.docCardFeatured,
+                  'accent' in card && card.accent && styles.docCardAccent,
                 )}
                 to={card.href}>
                 <span className={styles.docCardIcon} aria-hidden="true">
