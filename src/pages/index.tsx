@@ -47,6 +47,13 @@ const CARDS = [
     href: '/docs/office/overview',
   },
   {
+    icon: '📎',
+    title: 'Артефакты',
+    desc: 'Каталог файлов и результатов агентов.',
+    href: '/docs/artifacts/overview',
+    accent: true,
+  },
+  {
     icon: '🛠',
     title: 'Туториалы',
     desc: 'CRM, браузер, плагины пошагово.',

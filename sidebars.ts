@@ -19,6 +19,7 @@ const sidebars: SidebarsConfig = {
         'cloud/cloud-first-agent',
         'cloud/cloud-pricing',
         'cloud/cloud-plugins',
+        'cloud/cloud-skills',
         'cloud/cloud-on-premise',
         'cloud/cloud-account',
       ],
@@ -59,8 +60,10 @@ const sidebars: SidebarsConfig = {
       collapsed: true,
       items: [
         'concepts/agents',
+        'concepts/issues',
         'concepts/heartbeat',
         'concepts/memory',
+        'concepts/routines',
         'concepts/approvals',
         'concepts/inbox',
       ],
@@ -125,6 +128,16 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: 'category',
+      label: 'Артефакты',
+      collapsed: true,
+      link: {
+        type: 'doc',
+        id: 'artifacts/overview',
+      },
+      items: ['artifacts/overview', 'artifacts/agent-upload'],
+    },
+    {
+      type: 'category',
       label: 'Практические сценарии',
       collapsed: true,
       link: {
@@ -143,7 +156,7 @@ const sidebars: SidebarsConfig = {
         title: 'API',
         description: 'REST API на /api: wakeup, heartbeat-runs, issues, plugins.',
       },
-      items: ['api-reference/overview'],
+      items: ['api-reference/overview', 'api-reference/memory-api'],
     },
     {
       type: 'category',

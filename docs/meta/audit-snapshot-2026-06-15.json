@@ -1,0 +1,46 @@
+{
+  "generatedAt": "2026-06-15",
+  "audience": "cloud-first",
+  "product": {
+    "repo": "C:/Datagent",
+    "commit": "632e957d9",
+    "metrics": {
+      "apiRouteHandlers": 474,
+      "uiRoutePaths": 123,
+      "dbMigrations": 119,
+      "planDocs": 116,
+      "memoryServiceFiles": 61,
+      "pluginServices": 35,
+      "envExampleVars": 4,
+      "dockerComposeFiles": 4
+    },
+    "notes": {
+      "fullEnvCatalog": "server/src/config.ts — not for public docs (P4)",
+      "apiCountDrift": "ARCHITECTURE.md cites ~417; scan found 474 router handlers"
+    }
+  },
+  "docs": {
+    "repo": "C:/Datagent-docs",
+    "commit": "692f934",
+    "metrics": {
+      "pagesTotal": 45,
+      "pagesInBuild": 44,
+      "excludedFromBuild": ["BRAND.md"],
+      "sidebarCategories": 11,
+      "stubPagesUnder50Words": 1
+    },
+    "stubs": [
+      {
+        "path": "docs/tutorials/index.md",
+        "words": 20
+      }
+    ]
+  },
+  "gapSummary": {
+    "documented": ["cloud", "concepts-core", "integrations", "guides", "office", "browser"],
+    "partial": ["memory", "api-reference-overview", "plugins", "heartbeat", "issues-in-tutorials-only"],
+    "missingP1": ["concepts/issues", "concepts/routines", "api-reference/memory", "cloud/skills"],
+    "missingP2": ["artifacts/overview", "artifacts/agent-upload", "api-reference/artifacts"],
+    "deferredP4": ["self-hosted-runbook", "docker", "cli-reference", "full-env-catalog", "i18n-contributor"]
+  }
+}
