@@ -163,7 +163,7 @@ flowchart TB
 
 - передавать `idempotencyKey` в теле wakeup при повторных вызовах из интеграций;
 - при зависании — `POST /api/agents/:id/pause` / `resume` или `POST /api/heartbeat-runs/:runId/cancel`;
-- для BrowserBridge — изоляция browser-сессий (см. [Установка и настройка](../browser/setup)).
+- для BrowserBridge — изоляция browser-сессий (см. [Подключение браузера](../browser/setup)).
 
 Не полагайтесь на «ещё одно сообщение в чат» вместо **Wakeup**: новая итерация — новый run с журналом.
 

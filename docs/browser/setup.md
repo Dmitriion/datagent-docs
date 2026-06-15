@@ -1,20 +1,96 @@
 ---
-title: Установка и настройка
-sidebar_label: Установка и настройка
-description: Установка службы управления браузером на рабочей станции и настройка в облачной панели.
+title: Подключите браузер к агенту за 5 минут
+sidebar_label: Подключение
+description: Пошаговое подключение BrowserBridge в app.datagent.ru — плагин, мастер «Облако + ПК», скрипты на рабочем компьютере.
 ---
 
-Пошаговая настройка **управления браузером** на компьютере оператора. Работает с [app.datagent.ru](https://app.datagent.ru). Контракт плагина — в [интеграции](../integrations/browserbridge). Начните с установки плагина в облаке.
+# Подключите браузер к агенту за 5 минут
 
-## Установка плагина в облаке
+Агент сможет работать с реальными сайтами на вашем компьютере — формы, личные кабинеты, CRM без API. Всё настраивается в [app.datagent.ru](https://app.datagent.ru): свой сервер и терминал на сервере не нужны.
 
-1. Войдите в панель → **Менеджер плагинов**.
-2. Установите `datagent.browserbridge` (если ещё не установлен).
-3. Включите плагин для компании.
+⏱ Займёт: **5–10 минут** · Нужны: тариф **PRO**, ПК с **Node.js 20+** и Chrome / Яндекс Браузер / Edge.
 
-## Установка Local Service (рабочая станция)
+## Как подключить
 
-Демон `@datagent/browserbridge-local` ставится **на ПК оператора**, не на сервер Datagent. Из checkout monorepo (для разработки):
+### 1. Включите плагин
+
+1. Войдите в [app.datagent.ru](https://app.datagent.ru).
+2. Откройте **Менеджер плагинов**.
+3. Установите и **включите** плагин **BrowserBridge** (`datagent.browserbridge`) для вашей компании.
+
+### 2. Откройте мастер BrowserBridge
+
+1. Перейдите в **Настройки** → **Компания** → вкладка **BrowserBridge** (или **Datagent Bridge**).
+2. В блоке «Где работает браузер?» выберите **Облако + ПК**.
+3. Укажите **ОС рабочего ПК** (Windows, macOS или Linux).
+
+### 3. Установите связь на рабочем ПК
+
+1. Нажмите **Скачать скрипт** в шаге **setup** — сохраните файл на компьютер, где будет браузер.
+2. Откройте **PowerShell** (Windows) или **Терминал** (macOS/Linux) и запустите скачанный скрипт. Он скачает bridge-kit с облака и подготовит локальную службу.
+3. По подсказкам скрипта **загрузите расширение** в браузер: страница расширений → режим разработчика → «Загрузить распакованное».
+
+### 4. Сопряжите ПК с облаком
+
+1. В мастере нажмите **Далее** до шага **Сопряжение с облаком** — система сгенерирует **код сопряжения** (действует ~10 минут).
+2. Скачайте скрипт **pair** и запустите его **на том же ПК**, где выполняли setup.
+3. Вернитесь в панель и дождитесь статуса **«В сети»** / **«Подключение к ПК в сети»**.
+
+### 5. Задайте политику и проверьте агента
+
+1. На шаге **Политика** укажите, на какие сайты агент может заходить (например, пресет **CRM** для `*.bitrix24.ru`).
+2. Нажмите **Завершить настройку**.
+3. В карточке агента включите инструменты `browser_*` и создайте тестовую задачу с простым URL из allowlist.
+
+:::tip Проверка
+В шапке панели появится индикатор BrowserBridge. Зелёный **«В сети»** — агент может вызывать браузер.
+:::
+
+## Что умеет браузер-агент
+
+- Перейти по ссылке из задачи и дождаться загрузки страницы.
+- Сделать скриншот или извлечь текст — результат попадёт в журнал run.
+- Заполнить поля формы; **отправка** и опасные клики — через [согласования](/docs/concepts/approvals).
+- Работать в уже авторизованной сессии CRM — войдите в сайт вручную один раз в том же профиле браузера.
+
+:::warning Не подходит для
+Сайтов с жёсткой защитой от автоматизации (банки, часть корпоративных порталов). Соблюдайте правила сайта и политику компании.
+:::
+
+## Типичные проблемы
+
+| Симптом | Что сделать |
+| --- | --- |
+| Статус «Офлайн» | Повторите pair-скрипт; проверьте, что setup завершился без ошибок |
+| Код сопряжения истёк | В мастере нажмите **Новый код** и снова запустите pair-скрипт |
+| «Переход заблокирован» | Добавьте домен в политику URL на вкладке BrowserBridge |
+| Агент не видит browser_* | Включите плагин и tools в карточке агента |
+| Нет Node.js на ПК | Установите Node.js 20+ с [nodejs.org](https://nodejs.org) |
+
+## Частые вопросы
+
+**Нужно ли ставить Datagent на ПК?**  
+Нет. Только Node.js и два скрипта из мастера — клон репозитория не нужен.
+
+**Можно ли несколько агентов на одном ПК?**  
+Да. Одна связь с ПК обслуживает всех агентов компании по вашей политике.
+
+**Работает без PRO?**  
+Нет — нужен тариф **PRO** или выше. [Тарифы →](/docs/cloud/pricing)
+
+## Что дальше
+
+- [Поручите задачу с браузером →](/docs/guides/03-one-task)
+- [Настройте согласования →](/docs/concepts/approvals)
+- [Автозапуск по расписанию →](/docs/concepts/routines)
+- [Обзор BrowserBridge →](/docs/integrations/browserbridge)
+
+<details>
+<summary>⚙️ Настройка для self-hosted (разворачивается)</summary>
+
+Инструкции для инженеров: локальный instance Datagent, CLI `datagent-bridge`, переменные окружения и HTTP API Local Service. Пользователям [app.datagent.ru](https://app.datagent.ru) этот блок не нужен.
+
+### Установка из monorepo (разработка)
 
 ```bash
 pnpm install
@@ -22,18 +98,16 @@ pnpm --filter @datagent/browserbridge-local build
 pnpm run datagent-bridge install
 ```
 
-Установка плагина для instance:
+Плагин для instance:
 
 ```bash
 pnpm --filter @datagent/plugin-browserbridge build
 pnpm datagent plugin install ./packages/plugins/plugin-browserbridge
 ```
 
-В панели: **Менеджер плагинов** → включить **BrowserBridge** для компании.
-
 `pnpm dev` поднимает **только server + UI** на `PORT=3100`; BrowserBridge **не** стартует автоматически в dev-runner. По умолчанию плагин может **встроенно** поднять Local Service в plugin worker (`autoStartLocalService: true`).
 
-## Запуск Local Service
+### Запуск Local Service
 
 **Вариант A — вручную (отдельный процесс):**
 
@@ -78,30 +152,24 @@ pnpm run datagent-bridge status
 
 Токен: файл `~/.datagent/bridge.token`, заголовок **`X-Datagent-Bridge-Token`** на всех запросах к Local Service.
 
-## Подключение server и агентов к bridge
+### Подключение server и агентов к bridge
 
 1. **Plugin worker** → HTTP `http://{localServiceHost}:{localServicePort}/execute` (defaults `127.0.0.1:9247`) с токеном из `~/.datagent/bridge.token` или `bridgeTokenSecretRef`.
 2. **Облако / отдельная машина:** `tunnelMode: true` → WebSocket-туннель на сервер, сопряжение через панель.
 3. **Политика URL** для `browser_navigate` — в панели, не через env allowlist.
 
-Подробнее поля config и API server — [интеграция BrowserBridge](../integrations/browserbridge).
-
-## HTTP API Local Service
+### HTTP API Local Service
 
 | Method | Path | Назначение |
 | --- | --- | --- |
 | `GET` | `/health` | `ok`, `browserConnected`, `cdpHost`, `cdpPort`, `port` |
 | `GET` | `/sessions` | Список сессий CDP |
 | `POST` | `/connect` | Подключиться к CDP `{ cdpPort?, cdpHost? }` (default `9222`, `127.0.0.1`) |
-| `POST` | `/execute` | Выполнить action + params (см. integration doc) |
+| `POST` | `/execute` | Выполнить action + params |
 | `GET` | `/screenshot/:id` | Бинарный скриншот по id |
 | WebSocket | `/ws` | Расширение браузера (approval overlay) |
 
-Маршрутов **`POST /session`**, **`/session/:id/snapshot`**, **`DELETE /session`** в `server.ts` **нет**.
-
-## Проверка
-
-1. Токен после `datagent-bridge install`:
+### Проверка (curl)
 
 ```bash
 TOKEN=$(cat ~/.datagent/bridge.token)
@@ -109,9 +177,7 @@ curl -s "http://127.0.0.1:9247/health" \
   -H "X-Datagent-Bridge-Token: $TOKEN"
 ```
 
-Ожидается JSON с `"ok": true` (и `"browserConnected": true` после `connect`).
-
-2. Навигация через `/execute`:
+Навигация через `/execute`:
 
 ```bash
 curl -s -X POST "http://127.0.0.1:9247/execute" \
@@ -120,26 +186,20 @@ curl -s -X POST "http://127.0.0.1:9247/execute" \
   -d '{"action":"navigate","params":{"url":"https://example.com","waitUntil":"load"},"runId":"test-run-001"}'
 ```
 
-3. Статус из панели (нужна сессия пользователя):
+Статус из панели:
 
 ```bash
 curl -s "http://127.0.0.1:3100/api/companies/<companyId>/browserbridge/status" \
   -H "Cookie: ..."
 ```
 
-4. `pnpm datagent doctor` — общая проверка instance.
-
-5. Интеграционный тест: `packages/plugins/plugin-browserbridge/src/worker.integration.test.ts`.
-
-## Настройка в UI
+### Настройка в UI (маршруты)
 
 - **Company → Settings → BrowserBridge**: `/company/settings/browserbridge`
-- Мастер onboarding (local / cloud), tunnel, pairing codes, **browser policy** (allowlist/denylist)
-- Блок в общих настройках: `/settings?scope=company&tab=general`
+- Мастер onboarding (local / cloud), tunnel, коды сопряжения, **browser policy**
+- Workstation kit: `GET /api/browserbridge/workstation-kit` (tar.gz)
 
-Workstation kit: `GET /api/browserbridge/workstation-kit` (tar.gz).
-
-## Типичные проблемы
+### Типичные проблемы (self-hosted)
 
 | Симптом | Причина | Что сделать |
 | --- | --- | --- |
@@ -152,25 +212,6 @@ Workstation kit: `GET /api/browserbridge/workstation-kit` (tar.gz).
 | Инструмент «мост недоступен» | Туннель offline | Панель → статус туннеля; `tunnelMode` + сопряжение |
 | Navigate blocked | Company policy | allowlist на `/company/settings/browserbridge` |
 
-## Частые вопросы
+Подробнее: [интеграция BrowserBridge](../integrations/browserbridge), as-built `doc/guides/browserbridge-setup-ru.md` в монорепо.
 
-**Обязателен ли туннель, если сервер в облаке?**  
-Да, если браузер на вашем ПК, а Datagent на [app.datagent.ru](https://app.datagent.ru) — нужен туннель или VPN до локальной службы. Настройте сопряжение в панели.
-
-**Какая команда проверяет, что служба жива?**  
-`GET http://127.0.0.1:9247/health` после `datagent-bridge start` — см. шаги выше.
-
-**Где включить плагин?**  
-**Менеджер плагинов** в панели → BrowserBridge → настройки компании.
-
-## Что дальше?
-
-- [Обзор управления браузером](./overview) · [Интеграция BrowserBridge](../integrations/browserbridge)
-- [Старт в Cloud](../cloud/getting-started) · [app.datagent.ru](https://app.datagent.ru)
-
-## Связанные разделы
-
-- [BrowserBridge (интеграция)](../integrations/browserbridge)
-- [Обзор управления браузером](./overview)
-- [Архитектура платформы](../concepts/agent-architecture.md)
-- [Старт в Cloud](../cloud/getting-started) — менеджер плагинов в панели
+</details>

@@ -34,7 +34,7 @@ sidebar_position: 3
 **Шаг 3. Второй агент — «Оформитель таблиц».** Те же LLM, в tools только `datagent.excel-workbench:*` после установки [Office Plugin](../office/excel-pptx).  
 *Результат:* правки Excel идут через plan → одобрение → apply, а не «на глаз» в чате.
 
-**Шаг 4. Третий — «Внутренний исследователь».** Подключите [BrowserBridge](../browser/setup): tools `datagent.browserbridge:browser_*`, в prompt явное правило: «не отправлять формы и не подтверждать платежи без одобрения». Контракт интеграции — [в разделе «Интеграции»](../integrations/browserbridge).  
+**Шаг 4. Третий — «Внутренний исследователь».** [Подключите BrowserBridge](../browser/setup) через мастер в настройках компании; включите tools `browser_*` и в prompt правило: «не отправлять формы и не подтверждать платежи без одобрения». Обзор интеграции — [BrowserBridge](../integrations/browserbridge).  
 *Результат:* веб-исследования изолированы и попадают в очередь согласований при риске.
 
 **Шаг 5. Храните секреты правильно.** `GIGACHAT_*`, `YANDEX_SA_KEY_JSON` — через **secret_ref** компании, не в тексте задачи и не в system prompt.  
