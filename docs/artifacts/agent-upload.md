@@ -7,48 +7,91 @@ description: Агент загружает артефакт через heartbeat
 
 # Загрузка артефакта агентом
 
-:::info В разработке
-Подробная справка с примерами запросов готовится — см. [план документации на Q3](/docs/meta/DOC-PLAN-2026-Q3).
-:::
+> **Зачем:** Чтобы результат run был виден в облаке — руководителю в панели, а не только на диске агента.
 
-Когда агент сохраняет отчёт, скриншот или таблицу, файл уходит через **API вложений** во время run. Вы сразу видите его в **Output** на задаче и в [каталоге артефактов](./overview) компании.
+Когда агент сохраняет отчёт, скриншот или таблицу, файл уходит через **API вложений** во время run. Вы видите его в **Output** на задаче и в [каталоге артефактов](./overview) компании.
 
 ## Поток (кратко)
 
 1. Агент выполняет run (heartbeat).
 2. `POST /api/companies/:companyId/issues/:issueId/attachments` — файл на задачу.
-3. Опционально — **work product** (типизированный результат run).
+3. Опционально — **work product** (типизированный результат run, тип `artifact`).
 4. Доска: блок **Output** на карточке задачи.
 5. Каталог: `GET /api/companies/:companyId/artifacts` — тот же файл в библиотеке компании.
 
+```mermaid
+sequenceDiagram
+  participant A as Агент (run)
+  participant S as Сервер
+  participant B as Панель
+  A->>S: POST attachment
+  A->>S: POST work-product (опц.)
+  S->>B: Output на задаче
+  S->>B: Запись в каталоге
+```
+
+## Work product и обычное вложение
+
+| | **Вложение** | **Work product** |
+| --- | --- | --- |
+| Когда | Любой файл на задачу | Главный **результат** run |
+| В Output | Может быть | Обычно да, как deliverable |
+| В каталоге | Да | Да, с метаданными artifact |
+
+Для «файла на проверку» создавайте work product; вспомогательные логи — только attachment.
+
 ## Ограничения
 
-- Размер файла ограничен настройками instance (обычно до 10 MiB) и лимитом компании
-- Допустимые типы: изображения, PDF, видео (MP4, WebM, QuickTime) — полный список в продукте
-- **API-ключ агента** действует только внутри своей компании и своих задач
+- Размер файла ограничен настройками instance (обычно до 10 MiB) и лимитом компании.
+- Допустимые типы: изображения, PDF, видео (MP4, WebM, QuickTime) — полный allowlist в продукте.
+- **API-ключ агента** действует только внутри своей компании и своих задач.
 
-## Что будет на полной странице
+:::tip Видео для руководителя
+MP4 и WebM поддерживают превью в каталоге — удобно для walkthrough и демо агента.
+:::
 
-- Примеры запросов для интеграторов
-- Чем **work product** отличается от обычного вложения
-- Как Excel Workbench отдаёт `.xlsx` как артефакт
-- Типичные ошибки загрузки и что проверить
+## Переменные окружения агента
 
-## Источники в продукте
+В run агент получает контекст API (переменные `DATAGENT_API_URL`, `DATAGENT_API_KEY`, `DATAGENT_COMPANY_ID`, `DATAGENT_TASK_ID`, `DATAGENT_RUN_ID`).
 
-- `doc/AGENT-ARTIFACTS.md`
-- `server/src/attachment-types.ts`
-- `ui/src/api/artifacts.ts`
-- `doc/DEVELOPING.md` § Артефакты и видео-вложения
+## Пример: загрузка файла
 
-## См. также
+```bash
+curl -sS -X POST \
+  "$DATAGENT_API_URL/api/companies/$DATAGENT_COMPANY_ID/issues/$DATAGENT_TASK_ID/attachments" \
+  -H "Authorization: Bearer $DATAGENT_API_KEY" \
+  -H "X-Datagent-Run-Id: $DATAGENT_RUN_ID" \
+  -F 'file=@"dist/demo.mp4";type=video/mp4'
+```
 
-- [Каталог артефактов](./overview) — поиск и фильтры по всем файлам
-- [Обзор REST API](../api-reference/overview) — аутентификация и общая схема
-- [Задачи](../concepts/issues) — Output и жизненный цикл
+Затем work product (если файл — основной результат):
 
-## Что дальше
+```bash
+curl -sS -X POST \
+  "$DATAGENT_API_URL/api/issues/$DATAGENT_TASK_ID/work-products" \
+  -H "Authorization: Bearer $DATAGENT_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"type":"artifact","provider":"datagent","metadata":{"attachmentId":"<id из ответа>"}}'
+```
 
-- [Открыть каталог артефактов](/docs/artifacts/overview) — найти загруженный файл среди всех задач
-- [Прочитать обзор API](/docs/api-reference/overview) — ключи и формат запросов
-- [Разобраться с задачами](/docs/concepts/issues) — куда попадает Output
+В финальном комментарии к задаче указывайте **ссылку на артефакт**, а не только локальный путь на машине агента.
+
+## Excel Workbench
+
+Таблица `.xlsx`, собранная через [Excel на задаче](/docs/office/excel-pptx), попадает в тот же поток — attachment + отображение в каталоге.
+
+## Частые ошибки
+
+| Симптом | Что проверить |
+| --- | --- |
+| 413 / ошибка размера | Лимит `DATAGENT_ATTACHMENT_MAX_BYTES` |
+| Неверный MIME | Расширение и `Content-Type` |
+| Файла нет в каталоге | Загрузка на правильный `issueId` компании |
+| 403 | Ключ агента другой компании |
+
+## Что дальше?
+
+- [Открыть каталог артефактов](/docs/artifacts/overview) — поиск и фильтры
+- [Справка API каталога](/docs/api-reference/artifacts) — `GET …/artifacts` для интеграций
+- [Обзор REST API](/docs/api-reference/overview) — ключи агента
+- [Задачи и Output](/docs/concepts/issues) — куда попадает результат

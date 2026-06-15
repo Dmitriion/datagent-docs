@@ -61,6 +61,7 @@ const sidebars: SidebarsConfig = {
       items: [
         'concepts/agents',
         'concepts/issues',
+        'concepts/projects',
         'concepts/heartbeat',
         'concepts/memory',
         'concepts/routines',
@@ -75,6 +76,8 @@ const sidebars: SidebarsConfig = {
       items: [
         'concepts/what-is-datagent',
         'concepts/credits',
+        'concepts/budgets',
+        'concepts/secrets',
         'concepts/how-it-works',
         'concepts/agent-architecture',
         'concepts/llm-adapters',
@@ -156,7 +159,7 @@ const sidebars: SidebarsConfig = {
         title: 'API',
         description: 'REST API на /api: wakeup, heartbeat-runs, issues, plugins.',
       },
-      items: ['api-reference/overview', 'api-reference/memory-api'],
+      items: ['api-reference/overview', 'api-reference/memory-api', 'api-reference/artifacts-api'],
     },
     {
       type: 'category',
