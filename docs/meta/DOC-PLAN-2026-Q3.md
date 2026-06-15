@@ -5,9 +5,9 @@ description: Внутренний план закрытия пробелов д�
 
 # DOC-PLAN-2026-Q3
 
-**Аудитория:** операторы [app.datagent.ru](https://app.datagent.ru).  
-**Self-hosted:** только enterprise landing [`cloud/on-premise`](../cloud/on-premise.md) — не runbook.  
-**Снимок:** [`audit-snapshot-2026-06-15.json`](./audit-snapshot-2026-06-15.json) (product `632e957d9`, docs `692f934`).
+**Аудитория:** операторы [app.datagent.ru](https://app.datagent.ru) — люди, которые ведут агентов в облаке, без своего сервера.  
+**Self-hosted:** в публичной справке только enterprise-лендинг [`cloud/on-premise`](../cloud/on-premise.md), не пошаговый runbook.  
+**Снимок аудита:** [`audit-snapshot-2026-06-15.json`](./audit-snapshot-2026-06-15.json) (продукт `632e957d9`, docs `692f934`).
 
 ## Счётчики gap-таблицы
 
@@ -133,11 +133,11 @@ description: Внутренний план закрытия пробелов д�
 
 ## Priority 3 — Medium
 
-Goals, search, company-export, Office USER-GUIDE port, plugin marketplace details, MCP.
+Цели (goals), глобальный поиск, экспорт компании, порт Office USER-GUIDE, детали маркетплейса плагинов, документация MCP.
 
 ## Priority 4 — Deferred
 
-Install, Docker, CLI, migrations, full env, i18n gates, experimental flags.
+Установка на свой сервер, Docker, CLI, миграции БД, полный каталог переменных окружения, гейты i18n для контрибьюторов, experimental flags.
 
 ---
 
@@ -158,26 +158,31 @@ API/
   + api-reference/memory  [NEW P1]
 ```
 
-Полное дерево — в [`sidebars.ts`](../../sidebars.ts) после применения плана.
+Полное дерево навигации — в [`sidebars.ts`](../../sidebars.ts) после применения плана.
 
 ---
 
 ## Quick wins (выполнено / в очереди)
 
-1. ✅ `tutorials/index.md` — hub 150+ слов  
-2. ✅ `concepts/memory.md` — gardener, freeze (уже в тексте)  
-3. 🟡 `cloud/plugins.md` — install flow есть; marketplace без фиктивных цифр  
-4. ✅ `artifacts/overview.md` — stub с выжимкой DEVELOPING  
-5. 🟡 `api-reference/overview.md` — TOC на split-страницы  
-6. ✅ Home — карточка «Артефакты»  
-7. ⏸ `troubleshooting.md` — memory/plugin errors (следующая сессия)  
-8. ⏸ orphan `getting-started/_category_.json` — redirect-only в meta
+1. ✅ `tutorials/index.md` — hub на 150+ слов  
+2. ✅ `concepts/memory.md` — Gardener и заморозка (уже в тексте)  
+3. 🟡 `cloud/plugins.md` — сценарий установки есть; маркетплейс без выдуманных цифр  
+4. ✅ `artifacts/overview.md` — краткая выжимка из DEVELOPING  
+5. 🟡 `api-reference/overview.md` — оглавление на будущие split-страницы  
+6. ✅ Главная — карточка «Артефакты»  
+7. ⏸ `troubleshooting.md` — ошибки memory/plugin (следующая сессия)  
+8. ⏸ orphan `getting-started/_category_.json` — заметка про redirect в meta
 
 ---
 
 ## Риски
 
-1. **API count drift:** 474 handlers vs ~417 в ARCHITECTURE — обновлять только здесь.  
-2. **Memory:** портировать выжимки, не копировать ADR целиком.  
-3. **`.env.example`:** 4 vars; полный каталог — P4.  
-4. **`onBrokenLinks: throw`** — каждый новый doc id проверять `npm run build`.
+1. **Счётчик API:** в ARCHITECTURE ~417 handlers, в аудите 474 — правим только в этом плане.  
+2. **Память:** переносим выжимки, не копируем ADR целиком.  
+3. **`.env.example`:** 4 переменные; полный каталог — P4.  
+4. **`onBrokenLinks: throw`** — после каждой новой страницы запускать `npm run build`.
+
+## Что дальше
+
+- [Открыть снимок аудита](./audit-snapshot-2026-06-15.json) — цифры и хеши коммитов на момент сканирования
+- [Вернуться к changelog](/docs/changelog) — что уже вышло пользователям в продукте
