@@ -1,65 +1,105 @@
 import type {ReactNode} from 'react';
-import clsx from 'clsx';
 import Link from '@docusaurus/Link';
 import Layout from '@theme/Layout';
-import Heading from '@theme/Heading';
-import HomePaths from '@site/src/components/HomePaths';
 
-import styles from './index.module.css';
+const JOURNEY_STEPS = [
+  {n: '1', title: 'Зарегистрируйтесь', desc: 'Бесплатно, без карты — на app.datagent.ru'},
+  {n: '2', title: 'Запустите агента', desc: 'Шаблон или с нуля. Первый результат — 5 минут.'},
+  {n: '3', title: 'Подключите инструменты', desc: 'Bitrix24, 1С, Telegram, браузер.'},
+  {n: '4', title: 'Контролируйте', desc: 'Одобряйте действия, смотрите отчёты, масштабируйте.'},
+] as const;
 
-function HomepageHero() {
-  return (
-    <header className={clsx(styles.hero)}>
-      <div className={clsx('container', styles.heroInner)}>
-        <p className={styles.eyebrow}>Битрикс24 · GigaChat · облако · app.datagent.ru</p>
-        <Heading as="h1" className={clsx(styles.heroTitle, 'text-gradient')}>
-          AI-агенты для Битрикс24 и GigaChat — в облаке, без программиста
-        </Heading>
-        <p className={styles.heroSubline}>
-          <strong>Datagent</strong> связывает чаты Битрикс24 с агентами на{' '}
-          <strong>GigaChat</strong> и <strong>YandexGPT</strong>: клиент пишет в CRM —
-          агент отвечает, а вы видите каждый шаг и одобряете важные действия.
-          Регистрация на app.datagent.ru — ничего не ставите на сервер.
-        </p>
-        <div className={styles.heroButtons}>
-          <Link
-            className="button button--primary button--lg"
-            href="https://app.datagent.ru/signup">
-            Начать бесплатно
-          </Link>
-          <Link
-            className={clsx('button button--outline button--lg', styles.ghostOnDark)}
-            to="/docs/cloud/getting-started">
-            Быстрый старт
-          </Link>
-        </div>
-        <div className={styles.pricingBanner}>
-          <p className={styles.pricingBannerTitle}>Тарифы</p>
-          <p className={styles.pricingBannerText}>
-            <strong>Free</strong> — 0 ₽, 3 агента, 100 запусков в месяц.
-            <br />
-            <strong>PRO</strong> — 990 ₽/мес · <strong>Business</strong> — 3 900 ₽/мес.
-          </p>
-          <Link className={styles.pricingBannerLink} to="/docs/cloud/pricing">
-            Сравнить тарифы →
-          </Link>
-        </div>
-      </div>
-    </header>
-  );
-}
+const CARDS = [
+  {
+    icon: '🚀',
+    title: 'Начало работы',
+    desc: 'Первый агент за 5 минут.',
+    href: '/docs/cloud/getting-started',
+  },
+  {
+    icon: '💡',
+    title: 'Концепции',
+    desc: 'Как работает платформа.',
+    href: '/docs/concepts/what-is-datagent',
+  },
+  {
+    icon: '📖',
+    title: 'Учебник',
+    desc: '8 реальных сценариев.',
+    href: '/docs/guides',
+  },
+  {
+    icon: '🔌',
+    title: 'Интеграции',
+    desc: 'Bitrix24, 1С, GigaChat, Telegram.',
+    href: '/docs/integrations/bitrix24',
+  },
+  {
+    icon: '🏢',
+    title: 'Офис агентов',
+    desc: 'Живой виртуальный офис.',
+    href: '/docs/office/overview',
+  },
+  {
+    icon: '🛠',
+    title: 'Туториалы',
+    desc: 'CRM, браузер, плагины пошагово.',
+    href: '/docs/tutorials',
+  },
+  {
+    icon: '⚙️',
+    title: 'API',
+    desc: 'Справочник для разработчиков.',
+    href: '/docs/api-reference/overview',
+  },
+  {
+    icon: '📋',
+    title: 'Changelog',
+    desc: 'Что нового в каждой версии.',
+    href: '/docs/changelog',
+  },
+] as const;
 
 export default function Home(): ReactNode {
   return (
     <Layout
-      title="Datagent — облачные AI-агенты для бизнеса"
-      description="Datagent: AI-агенты для Битрикс24 и GigaChat в облаке. Free — 3 агента. Старт на app.datagent.ru.">
-      <a href="#main-content" className="skip-to-content">
-        Перейти к содержимому
-      </a>
-      <HomepageHero />
-      <main id="main-content">
-        <HomePaths />
+      title="Документация Datagent"
+      description="Запустите AI-агентов для бизнеса за 5 минут. Bitrix24, 1С, GigaChat, Telegram — из коробки.">
+      <main className="container home-page">
+        <div className="hero-block">
+          <h1>Документация Datagent</h1>
+          <p>
+            Запустите AI-агентов для своего бизнеса за 5 минут.
+            <br />
+            Bitrix24, 1С, GigaChat, Telegram — из коробки.
+          </p>
+          <div className="hero-actions">
+            <a href="https://app.datagent.ru">Начать бесплатно →</a>
+            <Link to="/docs/cloud/getting-started">Быстрый старт</Link>
+          </div>
+        </div>
+
+        <p className="time-estimate">⏱ ~5 мин до первого агента</p>
+
+        <div className="journey-steps">
+          {JOURNEY_STEPS.map((s) => (
+            <div key={s.n} className="journey-step">
+              <span className="journey-n">{s.n}</span>
+              <strong>{s.title}</strong>
+              <p>{s.desc}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="cards-grid">
+          {CARDS.map((card) => (
+            <Link key={card.href} className="doc-card" to={card.href}>
+              <div className="doc-card-icon">{card.icon}</div>
+              <h3>{card.title}</h3>
+              <p>{card.desc}</p>
+            </Link>
+          ))}
+        </div>
       </main>
     </Layout>
   );

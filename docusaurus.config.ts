@@ -142,6 +142,14 @@ const config: Config = {
       disableSwitch: false,
       respectPrefersColorScheme: true,
     },
+    announcementBar: {
+      id: 'cloud_launch_2026',
+      content:
+        '🚀 Datagent Cloud запущен — <a href="https://app.datagent.ru">попробуйте бесплатно</a>',
+      backgroundColor: '#0f766e',
+      textColor: '#ffffff',
+      isCloseable: true,
+    },
     navbar: {
       title: 'Документация Datagent',
       logo: {
@@ -168,8 +176,9 @@ const config: Config = {
         },
         {
           href: 'https://app.datagent.ru',
-          label: 'Приложение',
+          label: 'Открыть Datagent →',
           position: 'right',
+          className: 'navbar--cta',
         },
         {
           href: 'https://datagent.ru',
