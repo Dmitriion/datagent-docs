@@ -177,7 +177,7 @@ const config: Config = {
         },
         {
           href: 'https://app.datagent.ru',
-          label: 'Открыть Datagent →',
+          label: 'В приложение',
           position: 'right',
           className: 'navbar--cta',
         },
@@ -185,7 +185,7 @@ const config: Config = {
           href: 'https://datagent.ru',
           label: 'Сайт',
           position: 'right',
-          className: 'navbar__link--hide-md',
+          className: 'navbar__link--hide-md navbar--btn-outline',
         },
       ],
     },
