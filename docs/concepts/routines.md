@@ -68,7 +68,7 @@ description: Рутины Datagent — cron-расписание, автомат
 
 ## Что дальше?
 
-- [Разобраться с задачами](/docs/concepts/issues) — куда попадает результат рутины
-- [Понять heartbeat](/docs/concepts/heartbeat) — что происходит внутри run
-- [Контролировать расход](/docs/concepts/budgets) — лимиты до hard-stop
-- [Подключить Bitrix24](/docs/integrations/bitrix24) — типовой сценарий по расписанию
+- **Разберите задачи** — [issues](/docs/concepts/issues): куда попадает результат рутины
+- **Поймите heartbeat** — [heartbeat](/docs/concepts/heartbeat): что происходит внутри run
+- **Контролируйте расход** — [бюджеты](/docs/concepts/budgets): лимиты до hard-stop
+- **Подключите Bitrix24** — [интеграция](/docs/integrations/bitrix24): типовой сценарий по cron

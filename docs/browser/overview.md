@@ -8,13 +8,11 @@ description: Как агент Datagent управляет вашим брауз
 
 ## Это работает так
 
-1. Администратор ставит плагин и локальную службу на рабочую станцию.
-2. Агент в облаке вызывает инструменты `browser_*` через туннель или localhost.
-3. Действия видны в журнале запуска; опасные URL — по политике компании.
+1. Администратор установит плагин и локальную службу на рабочую станцию.
+2. Агент в облаке вызовет инструменты `browser_*` через туннель или localhost.
+3. Действия попадут в журнал run; опасные URL отсекутся политикой компании.
 
-**Управление браузером** даёт агентам Datagent доступ к **вашему** браузеру на компьютере: переход по страницам, клики, снимки экрана и чтение текста — на вашей машине, а не в отдельном облачном «безголовом» браузере.
-
-Эта статья для **инженера и администратора**: как поднять службу на рабочей станции и проверить связь с [app.datagent.ru](https://app.datagent.ru). Подробности плагина — в [интеграции «Управление браузером»](../integrations/browserbridge).
+Статья для **инженера и администратора**: как поднять службу и проверить связь с [app.datagent.ru](https://app.datagent.ru). Подробности плагина — [интеграция BrowserBridge](/docs/integrations/browserbridge).
 
 ## Два слоя
 
@@ -75,11 +73,5 @@ pnpm --filter @datagent/browserbridge-local exec playwright install chromium
 
 ## Что дальше?
 
-- [Установка и настройка](./setup) · [Интеграция BrowserBridge](../integrations/browserbridge)
-- [Старт в облаке](../cloud/getting-started) · [app.datagent.ru](https://app.datagent.ru)
-
-## Связанные разделы
-
-- [Архитектура платформы](../concepts/agent-architecture.md)
-- [Как это работает](../concepts/how-it-works.md)
-- [Старт в Cloud](../cloud/getting-started)
+- **Установите службу** — [setup](/docs/browser/setup) · [интеграция BrowserBridge](/docs/integrations/browserbridge)
+- **Пройдите старт** — [getting-started](/docs/cloud/getting-started) · [app.datagent.ru](https://app.datagent.ru)

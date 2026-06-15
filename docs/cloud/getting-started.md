@@ -65,7 +65,7 @@ description: "Регистрация на app.datagent.ru и первый AI-а�
 
 ## Что дальше?
 
-- [Подключить Bitrix24](/docs/integrations/bitrix24) — канал в задачи
-- [Настроить согласования](/docs/concepts/approvals) — контроль рискованных шагов
-- [Добавить второго agent](/docs/cloud/first-agent) — расширить команду
-- [Сравнить тарифы](/docs/cloud/pricing) · [зарегистрироваться бесплатно](https://app.datagent.ru/signup)
+- **Подключите Bitrix24** — [интеграция](/docs/integrations/bitrix24): канал в задачи
+- **Настройте согласования** — [approvals](/docs/concepts/approvals): контроль рискованных шагов
+- **Добавьте второго агента** — [первый агент](/docs/cloud/first-agent): расширить команду
+- **Сравните тарифы** — [pricing](/docs/cloud/pricing) · [регистрация](https://app.datagent.ru/signup)

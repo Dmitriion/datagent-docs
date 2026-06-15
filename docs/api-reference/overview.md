@@ -5,9 +5,9 @@ sidebar_label: Обзор API
 description: REST API Datagent — здоровье сервиса, агенты, задачи, плагины; для разработчиков и интеграторов.
 ---
 
-**REST API** Datagent помогает управлять платформой из скриптов: agent, задачи, run, plugin. В облаке все запросы идут на `https://app.datagent.ru/api/...` — тот же адрес, что у панели.
+> **Зачем:** Управлять платформой из скриптов и CI — агенты, задачи, run и plugin по тем же правилам, что кнопки в панели.
 
-Отдельной кнопки «создать run» в API нет — запуск идёт через внутренний цикл сервера. **Plugin** даёт agent **инструменты** (браузер, файлы, CRM), **адаптер** — **модель**. Подробнее — [архитектура agent](../concepts/agent-architecture.md).
+В облаке все запросы идут на `https://app.datagent.ru/api/...` — тот же origin, что у панели. Отдельного `POST /runs` нет: новый run создаёте через **wakeup** агента. **Plugin** даёт tools (браузер, файлы, CRM), **адаптер** — модель; подробнее — [архитектура агента](../concepts/agent-architecture.md).
 
 :::note Для инженеров
 Маршруты под `/api`; пробуждение — `POST /api/agents/:id/wakeup`; журнал — heartbeat-runs.
@@ -27,7 +27,7 @@ description: REST API Datagent — здоровье сервиса, агенты
 
 ## Аутентификация
 
-Перед запросом сервер понимает, **кто Вы**: оператор панели, внешний скрипт или agent. В облаке — **сессия** (cookie после входа) или **ключ API** в `Authorization: Bearer …`.
+Перед запросом сервер определяет **кто вызывает API**: оператор панели, внешний скрипт или агент. В облаке — **сессия** (cookie после входа) или **ключ API** в `Authorization: Bearer …`.
 
 | Режим | Когда встречается | Как авторизоваться |
 | --- | --- | --- |
@@ -155,18 +155,10 @@ curl -s -X POST "https://app.datagent.ru/api/agents/${AGENT_ID}/wakeup" \
 
 ## Что дальше?
 
-- [Открыть справку по agent (API)](/docs/api-reference/agents) — wakeup, ключи, heartbeat-runs
-- [Открыть справку по задачам (API)](/docs/api-reference/issues) — checkout и Output
-- [Открыть справку по plugin (API)](/docs/api-reference/plugins) — install, tools, webhooks
-- [Открыть справку по доступу (API)](/docs/api-reference/access) — invites и members
-- [Собрать свой plugin](/docs/tutorials/build-plugin) — расширить набор tools
-
-## Связанные разделы
-
-- [Быстрый старт в облаке](../cloud/getting-started)
-- [Первый агент](../cloud/first-agent) — запуск из панели
-- [Свой сервер](../cloud/on-premise) — Enterprise
-- [Архитектура](../concepts/agent-architecture.md)
-- [Создание плагина](../tutorials/build-plugin.md)
-- [Битрикс24](../integrations/bitrix24.md)
-- [Управление браузером](../integrations/browserbridge.md) · [установка](../browser/setup)
+- **Запустите агента через API** — [агенты (API)](/docs/api-reference/agents): wakeup, ключи, heartbeat-runs
+- **Ведите задачи из скрипта** — [задачи (API)](/docs/api-reference/issues): checkout и Output
+- **Подключите plugin** — [плагины (API)](/docs/api-reference/plugins): install, tools, webhooks
+- **Автоматизируйте доступ** — [доступ (API)](/docs/api-reference/access): invites и members
+- **Соберите свой plugin** — [туториал](/docs/tutorials/build-plugin): расширить набор tools
+- **Пройдите быстрый старт** — [облако](/docs/cloud/getting-started): первая проверка без своего сервера
+- **Подключите Bitrix24** — [интеграция](/docs/integrations/bitrix24): CRM и задачи в одном контуре

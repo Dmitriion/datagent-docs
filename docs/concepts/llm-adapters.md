@@ -9,13 +9,11 @@ description: "Как Datagent подключает GigaChat и YandexGPT: выб
 
 ## Это работает так
 
-1. В карточке агента — тип адаптера и модель (например GigaChat-2-Pro).
-2. Ключи хранятся в **привязках секретов**, не в открытом тексте.
-3. При запуске платформа подставляет токен и пишет ответ в журнал задачи.
+1. В карточке агента выберите тип адаптера и модель (например GigaChat-2-Pro).
+2. Администратор привяжет ключи через **секреты** — не в открытом тексте.
+3. При запуске платформа подставит токен и запишет ответ в журнал задачи.
 
-В Datagent к облачным нейросетям подключаются **адаптеры** — готовые модули для GigaChat, YandexGPT и др. В панели вы выбираете тип адаптера и модель для агента; оператор только **запускает** агента — ключи и токены настраивает администратор.
-
-Российские **GigaChat** и **YandexGPT** используют общий механизм выполнения через OpenCode; универсальный вариант без отдельного слоя OAuth — **OpenCode (локальный)**. Подробные инструкции — в разделе [Интеграции](../integrations/gigachat).
+Российские **GigaChat** и **YandexGPT** идут через OpenCode; универсальный вариант без отдельного OAuth-слоя — **OpenCode (локальный)**. Пошаговые инструкции — [GigaChat](/docs/integrations/gigachat), [YandexGPT](/docs/integrations/yandexgpt).
 
 ## Сравнительная таблица
 
@@ -84,14 +82,6 @@ openai/gpt-5.2-codex
 
 ## Что дальше?
 
-- [Подключить GigaChat](../integrations/gigachat.md) · [YandexGPT](../integrations/yandexgpt.md)
-- [Первый агент](../cloud/first-agent) · [Тарифы](../cloud/pricing.md)
-- [Войти в облако](https://app.datagent.ru)
-
-## Связанные разделы
-
-- [GigaChat](../integrations/gigachat.md) — OAuth `GIGACHAT_CLIENT_ID` / `GIGACHAT_CLIENT_SECRET`, модели `gigachat/GigaChat-2-*`
-- [YandexGPT](../integrations/yandexgpt.md) — `YANDEX_SA_KEY_JSON`, `folderId`, `yandexgpt/rc`
-- [Как это работает](./how-it-works.md) — цикл запуска и инструменты
-- [Первый агент](../cloud/first-agent) — выбор адаптера в панели
-- [Старт в Cloud](../cloud/getting-started)
+- **Подключите GigaChat** — [интеграция](/docs/integrations/gigachat) · [YandexGPT](/docs/integrations/yandexgpt)
+- **Создайте первого агента** — [первый агент](/docs/cloud/first-agent) · [тарифы](/docs/cloud/pricing)
+- **Войдите в облако** — [app.datagent.ru](https://app.datagent.ru)

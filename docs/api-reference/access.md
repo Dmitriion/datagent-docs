@@ -10,7 +10,7 @@ description: REST API приглашений, участников компан�
 
 > **Зачем:** Подключать коллег и автоматизировать онбординг — скриптами, HR-системой или вручную, с теми же правилами, что кнопка «Пригласить» в панели.
 
-Для людей — [команда и доступ](/docs/concepts/collaboration). Как войти в API — [обзор REST API](./overview). Все запросы: `https://app.datagent.ru/api`.
+Для оператора — [команда и доступ](/docs/concepts/collaboration). Аутентификация — [обзор REST API](./overview). База: `https://app.datagent.ru/api`.
 
 ## Публичные маршруты invite (без входа)
 
@@ -103,7 +103,7 @@ curl -s "https://app.datagent.ru/api/companies/${COMPANY_ID}/members" \
 
 ## Что дальше?
 
-- [Настройки компании](/docs/concepts/company-settings) — что настраивать до приглашений
-- [Аккаунт в облаке](/docs/cloud/account) — несколько компаний на одну почту
-- [Агенты (API)](/docs/api-reference/agents) — ключи agent vs доступ людей
-- [Секреты](/docs/concepts/secrets) — кто видит значения ключей
+- **Настройте компанию** — [настройки](/docs/concepts/company-settings): что подготовить до приглашений
+- **Разберитесь с аккаунтом** — [облако](/docs/cloud/account): несколько компаний на одну почту
+- **Сравните ключи** — [агенты (API)](/docs/api-reference/agents): ключ агента vs доступ людей
+- **Ограничьте секреты** — [секреты](/docs/concepts/secrets): кто видит значения ключей

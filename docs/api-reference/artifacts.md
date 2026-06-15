@@ -84,6 +84,6 @@ curl -s "https://app.datagent.ru/api/companies/${COMPANY_ID}/artifacts?cursor=${
 
 ## Что дальше?
 
-- [Открыть каталог в панели](/docs/artifacts/overview) — фильтры и быстрый просмотр
-- [Узнать, как agent загружает файлы](/docs/artifacts/agent-upload) — откуда записи в API
-- [Прочитать обзор REST API](/docs/api-reference/overview) — ключи и лимиты
+- **Откройте каталог в панели** — [обзор](/docs/artifacts/overview): фильтры и быстрый просмотр
+- **Разберите загрузку агентом** — [agent-upload](/docs/artifacts/agent-upload): откуда записи в API
+- **Проверьте ключи API** — [обзор REST API](/docs/api-reference/overview): аутентификация и лимиты

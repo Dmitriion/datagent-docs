@@ -85,7 +85,7 @@ description: Месячные лимиты расхода на компанию,
 
 ## Что дальше?
 
-- [Понять кредиты и тарифы](/docs/concepts/credits) — вторая ось лимитов
-- [Настроить проект](/docs/concepts/projects) — бюджет на портфель
-- [Рутины по расписанию](/docs/concepts/routines) — учитывайте run при cron
-- [Тарифы облака](/docs/cloud/pricing) — Free / PRO / Business
+- **Разберите кредиты** — [кредиты](/docs/concepts/credits): вторая ось лимитов
+- **Настройте проект** — [проекты](/docs/concepts/projects): бюджет на портфель
+- **Учтите рутины** — [рутины](/docs/concepts/routines): run по cron съедают лимит
+- **Сравните тарифы** — [pricing](/docs/cloud/pricing): Free / PRO / Business

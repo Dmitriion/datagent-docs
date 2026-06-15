@@ -6,9 +6,9 @@ description: Работа с Excel и PowerPoint на задаче — прос�
 
 В Datagent с **файлами Office** на задаче работает плагин **Office Plugin** (таблицы Excel, документы Word, презентации PowerPoint). Полный цикл «план → согласование → применение» — **только для Excel** (`.xlsx`); для Word и PowerPoint доступны просмотр и проверка.
 
-Раздел **«Офис»** в меню — отдельный обзор для руководителя ([обзор](./overview.md)); вкладка **Office** на задаче — работа с вложением.
+Раздел **«Офис»** в меню — обзор для руководителя ([обзор](./overview.md)); вкладка **Office** на задаче — работа с вложением.
 
-> **Зачем:** Работа с Excel и PowerPoint на задаче — просмотр, план правок для таблиц, согласование перед применением.
+> **Зачем:** Править таблицы и презентации на задаче — с планом, согласованием и журналом, а не «в чате с моделью».
 
 | Задача | Как решается |
 | --- | --- |
@@ -89,7 +89,7 @@ sequenceDiagram
 
 ## Установка
 
-1. Board → **Plugins** → install path `packages/plugins/plugin-excel-workbench` или `pnpm datagent plugin install …`.
+1. Панель → **Плагины** → install path `packages/plugins/plugin-excel-workbench` или `pnpm datagent plugin install …`.
 2. Включить для **company** (или **Skills → Каталог → Сообщество** → установить `xlsx`/`pptx` → **Открыть** в библиотеке; host auto-enable при ready instance).
 3. На хосте **plugin worker** установить `officecli` в `PATH` (или `officecliBinaryPath` в company config).
 
@@ -201,10 +201,10 @@ X-Datagent-Run-Id: <heartbeat_run_uuid>
 
 ## Типовые сценарии
 
-- **KPI-отчёт в Excel:** attach шаблон → `inspect_workbook` → `plan_workbook_changes` → approval → `apply` → `render_workbook_preview` → `validate_workbook_quality` → work product.
-- **Сводка для issue:** `summarize_workbook_semantics` после inspect — текст в комментарий агента.
-- **Проверка презентации:** attach `.pptx` → `inspect_powerpoint_document` → `validate_powerpoint_document` → `render_powerpoint_preview` (без изменения слайдов через plan/apply).
-- **Паспорт .docx:** inspect + validate + preview по тому же паттерну, что Word tools.
+- **KPI-отчёт в Excel:** прикрепите шаблон → `inspect_workbook` → `plan_workbook_changes` → согласование → `apply` → `render_workbook_preview` → `validate_workbook_quality` → результат на задаче.
+- **Сводка для задачи:** `summarize_workbook_semantics` после inspect — текст в комментарий агента.
+- **Проверка презентации:** прикрепите `.pptx` → `inspect_powerpoint_document` → `validate_powerpoint_document` → `render_powerpoint_preview` (без изменения слайдов через plan/apply).
+- **Паспорт .docx:** inspect + validate + preview по тому же паттерну, что инструменты Word.
 
 ## Ограничения и безопасность
 
@@ -218,7 +218,7 @@ X-Datagent-Run-Id: <heartbeat_run_uuid>
 
 Файлы сессий — временный каталог worker; TTL — `sessionTtlHours`.
 
-Managed skills (примеры): `office-plugin`, `excel-workbench`, `excel-workbench-operator`, `excel-board-report`, `excel-inventory-export`. В каталоге Board также **community skills** `xlsx`, `pptx`, `excel-analysis` и др. — они описывают plugin-first runtime (`datagent.excel-workbench:*`), не shell `officecli`; см. `doc/community-skills-acceptance.md` в репозитории Datagent.
+Managed skills (примеры): `office-plugin`, `excel-workbench`, `excel-workbench-operator`, `excel-board-report`, `excel-inventory-export`. В каталоге панели также **навыки сообщества** `xlsx`, `pptx`, `excel-analysis` и др. — они описывают runtime через `datagent.excel-workbench:*`, не shell `officecli`; см. `doc/community-skills-acceptance.md` в репозитории Datagent.
 
 ## Связанные разделы
 
@@ -229,7 +229,7 @@ Managed skills (примеры): `office-plugin`, `excel-workbench`, `excel-work
 - [Архитектура агентов](../concepts/agent-architecture)
 
 :::tip Оператору
-Перед run прикрепите `.xlsx`/`.pptx` к issue. Плагин для компании включается автоматически при установке office skill из каталога (если instance ready); иначе — кнопка в панели capabilities на странице Skills. Worker должен быть `ready` в Plugin Manager.
+Перед запуском прикрепите `.xlsx`/`.pptx` к задаче. Плагин для компании включается автоматически при установке office skill из каталога (если инстанс готов); иначе — кнопка в панели на странице навыков. Процесс плагина должен быть в статусе `ready` в менеджере плагинов.
 :::
 
 ## Что дальше?

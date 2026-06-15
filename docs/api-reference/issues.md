@@ -136,7 +136,7 @@ curl -s -X POST "https://app.datagent.ru/api/companies/${COMPANY_ID}/issues" \
 
 ## Что дальше?
 
-- [Агенты и wakeup](/docs/api-reference/agents) — запустить agent после создания задачи
-- [Артефакты (API)](/docs/api-reference/artifacts) — выгрузить файлы компании
-- [Цели](/docs/concepts/goals) — зачем указывать `goalId`
-- [Проекты](/docs/concepts/projects) — зачем указывать `projectId`
+- **Запустите агента** — [агенты и wakeup](/docs/api-reference/agents): run после создания задачи
+- **Выгрузите файлы** — [артефакты (API)](/docs/api-reference/artifacts): медиатека компании
+- **Привяжите цель** — [цели](/docs/concepts/goals): зачем указывать `goalId`
+- **Укажите проект** — [проекты](/docs/concepts/projects): зачем указывать `projectId`

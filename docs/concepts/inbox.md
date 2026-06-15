@@ -70,14 +70,14 @@ description: "Inbox Datagent: задачи «Мои», очередь согла
 Можно настроить **Телеграм** для уведомлений; решение по риску всё равно в панели.
 
 **Чем inbox отличается от чата ChatGPT?**  
-Inbox привязан к **задачам компании**, журналу и команде — не к личному окну чата.
+Inbox привязан к **задачам компании**, журналу run и команде — не к личному окну чата.
 
 **Можно ли скрыть обработанное?**  
 Задачи можно **архивировать** из входящих, не удаляя историю.
 
 ## Что дальше?
 
-- [Подключить Bitrix24](/docs/integrations/bitrix24) — входящие из CRM
-- [Разобраться с согласованиями](/docs/concepts/approvals) — очередь «можно ли?»
-- [Узнать про agent и run](/docs/concepts/agents) · [про каналы](/docs/concepts/channels)
-- [Зарегистрироваться в облаке](https://app.datagent.ru/signup)
+- **Подключите Bitrix24** — [интеграция](/docs/integrations/bitrix24): входящие из CRM
+- **Настройте согласования** — [approvals](/docs/concepts/approvals): очередь «можно ли?»
+- **Разберите агентов** — [агенты](/docs/concepts/agents) · [каналы](/docs/concepts/channels)
+- **Зарегистрируйтесь** — [app.datagent.ru/signup](https://app.datagent.ru/signup)

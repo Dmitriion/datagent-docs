@@ -4,7 +4,7 @@ sidebar_label: Установка и настройка
 description: Установка службы управления браузером на рабочей станции и настройка в облачной панели.
 ---
 
-Пошаговая настройка **управления браузером** на компьютере оператора. Работает с [app.datagent.ru](https://app.datagent.ru). Контракт плагина — в [интеграции](../integrations/browserbridge).
+Пошаговая настройка **управления браузером** на компьютере оператора. Работает с [app.datagent.ru](https://app.datagent.ru). Контракт плагина — в [интеграции](../integrations/browserbridge). Начните с установки плагина в облаке.
 
 ## Установка плагина в облаке
 
@@ -29,7 +29,7 @@ pnpm --filter @datagent/plugin-browserbridge build
 pnpm datagent plugin install ./packages/plugins/plugin-browserbridge
 ```
 
-В Board: **Plugin Manager** → включить **BrowserBridge** для компании.
+В панели: **Менеджер плагинов** → включить **BrowserBridge** для компании.
 
 `pnpm dev` поднимает **только server + UI** на `PORT=3100`; BrowserBridge **не** стартует автоматически в dev-runner. По умолчанию плагин может **встроенно** поднять Local Service в plugin worker (`autoStartLocalService: true`).
 
@@ -81,8 +81,8 @@ pnpm run datagent-bridge status
 ## Подключение server и агентов к bridge
 
 1. **Plugin worker** → HTTP `http://{localServiceHost}:{localServicePort}/execute` (defaults `127.0.0.1:9247`) с токеном из `~/.datagent/bridge.token` или `bridgeTokenSecretRef`.
-2. **Cloud / split machine:** `tunnelMode: true` → WebSocket tunnel на server, pairing через Board.
-3. **Политика URL** для `browser_navigate` — в Board, не через env allowlist.
+2. **Облако / отдельная машина:** `tunnelMode: true` → WebSocket-туннель на сервер, сопряжение через панель.
+3. **Политика URL** для `browser_navigate` — в панели, не через env allowlist.
 
 Подробнее поля config и API server — [интеграция BrowserBridge](../integrations/browserbridge).
 
@@ -120,7 +120,7 @@ curl -s -X POST "http://127.0.0.1:9247/execute" \
   -d '{"action":"navigate","params":{"url":"https://example.com","waitUntil":"load"},"runId":"test-run-001"}'
 ```
 
-3. Статус с Board (нужна сессия пользователя):
+3. Статус из панели (нужна сессия пользователя):
 
 ```bash
 curl -s "http://127.0.0.1:3100/api/companies/<companyId>/browserbridge/status" \
@@ -149,13 +149,13 @@ Workstation kit: `GET /api/browserbridge/workstation-kit` (tar.gz).
 | `browserConnected: false` | CDP не поднят | `launch-chrome` / `connect` |
 | Порт занят | Два экземпляра bridge | Один процесс на `localServicePort` |
 | Headless на Linux без дисплея | `DATAGENT_BROWSER_HEADLESS=1` | Xvfb или удалённый CDP через `POST /connect` |
-| Tool «bridge недоступен» | Tunnel offline | Board → статус tunnel; `tunnelMode` + pairing |
+| Инструмент «мост недоступен» | Туннель offline | Панель → статус туннеля; `tunnelMode` + сопряжение |
 | Navigate blocked | Company policy | allowlist на `/company/settings/browserbridge` |
 
 ## Частые вопросы
 
 **Обязателен ли туннель, если сервер в облаке?**  
-Да, если браузер на вашем ПК, а Datagent на [app.datagent.ru](https://app.datagent.ru) — нужен туннель или VPN до Local Service.
+Да, если браузер на вашем ПК, а Datagent на [app.datagent.ru](https://app.datagent.ru) — нужен туннель или VPN до локальной службы. Настройте сопряжение в панели.
 
 **Какая команда проверяет, что служба жива?**  
 `GET http://127.0.0.1:9247/health` после `datagent-bridge start` — см. шаги выше.
@@ -173,4 +173,4 @@ Workstation kit: `GET /api/browserbridge/workstation-kit` (tar.gz).
 - [BrowserBridge (интеграция)](../integrations/browserbridge)
 - [Обзор управления браузером](./overview)
 - [Архитектура платформы](../concepts/agent-architecture.md)
-- [Старт в Cloud](../cloud/getting-started) — Plugin Manager в Board
+- [Старт в Cloud](../cloud/getting-started) — менеджер плагинов в панели

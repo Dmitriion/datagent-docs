@@ -10,9 +10,7 @@ description: REST API агентов Datagent — CRUD, wakeup, heartbeat-runs, 
 
 > **Зачем:** Запускать и настраивать агентов из CI, скриптов или внешней системы — по тем же правилам, что кнопка «Запуск» в панели.
 
-Как войти в API — [обзор REST API](./overview). Для оператора — [агенты](/docs/concepts/agents) и [heartbeat](/docs/concepts/heartbeat).
-
-Базовый адрес: `https://app.datagent.ru/api`.
+Как войти в API — [обзор REST API](./overview). Для оператора — [агенты](/docs/concepts/agents) и [heartbeat](/docs/concepts/heartbeat). База: `https://app.datagent.ru/api`.
 
 ## Агенты компании
 
@@ -131,7 +129,7 @@ curl -s -X POST "https://app.datagent.ru/api/agents/${AGENT_ID}/wakeup" \
 
 ## Что дальше?
 
-- [Задачи (API)](/docs/api-reference/issues) — checkout и work products после wakeup
-- [Память (API)](/docs/api-reference/memory) — слои конкретного агента
-- [Обзор API](/docs/api-reference/overview) — аутентификация и плагины
-- [Создать первого агента в панели](/docs/cloud/first-agent) — проверить API на живом примере
+- **Возьмите задачу в работу** — [задачи (API)](/docs/api-reference/issues): checkout и work products после wakeup
+- **Подключите память** — [память (API)](/docs/api-reference/memory): слои конкретного агента
+- **Проверьте аутентификацию** — [обзор API](/docs/api-reference/overview): ключи и плагины
+- **Создайте агента в панели** — [первый агент](/docs/cloud/first-agent): проверить API на живом примере

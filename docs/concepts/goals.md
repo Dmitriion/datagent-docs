@@ -93,7 +93,7 @@ flowchart TB
 
 ## Что дальше?
 
-- [Вести задачи под целью](/docs/concepts/issues) — исполнитель и Output
-- [Сгруппировать работу в проект](/docs/concepts/projects) — портфель под цель
-- [Пригласить команду](/docs/concepts/collaboration) — кто видит цели компании
-- [Указать goalId в API](/docs/api-reference/issues) — при создании задачи
+- **Ведите задачи под целью** — [задачи](/docs/concepts/issues): исполнитель и Output
+- **Сгруппируйте в проект** — [проекты](/docs/concepts/projects): портфель под цель
+- **Пригласите команду** — [доступ](/docs/concepts/collaboration): кто видит цели компании
+- **Укажите goalId в API** — [задачи (API)](/docs/api-reference/issues): при создании задачи

@@ -83,6 +83,6 @@ curl -s "https://app.datagent.ru/api/companies/${COMPANY_ID}/memory/chunks/${CHU
 
 ## Что дальше?
 
-- [Настроить память в панели](/docs/concepts/memory) — слои и Gardener без кода
-- [Прочитать обзор REST API](/docs/api-reference/overview) — аутентификация
-- [Понять, откуда в память попадает контекст](/docs/concepts/issues) — после run по задаче
+- **Настройте память в панели** — [концепция](/docs/concepts/memory): слои и Gardener без кода
+- **Проверьте аутентификацию** — [обзор REST API](/docs/api-reference/overview): ключи панели и агента
+- **Свяжите с задачами** — [задачи](/docs/concepts/issues): откуда в память попадает контекст после run

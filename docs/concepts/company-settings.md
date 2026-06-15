@@ -81,7 +81,7 @@ BrowserBridge и расширенный набор plugin — на тарифе 
 
 ## Что дальше?
 
-- [Разобраться с аккаунтом](/docs/cloud/account) — несколько компаний на одну почту
-- [Пригласить команду](/docs/concepts/collaboration) — роли и ссылки `/invite/…`
-- [Установить plugin в облаке](/docs/cloud/plugins) · [создать первого agent](/docs/cloud/first-agent)
-- [Автоматизировать доступ (API)](/docs/api-reference/access) — invites и members
+- **Разберитесь с аккаунтом** — [облако](/docs/cloud/account): несколько компаний на одну почту
+- **Пригласите команду** — [доступ](/docs/concepts/collaboration): роли и ссылки `/invite/…`
+- **Установите plugin** — [плагины](/docs/cloud/plugins) · [первый агент](/docs/cloud/first-agent)
+- **Автоматизируйте доступ** — [API](/docs/api-reference/access): invites и members

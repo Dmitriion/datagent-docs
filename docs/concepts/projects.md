@@ -61,7 +61,7 @@ description: Проекты в Datagent — группировка задач, �
 
 ## Что дальше?
 
-- [Вести задачи в проекте](/docs/concepts/issues) — assignee, план, Output
-- [Фильтровать артефакты](/docs/artifacts/overview) — `projectId` в каталоге
-- [Лимиты расхода](/docs/concepts/budgets) — hard-stop на уровне проекта
-- [Посмотреть портфель в Офисе](/docs/office/overview) — визуальная карта
+- **Ведите задачи в проекте** — [задачи](/docs/concepts/issues): assignee, план, Output
+- **Фильтруйте артефакты** — [каталог](/docs/artifacts/overview): `projectId` в URL
+- **Задайте лимиты** — [бюджеты](/docs/concepts/budgets): hard-stop на уровне проекта
+- **Откройте портфель в Офисе** — [обзор](/docs/office/overview): визуальная карта

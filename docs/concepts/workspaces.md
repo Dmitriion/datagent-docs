@@ -80,7 +80,7 @@ BrowserBridge — браузер на **вашей** станции. Execution w
 
 ## Что дальше?
 
-- [Настроить проект](/docs/concepts/projects) — портфель и политика среды
-- [Разобраться с задачами и run](/docs/concepts/issues) — checkout и журнал
-- [Хранить ключи среды в секретах](/docs/concepts/secrets) — без утечек в чат
-- [Посмотреть execution-workspaces в API](/docs/api-reference/overview) — для автоматизации
+- **Настройте проект** — [проекты](/docs/concepts/projects): портфель и политика среды
+- **Разберите задачи и run** — [задачи](/docs/concepts/issues): checkout и журнал
+- **Храните ключи в секретах** — [секреты](/docs/concepts/secrets): без утечек в чат
+- **Автоматизируйте среды** — [обзор API](/docs/api-reference/overview): execution-workspaces

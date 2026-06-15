@@ -62,6 +62,6 @@ description: Хранение GIGACHAT, Yandex и других ключей в D
 
 ## Что дальше?
 
-- [Создать первого агента](/docs/cloud/first-agent) — поля GigaChat/Yandex через секреты
-- [Собрать команду агентов](/docs/guides/02-your-team) — secret_ref в чеклисте
-- [Подключить Bitrix24](/docs/integrations/bitrix24) — webhook в секретах плагина
+- **Создайте первого агента** — [первый агент](/docs/cloud/first-agent): GigaChat/Yandex через секреты
+- **Соберите команду** — [учебник](/docs/guides/02-your-team): secret_ref в чеклисте
+- **Подключите Bitrix24** — [интеграция](/docs/integrations/bitrix24): webhook в секретах плагина

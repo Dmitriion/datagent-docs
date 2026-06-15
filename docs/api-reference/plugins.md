@@ -124,7 +124,7 @@ Webhook объявляют в **манифесте** plugin; без worker от�
 
 ## Что дальше?
 
-- [Собрать свой plugin](/docs/tutorials/build-plugin) — SDK и manifest
-- [Подключить BrowserBridge](/docs/integrations/browserbridge) · [Bitrix24](/docs/integrations/bitrix24)
-- [Каналы](/docs/concepts/channels) — как plugin ведёт диалог в задачи
-- [Обзор API](/docs/api-reference/overview) — аутентификация и смежные разделы
+- **Соберите свой plugin** — [туториал](/docs/tutorials/build-plugin): SDK и manifest
+- **Подключите интеграции** — [BrowserBridge](/docs/integrations/browserbridge) · [Bitrix24](/docs/integrations/bitrix24)
+- **Настройте каналы** — [каналы](/docs/concepts/channels): как plugin ведёт диалог в задачи
+- **Проверьте аутентификацию** — [обзор API](/docs/api-reference/overview): ключи и смежные разделы
