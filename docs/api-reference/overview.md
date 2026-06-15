@@ -22,7 +22,8 @@ description: REST API Datagent — здоровье сервиса, агенты
 | Задачи, checkout, plan, work products | [Задачи (API)](./issues) |
 | Память (слои, фрагменты) | [Память (API)](./memory) |
 | Артефакты компании | [Артефакты (API)](./artifacts) · [каталог](/docs/artifacts/overview) |
-| Плагины, tools | этот документ — [ниже](#плагины) |
+| Плагины, tools, webhooks | [Плагины (API)](./plugins) |
+| Приглашения, members | [Доступ (API)](./access) |
 
 ## Аутентификация
 
@@ -95,22 +96,11 @@ curl -s -X POST "https://app.datagent.ru/api/agents/${AGENT_ID}/wakeup" \
 | Компании | `GET/POST /api/companies`, `GET /api/companies/:companyId` |
 | Согласования | `GET /api/companies/:companyId/approvals`, `POST /api/approvals/:id/approve` |
 | Секреты | `/api/companies/:companyId/secrets` — [секреты](/docs/concepts/secrets) |
-| Доступ | `/api/companies/:companyId/members`, `/api/invite/:token` — [команда](/docs/concepts/collaboration) |
+| Доступ | `/api/companies/:companyId/members`, `/api/invites/:token` — [доступ (API)](./access) |
 
 ## Плагины
 
-Установка и включение расширений, список **инструментов агента**, отладочный вызов инструмента.
-
-| Метод | Путь | Назначение |
-| --- | --- | --- |
-| `GET` | `/api/plugins` | Установленные плагины |
-| `POST` | `/api/plugins/install` | Установка (имя npm-пакета или локальный путь) |
-| `POST` | `/api/plugins/:pluginId/enable` | Включить |
-| `GET` | `/api/plugins/tools` | Список инструментов |
-| `POST` | `/api/plugins/tools/execute` | Выполнить инструмент (отладка) |
-| `POST` | `/api/plugins/:pluginId/webhooks/:endpointKey` | Входящий webhook (если объявлен в манифесте) |
-
-Имена инструментов: `идентификатор_плагина:имя`, например `datagent.browserbridge:browser_navigate`. См. [Создание плагина](../tutorials/build-plugin.md).
+Установка, config, **tools**, webhooks и jobs — [Плагины (API)](./plugins). Имена tools: `pluginId:имя`, например `datagent.browserbridge:browser_navigate`. Операторский путь — [плагины в облаке](/docs/cloud/plugins).
 
 ## Браузер, память, адаптеры
 
@@ -167,7 +157,8 @@ curl -s -X POST "https://app.datagent.ru/api/agents/${AGENT_ID}/wakeup" \
 
 - [Агенты (API)](/docs/api-reference/agents) — wakeup, ключи, heartbeat-runs
 - [Задачи (API)](/docs/api-reference/issues) — checkout, план, Output
-- [Запустить первого агента](/docs/cloud/first-agent) — проверить API в облаке
+- [Плагины (API)](/docs/api-reference/plugins) — install, tools, webhooks
+- [Доступ (API)](/docs/api-reference/access) — invites и members
 - [Собрать свой плагин](/docs/tutorials/build-plugin) — инструменты агента
 
 ## Связанные разделы

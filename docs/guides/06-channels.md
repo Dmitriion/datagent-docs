@@ -95,4 +95,5 @@ flowchart LR
 **Следующая глава:** [Документы на задаче](./07-documents)
 
 - [Туториал Bitrix → Телеграм](../tutorials/automate-crm)
+- [Каналы — концепция](/docs/concepts/channels)
 - [Шпаргалка](./playbook-index)

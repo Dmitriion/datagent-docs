@@ -70,6 +70,7 @@ const sidebars: SidebarsConfig = {
         'concepts/routines',
         'concepts/approvals',
         'concepts/inbox',
+        'concepts/channels',
       ],
     },
     {
@@ -81,6 +82,7 @@ const sidebars: SidebarsConfig = {
         'concepts/credits',
         'concepts/budgets',
         'concepts/secrets',
+        'concepts/company-settings',
         'concepts/how-it-works',
         'concepts/agent-architecture',
         'concepts/llm-adapters',
@@ -167,7 +169,9 @@ const sidebars: SidebarsConfig = {
         'api-reference/agents-api',
         'api-reference/issues-api',
         'api-reference/memory-api',
+        'api-reference/plugins-api',
         'api-reference/artifacts-api',
+        'api-reference/access-api',
       ],
     },
     {
