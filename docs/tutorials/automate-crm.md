@@ -2,36 +2,38 @@
 id: automate-crm
 title: Чат Bitrix24 и уведомления в Telegram
 sidebar_label: Bitrix24 → Telegram
-description: Сценарий Datagent — imbot bridge (bitrix-poll), binding агента, heartbeat issues; плагин Telegram Datagent с long poll.
+description: Сценарий — чат Битрикс24, ответ агента и уведомления в Телеграм.
 ---
 
-Сценарий: **пользователь пишет боту в чате Bitrix24** → плагин `datagent.bitrix24` создаёт issue и будит агента → ответ возвращается в Bitrix; параллельно **плагин Telegram Datagent**[^tg-npm] может слать дайджесты или апрувы в чат команды. Это **не** выгрузка «новых лидов CRM» и **не** agent tools `bitrix24_*` / `telegram_send_message`.
+**Сценарий:** сотрудник пишет боту в **чате Битрикс24** → в Datagent создаётся **задача**, агент отвечает → ответ возвращается в Битрикс. Параллельно **Телеграм** может присылать дайджесты или запросы на согласование команде.
 
-Эталон по bridge: [Bitrix24](../integrations/bitrix24.md). По Telegram: [интеграция Telegram](../integrations/telegram.md).
+Это **не** автоматическая выгрузка «новых лидов» из CRM и не набор кнопок «создать сделку» в панели.
+
+Подробнее: [Битрикс24](../integrations/bitrix24.md), [Телеграм](../integrations/telegram.md).
 
 ## Предварительные условия
 
-- [Быстрый старт](../getting-started/quickstart) — `http://localhost:3100`, `pnpm dev`.
+- [Старт в Cloud](../cloud/getting-started) — [app.datagent.ru](https://app.datagent.ru).
 - Bitrix24: входящий REST webhook, scope **imbot** (+ user/department/disk по гайду).
 - Плагины: `datagent.bitrix24` и **плагин Telegram Datagent**[^tg-npm].
 - Агент: `gigachat_local` или `yandexgpt_local`, модель `gigachat/GigaChat-2-Pro` или `yandexgpt/rc`.
 
-## Шаг 1. Агент для чата Bitrix
+## Шаг 1. Агент для чата Битрикс24
 
-Board → `/{issuePrefix}/agents/new` (префикс компании в URL, см. [Первый агент](../getting-started/first-agent.md)):
+В панели на [app.datagent.ru](https://app.datagent.ru) создайте агента (см. [Первый агент](../cloud/first-agent)):
 
 | Поле | Значение |
 | --- | --- |
 | Name | `bitrix-chat-assistant` |
 | Adapter | `gigachat_local` или `yandexgpt_local` |
 | Model | `gigachat/GigaChat-2-Pro` или `yandexgpt/rc` (+ `folderId` для Yandex) |
-| Tools | Только из **включённых** плагинов (BrowserBridge, Telegram tools и т.д.) |
+| Инструменты | Только из **включённых** плагинов |
 
 System prompt:
 
 ```text
-Ты ассистент в открытой линии Bitrix24. Контекст — issue и комментарии Datagent.
-Отвечай кратко по-русски. Не вызывай несуществующие CRM API из Board.
+Ты ассистент в открытой линии Битрикс24. Контекст — задача и комментарии в Datagent.
+Отвечай кратко по-русски. Не выдумывай действия в CRM, которых нет в инструментах.
 ```
 
 Секреты LLM — env агента с `secret_ref` ([GigaChat](../integrations/gigachat.md), [YandexGPT](../integrations/yandexgpt.md)).
@@ -40,8 +42,8 @@ System prompt:
 
 По [Bitrix24](../integrations/bitrix24.md):
 
-1. **Plugin Manager** — установить `datagent.bitrix24`, включить для instance.
-2. **Company → Bitrix24** (UI портала):
+1. **Менеджер плагинов** — установить `datagent.bitrix24`, включить для компании.
+2. **Компания → Битрикс24**:
    - URL портала, webhook REST (`…/rest/USER/TOKEN/`);
    - регистрация imbot (`imbot.v2.Bot.register`) или привязка существующего;
    - **APPLICATION TOKEN** imbot в UI бота / `bot_token_secret_ref`.
@@ -49,16 +51,16 @@ System prompt:
 4. **Запустить bridge** — `poll_enabled`; job плагина **`bitrix-poll`** (cron `* * * * *`) вызывает `imbot.v2.Event.get`.
 5. **Проверить соединение** — `profile` + `imbot.v2.Event.get`.
 
-Тест: сообщение боту в Bitrix → issue в Board → heartbeat run → ответ в чате Bitrix (`imbot.v2.Chat.Message.send`).
+Тест: сообщение боту в Битрикс24 → задача в панели → запуск агента → ответ в чате Битрикс24.
 
-## Шаг 3. Плагин Telegram Datagent (long poll)
+## Шаг 3. Телеграм (уведомления и согласования)
 
 [^tg-npm]: Ключ registry: `datagent.plugin-telegram`; алиасы npm — [Технические идентификаторы](../integrations/telegram.md#технические-идентификаторы).
 
 1. BotFather → token → company secret → `telegramBotTokenRef`.
-2. Plugin Manager → установить плагин Telegram Datagent[^tg-npm] → **Company → Telegram Settings**.
-3. `defaultChatId` / `digestChatId` — чат команды; `enableInbound` при двусторонней связи с issues.
-4. **Board Access Connection** — для inline-апрувов.
+2. **Менеджер плагинов** → установить плагин Телеграм → **Компания → Настройки Телеграм**.
+3. Укажите чаты команды для дайджестов и уведомлений.
+4. Подключите **доступ панели** — для кнопок согласования в мессенджере.
 
 Входящие сообщения: worker **`getUpdates`** (long poll), не webhook Datagent. Публичный URL инстанса нужен для **ссылок на issues** в TG, не для приёма апдейтов.
 
@@ -81,27 +83,20 @@ sequenceDiagram
   Note over TG: Параллельно: notify / digest / approvals<br/>в настроенный chat_id
 ```
 
-## Шаг 5. Мониторинг
+## Шаг 5. Где смотреть результат
 
-- Board: `/{issuePrefix}/agents/{agentId}/runs/{runId}` или список heartbeat runs компании.
-- API:
-
-```bash
-curl -s "http://127.0.0.1:3100/api/heartbeat-runs/<RUN_ID>/log" \
-  -H "Authorization: Bearer <board_token>"
-```
-
-- `pnpm datagent doctor` — instance / БД.
+- В панели: карточка агента → журнал запусков.
+- Для инженеров: API журнала запуска (см. [Обзор API](../api-reference/overview.md)).
 
 ## Расширение
 
 - Несколько ботов → отдельные bindings и агенты.
-- Апрувы в Telegram (`request_board_approval`).
-- CRM REST (лиды/сделки) — вне `datagent.bitrix24`; нужен отдельный плагин.
+- Согласования в Телеграм (запрос из плагина).
+- Выгрузка лидов и сделок CRM — **вне** стандартного плагина Битрикс24; нужна отдельная доработка.
 
 ## Связанные разделы
 
 - [Bitrix24](../integrations/bitrix24.md)
 - [Telegram](../integrations/telegram.md)
-- [Первый агент](../getting-started/first-agent.md)
+- [Первый агент](../cloud/first-agent)
 - [Как это работает](../concepts/how-it-works.md)

@@ -1,14 +1,20 @@
 ---
-title: Установка и настройка BrowserBridge
+title: Установка и настройка
 sidebar_label: Установка и настройка
-description: datagent-bridge install/start, CDP, переменные окружения, Local Service API, проверка curl и настройка в Board.
+description: Установка службы управления браузером на рабочей станции и настройка в облачной панели.
 ---
 
-Пошаговая эксплуатация **BrowserBridge** на рабочей станции. Контракт agent tools и маршруты server — в [интеграции BrowserBridge](../integrations/browserbridge).
+Пошаговая настройка **управления браузером** на компьютере оператора. Работает с [app.datagent.ru](https://app.datagent.ru). Контракт плагина — в [интеграции](../integrations/browserbridge).
 
-## Установка в монорепозитории
+## Установка плагина в облаке
 
-Из корня checkout Datagent (см. [Установку](../getting-started/installation.md) и [Быстрый старт](../getting-started/quickstart)):
+1. Войдите в панель → **Менеджер плагинов**.
+2. Установите `datagent.browserbridge` (если ещё не установлен).
+3. Включите плагин для компании.
+
+## Установка Local Service (рабочая станция)
+
+Демон `@datagent/browserbridge-local` ставится **на ПК оператора**, не на сервер Datagent. Из checkout monorepo (для разработки):
 
 ```bash
 pnpm install
@@ -146,9 +152,25 @@ Workstation kit: `GET /api/browserbridge/workstation-kit` (tar.gz).
 | Tool «bridge недоступен» | Tunnel offline | Board → статус tunnel; `tunnelMode` + pairing |
 | Navigate blocked | Company policy | allowlist на `/company/settings/browserbridge` |
 
+## Частые вопросы
+
+**Обязателен ли туннель, если сервер в облаке?**  
+Да, если браузер на вашем ПК, а Datagent на [app.datagent.ru](https://app.datagent.ru) — нужен туннель или VPN до Local Service.
+
+**Какая команда проверяет, что служба жива?**  
+`GET http://127.0.0.1:9247/health` после `datagent-bridge start` — см. шаги выше.
+
+**Где включить плагин?**  
+**Менеджер плагинов** в панели → BrowserBridge → настройки компании.
+
+## Что дальше?
+
+- [Обзор управления браузером](./overview) · [Интеграция BrowserBridge](../integrations/browserbridge)
+- [Старт в Cloud](../cloud/getting-started) · [app.datagent.ru](https://app.datagent.ru)
+
 ## Связанные разделы
 
 - [BrowserBridge (интеграция)](../integrations/browserbridge)
 - [Обзор управления браузером](./overview)
 - [Архитектура платформы](../concepts/agent-architecture.md)
-- [Быстрый старт](../getting-started/quickstart)
+- [Старт в Cloud](../cloud/getting-started) — Plugin Manager в Board

@@ -2,135 +2,143 @@
 id: overview
 title: Обзор REST API
 sidebar_label: Обзор API
-description: REST API Datagent на /api — health, агенты, heartbeat-runs, issues, plugins; без выдуманного POST /runs.
+description: REST API Datagent — здоровье сервиса, агенты, задачи, плагины; для разработчиков и интеграторов.
 ---
 
-HTTP API Datagent монтируется на префикс **`/api`** (по умолчанию тот же origin, что и Board — `http://localhost:3100` при `pnpm dev`). Это **не** отдельный сервис `apps/api` и не порт `:3200`. Исполнение агентов — **heartbeat** (`heartbeatService` в `server/`), а не публичный «Runner API» с `POST /runs`.
+**REST API** Datagent — способ программно управлять платформой: агентами, задачами, запусками, плагинами. В **облаке** все запросы идут на `https://app.datagent.ru/api/...` — тот же адрес, что и панель в браузере.
 
-Плагины и LLM-адаптеры — разные контуры: tools плагинов (`POST /api/plugins/tools/execute`), адаптеры — `server/src/routes/adapters.ts` и конфиг агента (см. [Архитектура](../concepts/agent-architecture.md)).
+Запуск агента выполняется **внутренним циклом сервера**, а не отдельным публичным «создать запуск» (такого метода в API нет). Плагины и нейросетевые адаптеры — разные вещи: плагины дают **инструменты** (браузер, файлы, интеграции), адаптеры — **модель** агента. Подробнее — в [Архитектуре](../concepts/agent-architecture.md).
+
+:::note Для инженеров
+Префикс `/api`, внутренний цикл heartbeat, `POST /api/agents/:id/wakeup`, журнал `heartbeat-runs` — детали в разделах ниже.
+:::
 
 ## Аутентификация
 
-`server/src/middleware/auth.ts` (`actorMiddleware`):
+Перед любым запросом сервер определяет, **кто вы**: оператор панели, внешний скрипт или сам агент. В облаке обычно используется **сессия входа** (cookie после авторизации на app.datagent.ru) или **ключ API** в заголовке `Authorization: Bearer …`.
 
-| Режим | Как авторизоваться |
-| --- | --- |
-| **`local_trusted`** (типичный dev) | Неявный board-пользователь на loopback; многие маршруты доступны без заголовка |
-| **`authenticated`** | Сессия Better Auth (`/api/auth/*`, cookie) **или** `Authorization: Bearer <token>` |
+| Режим | Когда встречается | Как авторизоваться |
+| --- | --- | --- |
+| **`local_trusted`** | Локальная разработка на своей машине | Часто без заголовка — неявный пользователь панели |
+| **`authenticated`** | Облако и продакшен | Сессия (`/api/auth/*`, cookie) **или** `Authorization: Bearer <ключ>` |
 
-Bearer-токен:
+**Два вида ключей Bearer:**
 
-- **Board API key** — ключ пользователя Board (управление компанией, агентами, approvals).
-- **Agent API key** — создаётся `POST /api/agents/:agentId/keys` (ответ содержит секрет один раз); агент может вызывать ограниченный набор маршрутов (`/api/agents/me/*`, wakeup себя и т.д.).
+- **Ключ панели** — для управления компанией, агентами, согласованиями.
+- **Ключ агента** — создаётся один раз через `POST /api/agents/:agentId/keys`; агент может вызывать ограниченный набор маршрутов (свой профиль, пробуждение себя и т.д.).
 
-Дополнительно: опциональный HTTP-заголовок идентификатора run в actor middleware (`server/src/middleware/auth.ts`, чтение `runIdHeader`). Имя заголовка в коде — legacy; передавайте только если ваш клиент или адаптер уже ожидает это поле (см. `cli/src/client/http.ts`, `packages/adapter-utils`).
+Тела запросов — JSON (`Content-Type: application/json`), если не указано иное. При ошибке чаще всего приходит `{ "error": "<текст>" }` — единого каталога кодов ошибок для всего API нет.
 
-Тела запросов — `application/json`, если не указано иное. Ответы об ошибках чаще всего `{ "error": "<текст>" }` (`HttpError`, Zod) — **нет** единого каталога кодов вида `INVALID_REQUEST` для всего API.
+:::info Заголовок идентификатора запуска
+Некоторые клиенты передают опциональный заголовок с id текущего запуска — только если ваш адаптер или CLI уже на это рассчитан (`cli/src/client/http.ts`, `packages/adapter-utils`).
+:::
 
 ## Схема
 
+На высоком уровне клиент (панель, скрипт или агент) обращается к одному HTTP-серверу; тот маршрутизирует запросы к агентам, задачам, плагинам и журналу запусков.
+
 ```mermaid
 flowchart LR
-  Client[Клиент / Board / Agent] -->|HTTPS :3100/api| Express[server Express]
-  Express --> Agents[agents routes]
-  Express --> HB[heartbeat via agents]
-  Express --> Issues[issues]
-  Express --> Plugins[plugins]
-  Express --> BB[browserbridge]
-  Agents --> PWM[PluginWorkerManager]
+  Client[Клиент / панель / агент] -->|HTTPS /api| Express[Сервер API]
+  Express --> Agents[Маршруты агентов]
+  Express --> HB[Запуски через агентов]
+  Express --> Issues[Задачи]
+  Express --> Plugins[Плагины]
+  Express --> BB[Управление браузером]
+  Agents --> PWM[Менеджер процессов плагинов]
 ```
 
-Монтирование маршрутов: `server/src/app.ts` → `api.use("/health", …)`, `api.use(agentRoutes)`, `api.use(issueRoutes)`, `api.use(pluginRoutes)`, … → `app.use("/api", api)`.
+Точка монтирования в коде: `server/src/app.ts` → префикс `/api`, затем доменные маршруты (`agents`, `issues`, `plugins`, …).
 
-## Health
+## Проверка доступности (Health)
 
-| Метод | Путь | Auth |
+Самый простой способ убедиться, что сервер отвечает — запрос **здоровья** без авторизации (расширенные поля — с ключом или сессией).
+
+| Метод | Путь | Авторизация |
 | --- | --- | --- |
-| `GET` | `/api/health` | Публичный минимум; расширенные поля — board/agent или dev token |
-
-Пример:
+| `GET` | `/api/health` | Минимум публичный; детали — с ключом панели/агента |
 
 ```bash
-curl -s http://127.0.0.1:3100/api/health
+curl -s https://app.datagent.ru/api/health
 ```
 
 ## Агенты
 
-Базовый список (не `GET /api/agents` без company scope):
+Агенты всегда привязаны к **компании**. Глобального списка «все агенты» без id компании в API нет.
 
-| Метод | Путь | Описание |
+| Метод | Путь | Назначение |
 | --- | --- | --- |
-| `GET` | `/api/companies/:companyId/agents` | Агенты компании |
-| `GET` | `/api/agents/:id` | Карточка агента |
+| `GET` | `/api/companies/:companyId/agents` | Список агентов компании |
+| `GET` | `/api/agents/:id` | Карточка одного агента |
 | `POST` | `/api/companies/:companyId/agents` | Создать агента |
-| `PATCH` | `/api/agents/:id` | Обновить |
-| `POST` | `/api/agents/:id/pause` | Пауза |
+| `PATCH` | `/api/agents/:id` | Обновить настройки |
+| `POST` | `/api/agents/:id/pause` | Приостановить |
 | `POST` | `/api/agents/:id/resume` | Возобновить |
-| `POST` | `/api/agents/:id/keys` | Создать agent API key |
-| `GET` | `/api/agents/:id/runtime-state` | Состояние runtime агента |
+| `POST` | `/api/agents/:id/keys` | Выпустить ключ API агента |
+| `GET` | `/api/agents/:id/runtime-state` | Состояние выполнения |
 
-Адаптеры/модели на компанию: `GET /api/companies/:companyId/adapters/:type/models`, `POST …/test-environment` (см. `agents.ts`).
+Модели и проверка окружения адаптера: `GET /api/companies/:companyId/adapters/:type/models`, `POST …/test-environment`.
 
-## Heartbeat (запуск run)
+## Запуск агента (журнал heartbeat)
 
-Публичного **`POST /api/runs`** в репозитории **нет**. Run создаётся через **wakeup** агента:
+**Важно:** публичного `POST /api/runs` **нет**. Новый запуск создаётся через **пробуждение** агента — тот же механизм, что кнопка «Запуск» в панели.
 
-| Метод | Путь | Ответ |
+| Метод | Путь | Назначение |
 | --- | --- | --- |
-| `POST` | `/api/agents/:id/wakeup` | `202` + объект heartbeat run или `{ status: "skipped" }` |
-| `POST` | `/api/agents/:id/heartbeat/invoke` | Legacy alias wakeup (`source: "on_demand"`, тело может быть пустым) |
-| `GET` | `/api/companies/:companyId/heartbeat-runs` | Список run (query `agentId`, `limit`) |
-| `GET` | `/api/heartbeat-runs/:runId` | Один run + метаданные |
-| `GET` | `/api/heartbeat-runs/:runId/events` | События run |
-| `GET` | `/api/heartbeat-runs/:runId/log` | Лог |
-| `POST` | `/api/heartbeat-runs/:runId/cancel` | Отмена (board) |
-| `GET` | `/api/issues/:issueId/live-runs` | Активные run по issue |
-| `GET` | `/api/issues/:issueId/active-run` | Текущий run issue |
+| `POST` | `/api/agents/:id/wakeup` | Запустить агента (`202` + объект запуска или `{ status: "skipped" }`) |
+| `POST` | `/api/agents/:id/heartbeat/invoke` | Устаревший псевдоним wakeup |
+| `GET` | `/api/companies/:companyId/heartbeat-runs` | Список запусков (фильтры `agentId`, `limit`) |
+| `GET` | `/api/heartbeat-runs/:runId` | Один запуск и метаданные |
+| `GET` | `/api/heartbeat-runs/:runId/events` | События по шагам |
+| `GET` | `/api/heartbeat-runs/:runId/log` | Текстовый журнал |
+| `POST` | `/api/heartbeat-runs/:runId/cancel` | Отмена (оператор панели) |
+| `GET` | `/api/issues/:issueId/live-runs` | Активные запуски по задаче |
+| `GET` | `/api/issues/:issueId/active-run` | Текущий запуск задачи |
 
 ### POST /api/agents/:id/wakeup
 
-Тело (`wakeAgentSchema` в `packages/shared/src/validators/agent.ts`):
+Тело запроса (схема `wakeAgentSchema`):
 
 ```json
 {
   "source": "on_demand",
   "triggerDetail": "manual",
   "reason": "Проверка API",
-  "payload": { "issueId": "uuid-issue" },
-  "idempotencyKey": "my-job-2026-06-03",
+  "payload": { "issueId": "uuid-задачи" },
+  "idempotencyKey": "мой-запуск-2026-06-03",
   "forceFreshSession": false
 }
 ```
 
-| Поле | Тип | Описание |
+| Поле | Значения | Смысл |
 | --- | --- | --- |
-| `source` | `timer` \| `assignment` \| `on_demand` \| `automation` | Источник (default `on_demand`) |
-| `triggerDetail` | `manual` \| `ping` \| `callback` \| `system` | Детализация |
-| `reason` | string | Произвольная причина |
-| `payload` | object | Контекст для адаптера/run |
-| `idempotencyKey` | string | Идемпотентность |
-| `forceFreshSession` | boolean | Новая сессия адаптера |
+| `source` | `timer`, `assignment`, `on_demand`, `automation` | Откуда инициирован запуск (по умолчанию `on_demand`) |
+| `triggerDetail` | `manual`, `ping`, `callback`, `system` | Уточнение источника |
+| `reason` | строка | Произвольный комментарий |
+| `payload` | объект | Контекст для адаптера (например id задачи) |
+| `idempotencyKey` | строка | Повтор с тем же ключом не создаст дубликат |
+| `forceFreshSession` | boolean | Начать с новой сессии адаптера |
 
-Пример curl (board session или Bearer board key; в `local_trusted` часто без auth):
+Пример (ключ панели или агента в `Authorization`):
 
 ```bash
-export DATAGENT_API=http://127.0.0.1:3100/api
+export DATAGENT_API=https://app.datagent.ru/api
 export AGENT_ID="<uuid-агента>"
 
 curl -s -X POST "${DATAGENT_API}/agents/${AGENT_ID}/wakeup" \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer ${BOARD_OR_AGENT_TOKEN}" \
-  -d '{"source":"on_demand","reason":"API test","payload":{"note":"hello"}}'
+  -H "Authorization: Bearer ${КЛЮЧ_ПАНЕЛИ_ИЛИ_АГЕНТА}" \
+  -d '{"source":"on_demand","reason":"Проверка API","payload":{"note":"привет"}}'
 ```
 
 ### GET /api/heartbeat-runs/:runId
 
-Возвращает запись из `heartbeat_runs` (поля зависят от схемы БД: `status`, `agentId`, `companyId`, `startedAt`, `finishedAt`, `resultJson`, …). Статусы в health-check и коде включают как минимум `queued`, `running` (см. `server/src/routes/health.ts`).
+Возвращает запись запуска из БД: `status`, `agentId`, `companyId`, `startedAt`, `finishedAt`, `resultJson` и др. Типичные статусы: `queued`, `running`, `succeeded`, `failed`.
 
-Polling:
+Ожидание завершения (опрос раз в 2 с):
 
 ```bash
-RUN_ID="<uuid-run>"
+RUN_ID="<uuid-запуска>"
 until [ "$(curl -s -H "Authorization: Bearer ${TOKEN}" \
   "${DATAGENT_API}/heartbeat-runs/${RUN_ID}" | jq -r '.status')" = "succeeded" ] \
   || [ "$(curl -s ... | jq -r '.status')" = "failed" ]; do
@@ -140,9 +148,9 @@ curl -s -H "Authorization: Bearer ${TOKEN}" \
   "${DATAGENT_API}/heartbeat-runs/${RUN_ID}" | jq .
 ```
 
-### Пример trace (события run)
+### Пример цепочки событий
 
-Упрощённый вид шагов (LLM + plugin tool; **без** CRM tools):
+Упрощённый вид (нейросеть + инструмент плагина):
 
 ```json
 {
@@ -156,62 +164,97 @@ curl -s -H "Authorization: Bearer ${TOKEN}" \
 }
 ```
 
-Полный поток: `GET /api/heartbeat-runs/:runId/events` и `/log`. Bitrix24 bridge не добавляет `bitrix24_*` в tool dispatcher — см. [Bitrix24](../integrations/bitrix24.md).
+Полный журнал: `GET …/events` и `GET …/log`. Плагин Битрикс24 не добавляет отдельные CRM-инструменты — см. [Битрикс24](../integrations/bitrix24.md).
 
-## Issues, approvals, companies
+## Компании, задачи и согласования
+
+Группы маршрутов для повседневной работы оператора и интеграций.
 
 | Группа | Примеры путей |
 | --- | --- |
-| Companies | `GET/POST /api/companies`, `GET /api/companies/:companyId` |
-| Issues | `GET /api/companies/:companyId/issues`, `POST …/issues`, `GET /api/issues/:id`, комментарии, documents |
-| Approvals | `GET /api/companies/:companyId/approvals`, `POST …/approvals`, `POST /api/approvals/:id/approve` |
-| Secrets | `/api/companies/:companyId/secrets` (см. `secrets.ts`) |
-| Activity | `GET /api/issues/:id/runs` — activity/history, **не** heartbeat scheduler |
+| Компании | `GET/POST /api/companies`, `GET /api/companies/:companyId` |
+| Задачи | `GET /api/companies/:companyId/issues`, `POST …/issues`, `GET /api/issues/:id`, комментарии, документы |
+| Согласования | `GET /api/companies/:companyId/approvals`, `POST …/approvals`, `POST /api/approvals/:id/approve` |
+| Секреты | `/api/companies/:companyId/secrets` |
+| История | `GET /api/issues/:id/runs` — активность по задаче (не путать с планировщиком heartbeat) |
 
-## Plugins
+## Плагины
 
-| Метод | Путь | Описание |
+Установка и включение расширений, список **инструментов агента**, отладочный вызов инструмента.
+
+| Метод | Путь | Назначение |
 | --- | --- | --- |
-| `GET` | `/api/plugins` | Установленные плагины instance |
-| `POST` | `/api/plugins/install` | Установка (`packageName` или local path) |
+| `GET` | `/api/plugins` | Установленные плагины |
+| `POST` | `/api/plugins/install` | Установка (имя npm-пакета или локальный путь) |
 | `POST` | `/api/plugins/:pluginId/enable` | Включить |
-| `GET` | `/api/plugins/tools` | Список agent tools |
-| `POST` | `/api/plugins/tools/execute` | Выполнить tool (отладка / агентский контур) |
-| `POST` | `/api/plugins/:pluginId/webhooks/:endpointKey` | Inbound webhook (если в manifest) |
+| `GET` | `/api/plugins/tools` | Список инструментов |
+| `POST` | `/api/plugins/tools/execute` | Выполнить инструмент (отладка) |
+| `POST` | `/api/plugins/:pluginId/webhooks/:endpointKey` | Входящий webhook (если объявлен в манифесте) |
 
-Имена tools: `datagent.browserbridge:browser_navigate` и т.д. — см. [Создание плагина](../tutorials/build-plugin.md).
+Имена инструментов: `идентификатор_плагина:имя`, например `datagent.browserbridge:browser_navigate`. См. [Создание плагина](../tutorials/build-plugin.md).
 
-## BrowserBridge, memory, adapters
+## Браузер, память, адаптеры
 
 | Группа | Базовый путь |
 | --- | --- |
-| BrowserBridge | `/api/companies/:companyId/browserbridge/*`, `/api/browserbridge/workstation-kit` |
-| Memory (control plane) | `/api/companies/:companyId/memory/*` |
-| LLM reflection | `GET /api/llms/agent-configuration.txt` (не под `/api` mount llmRoutes — проверьте: `app.use(llmRoutes)` **без** `/api` prefix!) |
+| Управление браузером | `/api/companies/:companyId/browserbridge/*`, `/api/browserbridge/workstation-kit` |
+| Память | `/api/companies/:companyId/memory/*` |
+| Текст для настройки агента | `GET /llms/agent-configuration.txt` — **вне** префикса `/api` |
 
-**Важно:** `llmRoutes` в `app.ts` монтируется как `app.use(llmRoutes(db))` **вне** префикса `/api` — путь `GET /llms/agent-configuration.txt`, не `/api/llms/...`.
+:::warning Путь к LLM-тексту
+Маршрут `llmRoutes` в `app.ts` монтируется **без** `/api` — используйте `GET /llms/agent-configuration.txt`, не `/api/llms/...`.
+:::
 
-## OpenAPI
+## OpenAPI и спецификации
 
-В репозитории **нет** `apps/api/openapi.yaml` и **нет** эндпоинта `GET /openapi.json` на server.
+В репозитории **нет** полной OpenAPI-спеки всего API и **нет** `GET /openapi.json` на сервере.
 
-Частичная Swagger-спека только для memory API: `doc/openapi/memory-control-plane.yaml` (`basePath: /api`, подмножество memory routes). Для остального API ориентируйтесь на `server/src/routes/*.ts` и тесты `server/src/__tests__/*routes*`.
+Частичная Swagger-спека только для API памяти: `doc/openapi/memory-control-plane.yaml`. Для остальных маршрутов ориентируйтесь на `server/src/routes/*.ts` и тесты `server/src/__tests__/*routes*`.
 
-## Типичные HTTP-ответы
+## Типичные коды ответа
 
 | HTTP | Когда |
 | --- | --- |
-| `400` | Zod validation, неверное тело |
-| `401` / `403` | Нет actor, нет доступа к company, agent вызывает чужой wakeup |
-| `404` | Сущность не найдена (`Agent not found`, `Heartbeat run not found`) |
-| `202` | Wakeup принят, run создан или skipped |
-| `501` | Опциональные подсистемы не сконфигурированы (например webhooks без deps) |
+| `400` | Неверное тело запроса (валидация) |
+| `401` / `403` | Нет доступа, чужая компания, агент будит не себя |
+| `404` | Агент или запуск не найден |
+| `202` | Пробуждение принято, запуск создан или пропущен |
+| `501` | Подсистема не настроена (например webhook без зависимостей) |
+
+## Оплата и тарифы (в планах)
+
+> **Статус: в разработке** — эти endpoints в открытом ядре **не реализованы**. Биллинг облака — отдельный контур. Канон тарифов: [STRATEGY.md](https://github.com/Dmitriion/datagent/blob/master/doc/STRATEGY.md).
+
+| Метод | Путь | Назначение (план) |
+| --- | --- | --- |
+| `GET` | `/api/billing/plan` | Текущий план и использование |
+| `POST` | `/api/billing/create-payment` | Создание платежа (ЮKassa) |
+| `POST` | `/api/billing/webhook` | Webhook платёжного провайдера |
+
+Для новых интеграций предпочтителен префикс `/api/v1/billing/*`.
+
+## Частые вопросы
+
+**Есть ли полная OpenAPI-спека всего API?**  
+Нет — только частичная спека для памяти. Остальное — по маршрутам в репозитории и этой справке.
+
+**Чем отличается доступ агента от доступа панели?**  
+Агент — **Bearer API key** с ограничением компании; панель — сессия оператора с полным контролем board.
+
+**Где тестировать API без своего сервера?**  
+На [app.datagent.ru](https://app.datagent.ru) после создания ключа в настройках компании.
+
+## Что дальше?
+
+- [Первый агент](../cloud/first-agent) · [Как это работает](../concepts/how-it-works.md)
+- [Создание плагина](../tutorials/build-plugin.md)
 
 ## Связанные разделы
 
-- [Быстрый старт](../getting-started/quickstart) — `:3100`, `pnpm dev`
-- [Установка](../getting-started/installation.md) — `SERVE_UI`, БД
-- [Архитектура](../concepts/agent-architecture.md) — heartbeat, plugins, adapters
-- [Создание плагина](../tutorials/build-plugin.md) — tools и install API
-- [Bitrix24](../integrations/bitrix24.md) — bridge без CRM REST tools
-- [BrowserBridge](../integrations/browserbridge.md) — plugin tools и API server; [установка](../browser/setup)
+- [Быстрый старт в облаке](../cloud/getting-started)
+- [Первый агент](../cloud/first-agent) — запуск из панели
+- [Свой сервер](../cloud/on-premise) — Enterprise
+- [Архитектура](../concepts/agent-architecture.md)
+- [Создание плагина](../tutorials/build-plugin.md)
+- [Битрикс24](../integrations/bitrix24.md)
+- [Управление браузером](../integrations/browserbridge.md) · [установка](../browser/setup)

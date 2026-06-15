@@ -1,11 +1,25 @@
 ---
 id: telegram
-title: Telegram
+title: Телеграм в Datagent — уведомления и согласования
 sidebar_label: Телеграм
-description: Плагин Telegram Datagent — уведомления, команды бота, апрувы Board и agent tools через long polling Bot API.
+description: "Плагин Телеграм в Datagent: бот, уведомления о задачах и согласования действий агента из мессенджера."
 ---
 
-**Плагин Telegram Datagent** — отдельная интеграция с Telegram Bot API, не LLM-адаптер. Исходников в монорепозитории `packages/plugins/telegram` **нет** — пакет устанавливается через **Plugin Manager** или CLI из npm (см. [Технические идентификаторы](#технические-идентификаторы)). Worker поднимается через **PluginWorkerManager** (`server/src/services/plugin-worker-manager.ts`), как у [Bitrix24](./bitrix24.md). Плагин шлёт уведомления в чаты, принимает команды и inline-кнопки, маршрутизирует ответы в issues и работает с **апрувами Board** (`request_board_approval`, `browser_action` и др.) — **не** с CRM tools Bitrix24.
+> **Зачем:** **Datagent** на [app.datagent.ru](https://app.datagent.ru) может присылать в **Телеграм** уведомления о задачах и запросы «разрешить или отклонить» действие агента — без постоянного мониторинга панели.
+
+## Это работает так
+
+1. Создаёте бота в BotFather и подключаете плагин в **менеджере плагинов**.
+2. Сообщения и команды попадают в **задачи** Datagent; агент отвечает через платформу.
+3. Рискованные шаги — кнопки согласования прямо в чате (при настроенном доступе).
+
+**Телеграм** в Datagent — плагин для **уведомлений, команд бота и согласований** из мессенджера. Это не отдельная нейросеть: бот передаёт сообщения в задачи Datagent и может присылать вам запросы «разрешить или отклонить» действие агента.
+
+Установка — через **менеджер плагинов** в панели. Связка с Битрикс24 — в [практическом сценарии](../tutorials/automate-crm).
+
+:::note Для инженеров
+Пакет из npm, long polling `getUpdates`, worker и маршруты к задачам и согласованиям — см. разделы ниже.
+:::
 
 ## Схема
 
@@ -32,16 +46,16 @@ flowchart LR
 ## Установка в Datagent
 
 1. **Plugin Manager** → установить плагин Telegram → включить для instance.
-2. Либо из корня checkout Datagent (см. [Быстрый старт](../getting-started/quickstart)):
+2. Либо из checkout monorepo (для разработки плагина; в Cloud — Plugin Manager в Board, см. [Старт в Cloud](../cloud/getting-started)):
 
 ```bash
 pnpm datagent plugin install <npm-пакет из раздела «Технические идентификаторы»>
 ```
 
-REST (Board на `http://localhost:3100`):
+REST (Board на [app.datagent.ru](https://app.datagent.ru); для установки из UI используйте Plugin Manager):
 
 ```bash
-curl -X POST http://127.0.0.1:3100/api/plugins/install \
+curl -X POST https://app.datagent.ru/api/plugins/install \
   -H "Content-Type: application/json" \
   -d "{\"packageName\":\"<npm-пакет>\"}"
 ```
@@ -62,7 +76,7 @@ curl -X POST http://127.0.0.1:3100/api/plugins/install \
 | `errorsChatId` / `errorsTopicId` | Нет | Ошибки агентов |
 | `digestChatId` / `digestTopicId` | Нет | Дайджесты (`digestMode`: off / daily / bidaily / tridaily) |
 | `escalationChatId` | Нет | Канал HITL-эскалаций |
-| Base URL API | Нет | URL Datagent (default `http://localhost:3100`)[^tg-fields] |
+| Base URL API | Нет | URL Datagent (default `https://app.datagent.ru`)[^tg-fields] |
 | Public URL инстанса | Нет | Публичный URL для ссылок на issues в сообщениях[^tg-fields] |
 | Board API token ref | Нет | Secret ref board token (кнопки апрува); лучше **Board Access Connection** в UI[^tg-fields] |
 | `enableCommands` | Нет | Команды бота (default true) |
@@ -164,11 +178,27 @@ curl -X POST http://127.0.0.1:3100/api/plugins/install \
 | Таймаут fetch | Сеть / прокси | `DATAGENT_PLUGIN_HTTP_PROXY`, firewall к `api.telegram.org` |
 | Старый URL webhook | Ожидание `/integrations/telegram/webhook` | Использовать long poll; не настраивать фиктивный path |
 
+## Частые вопросы
+
+**Нужен ли отдельный агент «для Телеграма»?**  
+Нет — бот связан с **задачами и согласованиями** существующих агентов. Нейросеть настраивается как обычно ([GigaChat](./gigachat.md)).
+
+**Работает ли вместе с Битрикс24?**  
+Да — типичный сценарий: чат в CRM → агент → уведомление в Телеграм. См. [практический сценарий](../tutorials/automate-crm.md).
+
+**Где включить плагин?**  
+**Менеджер плагинов** на [app.datagent.ru](https://app.datagent.ru) после регистрации компании.
+
+## Что дальше?
+
+- [Битрикс24](./bitrix24.md) · [Согласования](../concepts/approvals.md)
+- [Старт в облаке](../cloud/getting-started) · [Войти в панель](https://app.datagent.ru)
+
 ## Связанные разделы
 
 - [Bitrix24 Bridge](./bitrix24.md) — чат-боты Bitrix (отдельный плагин).
 - [Архитектура платформы](../concepts/agent-architecture.md) — heartbeat, PluginWorkerManager.
-- [Быстрый старт](../getting-started/quickstart) — `:3100`, Plugin Manager.
+- [Старт в Cloud](../cloud/getting-started) — Plugin Manager
 - [Bitrix24 → Telegram](../tutorials/automate-crm.md) — imbot + long poll.
 
 [^tg-fields]: В schema npm-пакета эти три поля могут иметь legacy-имена; в Board UI — URL API Datagent, публичный URL и secret ref токена Board (см. manifest установленного пакета).

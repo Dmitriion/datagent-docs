@@ -4,6 +4,6 @@
   "link": {
     "type": "generated-index",
     "title": "Интеграции",
-    "description": "Техническая документация интеграций для разработчиков: LLM, каналы, 1С MCP, BrowserBridge."
+    "description": "GigaChat, YandexGPT, Битрикс24, 1С и управление браузером — подключение в облаке Datagent."
   }
 }

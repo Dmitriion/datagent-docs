@@ -6,54 +6,72 @@ import type {SidebarsConfig} from '@docusaurus/plugin-content-docs';
  */
 const sidebars: SidebarsConfig = {
   docsSidebar: [
+    {
+      type: 'category',
+      label: 'Облачная версия',
+      collapsed: false,
+      link: {
+        type: 'doc',
+        id: 'cloud/cloud-index',
+      },
+      items: [
+        'cloud/cloud-getting-started',
+        'cloud/cloud-first-agent',
+        'cloud/cloud-pricing',
+        'cloud/cloud-plugins',
+        'cloud/cloud-on-premise',
+        'cloud/cloud-account',
+      ],
+    },
     'intro',
     {
       type: 'category',
-      label: 'Начало работы',
-      collapsed: false,
-      link: {
-        type: 'generated-index',
-        slug: 'getting-started',
-        title: 'Начало работы',
-        description:
-          'Установка, быстрый старт и первый агент в Datagent на :3100.',
-      },
-      items: [
-        'getting-started/installation',
-        'getting-started/quickstart',
-        'getting-started/first-agent',
-      ],
-    },
-    {
-      type: 'category',
-      label: 'Работа с платформой',
+      label: 'Учебник',
       collapsed: false,
       link: {type: 'doc', id: 'guides/index'},
       items: [
-        'guides/01-first-day',
-        'guides/02-your-team',
-        'guides/03-one-task',
-        'guides/04-trust-and-approval',
-        'guides/05-office-field',
-        'guides/06-channels',
-        'guides/07-documents',
-        'guides/08-1c-bridge',
-        'guides/playbook-index',
+        {
+          type: 'category',
+          label: 'Начало работы',
+          items: [
+            'guides/01-first-day',
+            'guides/02-your-team',
+            'guides/03-one-task',
+            'guides/04-trust-and-approval',
+          ],
+        },
+        {
+          type: 'category',
+          label: 'Сценарии использования',
+          items: [
+            'guides/05-office-field',
+            'guides/06-channels',
+            'guides/07-documents',
+            'guides/08-1c-bridge',
+            'guides/playbook-index',
+          ],
+        },
       ],
     },
     {
       type: 'category',
-      label: 'Концепции',
+      label: 'Как работают агенты',
       collapsed: true,
-      link: {
-        type: 'generated-index',
-        slug: 'concepts',
-        title: 'Концепции',
-        description:
-          'Control plane Datagent: heartbeat, агенты, плагины и LLM-адаптеры.',
-      },
+      items: [
+        'concepts/agents',
+        'concepts/heartbeat',
+        'concepts/memory',
+        'concepts/approvals',
+        'concepts/inbox',
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Платформа и тарифы',
+      collapsed: true,
       items: [
         'concepts/what-is-datagent',
+        'concepts/credits',
         'concepts/how-it-works',
         'concepts/agent-architecture',
         'concepts/llm-adapters',
@@ -68,7 +86,7 @@ const sidebars: SidebarsConfig = {
         slug: 'integrations',
         title: 'Интеграции',
         description:
-          'GigaChat, YandexGPT, Bitrix24 imbot bridge и плагин Телеграм.',
+          'GigaChat, YandexGPT, Битрикс24, Телеграм, 1С и управление браузером.',
       },
       items: [
         'integrations/gigachat',
@@ -88,7 +106,7 @@ const sidebars: SidebarsConfig = {
         slug: 'browser',
         title: 'Управление браузером',
         description:
-          'Эксплуатация BrowserBridge: Local Service, CDP, tunnel и диагностика.',
+          'Локальная служба на рабочей станции, связь с облаком и диагностика.',
       },
       items: ['browser/overview', 'browser/setup'],
     },
@@ -101,19 +119,17 @@ const sidebars: SidebarsConfig = {
         slug: 'office',
         title: 'Офис и документы',
         description:
-          'Пространство «Офис» в Board и Office Plugin для Excel/PPTX.',
+          'Пространство «Офис» в панели и работа с Excel и PowerPoint на задаче.',
       },
       items: ['office/overview', 'office/excel-pptx'],
     },
     {
       type: 'category',
-      label: 'Туториалы',
+      label: 'Практические сценарии',
       collapsed: true,
       link: {
-        type: 'generated-index',
-        slug: 'tutorials',
-        title: 'Туториалы',
-        description: 'Свой плагин и сценарий Bitrix24 → Телеграм.',
+        type: 'doc',
+        id: 'tutorials/index',
       },
       items: ['tutorials/build-plugin', 'tutorials/automate-crm'],
     },

@@ -1,23 +1,21 @@
 ---
 title: Плагин Excel и PowerPoint
 sidebar_label: Excel и PowerPoint
-description: Office Plugin (datagent.excel-workbench) — agent tools для .xlsx, .docx и .pptx через OfficeCLI на plugin worker. Plan/apply только для Excel.
+description: Работа с Excel и PowerPoint на задаче — просмотр, план правок для таблиц, согласование перед применением.
 ---
 
-В Datagent документы Office обрабатывает плагин **Office Plugin** (ключ `datagent.excel-workbench`, пакет `@datagent/plugin-excel-workbench`). Несмотря на имя пакета, в manifest v0.2.0 заявлены **Excel, Word и PowerPoint**; полный цикл plan/apply — **только для Excel `.xlsx`**.
+В Datagent с **файлами Office** на задаче работает плагин **Office Plugin** (таблицы Excel, документы Word, презентации PowerPoint). Полный цикл «план → согласование → применение» — **только для Excel** (`.xlsx`); для Word и PowerPoint доступны просмотр и проверка.
 
-Пространство Board **«Офис»** — отдельный Operator View ([обзор](./overview.md)); вкладка **Office** на issue — UI-слот этого плагина.
+Раздел **«Офис»** в меню — отдельный обзор для руководителя ([обзор](./overview.md)); вкладка **Office** на задаче — работа с вложением.
 
-## Зачем это в Datagent
+> **Зачем:** Работа с Excel и PowerPoint на задаче — просмотр, план правок для таблиц, согласование перед применением.
 
 | Задача | Как решается |
 | --- | --- |
-| Агент читает структуру книги/дека | Tools `inspect_*` через OfficeCLI |
-| Изменения под контролем | `plan_workbook_changes` → approval → `apply_workbook_changes` на **копии** файла |
-| Deliverable в issue | Вложения, work product, комментарии |
-| Governance | Capabilities, `approvals.request`, activity log |
-
-Control plane (`:3100`) **не** запускает OfficeCLI в heartbeat-адаптере — только **plugin worker**.
+| Агент читает структуру файла | Инструменты просмотра через OfficeCLI |
+| Изменения под контролем | План правок → согласование → применение на **копии** |
+| Результат в задаче | Новое вложение, комментарии |
+| Безопасность | Согласование, журнал действий |
 
 ## Статус
 
@@ -233,3 +231,8 @@ Managed skills (примеры): `office-plugin`, `excel-workbench`, `excel-work
 :::tip Оператору
 Перед run прикрепите `.xlsx`/`.pptx` к issue. Плагин для компании включается автоматически при установке office skill из каталога (если instance ready); иначе — кнопка в панели capabilities на странице Skills. Worker должен быть `ready` в Plugin Manager.
 :::
+
+## Что дальше?
+
+- [Подключить Bitrix24 →](../integrations/bitrix24)
+- [Посмотреть тарифы →](https://app.datagent.ru/pricing)

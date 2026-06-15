@@ -2,72 +2,89 @@
 id: intro
 title: Добро пожаловать в Datagent
 sidebar_label: Введение
-description: Документация Datagent — control plane для AI-агентов на server :3100, heartbeat, плагины и интеграции GigaChat, YandexGPT, Bitrix24, Телеграм.
+description: Справка по облачной версии Datagent — управление ИИ-агентами, задачи, согласования, GigaChat, YandexGPT, Битрикс24 и Телеграм.
 ---
 
 import DocNextSteps from '@site/src/components/DocNextSteps';
 import {introNextSteps} from '@site/src/components/DocNextSteps/presets';
 
-Datagent — **control plane** для AI-агентов в компании: Board, задачи (issues), одобрения и heartbeat run на одном origin (**http://localhost:3100** в dev). Документация помогает **поднять стенд**, **вести операции в Board** и **интегрировать** GigaChat, Bitrix24 и Телеграм.
+**Datagent** — это единый центр управления ИИ-агентами в компании. Здесь вы видите, кто из агентов работает, какие у них задачи, что требует вашего решения и как прошёл каждый запуск. Всё это — в одной панели (Board), без разрозненных чатов и «чёрных ящиков».
 
-Детали монорепо (`server`, `ui`, `cli`, PostgreSQL) — в [Что такое Datagent](./concepts/what-is-datagent) и [Как это работает](./concepts/how-it-works).
+Самый простой способ начать — **облачная версия** на [app.datagent.ru](https://app.datagent.ru): регистрация, первичная настройка и работа в браузере. Пошагово: [Начало в облаке](./cloud/getting-started) → [Первый агент](./cloud/first-agent).
 
-## Кто вы?
+Если данные должны храниться только у вас — возможна установка **на своём сервере** по корпоративному тарифу. Оставьте заявку: [Установка на свой сервер](./cloud/on-premise) → [sales@datagent.ru](mailto:sales@datagent.ru?subject=Заявка%20на%20on-premise%20Datagent).
 
-| Роль | С чего начать | Что получите |
-| --- | --- | --- |
-| **Оператор** | [Учебник → первый день](./guides/01-first-day) | Задачи, одобрения, wakeup без хаоса в чатах |
-| **Инженер** | [Быстрый старт](./getting-started/quickstart) | `pnpm dev`, API, первый агент, обзор API |
-| **Руководитель** | [Поле «Офис»](./guides/05-office-field) | Картина команды при `enableOffice` |
+Как устроен продукт «под капотом» — в разделах [Что такое Datagent](./concepts/what-is-datagent) и [Как это работает](./concepts/how-it-works).
 
-## С чего начать
+## Кто вы и с чего начать
 
-| Шаг | Раздел | Что получите |
-| --- | --- | --- |
-| 1 | [Установка](./getting-started/installation) | Node 20+, pnpm, PostgreSQL (или embedded в dev) |
-| 2 | [Быстрый старт](./getting-started/quickstart) | Board и API на **:3100** за ~10–15 минут |
-| 3 | [Первый агент](./getting-started/first-agent) | Wakeup, heartbeat run, журнал в UI |
-| 4 | [Учебник](./guides) | Восемь историй для оператора и руководителя |
-| 5 | [Концепции](./concepts/what-is-datagent) | Термины и архитектура |
-| 6 | [API](./api-reference/overview) | Wakeup, runs, issues, plugins |
+| Кто вы | С чего начать |
+| --- | --- |
+| **Оператор** — ведёте задачи и отвечаете агентам | [Начало в облаке](./cloud/getting-started) → [Первый день в панели](./guides/01-first-day) |
+| **Инженер** — настраиваете интеграции и автоматизацию | [app.datagent.ru](https://app.datagent.ru) + [Программный интерфейс](./api-reference/overview) + [интеграции](./integrations/gigachat) |
+| **Руководитель** — смотрите на команду и процессы | [Учебник → «Офис»](./guides/05-office-field) (если включён раздел «Офис») |
 
-## Ключевые возможности
+## Пять шагов для новичка
 
-- **Компании, агенты, issues** — run через `POST /api/agents/:id/wakeup` и `heartbeat-runs` (публичного `POST /api/runs` нет).
-- **LLM** — [GigaChat](./integrations/gigachat), [YandexGPT](./integrations/yandexgpt), [адаптеры](./concepts/llm-adapters).
-- **Плагины** — tools в worker-процессах; `datagent plugin install`.
-- **Bitrix24** и **Телеграм** — входящие в issues, ответы агента в канал.
-- **Офис** (experimental) — [Operator View](./office/overview) при `enableOffice`.
-- **1С (MCP)** — [коннектор](./integrations/1c-connector); **Excel/PPTX** — [Office Plugin](./office/excel-pptx).
+| Шаг | Что сделать |
+| --- | --- |
+| 1 | [Зарегистрироваться и войти](./cloud/getting-started) |
+| 2 | [Создать первого агента](./cloud/first-agent) |
+| 3 | [Посмотреть тарифы](./cloud/pricing) |
+| 4 | [Пройти учебник](./guides) по ролям |
+| 5 | При необходимости — [программный интерфейс](./api-reference/overview) для скриптов |
 
-## Архитектура в двух словах
+## Что умеет Datagent
+
+- **Компании и агенты** — у каждой компании свои агенты, задачи и права доступа.
+- **Задачи** — переписка с агентом, файлы и история запусков в одном месте.
+- **Согласования** — рискованные действия агента ждут вашего «да» или «нет».
+- **Российские модели** — [GigaChat](./integrations/gigachat) и [YandexGPT](./integrations/yandexgpt) без обходных схем.
+- **Плагины** — расширения: мессенджеры, браузер, документы и своё.
+- **Битрикс24 и Телеграм** — сообщения из чатов превращаются в задачи; ответы уходят обратно в канал.
+- **«Офис»** (эксперимент) — наглядный вид команды агентов для руководителя.
+- **1С и документы** — [связь с 1С](./integrations/1c-connector), [Excel и презентации](./office/excel-pptx).
+
+## Как связаны части системы
 
 ```mermaid
 flowchart TB
-  UI["Board @datagent/ui"] --> API["server Express /api"]
-  CLI["datagent CLI"] --> API
-  API --> HB["heartbeatService"]
-  HB --> Adp["gigachat_local · yandexgpt_local · opencode_local"]
-  HB --> PWM["PluginWorkerManager"]
-  PWM --> Plg["bitrix24 · telegram · browserbridge · …"]
-  API --> PG["PostgreSQL"]
+  UI["Панель Board"] --> API["Сервер /api"]
+  API --> HB["Цикл выполнения"]
+  HB --> Adp["GigaChat · YandexGPT"]
+  HB --> PWM["Менеджер плагинов"]
+  PWM --> Plg["Битрикс24 · Телеграм · браузер · …"]
+  API --> PG["База данных"]
 ```
 
-Подробнее: [Архитектура](./concepts/agent-architecture), [Обзор API](./api-reference/overview).
+Подробнее для инженеров: [Архитектура](./concepts/agent-architecture), [Обзор API](./api-reference/overview).
 
-## Интеграции и туториалы
+## Полезные разделы
 
-| Тема | Документ |
+| Тема | Куда перейти |
 | --- | --- |
-| REST API | [Обзор API](./api-reference/overview) |
-| BrowserBridge | [Интеграция](./integrations/browserbridge) · [Установка](./browser/setup) |
+| Программный интерфейс | [Обзор API](./api-reference/overview) |
+| Управление браузером | [Интеграция](./integrations/browserbridge) · [Настройка](./browser/setup) |
 | Свой плагин | [Создание плагина](./tutorials/build-plugin) |
-| Bitrix24 → Телеграм | [Туториал](./tutorials/automate-crm) |
+| Битрикс24 → Телеграм | [Практический сценарий](./tutorials/automate-crm) |
 
 ## Нужна помощь?
 
 - [Решение проблем](./troubleshooting)
+- [Открыть приложение](https://app.datagent.ru)
 - [Сайт Datagent](https://datagent.ru)
-- [История версий](./changelog)
+- [Установка на свой сервер](./cloud/on-premise)
+- [История изменений](./changelog)
+
+## Частые вопросы
+
+**С чего начать, если я менеджер, а не разработчик?**  
+[Регистрация в облаке](./cloud/getting-started) → [первый агент](./cloud/first-agent) → [первый день в панели](./guides/01-first-day).
+
+**Поддерживает ли Datagent российские нейросети?**  
+Да — [GigaChat](./integrations/gigachat) и [YandexGPT](./integrations/yandexgpt) в облаке на [app.datagent.ru](https://app.datagent.ru).
+
+**Можно ли связать с Битрикс24?**  
+Да — плагин и сценарий [Битрикс24](./integrations/bitrix24) и [автоматизация CRM](./tutorials/automate-crm).
 
 <DocNextSteps items={introNextSteps} />

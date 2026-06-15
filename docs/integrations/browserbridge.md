@@ -1,97 +1,135 @@
 ---
 id: browserbridge
-title: BrowserBridge
-sidebar_label: BrowserBridge
-description: Плагин datagent.browserbridge — browser_* tools в heartbeat, API control plane, одобрения и tunnel к локальному datagent-bridge.
+title: Агент управляет браузером сам — BrowserBridge в Datagent
+sidebar_label: Управление браузером
+description: "BrowserBridge: агент открывает сайты на вашем ПК. Тариф PRO 990 ₽. Согласования перед риском."
 ---
 
-**BrowserBridge** в Datagent — плагин `datagent.browserbridge` (`packages/plugins/plugin-browserbridge`) плюс локальный демон `@datagent/browserbridge-local`. В отличие от [1С Коннектора](./1c-connector), интеграция регистрирует **agent tools** и вызывается во время **heartbeat**; plugin worker ходит в Local Service (`POST /execute`) или в tunnel WebSocket на server `:3100`. LLM-адаптеры сами по себе browser tools **не** добавляют.
+# Агент управляет браузером сам — BrowserBridge в Datagent
 
-Установка CDP, CLI `datagent-bridge`, curl-проверки и UI policy — в разделе [Управление браузером](../browser/setup).
+> **Зачем:** Когда задаче нужен **реальный сайт** — форма, личный кабинет, портал без API — а не только текст в чате. **BrowserBridge** даёт агенту **ваш браузер** на рабочем компьютере: открыть страницу, прочитать, кликнуть — с [согласованием](../concepts/approvals) перед опасными действиями.
 
-## Схема
+В отличие от [1С](./1c-connector), BrowserBridge работает **в цикле агента на задаче** — через плагин и локальную службу.
+
+:::info Доступно на PRO и выше
+**Управление браузером** — с тарифа **PRO**, **990 ₽/мес**. На Free агенты без BrowserBridge.
+[Тарифы →](../cloud/pricing)
+:::
+
+## Это работает так
+
+1. Администратор включает плагин **BrowserBridge** в компании на [app.datagent.ru](https://app.datagent.ru).
+2. На рабочей станции ставится **локальная служба** (и при необходимости Chromium с отладкой).
+3. Служба **связывается** с облаком (pairing / tunnel).
+4. Агент в задаче вызывает инструменты: открыть URL, скриншот, клик, форма.
+5. Перед отправкой формы или опасным кликом — **согласование** в панели.
+
+Агент не «ломает капчу» и не обходит правила сайтов — только то, что разрешила ваша политика URL.
+
+## Когда это нужно
+
+| Ситуация | Пример |
+| --- | --- |
+| Нет API у поставщика | Статус заказа на сайте перевозчика |
+| Внутренний портал | Справка в веб-интерфейсе без интеграции |
+| Проверка витрины | Скриншот и текст страницы в отчёт задачи |
+| Рутина с формами | Заполнение полей с вашим **Одобрить** перед отправкой |
+
+**Не нужен BrowserBridge**, если всё решается через **Битрикс24**, API или файлы на задаче.
+
+## Подключение (кратко)
+
+1. **PRO**-тариф (или тест по договору на Business).
+2. **Менеджер плагинов** → BrowserBridge → настройки компании (политика URL: открытый / allowlist).
+3. На ПК оператора: установить **workstation kit**, запустить **локальную службу** (порт по умолчанию **9247**).
+4. **Связать** станцию с компанией (pairing code в облаке).
+5. В агенте включить tools `browser_*` → тестовая задача с простым URL.
+
+Пошагово с диагностикой: [Установка и настройка](../browser/setup). Обзор службы: [Управление браузером — обзор](../browser/overview).
+
+## Что умеет агент
+
+| Действие | Зачем |
+| --- | --- |
+| Открыть страницу | Перейти по ссылке из задачи |
+| Скриншот / текст | Доказательство и разбор для человека |
+| Клик, форма | Рутина на сайте под контролем |
+| JavaScript | Только с **согласованием** — высокий риск |
+
+Полный список tools и параметров — в блоке для инженеров ниже.
+
+## Согласования и безопасность
+
+- Отправка формы, разрушительный клик, `execute_js` — через [Согласования](../concepts/approvals).
+- **Политика URL** компании ограничивает, куда можно ходить.
+- Не выдавайте BrowserBridge всем агентам «на всякий случай» — вырастет очередь одобрений.
+
+## Частые вопросы
+
+**Это облачный браузер?**  
+**Нет.** Работает **ваш** Chromium на **вашем** ПК; облако только командует через tunnel.
+
+**Нужен ли программист?**  
+Первую установку службы часто делает IT; дальше оператор запускает задачи как обычно.
+
+**Работает на Free?**  
+**Нет** — нужен **PRO** (990 ₽/мес) или выше.
+
+**Связано с «Офисом»?**  
+Нет. «Офис» — обзор команды агентов; BrowserBridge — инструмент на задаче.
+
+**Юридически можно автоматизировать любой сайт?**  
+Соблюдайте **ToS** сайта и политику компании. Datagent не обходит защиты.
+
+## Что дальше?
+
+- [Установка службы →](../browser/setup)
+- [Согласования →](../concepts/approvals)
+- [Тарифы PRO →](../cloud/pricing)
+- [GigaChat + задачи →](./gigachat)
+
+:::note Для инженеров
+
+Плагин `datagent.browserbridge`, Local Service **9247**, CDP **9222**, tunnel `ws(s)://…/api/browserbridge/tunnels/connect`.
+
+### Схема
 
 ```mermaid
 flowchart LR
   Agent[Агент / heartbeat] --> PWM[PluginWorkerManager]
   PWM --> Plg[plugin-browserbridge]
-  Plg -->|localhost HTTP или tunnel| API[server :3100]
+  Plg -->|localhost или tunnel| API[server]
   Plg --> Bridge[browserbridge-local]
   Bridge --> CDP[Chromium CDP :9222]
   CDP --> Web[Целевой сайт]
-  Board[Board UI] --> API
 ```
 
-## Идентификаторы
+### Agent tools
 
-| Поле | Значение |
-| --- | --- |
-| Plugin id | `datagent.browserbridge` |
-| Legacy alias | `datagent-browserbridge` → `datagent.browserbridge` (`plugin-keys.ts`) |
-| Local Service default port | `9247` |
-| CDP default | `127.0.0.1:9222` |
-
-## Agent tools `browser_*`
-
-Регистрируются в `packages/plugins/plugin-browserbridge/src/manifest.ts`. Соответствие action в `POST /execute` Local Service:
-
-| Tool | Action (execute) | Параметры (кратко) |
+| Tool | Action | Параметры (кратко) |
 | --- | --- | --- |
-| `browser_navigate` | `navigate` | `url` (обяз.), `waitUntil`: `load` \| `networkidle` |
+| `browser_navigate` | `navigate` | `url`, `waitUntil` |
 | `browser_screenshot` | `screenshot` | `fullPage?`, `selector?` |
-| `browser_extract_text` | `extract_text` | `selector?`, `structured?`, `format`: text/table/json |
-| `browser_click` | `click` | `selector` (обяз.), `description?`, `destructive?` |
-| `browser_fill_form` | `fill_form` | `fields[]` (`selector`, `value`), `submit?`, `submitSelector?` |
-| `browser_wait_for_element` | `wait_for_element` | `selector`, `timeout?`, `state`: visible/hidden/attached |
-| `browser_scroll` | `scroll` | `direction`: up/down, `pixels?`, `selector?` |
-| `browser_get_cookies` | `get_cookies` | `domain?` |
-| `browser_execute_js` | `execute_js` | `script`, `description` (обяз.) — Board approval |
+| `browser_extract_text` | `extract_text` | `selector?`, `format` |
+| `browser_click` | `click` | `selector`, `destructive?` |
+| `browser_fill_form` | `fill_form` | `fields[]`, `submit?` |
+| `browser_execute_js` | `execute_js` | `script` — approval |
 | `browser_close_tab` | `close_tab` | `tabId?` |
 
-Tool **`browser_snapshot`** в коде **отсутствует** (вместо него `browser_screenshot` / `browser_extract_text`). Дополнительных agent tools в manifest (например `escalate_to_human`) **нет**.
+Tool `browser_snapshot` **отсутствует**. Отладка: `POST /api/plugins/tools/execute`.
 
-Вызов на run: heartbeat → `PluginWorkerManager` → worker → Local Service или tunnel. Отладка tool: `POST /api/plugins/tools/execute`. Эндпоинта `POST /internal/tools/invoke` на server **нет**.
+### API control plane
 
-## API control plane (server)
-
-Server **не** читает `BROWSERBRIDGE_URL` из `.env`.
-
-| Назначение | Маршрут / механизм |
+| Назначение | Маршрут |
 | --- | --- |
-| Статус bridge для компании | `GET /api/companies/:companyId/browserbridge/status` |
-| Pairing (cloud) | `POST /api/companies/:companyId/browserbridge/pairing-codes` |
-| Политика URL (`open` / `allowlist` / `denylist`) | `GET/PUT /api/companies/:companyId/browserbridge/policy` |
-| Tunnel WebSocket | `ws(s)://<host>/api/browserbridge/tunnels/connect` |
-| Workstation kit | `GET /api/browserbridge/workstation-kit` (tar.gz) |
+| Статус | `GET /api/companies/:companyId/browserbridge/status` |
+| Pairing | `POST .../browserbridge/pairing-codes` |
+| Политика URL | `GET/PUT .../browserbridge/policy` |
+| Tunnel | `ws(s)://<host>/api/browserbridge/tunnels/connect` |
+| Workstation kit | `GET /api/browserbridge/workstation-kit` |
 
-Поля config плагина на компанию (UI **Company → Settings → BrowserBridge**):
+Config: `localServicePort` (9247), `tunnelMode`, `requireApprovalForDestructive` (default true).
 
-| Поле | Default | Назначение |
-| --- | --- | --- |
-| `localServiceHost` | `127.0.0.1` | Host Local Service |
-| `localServicePort` | `9247` | Порт Local Service |
-| `autoStartLocalService` | `true` | Автозапуск демона в plugin worker |
-| `tunnelMode` | `false` | Cloud tunnel вместо localhost |
-| `requireApprovalForDestructive` | `true` | Одобрение для submit / destructive click / `execute_js` |
-| `maxActionTimeoutMs` | `30000` | Таймаут HTTP к bridge |
-| `screenshotOnEveryAction` | `false` | Скриншот после каждого action |
-| `bridgeTokenSecretRef` | — | Secret ref вместо `~/.datagent/bridge.token` |
+См. [Архитектура](../concepts/agent-architecture.md), [Создание плагина](../tutorials/build-plugin.md).
 
-## Одобрения и политика
-
-- Рискованные действия (`browser_action`, destructive click, `execute_js`) могут требовать решения в Board — см. [Одобрения](../guides/04-trust-and-approval).
-- `browser_navigate` ограничивается **browser policy** компании (не env `BROWSERBRIDGE_ALLOWLIST`).
-
-## Ограничения
-
-- Не обходить CAPTCHA и не нарушать ToS сайтов.
-- Не выдавать BrowserBridge всем агентам «на всякий случай» — растёт очередь одобрений.
-- `pnpm dev` поднимает server + UI на `:3100`; bridge **не** в dev-runner (см. [Установка и настройка](../browser/setup)).
-
-## Связанные разделы
-
-- [Управление браузером — обзор](../browser/overview)
-- [Установка и настройка](../browser/setup)
-- [Архитектура платформы](../concepts/agent-architecture.md)
-- [Создание плагина](../tutorials/build-plugin.md)
-- [Обзор API](../api-reference/overview)
+:::

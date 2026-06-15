@@ -2,102 +2,111 @@
 id: changelog
 title: История версий
 sidebar_label: История версий
-description: История изменений Datagent и документации — выравнивание с server/API, BrowserBridge, офис и интеграции.
+description: История изменений документации Datagent — облако, учебник, интеграции, программный интерфейс.
 ---
 
-Здесь — заметные изменения продукта и документации Datagent.
+Здесь фиксируются заметные изменения **документации** на docs.datagent.ru. Версии отражают этапы навигации и текста, а не обязательно релиз продукта на app.datagent.ru.
+
+## [1.8.0] — 2026-06-15
+
+### Changed (копирайтинг и навигация)
+
+- Полный проход по пользовательским текстам: простой связный русский, минимум англицизмов («панель» вместо Board, «запуск» вместо run, «согласование» вместо approval).
+- Переписаны тела [Обзор API](./api-reference/overview) и [Создание плагина](./tutorials/build-plugin) — пояснение к каждому разделу + блоки «для инженеров».
+- Navbar: «Документация Datagent», «Учебник», «О платформе».
+- Footer: «Быстрый старт», «Практические сценарии» вместо «Туториалы»; «Управление браузером» вместо BrowserBridge; «GigaChat (Сбер)», «Битрикс24»; ссылки на тарифы и историю версий.
+- Обновлены [llms.txt](https://docs.datagent.ru/llms.txt), учебник (главы 1–8), концепции, интеграции, разделы «Офис» и «Браузер».
+
+## [1.7.0] — 2026-06-15
+
+### Changed (облако — основной путь)
+
+- Документация ориентирована на **облако** ([app.datagent.ru](https://app.datagent.ru)): [Быстрый старт](./cloud/getting-started), без публичной инструкции по самоустановке.
+- Удалён раздел «Начало работы» (`installation`, `quickstart`); редиректы на `cloud/*`.
+- Новые страницы: [Первый агент](./cloud/first-agent), [Свой сервер (Enterprise)](./cloud/on-premise) — заявка на [sales@datagent.ru](mailto:sales@datagent.ru).
+- Обновлены: [Введение](./intro), главная, navbar/footer, учебник, интеграции, [Решение проблем](./troubleshooting).
+
+## [1.6.0] — 2026-06-15
+
+### Added
+
+- Раздел **[Облачная версия](./cloud)**: обзор, [быстрый старт](./cloud/getting-started), [тарифы](./cloud/pricing), [аккаунт](./cloud/account).
+- В шапке: **Приложение** → app.datagent.ru, **Сайт** → datagent.ru.
+
+### Changed
+
+- [Введение](./intro): два пути (облако и свой сервер) — в 1.7.0 заменено на cloud-first.
+- [Обзор API](./api-reference/overview): секция оплаты (**в планах**).
 
 ## [1.5.1] — 2026-06-09
 
 ### Changed
 
-- [Первый агент](./getting-started/first-agent): раздел **Каталог навыков** — вкладки От Datagent / Сообщество / Все, CTA **Установить** / **Открыть**, права и post-install checklist.
-- [Архитектура агента](./concepts/agent-architecture): актуальный состав manifest (25 skills: 5 bundled + 3 optional + 17 community).
-- [Excel и PowerPoint](./office/excel-pptx): путь установки через **Skills → Каталог**.
+- [Первый агент](./cloud/first-agent): каталог навыков — вкладки, установка, чеклист после установки.
+- [Архитектура](./concepts/agent-architecture): актуальный состав каталога навыков (25 записей).
+- [Excel и PowerPoint](./office/excel-pptx): установка через каталог навыков.
 
 ## [1.5.0] — 2026-06-04
 
 ### Added
 
-- **Интеграции:** [1С Коннектор](./integrations/1c-connector), [BrowserBridge](./integrations/browserbridge) — техдок для разработчиков.
-- Раздел [Управление браузером](./browser): [обзор](./browser/overview), [установка и настройка](./browser/setup).
+- **Интеграции:** [1С Коннектор](./integrations/1c-connector), [Управление браузером](./integrations/browserbridge).
+- Раздел [Браузер](./browser): [обзор](./browser/overview), [установка](./browser/setup).
 
 ### Changed
 
-- Техдок 1С перенесён из [Офис](./office/overview) в **Интеграции**; редирект с `/docs/office/1c-connector`.
-- Туториал BrowserBridge перенесён в **Управление браузером**; редирект с `/docs/tutorials/browserbridge-setup`.
-- Sidebar, footer, `static/llms.txt` — обновлены ссылки.
+- Техдок 1С перенесён из «Офис» в **Интеграции**; редирект с `/docs/office/1c-connector`.
+- Sidebar, footer, `llms.txt` — обновлены ссылки.
 
 ## [1.4.0] — 2026-06-03
 
 ### Added
 
-- **Учебник** в `docs/guides/`: восемь глав-пользовательских историй + [шпаргалка](./guides/playbook-index); обложка с journey и таблицей «30 / 60 / 90 минут».
+- **Учебник** в `docs/guides/`: восемь глав и [шпаргалка](./guides/playbook-index).
 
 ### Changed
 
-- Категория sidebar: «Учебник»; переписаны `docs/guides/*` (удалены `board-basics`, `agents`, `issues-and-dialogs`, `approvals`, `what-agents-can-do`).
-- [Введение](./intro) и главная — карточка учебника с продающим описанием.
+- Категория sidebar: «Учебник»; переписаны пользовательские истории.
+- [Введение](./intro) и главная — карточка учебника.
 
 ## [1.2.1] — 2026-05-26
 
 ### Added
 
-- Раздел [Работа с платформой](./guides) — руководство для оператора: Board, агенты, задачи, одобрения, возможности агентов.
+- Раздел [Работа с платформой](./guides) для оператора.
 
 ### Changed
 
-- Сайт docs: убраны ссылки на GitHub из navbar и footer; упрощена [история версий](./changelog).
-- Footer «Интеграции»: ссылки **1С** и **Телеграм**; блок «Сообщество» с репозиториями удалён.
-- Отключена кнопка «Редактировать на GitHub» на страницах документации.
+- Убраны ссылки на GitHub из navbar и footer.
+- Footer «Интеграции»: 1С и Телеграм.
 
 ## [1.2.0] — 2026-06-03
 
 ### Added
 
-- Публичный сайт документации на Docusaurus 3 (`docs.datagent.ru`).
-- Разделы Getting Started, Concepts, Integrations, Tutorials, API Reference.
-- Публикация документации на `docs.datagent.ru` (CNAME).
-- Гайды интеграций: [GigaChat](./integrations/gigachat), [YandexGPT](./integrations/yandexgpt), [Bitrix24](./integrations/bitrix24), [Telegram](./integrations/telegram).
-- Туториалы: [BrowserBridge](./browser/setup), [плагин](./tutorials/build-plugin), [Bitrix24 → Telegram](./tutorials/automate-crm).
-- [Обзор REST API](./api-reference/overview) по фактическим маршрутам `server/src/routes/*` и `app.ts`.
+- Публичный сайт документации на Docusaurus 3 (docs.datagent.ru).
+- Разделы: концепции, интеграции, сценарии, обзор API.
+- Гайды: [GigaChat](./integrations/gigachat), [YandexGPT](./integrations/yandexgpt), [Битрикс24](./integrations/bitrix24), [Телеграм](./integrations/telegram).
 
 ### Changed
 
-- Документация **выровнена с реальностью server/API** (монорепозиторий Datagent, read-only при сверке):
-  - исполнение агентов — **heartbeat** (`heartbeatService`, `heartbeat-runs`), не отдельный Agent Runner и не `POST /api/runs`;
-  - Board и API на **одном порту `3100`** (`SERVE_UI=false` + dev middleware); убраны ссылки на `:3200` и `apps/api`;
-  - LLM: типы адаптеров **`gigachat_local`**, **`yandexgpt_local`**, **`opencode_local`**, модели `gigachat/GigaChat-2-*`, `yandexgpt/rc`, кэш OAuth/IAM в PostgreSQL (`adapter_oauth_tokens`), не Redis;
-  - Bitrix24: плагин **`datagent.bitrix24`**, imbot polling (`bitrix-poll`), binding агента; убраны вымышленные CRM tools (`bitrix24_list_leads` и др.);
-  - Telegram: **плагин Telegram Datagent**, long poll `getUpdates`; убраны `telegram_send_message` и server webhook как штатный вход;
-  - BrowserBridge: plugin namespace `datagent.browserbridge:*`, tunnel с server;
-  - аутентификация API: Better Auth session / Bearer board|agent key, режим `local_trusted` в dev;
-  - OpenAPI: только частичная спека memory control plane; нет выдуманного `GET /openapi.json` на server.
-- [Введение](./intro), [Как это работает](./concepts/how-it-works), [Первый агент](./getting-started/first-agent), [LLM-адаптеры](./concepts/llm-adapters) — переписаны под эту модель.
-- Board UI: ссылки «Справка» ведут на внешнюю документацию.
-
-### Removed (из docs)
-
-- Устаревшие примеры: `POST /runs`, `config/triggers/*.yaml`, `@datagent/api`, BullMQ/Redis как очередь run, порт Board `:3200`, `packages/core`, фиктивные agent tools CRM/Telegram.
+- Документация выровнена с фактическим API сервера: запуск через пробуждение агента, один порт с панелью, адаптеры `gigachat_local` / `yandexgpt_local`, плагин Битрикс24 без вымышленных CRM-инструментов.
 
 ## [1.1.0] — 2026-05-15
 
 ### Added
 
-- **BrowserBridge Phase 1** — локальный сервис `datagent-bridge` (Playwright + CDP, типичный порт **9247**).
-- Plugin tools (manifest): `browser_navigate`, `browser_screenshot`, `browser_extract_text`, `browser_click`, `browser_fill_form`, `browser_wait_for_element`, `browser_scroll`, `browser_get_cookies`, `browser_execute_js`, `browser_close_tab` (namespace `datagent.browserbridge:*`).
-- Изоляция browser-сессий в контексте компании/run.
-
-### Fixed
-
-- Таймаут CDP при перезапуске Chromium в headless-режиме на Linux.
+- **Управление браузером** — локальная служба `datagent-bridge` (порт **9247**).
+- Десять инструментов `browser_*` в namespace `datagent.browserbridge`.
 
 ## [1.0.0] — 2026-04-01
 
 ### Added
 
-- Первый GA: **heartbeat** в `server`, адаптеры **`gigachat_local`** и **`yandexgpt_local`** (OpenCode).
-- Плагин **Bitrix24** imbot bridge (polling, issues, wakeup).
-- Плагин **Telegram** — уведомления, команды, апрувы Board.
-- PostgreSQL + схема `packages/db`; память агентов (pgvector на внешнем Postgres).
-- Board UI: компании, агенты, issues, просмотр heartbeat runs.
+- Первый GA: цикл heartbeat, адаптеры GigaChat и YandexGPT, плагины Битрикс24 и Телеграм, панель с задачами и журналом запусков.
+
+## Что дальше?
+
+- [Открыть Datagent →](https://app.datagent.ru)
+- [Смотреть roadmap →](https://github.com/datagent/datagent/discussions)
+

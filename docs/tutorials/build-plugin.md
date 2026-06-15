@@ -2,100 +2,112 @@
 id: build-plugin
 title: Создание плагина
 sidebar_label: Создание плагина
-description: Туториал Plugin SDK Datagent — manifest.ts, worker в child-process, agent tools и установка через Plugin Manager.
+description: Как создать плагин для Datagent — манифест, фоновый процесс, инструменты агента, установка через менеджер плагинов.
 ---
 
-Плагины Datagent расширяют платформу **без правок** `server/`: отдельный worker-процесс, JSON-RPC 2.0 по stdio, доступ к issues, secrets, jobs и **agent tools**. Это не то же самое, что **LLM-адаптер** (`gigachat_local`, `opencode_local` в `packages/adapters/*`) — адаптеры подключают модель и CLI, а плагины дают интеграции, UI-слоты и tools вроде `browser_navigate`. Выполнение run идёт через **heartbeat** на server `:3100`; plugin host вызывает tools через **PluginWorkerManager** и tool dispatcher, а не через отдельный «Runner» или `apps/api`.
+**Плагины** расширяют Datagent **без правок ядра сервера**: отдельный фоновый процесс, доступ к задачам, секретам и **инструментам агента** (браузер, файлы, мессенджеры). Это не то же самое, что **адаптер нейросети** (GigaChat, YandexGPT) — адаптер подключает модель, плагин — действия в мире.
+
+В облаке плагины ставятся через **менеджер плагинов** на [app.datagent.ru](https://app.datagent.ru). Пример без написания кода: [Битрикс24](../integrations/bitrix24.md).
+
+:::note Для инженеров
+Plugin SDK, обмен JSON-RPC по stdio, внутренний цикл heartbeat, `PluginWorkerManager` — детали в разделах ниже.
+:::
 
 ## Типы расширений
 
-| Тип | Где в репо | Назначение |
+Перед разработкой определите, что вы строите: интеграцию с внешним сервисом, инструмент для агента или адаптер нейросети.
+
+| Тип | Где в репозитории | Назначение |
 | --- | --- | --- |
-| **Plugin** | `packages/plugins/*`, npm-пакет из каталога | Worker + опционально UI; tools, webhooks, jobs, bridge |
-| **LLM adapter** | `packages/adapters/*` | Модель и runtime агента (OpenCode upstream) — см. [LLM-адаптеры](../concepts/llm-adapters.md) |
-| **BrowserBridge** | `packages/plugins/plugin-browserbridge` + `packages/browserbridge-local` | 10 tools `browser_*` — см. [BrowserBridge](../integrations/browserbridge.md) |
-| **Внешний connector** | npm через Plugin Manager | Например Telegram — см. [Telegram](../integrations/telegram.md) (не шаблон SDK в монорепо) |
+| **Плагин** | `packages/plugins/*`, npm-пакет | Фоновый процесс + опционально UI; инструменты, webhook, фоновые задачи, мосты |
+| **Адаптер LLM** | `packages/adapters/*` | Модель и среда выполнения агента — см. [LLM-адаптеры](../concepts/llm-adapters.md) |
+| **Управление браузером** | `plugin-browserbridge` + `browserbridge-local` | Десять инструментов `browser_*` — см. [интеграцию](../integrations/browserbridge.md) |
+| **Внешний коннектор** | npm через менеджер плагинов | Например Телеграм — см. [Телеграм](../integrations/telegram.md) |
 
-Производственный пример bridge **без** agent tools в manifest: [Bitrix24](../integrations/bitrix24.md) (`datagent.bitrix24`, polling imbot, issues).
+Пример **моста без инструментов в манифесте**: [Битрикс24](../integrations/bitrix24.md) — опрос чат-бота, создание задач.
 
-## Архитектура (host ↔ worker)
+## Архитектура (сервер ↔ worker)
+
+Сервер **не выполняет** код плагина внутри себя. Для каждого установленного плагина поднимается **отдельный процесс**; общение — по JSON-RPC через stdin/stdout. Когда агент вызывает инструмент, запрос проходит через диспетчер инструментов и менеджер процессов.
 
 ```mermaid
 flowchart LR
-  HB[heartbeatService] --> TD[Plugin tool dispatcher]
-  TD --> PWM[PluginWorkerManager]
-  PWM -->|stdio JSON-RPC| W[plugin worker process]
-  W --> API[Внешний API / CDP / файлы]
-  Board[Board :3100] --> PM[Plugin Manager]
+  HB[Цикл запуска агента] --> TD[Диспетчер инструментов]
+  TD --> PWM[Менеджер процессов плагинов]
+  PWM -->|stdio JSON-RPC| W[Процесс плагина]
+  W --> API[Внешний API / браузер / файлы]
+  Panel[Панель] --> PM[Менеджер плагинов]
   PM --> PWM
 ```
 
-Один установленный плагин → один child process (`server/src/services/plugin-worker-manager.ts`). Падение worker изолирует сбой; host перезапускает процесс с exponential backoff (до 10 падений за окно). Отдельных env `PLUGIN_MAX_MEMORY_MB` / `PLUGIN_TOOL_TIMEOUT_MS` в `server/src/config.ts` **нет** — таймауты RPC и tool задаются в коде host/SDK (например default RPC 30 с, browser policy `maxActionTimeoutMs`).
+Один плагин → один дочерний процесс (`plugin-worker-manager.ts`). При падении процесса сервер перезапускает его с нарастающей паузой (до 10 сбоев за окно). Отдельных переменных `PLUGIN_MAX_MEMORY_MB` в конфиге сервера нет — таймауты задаются в коде host/SDK (типично RPC 30 с).
 
-## Структура плагина в монорепо
+## Структура плагина в монорепозитории
 
-Референсы: `packages/plugins/bitrix24/`, `packages/plugins/plugin-browserbridge/`, `packages/plugins/examples/plugin-hello-world-example/`.
+Ориентиры: `packages/plugins/bitrix24/`, `plugin-browserbridge/`, `examples/plugin-hello-world-example/`.
 
 ```
 packages/plugins/my-demo-plugin/
-  package.json          # datagentPlugin (metadata) → dist/manifest.js
-  esbuild.config.mjs    # или rollup — пресеты @datagent/plugin-sdk/bundlers
+  package.json          # метаданные datagentPlugin → dist/manifest.js
+  esbuild.config.mjs    # сборка через пресеты @datagent/plugin-sdk/bundlers
   src/
-    manifest.ts         # DatagentPluginManifestV1 (TypeScript, не JSON)
+    manifest.ts         # манифест DatagentPluginManifestV1 (TypeScript)
     worker.ts           # definePlugin + runWorker
-    index.ts            # re-export manifest (опционально)
-    ui/                 # опционально: React-слоты
+    index.ts            # re-export (опционально)
+    ui/                 # опционально: слоты React в панели
       index.tsx
   tests/                # createTestHarness из @datagent/plugin-sdk/testing
   dist/                 # после pnpm build
 ```
 
-Ключ плагина в registry: `manifest.id` (например `datagent.bitrix24`, `datagent.browserbridge`). Алиасы legacy id → `packages/shared/src/constants/plugin-keys.ts` (`datagent-browserbridge` → `datagent.browserbridge`).
+**Идентификатор** в реестре — поле `manifest.id` (например `datagent.bitrix24`). Устаревшие алиасы — в `packages/shared/src/constants/plugin-keys.ts`.
 
-## Scaffold
+## Создание заготовки (scaffold)
+
+Команда создаёт каркас npm-пакета с worker и манифестом:
 
 ```bash
 npx @datagent/create-datagent-plugin @my-org/datagent-demo-greeter \
   --template connector \
-  --display-name "Demo Greeter Plugin"
+  --display-name "Учебный плагин-приветствие"
 ```
 
-Внутри checkout Datagent пакет может использовать `@datagent/plugin-sdk` как `workspace:*`. Сборка и watch:
+Внутри checkout Datagent SDK подключается как `workspace:*`. Сборка и разработка:
 
 ```bash
 cd my-demo-plugin
 pnpm install
 pnpm build
 pnpm dev          # watch worker + manifest + ui
-pnpm dev:ui       # UI preview (@datagent/plugin-sdk/dev-server)
+pnpm dev:ui       # предпросмотр UI (@datagent/plugin-sdk/dev-server)
 pnpm test
 ```
 
-Не обязательно класть исходники в `packages/plugins/` — для продакшена предпочтителен **npm-пакет** и установка через Plugin Manager.
+Для продакшена удобнее **опубликованный npm-пакет** и установка через менеджер плагинов, а не копирование в `packages/plugins/`.
 
-## Manifest (`src/manifest.ts`)
+## Манифест (`src/manifest.ts`)
 
-Обязательные поля (тип `DatagentPluginManifestV1` из `@datagent/plugin-sdk`):
+**Манифест** — паспорт плагина: что он умеет, какие инструменты объявляет, куда смотреть worker и UI. Тип: `DatagentPluginManifestV1` из `@datagent/plugin-sdk`.
 
 | Поле | Пример | Назначение |
 | --- | --- | --- |
-| `id` | `datagent.demo-greeter` | Стабильный id (namespace tools) |
-| `apiVersion` | `1` | Версия схемы manifest |
-| `version` | `0.1.0` | Semver пакета |
-| `displayName`, `description`, `author`, `categories` | — | UI Plugin Manager |
-| `capabilities` | `["agent.tools.register", "http.outbound"]` | Должны покрывать используемые `ctx.*` API |
-| `entrypoints.worker` | `./dist/worker.js` | Точка входа worker |
-| `entrypoints.ui` | `./dist/ui` | Если есть UI bundle |
-| `tools[]` | см. ниже | Декларация agent tools (schema для Board / dispatcher) |
-| `jobs[]`, `webhooks[]`, `database`, `apiRoutes`, `ui.slots` | по необходимости | Bitrix24: jobs + apiRoutes, **без** `tools` |
+| `id` | `datagent.demo-greeter` | Стабильный id (префикс имён инструментов) |
+| `apiVersion` | `1` | Версия схемы манифеста |
+| `version` | `0.1.0` | Версия пакета (semver) |
+| `displayName`, `description`, `author`, `categories` | — | Отображение в менеджере плагинов |
+| `capabilities` | `["agent.tools.register", "http.outbound"]` | Должны покрывать используемые API в worker |
+| `entrypoints.worker` | `./dist/worker.js` | Точка входа процесса |
+| `entrypoints.ui` | `./dist/ui` | Сборка UI, если есть |
+| `tools[]` | см. ниже | Описание инструментов для панели и диспетчера |
+| `jobs[]`, `webhooks[]`, `database`, `apiRoutes`, `ui.slots` | по необходимости | Фоновые задачи, webhook, маршруты API |
 
-**Bridge-only** (Bitrix24): capabilities для issues, jobs, `http.outbound`, `database.namespace.*` — секции `tools` нет.
+**Только мост** (как Битрикс24): capabilities для задач, jobs, исходящего HTTP, БД — секции `tools` может не быть.
 
-**Tools** (BrowserBridge): в manifest перечислены `browser_navigate`, …; в `setup` дополнительно `ctx.tools.register(...)`.
+**С инструментами** (как управление браузером): перечисление в `tools[]` и регистрация в `setup` через `ctx.tools.register(...)`.
 
 ## Worker (`src/worker.ts`)
 
-Точка входа — `definePlugin` + **`runWorker(plugin, import.meta.url)`** (иначе RPC host не стартует).
+**Worker** — код, который реально выполняется в отдельном процессе. Обязательно завершать файл вызовом `runWorker(plugin, import.meta.url)`, иначе сервер не установит связь по RPC.
 
 ```typescript
 import { definePlugin, runWorker } from "@datagent/plugin-sdk";
@@ -105,8 +117,8 @@ const plugin = definePlugin({
     ctx.tools.register(
       "greet",
       {
-        displayName: "Greet",
-        description: "Учебный tool (demo-greeter)",
+        displayName: "Приветствие",
+        description: "Учебный инструмент (demo-greeter)",
         parametersSchema: {
           type: "object",
           properties: { name: { type: "string" } },
@@ -135,11 +147,11 @@ export default plugin;
 runWorker(plugin, import.meta.url);
 ```
 
-Host services (issues, secrets, approvals, `browserbridge.*`, …) проксируются в `ctx` из `server/src/services/plugin-host-services.ts` — только если capability объявлена в manifest.
+Сервисы host (задачи, секреты, согласования, браузер, …) доступны в `ctx` только если соответствующая **capability** объявлена в манифесте (`plugin-host-services.ts`).
 
-Имена tools в Board: **`{manifest.id}:{toolName}`** (разделитель `:`), например `datagent.demo-greeter:greet`. Dispatcher: `server/src/services/plugin-tool-dispatcher.ts`, публичный API `GET /api/plugins/tools`, `POST /api/plugins/tools/execute` (для отладки, не путь `internal/tools/invoke`).
+**Имя инструмента в панели:** `{manifest.id}:{имя}`, например `datagent.demo-greeter:greet`. Список через API: `GET /api/plugins/tools`, отладка: `POST /api/plugins/tools/execute`.
 
-Учебный manifest для того же tool:
+Учебный фрагмент манифеста для того же инструмента:
 
 ```typescript
 import type { DatagentPluginManifestV1 } from "@datagent/plugin-sdk";
@@ -148,8 +160,8 @@ const manifest: DatagentPluginManifestV1 = {
   id: "datagent.demo-greeter",
   apiVersion: 1,
   version: "0.1.0",
-  displayName: "Demo Greeter (tutorial)",
-  description: "Учебный плагин — один tool greet; не production.",
+  displayName: "Учебное приветствие",
+  description: "Один инструмент greet; не для продакшена.",
   author: "Datagent",
   categories: ["automation"],
   capabilities: ["agent.tools.register", "activity.log.write"],
@@ -157,7 +169,7 @@ const manifest: DatagentPluginManifestV1 = {
   tools: [
     {
       name: "greet",
-      displayName: "Greet",
+      displayName: "Приветствие",
       description: "Вернуть приветствие по имени",
       parametersSchema: {
         type: "object",
@@ -171,20 +183,21 @@ const manifest: DatagentPluginManifestV1 = {
 export default manifest;
 ```
 
-Контракт tool на реальном плагине (иллюстрация, не копируйте id): `datagent.browserbridge:browser_navigate` с параметрами `url`, `waitUntil` — см. `packages/plugins/plugin-browserbridge/src/manifest.ts`.
+Реальный пример параметров: `datagent.browserbridge:browser_navigate` (`url`, `waitUntil`) — см. `plugin-browserbridge/src/manifest.ts`.
 
-## UI (опционально)
+## Интерфейс в панели (опционально)
+
+Плагин может добавить **страницы настроек** или виджеты в панели:
 
 - Слоты в `manifest.ui.slots` (`settingsPage`, `dashboardWidget`, `toolbarButton`, …).
-- Компоненты в `src/ui/index.tsx`, hooks: `@datagent/plugin-sdk/ui` (`usePluginData`, `usePluginAction`).
-- Сборка UI: `scripts/build-ui.mjs` + esbuild/rollup presets из `@datagent/plugin-sdk/bundlers`.
-- Bitrix24: `ui/index.tsx`, страница портала; BrowserBridge — toolbar на issue.
+- Компоненты в `src/ui/index.tsx`, хуки `@datagent/plugin-sdk/ui`.
+- Сборка UI: `scripts/build-ui.mjs` + пресеты bundler из SDK.
 
-Hot-reload UI в dev: `datagent-plugin-dev-server` (bin из SDK) — host может проксировать static UI (`server/src/routes/plugin-ui-static.ts`). **Перезагрузка worker-кода** без restart server в production не документирована; после `pnpm build` обычно restart worker через Plugin Settings или lifecycle.
+В dev UI можно обновлять через `datagent-plugin-dev-server`. После `pnpm build` в продакшене worker обычно перезапускают через настройки плагина или lifecycle сервера.
 
 ## Установка в Datagent
 
-1. Собрать плагин:
+**Шаг 1.** Соберите пакет:
 
 ```bash
 pnpm --filter @datagent/plugin-bitrix24 build
@@ -192,15 +205,13 @@ pnpm --filter @datagent/plugin-bitrix24 build
 pnpm --filter @datagent/my-demo-plugin build
 ```
 
-2. Установить на instance:
+**Шаг 2.** Установите на инстанс (CLI или API):
 
 ```bash
 pnpm datagent plugin install ./packages/plugins/plugin-browserbridge
-# или npm-пакет из каталога (имя см. в registry / Plugin Manager):
+# или имя npm-пакета из каталога:
 pnpm datagent plugin install <npm-package-name>
 ```
-
-REST (`http://localhost:3100`):
 
 ```bash
 curl -X POST http://127.0.0.1:3100/api/plugins/install \
@@ -208,59 +219,57 @@ curl -X POST http://127.0.0.1:3100/api/plugins/install \
   -d "{\"packageName\":\"./packages/plugins/plugin-browserbridge\"}"
 ```
 
-3. **Plugin Manager**: Board → **Instance → Settings → Plugins** (`/instance/settings/plugins`) → включить плагин для instance / company.
+**Шаг 3.** В панели: **Настройки инстанса → Плагины** (`/instance/settings/plugins`) — включить для компании.
 
-4. **Настройки**: `/instance/settings/plugins/{pluginId}` — `instanceConfigSchema` / company config, поля `format: "secret-ref"` (как `telegramBotTokenRef` в тестах secrets handler). Секреты — company secrets, не корневой `.env` (в `.env.example` нет `PLUGIN_*` и нет `config/plugins.yaml`).
+**Шаг 4.** Настройки плагина: секреты через `secret-ref` (company secrets), не корневой `.env`.
 
-5. Webhook (если в manifest есть `webhooks` + `webhooks.receive`):
+**Шаг 5.** Webhook (если объявлен в манифесте): `POST /api/plugins/:pluginId/webhooks/:endpointKey`.
 
-`POST /api/plugins/:pluginId/webhooks/:endpointKey` — см. `server/src/routes/plugins.ts`.
+Файла `config/plugins.yaml` и команды `plugins:reload` в репозитории **нет**.
 
-Файл `config/plugins.yaml` и команда `plugins:reload` в репозитории **отсутствуют**.
+## Подключить инструмент к агенту
 
-## Подключить tool к агенту
+В панели: **Агент → Инструменты** — включите нужное имя (например `datagent.demo-greeter:greet`). При запуске агента адаптер нейросети получает описания инструментов от сервера, а не напрямую от локальных служб.
 
-Board → **Agent** → Tools → включите namespaced tool (например `datagent.demo-greeter:greet` или `datagent.browserbridge:browser_navigate`). Агент вызывает tool на **heartbeat**; адаптер OpenCode получает tool definitions из host, не из прямого HTTP к Local Service.
-
-Тест run (Playground): промпт, который явно просит вызвать tool.
+Проверка: промпт в playground, который явно просит вызвать инструмент.
 
 ## Изоляция и надёжность
 
-- Child process на плагин, stdio JSON-RPC 2.0 (`@datagent/plugin-sdk/protocol`).
-- Crash → backoff restart; лимит consecutive crashes в `plugin-worker-manager.ts`.
-- `onShutdown` в worker (BrowserBridge останавливает embedded local service).
-- Company-scoped enable и config; plugin secrets allowlist в `plugin-secrets-handler.ts`.
+- Отдельный OS-процесс на плагин, протокол JSON-RPC 2.0.
+- Сбой процесса не роняет API-сервер; автоперезапуск с backoff.
+- `onShutdown` в worker — корректная остановка (например встроенной службы браузера).
+- Настройки и секреты привязаны к **компании**; allowlist секретов в `plugin-secrets-handler.ts`.
 
 ## Отладка
 
 | Действие | Где |
 | --- | --- |
-| Логи worker | Plugin Settings → dashboard / logs; stderr child → host logger |
-| Health | `GET /api/plugins/:pluginId/health`, `onHealth()` в worker |
-| Test config | `POST /api/plugins/:pluginId/config/test` → `onValidateConfig` |
-| Unit/integration | `@datagent/plugin-sdk/testing` — `createTestHarness`; образец: `plugin-browserbridge/src/worker.integration.test.ts` |
-| Список tools | `GET /api/plugins/tools?pluginId=...` |
-| Выполнить tool вручную | `POST /api/plugins/tools/execute` с телом `{ "tool": "datagent.browserbridge:browser_navigate", "arguments": { ... }, "runContext": { ... } }` |
-| Instance smoke | `pnpm datagent doctor` (общий, не plugin-specific) |
+| Логи worker | Настройки плагина → журнал; stderr дочернего процесса → лог сервера |
+| Health | `GET /api/plugins/:pluginId/health`, метод `onHealth()` в worker |
+| Проверка конфига | `POST /api/plugins/:pluginId/config/test` → `onValidateConfig` |
+| Тесты | `@datagent/plugin-sdk/testing` — `createTestHarness` |
+| Список инструментов | `GET /api/plugins/tools?pluginId=...` |
+| Ручной вызов | `POST /api/plugins/tools/execute` с телом `{ "tool": "…", "arguments": { … }, "runContext": { … } }` |
+| Общая диагностика | `pnpm datagent doctor` |
 
 ## Публикация
 
-- **Внутри монорепо:** `packages/plugins/<name>`, `private: true`, установка локальным путём.
-- **npm:** опубликованный пакет; discovery по `package.json` → `datagentPlugin.manifest` (см. `plugin-loader.ts`). Пути: `dist/manifest.js`, `dist/worker.js`, `dist/ui/`.
-- Версия `manifest.version` должна быть совместима с host (`minimumHostVersion` при необходимости).
+- **В монорепозитории:** `packages/plugins/<name>`, `private: true`, установка локальным путём.
+- **В npm:** поле `datagentPlugin.manifest` в `package.json`; артефакты `dist/manifest.js`, `dist/worker.js`, `dist/ui/`.
+- Поле `manifest.version` и при необходимости `minimumHostVersion` должны быть совместимы с версией сервера.
 
-## SDK-пакет (техническое имя)
+## Пакеты SDK
 
-| Артефакт | Имя |
+| Артефакт | Имя npm |
 | --- | --- |
-| npm SDK | `@datagent/plugin-sdk` |
-| Scaffold CLI | `@datagent/create-datagent-plugin` |
-| Спека | `doc/plugins/PLUGIN_SPEC.md` в репозитории Datagent |
+| SDK | `@datagent/plugin-sdk` |
+| Генератор заготовки | `@datagent/create-datagent-plugin` |
+| Спецификация | `doc/plugins/PLUGIN_SPEC.md` в репозитории Datagent |
 
 ## Связанные разделы
 
-- [Архитектура платформы](../concepts/agent-architecture.md) — heartbeat, PluginWorkerManager, plugins.
-- [Быстрый старт](../getting-started/quickstart) — `pnpm dev`, `:3100`.
-- [Установка](../getting-started/installation.md) — монорепо workspaces.
-- [Bitrix24 Bridge](../integrations/bitrix24.md) — jobs, apiRoutes, без CRM tools.
-- [BrowserBridge](../integrations/browserbridge.md) — manifest tools + worker; [установка](../browser/setup.md).
+- [Архитектура платформы](../concepts/agent-architecture.md)
+- [Быстрый старт в облаке](../cloud/getting-started)
+- [Обзор API](../api-reference/overview.md) — установка и инструменты плагинов
+- [Битрикс24](../integrations/bitrix24.md) — jobs и apiRoutes без CRM-инструментов
+- [Управление браузером](../integrations/browserbridge.md) · [установка](../browser/setup.md)

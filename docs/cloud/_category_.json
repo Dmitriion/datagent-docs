@@ -1,0 +1,10 @@
+{
+  "label": "Облачная версия",
+  "position": 2,
+  "link": {
+    "type": "generated-index",
+    "slug": "cloud",
+    "title": "Облачная версия Datagent",
+    "description": "Регистрация на app.datagent.ru, первый агент, тарифы и установка на свой сервер по запросу."
+  }
+}

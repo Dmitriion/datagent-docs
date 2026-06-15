@@ -2,12 +2,18 @@
 id: agent-architecture
 title: Архитектура платформы и агента
 sidebar_label: Архитектура
-description: Слои монорепозитория Datagent — Board UI, API server, CLI, LLM-адаптеры, плагины, BrowserBridge и PostgreSQL с Better Auth.
+description: Из чего состоит Datagent — панель, сервер, адаптеры нейросетей, плагины и база данных.
 ---
 
-Datagent — монорепозиторий на pnpm workspaces: **control plane** для AI-агентов, компаний, задач и run. Отдельного пакета `packages/core` в дереве нет; исполняющая логика — в `server`, интерфейс — в `ui`, установка instance — в `cli`. **Run** агента планирует и выполняет сервис **heartbeat** в `server`, вызывая зарегистрированный **adapter** и tools плагинов.
+> **Зачем:** **Datagent** на [app.datagent.ru](https://app.datagent.ru) — единая облачная платформа: панель для людей, сервер для запусков агентов, плагины для **Битрикс24**, **GigaChat**, таблиц и браузера. Здесь — карта «кто за что отвечает», без погружения в репозиторий.
 
-Сквозной цикл одного run — в [Как это работает](./how-it-works); здесь — **статическая карта**: из каких частей собран продукт и зачем каждая нужна оператору, менеджеру и инженеру.
+Datagent собран из нескольких частей, которые вместе дают **единую платформу** для агентов, задач и согласований. Отдельного «движка агента» в другом репозитории нет: сервер выполняет запуски, панель показывает интерфейс, плагины добавляют интеграции.
+
+Сквозной путь одного запуска — в [Как это работает](./how-it-works). Ниже — **карта частей**: что за что отвечает оператору, руководителю и инженеру.
+
+:::note Для инженеров
+Монорепозиторий pnpm, `server/`, `ui/`, `packages/adapters`, heartbeat — см. таблицы и схемы ниже.
+:::
 
 ## Диаграмма слоёв
 
@@ -70,7 +76,7 @@ flowchart TB
 
 | Слой | Пакет / путь | Ответственность |
 | --- | --- | --- |
-| **Client Layer** | `ui/` (`@datagent/ui`) | Board (React, Vite): компании, агенты, задачи, run, настройки. Обращается к REST API сервера. |
+| **Клиентский слой** | `ui/` | Панель (React): компании, агенты, задачи, запуски, настройки. Обращается к API сервера. |
 | **Core / API** | `server/` (`@datagent/server`) | HTTP API (Express), `/api/*`, `/health`, планировщик **heartbeat**, бюджеты, память, плагины, вызов **adapters**. |
 | **CLI** | `cli/` (npm `datagent`) | Онбординг instance (`onboard`), проверки (`doctor`), старт (`run`); config в `DATAGENT_HOME` (~/.datagent). |
 | **Shared contracts** | `packages/shared` | Общие типы, режимы деплоя (`local_trusted` / `authenticated`), константы для server и CLI. |
@@ -81,9 +87,9 @@ flowchart TB
 
 Дополнительные workspace-пакеты: `packages/adapter-utils`, `packages/mcp-server`, `packages/skills-catalog` — утилиты адаптеров, MCP и каталог skills (**25** записей в manifest: 5 bundled + 3 optional + 17 community; Board `/{prefix}/skills/catalog`); приёмка и вендоринг — в репозитории Datagent: `doc/community-skills-acceptance.md`, `doc/community-skills-vendoring.md`.
 
-## Client Layer (`ui`)
+## Панель (`ui`)
 
-Собранный Board публикуется как статические assets (`ui/dist`, в production — `ui-dist` в `server`). В разработке UI **не** поднимается отдельным прод-портом: см. **один процесс на PORT** ниже. Для оператора это значит один адрес в закладках — и задачи, и согласования, и агенты.
+Собранная панель отдаётся с того же адреса, что и API. В облаке это [app.datagent.ru](https://app.datagent.ru) — один адрес в закладках для задач, согласований и агентов.
 
 ## Core / API (`server`)
 
@@ -96,7 +102,7 @@ flowchart TB
 
 ## CLI (`cli`)
 
-Команды из README и [Быстрого старта](../getting-started/quickstart): `npx datagent onboard --yes`, `pnpm datagent doctor`. CLI не заменяет server: готовит instance (БД, bind, secrets) и запускает тот же API-процесс, что и `pnpm dev`. **Инженер** работает здесь; **оператор** — в Board.
+Команды CLI — для разработки и развёртывания на своём сервере; в **облаке** оператор работает в панели на [app.datagent.ru](https://app.datagent.ru).
 
 ## LLM Adapters
 
@@ -129,7 +135,7 @@ Control plane **оркестрирует**, worker **исполняет** Office
 
 | Компонент | Поведение |
 | --- | --- |
-| **PostgreSQL** | Без `DATABASE_URL` — `embedded-postgres` в каталоге instance; с `DATABASE_URL` — внешний инстанс, миграции `pnpm db:migrate` (см. [Установку](../getting-started/installation)). |
+| **PostgreSQL** | Данные instance в managed Cloud или в контуре заказчика (on-premise). |
 | **Схема** | `packages/db` — Drizzle, миграции в `packages/db/src/migrations/`. |
 | **Auth** | Better Auth на `/api/auth`; секрет `BETTER_AUTH_SECRET` (и опционально agent JWT). Режимы `local_trusted` / `authenticated` — `@datagent/shared` + config instance. |
 | **Порт** | `PORT` (по умолчанию `3100`) — один HTTP listener для API и UI. |
@@ -144,12 +150,29 @@ Control plane **оркестрирует**, worker **исполняет** Office
 - иначе `SERVE_UI=true` → **static**: раздача `ui-dist` с того же порта.
 - иначе → API-only (`none`).
 
-В `.env.example` указано `SERVE_UI=false`; при `pnpm dev` UI доступен за счёт dev-middleware, **не** отдельного `:3200`. HMR WebSocket — порт `PORT + 10000` (для 3100 → 13100). См. [Быстрый старт](../getting-started/quickstart).
+В Cloud UI и API обслуживаются одним origin (`app.datagent.ru`). Детали dev-middleware — в monorepo `doc/DEVELOPING.md` для контрибьюторов.
 
-**Не ищите Board на `:3200`** — в стандартном dev это признак устаревшей инструкции или другого проекта.
+**Не ищите панель на порту `:3200`** — в актуальной схеме интерфейс и API на одном адресе.
+
+## Частые вопросы
+
+**Нужно ли разворачивать Datagent на своём сервере для обычной работы?**  
+Нет — для большинства команд достаточно облака [app.datagent.ru](https://app.datagent.ru). Свой контур — по корпоративному тарифу.
+
+**Где выполняются запуски агентов?**  
+На сервере платформы (control plane): панель показывает интерфейс, сервер оркестрирует адаптеры и плагины.
+
+**Чем панель отличается от «чата с ChatGPT»?**  
+В Datagent есть компании, задачи, роли, согласования, кредиты и интеграции (**Битрикс24**, **Телеграм**) — не один изолированный диалог.
+
+## Что дальше?
+
+- [Как это работает](./how-it-works) — жизненный цикл одного запуска
+- [Первый агент](../cloud/first-agent) · [Старт в облаке](../cloud/getting-started)
+- [Войти в Datagent](https://app.datagent.ru)
 
 ## Связанные разделы
 
-- [Как это работает](./how-it-works) — жизненный цикл run, tools, память.
+- [Как это работает](./how-it-works) — жизненный цикл запуска, инструменты, память.
 - [LLM-адаптеры](./llm-adapters) — провайдеры и конфигурация.
-- [Быстрый старт](../getting-started/quickstart) — поднять стенд из исходников.
+- [Быстрый старт в облаке](../cloud/getting-started)
