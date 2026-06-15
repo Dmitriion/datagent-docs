@@ -2,10 +2,16 @@ import type {NextStepItem} from './index';
 
 export const introNextSteps: NextStepItem[] = [
   {
-    title: 'Быстрый старт',
-    description: 'Поднять Board на :3100 за 10–15 минут из монорепо.',
-    to: '/docs/getting-started/quickstart',
+    title: 'Старт в облаке',
+    description: 'Регистрация на app.datagent.ru и первичная настройка.',
+    to: '/docs/cloud/getting-started',
     tag: 'Начало',
+  },
+  {
+    title: 'Первый агент',
+    description: 'GigaChat или YandexGPT, запуск и журнал выполнения.',
+    to: '/docs/cloud/first-agent',
+    tag: 'Практика',
   },
   {
     title: 'Учебник',
@@ -14,41 +20,35 @@ export const introNextSteps: NextStepItem[] = [
     tag: 'Пользователям',
   },
   {
-    title: 'Что такое Datagent',
-    description: 'Control plane, heartbeat, плагины — для инженеров.',
-    to: '/docs/concepts/what-is-datagent',
-    tag: 'Платформа',
-  },
-  {
-    title: 'Обзор API',
-    description: 'Wakeup, heartbeat-runs, issues — без POST /api/runs.',
+    title: 'Программный интерфейс',
+    description: 'Для разработчиков: запуск агентов и задачи.',
     to: '/docs/api-reference/overview',
     tag: 'Инженерам',
   },
 ];
 
-export const quickstartNextSteps: NextStepItem[] = [
+export const cloudFirstAgentNextSteps: NextStepItem[] = [
   {
-    title: 'Первый агент',
-    description: 'Создать агента, wakeup и разобрать журнал run.',
-    to: '/docs/getting-started/first-agent',
-    tag: 'Следующий шаг',
-  },
-  {
-    title: 'Первый день в Board',
-    description: 'Сценарий оператора: задачи и одобрения.',
+    title: 'Первый день в панели',
+    description: 'Сценарий оператора: задачи и согласования.',
     to: '/docs/guides/01-first-day',
     tag: 'Учебник',
   },
   {
+    title: 'Тарифы',
+    description: 'Бесплатный, PRO, Business и корпоративный.',
+    to: '/docs/cloud/pricing',
+    tag: 'Облако',
+  },
+  {
     title: 'Как это работает',
-    description: 'Heartbeat, плагины и один процесс на :3100.',
+    description: 'Запуски, плагины и устройство системы.',
     to: '/docs/concepts/how-it-works',
-    tag: 'Концепции',
+    tag: 'Основы',
   },
   {
     title: 'Решение проблем',
-    description: 'Board, run, Офис — типичные симптомы.',
+    description: 'Типичные затруднения при работе в панели.',
     to: '/docs/troubleshooting',
     tag: 'Справка',
   },
@@ -56,49 +56,49 @@ export const quickstartNextSteps: NextStepItem[] = [
 
 export const guidesIndexNextSteps: NextStepItem[] = [
   {
-    title: 'Первый день в Board',
-    description: 'Мария: одобрения, задачи, wakeup.',
+    title: 'Первый день в панели',
+    description: 'Мария: согласования, задачи, запуск агента.',
     to: '/docs/guides/01-first-day',
     tag: 'Глава 1',
   },
   {
     title: 'Команда агентов',
-    description: 'Роли, tools и границы на агента.',
+    description: 'Роли и границы возможностей каждого агента.',
     to: '/docs/guides/02-your-team',
     tag: 'Глава 2',
   },
   {
-    title: 'Одобрения',
-    description: 'Рискованные действия под контролем.',
+    title: 'Согласования',
+    description: 'Рискованные действия только с вашего разрешения.',
     to: '/docs/guides/04-trust-and-approval',
     tag: 'Глава 4',
   },
   {
-    title: 'Быстрый старт',
-    description: 'Если Board ещё не поднят.',
-    to: '/docs/getting-started/quickstart',
-    tag: 'Установка',
+    title: 'Старт в облаке',
+    description: 'Если ещё не регистрировались на app.datagent.ru.',
+    to: '/docs/cloud/getting-started',
+    tag: 'Облако',
   },
 ];
 
 export const firstDayNextSteps: NextStepItem[] = [
   {
     title: 'Команда агентов',
-    description: 'Собрать роли и не выдать лишние tools.',
+    description: 'Собрать роли и не выдать лишних прав.',
     to: '/docs/guides/02-your-team',
     tag: 'Глава 2',
   },
   {
     title: 'Одна задача',
-    description: 'Issue, диалог и журнал run.',
+    description: 'Диалог с агентом и журнал запуска.',
     to: '/docs/guides/03-one-task',
     tag: 'Глава 3',
   },
   {
     title: 'Первый агент',
-    description: 'Технический туториал по агенту.',
-    to: '/docs/getting-started/first-agent',
-    tag: 'Старт',
+    description: 'Пошаговое создание агента в облаке.',
+    to: '/docs/cloud/first-agent',
+    tag: 'Облако',
   },
   {
     title: 'Обложка учебника',
@@ -111,21 +111,21 @@ export const firstDayNextSteps: NextStepItem[] = [
 export const officeFieldNextSteps: NextStepItem[] = [
   {
     title: 'Пульт в мессенджерах',
-    description: 'Bitrix24 и Телеграм в задачах.',
+    description: 'Битрикс24 и Телеграм в задачах.',
     to: '/docs/guides/06-channels',
     tag: 'Глава 6',
   },
   {
-    title: 'Одобрения',
-    description: 'Shield и очередь в Board.',
+    title: 'Согласования',
+    description: 'Очередь решений в панели.',
     to: '/docs/guides/04-trust-and-approval',
     tag: 'Глава 4',
   },
   {
     title: 'Обзор «Офис»',
-    description: 'As-built и enableOffice для инженеров.',
+    description: 'Как включить и что видит руководитель.',
     to: '/docs/office/overview',
-    tag: 'Техника',
+    tag: 'Справка',
   },
   {
     title: 'Обложка учебника',

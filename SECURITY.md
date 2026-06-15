@@ -30,7 +30,7 @@
 | Секреты в git / задачах | LLM-ключи и webhook — только через **secret_ref** в Board |
 | BrowserBridge token | Файл `~/.datagent/bridge.token` с правами `600` или `bridgeTokenSecretRef` |
 
-Подробнее: [Установка](https://docs.datagent.ru/docs/getting-started/installation), [Обзор API](https://docs.datagent.ru/docs/api-reference/overview).
+Подробнее: [Старт в Cloud](https://docs.datagent.ru/docs/cloud/getting-started), [On-premise](https://docs.datagent.ru/docs/cloud/on-premise), [Обзор API](https://docs.datagent.ru/docs/api-reference/overview).
 
 ## Благодарности
 

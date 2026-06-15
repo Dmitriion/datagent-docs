@@ -1,27 +1,30 @@
-# Datagent Docs (RU)
+# Документация Datagent (RU)
 
-> Операционная платформа (control plane) для AI-агентов. Self-hosted. API и Board на порту 3100, heartbeat, плагины.
+> Платформа управления ИИ-агентами в компании. Облако: app.datagent.ru. Развёртывание на своём сервере — корпоративный тариф (sales@datagent.ru).
 
-Canonical site: https://docs.datagent.ru/
+Сайт: https://docs.datagent.ru/
+Стратегия продукта: https://github.com/Dmitriion/datagent/blob/master/doc/STRATEGY.md
 
-## Ограничения для агентов (важно)
+## Важно для ИИ-ассистентов
 
-- Board и API на одном origin: **http://localhost:3100** (dev), не отдельный порт :3200.
-- Запуск run: **POST /api/agents/:id/wakeup** и heartbeat-runs; публичного **POST /api/runs** нет.
-- Память и OAuth — в PostgreSQL instance, не отдельный Runner-сервис.
-- В пользовательском тексте: **Телеграм**, не Telegram.
-- «Офис» — experimental (`enableOffice`); не выдумывать tools вне manifest плагинов.
-- 1С: **нет** `datagent.1c-connector:*` в heartbeat; MCP для IDE.
-- BrowserBridge: agent tools `datagent.browserbridge:browser_*` в heartbeat.
+- **Облако:** панель и API на https://app.datagent.ru
+- **Свой сервер:** только по договору Enterprise, не публичная самоустановка
+- Запуск агента: через API пробуждения агента; отдельного «создать запуск в обход агента» нет
+- В пользовательских текстах: **Телеграм**, не Telegram
+- «Офис» — экспериментальный раздел; не выдумывать инструменты вне каталога плагинов
+- 1С: нет инструментов 1С в рабочем цикле агента на задаче; доступ для IDE через MCP
+- Управление браузером: инструменты плагина browserbridge в цикле агента
 
-## Get Started
+## Начало работы
 
 - https://docs.datagent.ru/docs/intro
-- https://docs.datagent.ru/docs/getting-started/installation
-- https://docs.datagent.ru/docs/getting-started/quickstart
-- https://docs.datagent.ru/docs/getting-started/first-agent
+- https://docs.datagent.ru/docs/cloud/getting-started
+- https://docs.datagent.ru/docs/cloud/first-agent
+- https://docs.datagent.ru/docs/cloud/pricing
+- https://docs.datagent.ru/docs/cloud/on-premise
+- https://app.datagent.ru
 
-## Guides (operator / manager)
+## Учебник (оператор / руководитель)
 
 - https://docs.datagent.ru/docs/guides
 - https://docs.datagent.ru/docs/guides/01-first-day
@@ -34,14 +37,14 @@ Canonical site: https://docs.datagent.ru/
 - https://docs.datagent.ru/docs/guides/08-1c-bridge
 - https://docs.datagent.ru/docs/guides/playbook-index
 
-## Concepts
+## Концепции
 
 - https://docs.datagent.ru/docs/concepts/what-is-datagent
 - https://docs.datagent.ru/docs/concepts/how-it-works
 - https://docs.datagent.ru/docs/concepts/agent-architecture
 - https://docs.datagent.ru/docs/concepts/llm-adapters
 
-## Integrations (developers)
+## Интеграции
 
 - https://docs.datagent.ru/docs/integrations/gigachat
 - https://docs.datagent.ru/docs/integrations/yandexgpt
@@ -50,27 +53,27 @@ Canonical site: https://docs.datagent.ru/
 - https://docs.datagent.ru/docs/integrations/1c-connector
 - https://docs.datagent.ru/docs/integrations/browserbridge
 
-## Browser management
+## Управление браузером
 
 - https://docs.datagent.ru/docs/browser
 - https://docs.datagent.ru/docs/browser/overview
 - https://docs.datagent.ru/docs/browser/setup
 
-## Office
+## Офис
 
 - https://docs.datagent.ru/docs/office/overview
 - https://docs.datagent.ru/docs/office/excel-pptx
 
-## API
+## API (для разработчиков)
 
 - https://docs.datagent.ru/docs/api-reference/overview
 
-## Tutorials
+## Практические сценарии
 
 - https://docs.datagent.ru/docs/tutorials/build-plugin
 - https://docs.datagent.ru/docs/tutorials/automate-crm
 
-## Help
+## Справка
 
 - https://docs.datagent.ru/docs/troubleshooting
 - https://docs.datagent.ru/docs/changelog

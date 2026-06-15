@@ -85,6 +85,46 @@
   outline-offset: 2px;
 }
 
+.pricingBanner {
+  position: relative;
+  z-index: 1;
+  margin-top: 1.75rem;
+  padding: 1rem 1.15rem;
+  border-radius: var(--radius-md);
+  border: 1px solid oklch(0.78 0.02 250 / 0.35);
+  background: var(--color-hero-surface);
+  max-width: 38rem;
+}
+
+.pricingBannerTitle {
+  font-size: var(--text-caption);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-hero-muted);
+  margin: 0 0 0.5rem;
+}
+
+.pricingBannerText {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--color-hero-text);
+  margin: 0 0 0.75rem;
+}
+
+.pricingBannerLink {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-hero-text);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.pricingBannerLink:hover {
+  color: var(--color-hero-text);
+  opacity: 0.9;
+}
+
 @media screen and (max-width: 996px) {
   .hero {
     padding: 2.75rem 0;

@@ -4,69 +4,80 @@ import styles from './styles.module.css';
 
 const paths = [
   {
-    title: 'Начало работы',
-    description: 'Установка, переменные окружения и первый агент в Board.',
-    to: '/docs/getting-started/quickstart',
+    title: 'Быстрый старт',
+    description:
+      'Регистрация на app.datagent.ru и первый запущенный агент — пять шагов, около 5 минут.',
+    to: '/docs/cloud/getting-started',
     tag: 'Старт',
   },
   {
-    title: 'Концепции',
-    description: 'Control plane, архитектура server/ui, heartbeat и плагины.',
+    title: 'Что такое Datagent',
+    description:
+      'Облачная платформа AI-агентов: зачем бизнесу, чем отличается от чата с GPT.',
     to: '/docs/concepts/what-is-datagent',
-    tag: 'Платформа',
+    tag: 'О продукте',
   },
   {
-    title: 'Учебник по агентам',
-    description: 'Восемь историй: от первого входа в Board до одобрений, Офиса и каналов — под вашим контролем.',
+    title: 'Тарифы и кредиты',
+    description: 'Free, PRO 990 ₽, Business 3 900 ₽ — что входит и как тратятся кредиты.',
+    to: '/docs/cloud/pricing',
+    tag: 'Цены',
+  },
+  {
+    title: 'Учебник',
+    description:
+      'Восемь коротких историй: задачи, согласования, «Офис», Битрикс24 и документы.',
     to: '/docs/guides',
-    tag: 'Пользователям',
+    tag: 'Для команды',
   },
   {
-    title: 'Интеграции',
-    description: 'GigaChat, YandexGPT, Bitrix24, Телеграм из коробки.',
-    to: '/docs/integrations/gigachat',
-    tag: 'LLM и CRM',
+    title: 'Битрикс24 и GigaChat',
+    description:
+      'Российские интеграции из коробки — то, чего нет у n8n и Dify без доработок.',
+    to: '/docs/integrations/bitrix24',
+    tag: 'Интеграции',
   },
   {
-    title: 'Офис и документы',
-    description: 'Пространство «Офис», 1С MCP-коннектор и Office Plugin для Excel/PPTX.',
-    to: '/docs/office/overview',
-    tag: 'Оператору',
+    title: 'Первый агент',
+    description: 'Как выбрать модель, подключить ключи и нажать «Запустить».',
+    to: '/docs/cloud/first-agent',
+    tag: '5 минут',
   },
   {
-    title: 'Туториалы',
-    description: 'CRM-автоматизация, BrowserBridge и свой плагин.',
-    to: '/docs/tutorials/automate-crm',
-    tag: 'Практика',
-  },
-  {
-    title: 'API',
-    description: 'Wakeup, heartbeat-runs и выполнение tools плагинов.',
+    title: 'Программный интерфейс',
+    description: 'Для разработчиков: автоматизация запусков и плагинов через API.',
     to: '/docs/api-reference/overview',
-    tag: 'Инженерам',
+    tag: 'Для IT',
   },
   {
     title: 'История версий',
-    description: 'Changelog и изменения документации.',
+    description: 'Что изменилось в справке и продукте.',
     to: '/docs/changelog',
     tag: 'Обновления',
   },
 ] as const;
 
-const stackPills = ['Node 20+', 'pnpm', 'PostgreSQL', ':3100', 'self-hosted'] as const;
+const stackPills = [
+  'Облако SaaS',
+  'Free · 3 агента',
+  'GigaChat',
+  'YandexGPT',
+  'Битрикс24',
+  'Кредиты',
+] as const;
 
 export default function HomePaths(): ReactNode {
   return (
     <section className={styles.section}>
       <div className="container">
-        <div className={styles.pillStrip} aria-label="Стек">
+        <div className={styles.pillStrip} aria-label="Возможности">
           {stackPills.map((pill) => (
             <span key={pill} className={styles.pill}>
               {pill}
             </span>
           ))}
         </div>
-        <h2 className={styles.heading}>Разделы документации</h2>
+        <h2 className={styles.heading}>Куда идти дальше</h2>
         <div className={styles.grid}>
           {paths.map((item) => (
             <DocPathCard key={item.to} {...item} />

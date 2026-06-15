@@ -3,9 +3,9 @@ import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
-  title: 'Datagent Docs',
+  title: 'Документация Datagent',
   tagline:
-    'Операционная платформа для AI-агентов. Self-hosted. До первого одобрения — 10 минут.',
+    'Единый центр управления ИИ-агентами в компании. Облачная версия на app.datagent.ru.',
   favicon: 'img/brand/favicon-light.svg',
 
   future: {
@@ -58,6 +58,22 @@ const config: Config = {
             from: '/docs/tutorials/browserbridge-setup',
             to: '/docs/browser/setup',
           },
+          {
+            from: '/docs/getting-started',
+            to: '/docs/cloud/getting-started',
+          },
+          {
+            from: '/docs/getting-started/quickstart',
+            to: '/docs/cloud/getting-started',
+          },
+          {
+            from: '/docs/getting-started/installation',
+            to: '/docs/cloud/on-premise',
+          },
+          {
+            from: '/docs/getting-started/first-agent',
+            to: '/docs/cloud/first-agent',
+          },
         ],
       },
     ],
@@ -72,6 +88,7 @@ const config: Config = {
           routeBasePath: 'docs',
           // Сохраняем префиксы 01-, 02-… в URL учебника (guides/01-first-day).
           numberPrefixParser: false,
+          exclude: ['**/getting-started/**', '**/BRAND.md'],
         },
         blog: {
           showReadingTime: true,
@@ -117,7 +134,7 @@ const config: Config = {
       {
         name: 'description',
         content:
-          'Документация Datagent — control plane для AI-агентов: установка, API :3100, интеграции GigaChat, YandexGPT, Bitrix24.',
+          'Справка по Datagent: облачная версия, первые шаги, GigaChat, YandexGPT, Битрикс24 и работа с агентами.',
       },
     ],
     colorMode: {
@@ -126,9 +143,9 @@ const config: Config = {
       respectPrefersColorScheme: true,
     },
     navbar: {
-      title: 'Datagent Docs',
+      title: 'Документация Datagent',
       logo: {
-        alt: 'Datagent',
+        alt: 'Логотип Datagent',
         src: 'img/brand/mark-header.svg',
       },
       items: [
@@ -139,15 +156,25 @@ const config: Config = {
           label: 'Документация',
         },
         {
-          to: '/docs/getting-started/quickstart',
+          to: '/docs/cloud/getting-started',
           label: 'Начало',
           position: 'left',
         },
-        {to: '/docs/guides', label: 'Руководство', position: 'left'},
+        {to: '/docs/guides', label: 'Учебник', position: 'left'},
         {
           to: '/docs/concepts/what-is-datagent',
-          label: 'Платформа',
+          label: 'О платформе',
           position: 'left',
+        },
+        {
+          href: 'https://app.datagent.ru',
+          label: 'Приложение',
+          position: 'right',
+        },
+        {
+          href: 'https://datagent.ru',
+          label: 'Сайт',
+          position: 'right',
         },
       ],
     },
@@ -157,34 +184,39 @@ const config: Config = {
         {
           title: 'Документация',
           items: [
-            {label: 'Быстрый старт', to: '/docs/getting-started/quickstart'},
+            {label: 'Быстрый старт', to: '/docs/cloud/getting-started'},
+            {label: 'Свой сервер', to: '/docs/cloud/on-premise'},
             {label: 'Введение', to: '/docs/intro'},
             {label: 'Учебник', to: '/docs/guides'},
-            {label: 'Концепции', to: '/docs/concepts/what-is-datagent'},
-            {label: 'API', to: '/docs/api-reference/overview'},
+            {label: 'О платформе', to: '/docs/concepts/what-is-datagent'},
+            {label: 'Программный интерфейс', to: '/docs/api-reference/overview'},
             {label: 'Решение проблем', to: '/docs/troubleshooting'},
           ],
         },
         {
           title: 'Ещё',
           items: [
-            {label: 'Туториалы', to: '/docs/tutorials/automate-crm'},
-            {label: 'Блог', to: '/blog'},
+            {label: 'Облачная версия', to: '/docs/cloud'},
+            {label: 'Тарифы', to: '/docs/cloud/pricing'},
+            {label: 'Приложение', href: 'https://app.datagent.ru'},
+            {label: 'Сайт', href: 'https://datagent.ru'},
+            {label: 'Практические сценарии', to: '/docs/tutorials/automate-crm'},
+            {label: 'История версий', to: '/docs/changelog'},
           ],
         },
         {
           title: 'Интеграции',
           items: [
-            {label: 'GigaChat', to: '/docs/integrations/gigachat'},
+            {label: 'GigaChat (Сбер)', to: '/docs/integrations/gigachat'},
             {label: 'YandexGPT', to: '/docs/integrations/yandexgpt'},
-            {label: 'Bitrix24', to: '/docs/integrations/bitrix24'},
+            {label: 'Битрикс24', to: '/docs/integrations/bitrix24'},
             {label: '1С', to: '/docs/integrations/1c-connector'},
-            {label: 'BrowserBridge', to: '/docs/integrations/browserbridge'},
+            {label: 'Управление браузером', to: '/docs/integrations/browserbridge'},
             {label: 'Телеграм', to: '/docs/integrations/telegram'},
           ],
         },
       ],
-      copyright: `© ${new Date().getFullYear()} Datagent. Документация проекта.`,
+      copyright: `© ${new Date().getFullYear()} Datagent. Документация продукта.`,
     },
     prism: {
       theme: prismThemes.github,
