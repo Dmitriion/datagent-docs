@@ -43,7 +43,7 @@ description: Медиа-библиотека Datagent — все файлы аг
 
 ## Что дальше
 
-- [Узнать, как агент загружает файлы](/docs/artifacts/agent-upload) — путь от run до каталога
-- [Справка по API каталога](/docs/api-reference/artifacts) — выгрузка для интеграций
+- [Узнать, как agent загружает файлы](/docs/artifacts/agent-upload) — путь от run до каталога
+- [Выгрузить каталог через API](/docs/api-reference/artifacts) — для интеграций
 - [Работать с Excel на задаче](/docs/office/excel-pptx) — таблица как артефакт
 - [Разобраться с задачами](/docs/concepts/issues) — Output и жизненный цикл

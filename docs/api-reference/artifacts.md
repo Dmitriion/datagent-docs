@@ -8,9 +8,9 @@ description: GET /api/companies/:id/artifacts — список файлов ко
 
 # REST API — каталог артефактов
 
-> **Зачем:** Выгрузить медиатеку компании в свой дашборд, отчёт или скрипт — те же данные, что в панели `/{префикс}/artifacts`.
+> **Зачем:** Выгрузить медиатеку компании в свой дашборд или скрипт — те же данные, что в панели `/{префикс}/artifacts`.
 
-Операторский обзор UI — [каталог артефактов](/docs/artifacts/overview). Загрузка файлов агентом — [отдельная страница](/docs/artifacts/agent-upload).
+Обзор в панели — [каталог артефактов](/docs/artifacts/overview). Как agent грузит файлы — [загрузка агентом](/docs/artifacts/agent-upload).
 
 ## Основной маршрут
 
@@ -84,6 +84,6 @@ curl -s "https://app.datagent.ru/api/companies/${COMPANY_ID}/artifacts?cursor=${
 
 ## Что дальше?
 
-- [Открыть каталог в панели](/docs/artifacts/overview) — фильтры и Quick View
-- [Загрузить файл из run агента](/docs/artifacts/agent-upload) — откуда берутся записи в API
-- [Обзор REST API](/docs/api-reference/overview) — ключи и лимиты
+- [Открыть каталог в панели](/docs/artifacts/overview) — фильтры и быстрый просмотр
+- [Узнать, как agent загружает файлы](/docs/artifacts/agent-upload) — откуда записи в API
+- [Прочитать обзор REST API](/docs/api-reference/overview) — ключи и лимиты

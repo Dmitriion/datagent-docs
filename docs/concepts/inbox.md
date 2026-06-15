@@ -77,7 +77,7 @@ Inbox привязан к **задачам компании**, журналу и
 
 ## Что дальше?
 
-- [Битрикс24 →](../integrations/bitrix24)
-- [Согласования →](./approvals)
-- [Агенты →](./agents)
-- [Зарегистрироваться →](https://app.datagent.ru/signup)
+- [Подключить Bitrix24](/docs/integrations/bitrix24) — входящие из CRM
+- [Разобраться с согласованиями](/docs/concepts/approvals) — очередь «можно ли?»
+- [Узнать про agent и run](/docs/concepts/agents) · [про каналы](/docs/concepts/channels)
+- [Зарегистрироваться в облаке](https://app.datagent.ru/signup)

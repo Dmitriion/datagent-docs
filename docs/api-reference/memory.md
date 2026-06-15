@@ -8,9 +8,9 @@ description: REST endpoints памяти Datagent — слои, chunks, bindings
 
 # REST API — память
 
-> **Зачем:** Подключить память к своим скриптам, агенту по API-ключу или внешней системе — не только через панель.
+> **Зачем:** Подключить память к скриптам, agent по API-ключу или внешней системе — не только через панель.
 
-Операторская настройка — в [памяти для оператора](/docs/concepts/memory). Здесь — маршруты под префиксом `/api` на `https://app.datagent.ru/api/...`.
+Настройка для оператора — [память в панели](/docs/concepts/memory). Ниже — маршруты под `/api` на `https://app.datagent.ru/api/...`.
 
 ## Аутентификация
 
@@ -52,8 +52,8 @@ description: REST endpoints памяти Datagent — слои, chunks, bindings
 
 ## Gardener и заморозка
 
-- **Gardener** — фоновое обслуживание: устаревшие chunks, дубликаты, флаги на проверку. Превью: `GET …/gardener/preview`; ручной запуск: `POST …/gardener/run`.
-- **Freeze (заморозка)** — через политику компании: новые записи в память временно запрещены (аудит, инцидент).
+- **Gardener** — фоновая очистка: устаревшие chunks, дубликаты, флаги на проверку. Превью: `GET …/gardener/preview`; ручной запуск: `POST …/gardener/run`.
+- **Freeze (заморозка)** — через политику компании: новые записи в память временно запрещены.
 
 ## Типичные ошибки
 
@@ -71,7 +71,7 @@ description: REST endpoints памяти Datagent — слои, chunks, bindings
 Сервер `@datagent/mcp-server` экспонирует часть операций памяти для агентов в IDE — параллельный путь к тем же данным, не замена REST.
 
 :::note Для инженеров
-Внутренний индекс: `doc/MEMORY-DOCS-INDEX.md`, контракт V1 — `doc/SPEC-implementation.md` §22. Не копируйте ADR целиком в интеграции — опирайтесь на маршруты и validators в `@datagent/shared`.
+Контракт V1 — `doc/SPEC-implementation.md` §22; в интеграциях опирайтесь на маршруты и validators в `@datagent/shared`.
 :::
 
 ## Пример: получить chunk
@@ -84,5 +84,5 @@ curl -s "https://app.datagent.ru/api/companies/${COMPANY_ID}/memory/chunks/${CHU
 ## Что дальше?
 
 - [Настроить память в панели](/docs/concepts/memory) — слои и Gardener без кода
-- [Обзор REST API](/docs/api-reference/overview) — аутентификация и общая схема
-- [Задачи и run](/docs/concepts/issues) — откуда в память попадает контекст после выполнения
+- [Прочитать обзор REST API](/docs/api-reference/overview) — аутентификация
+- [Понять, откуда в память попадает контекст](/docs/concepts/issues) — после run по задаче

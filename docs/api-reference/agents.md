@@ -8,15 +8,15 @@ description: REST API агентов Datagent — CRUD, wakeup, heartbeat-runs, 
 
 # REST API — агенты и запуски
 
-> **Зачем:** Создавать и будить агентов из CI, скриптов или внешней оркестрации — с теми же правилами, что и кнопка «Запуск» в панели.
+> **Зачем:** Запускать и настраивать агентов из CI, скриптов или внешней системы — по тем же правилам, что кнопка «Запуск» в панели.
 
-Обзор аутентификации — [REST API overview](./overview). Концепции для оператора — [агенты](/docs/concepts/agents), [heartbeat](/docs/concepts/heartbeat).
+Как войти в API — [обзор REST API](./overview). Для оператора — [агенты](/docs/concepts/agents) и [heartbeat](/docs/concepts/heartbeat).
 
-Базовый URL: `https://app.datagent.ru/api`.
+Базовый адрес: `https://app.datagent.ru/api`.
 
 ## Агенты компании
 
-Агенты всегда в scope **компании**. Глобального списка без `companyId` нет.
+Список агентов всегда привязан к **компании** — без `companyId` общего каталога нет.
 
 | Метод | Путь | Назначение |
 | --- | --- | --- |
@@ -38,9 +38,11 @@ description: REST API агентов Datagent — CRUD, wakeup, heartbeat-runs, 
 | `GET` | `/agents/me/inbox-lite` | Упрощённый inbox |
 | `POST` | `/agents/me/plugin-tools/execute` | Вызов tool из run |
 
-Ключ агента **не** управляет другими агентами и **не** читает чужую компанию.
+Ключ agent видит только себя: не управляет другими агентами и не читает чужую компанию.
 
 ## Модели и адаптеры
+
+Перед боевым run проверьте окружение и секреты — [GigaChat](/docs/integrations/gigachat), [YandexGPT](/docs/integrations/yandexgpt).
 
 | Метод | Путь |
 | --- | --- |
@@ -48,11 +50,9 @@ description: REST API агентов Datagent — CRUD, wakeup, heartbeat-runs, 
 | `GET` | `/companies/:companyId/adapters/:type/model-profiles` |
 | `POST` | `/companies/:companyId/adapters/:type/test-environment` |
 
-Перед production run проверьте окружение и секреты — [GigaChat](/docs/integrations/gigachat), [YandexGPT](/docs/integrations/yandexgpt).
-
 ## Запуск (wakeup) и heartbeat-runs
 
-Публичного `POST /api/runs` **нет**. Новый run — через **wakeup**.
+Отдельного `POST /api/runs` нет — новый run создаёте через **wakeup** (пробуждение агента).
 
 | Метод | Путь | Назначение |
 | --- | --- | --- |
@@ -103,7 +103,7 @@ curl -s -X POST "https://app.datagent.ru/api/agents/${AGENT_ID}/wakeup" \
 | `POST` | `/agents/:id/keys` |
 | `DELETE` | `/agents/:id/keys/:keyId` |
 
-Секрет ключа показывается **один раз** при создании. Храните как пароль.
+Секрет ключа показывается **один раз** — сохраните его как пароль.
 
 ## Конфигурация и инструкции
 
@@ -123,15 +123,15 @@ curl -s -X POST "https://app.datagent.ru/api/agents/${AGENT_ID}/wakeup" \
 | `GET` | `/companies/:companyId/org.svg` |
 | `GET` | `/companies/:companyId/org.png` |
 
-См. [команда и доступ](/docs/concepts/collaboration).
+См. [команду и доступ](/docs/concepts/collaboration).
 
 ## Бюджет агента
 
-`PATCH /api/agents/:id/budgets` — месячный лимит в копейках. См. [бюджеты](/docs/concepts/budgets).
+`PATCH /api/agents/:id/budgets` — месячный лимит в копейках. Подробнее — [бюджеты](/docs/concepts/budgets).
 
 ## Что дальше?
 
-- [Задачи (API)](/docs/api-reference/issues) — checkout, документы, work products
-- [Память (API)](/docs/api-reference/memory) — слои агента
+- [Задачи (API)](/docs/api-reference/issues) — checkout и work products после wakeup
+- [Память (API)](/docs/api-reference/memory) — слои конкретного агента
 - [Обзор API](/docs/api-reference/overview) — аутентификация и плагины
-- [Первый агент в панели](/docs/cloud/first-agent)
+- [Создать первого агента в панели](/docs/cloud/first-agent) — проверить API на живом примере

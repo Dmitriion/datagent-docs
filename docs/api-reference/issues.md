@@ -8,11 +8,13 @@ description: REST API задач Datagent — CRUD, checkout, документы
 
 # REST API — задачи
 
-> **Зачем:** Создавать и обновлять задачи из CRM, скриптов или агента — с тем же жизненным циклом, что в панели.
+> **Зачем:** Создавать и обновлять задачи из CRM, скриптов или от имени agent — с тем же жизненным циклом, что в панели.
 
-Концепции: [задачи](/docs/concepts/issues). Аутентификация: [обзор API](./overview). База: `https://app.datagent.ru/api`.
+Для оператора — [задачи](/docs/concepts/issues). Как войти в API — [обзор REST API](./overview). База: `https://app.datagent.ru/api`.
 
 ## Список и поиск
+
+Фильтруйте список по статусу, исполнителю, `projectId`, `goalId` и меткам.
 
 | Метод | Путь | Назначение |
 | --- | --- | --- |
@@ -21,8 +23,6 @@ description: REST API задач Datagent — CRUD, checkout, документы
 | `GET` | `/companies/:companyId/search` | Поиск по компании |
 | `GET` | `/issues/:id` | Одна задача |
 | `GET` | `/issues/:id/heartbeat-context` | Контекст для адаптера в run |
-
-Типичные query: статус, assignee, `projectId`, `goalId`, метки.
 
 ## Создание и изменение
 
@@ -33,13 +33,13 @@ description: REST API задач Datagent — CRUD, checkout, документы
 | `PATCH` | `/issues/:id` | Обновить поля |
 | `DELETE` | `/issues/:id` | Удалить |
 
-**Single-assignee:** в один момент у задачи один `assigneeAgentId`.
+**Single-assignee** — в один момент у задачи только один `assigneeAgentId` (один agent-исполнитель).
 
 Статусы: `backlog`, `todo`, `in_progress`, `in_review`, `done`, `blocked`. Приоритеты: `critical`, `high`, `medium`, `low`.
 
 ## Checkout (взятие в работу)
 
-Атомарное взятие задачи агентом — без гонок двух run на одну карточку.
+Один agent берёт задачу атомарно — два run не схватят одну карточку одновременно.
 
 | Метод | Путь |
 | --- | --- |
@@ -58,7 +58,7 @@ description: REST API задач Datagent — CRUD, checkout, документы
 | `GET` | `/issues/:id/accepted-plan-decompositions` |
 | `POST` | `/issues/:id/accepted-plan-decompositions` |
 
-Декомпозиция **идемпотентна**: повтор с тем же `acceptedPlanRevisionId` не плодит дубликаты детей. Требуется принятый план (accepted plan confirmation).
+Повтор с тем же `acceptedPlanRevisionId` не создаст дубликаты подзадач. Нужен принятый план (accepted plan confirmation).
 
 ## Work products и вложения
 
@@ -70,7 +70,7 @@ description: REST API задач Datagent — CRUD, checkout, документы
 | `PATCH` | `/work-products/:id` |
 | `DELETE` | `/work-products/:id` |
 
-Результаты попадают в **Output** и [каталог артефактов](/docs/artifacts/overview). Подробнее — [загрузка агентом](/docs/artifacts/agent-upload).
+Результаты попадают в **Output** и [каталог артефактов](/docs/artifacts/overview). Как agent грузит файлы — [загрузка агентом](/docs/artifacts/agent-upload).
 
 ## Переписка и inbox
 
@@ -100,7 +100,7 @@ description: REST API задач Datagent — CRUD, checkout, документы
 | `GET` | `/issues/:issueId/live-runs` |
 | `GET` | `/issues/:issueId/active-run` |
 
-Запуск run — через [wakeup агента](./agents), не отдельный `POST /runs`.
+Запустить run — через [wakeup агента](./agents), не отдельный `POST /runs`.
 
 ## Метки
 
@@ -136,7 +136,7 @@ curl -s -X POST "https://app.datagent.ru/api/companies/${COMPANY_ID}/issues" \
 
 ## Что дальше?
 
-- [Агенты и wakeup](/docs/api-reference/agents) — запуск после создания задачи
-- [Артефакты (API)](/docs/api-reference/artifacts) — список файлов компании
-- [Цели](/docs/concepts/goals) — привязка `goalId`
-- [Проекты](/docs/concepts/projects) — поле `projectId`
+- [Агенты и wakeup](/docs/api-reference/agents) — запустить agent после создания задачи
+- [Артефакты (API)](/docs/api-reference/artifacts) — выгрузить файлы компании
+- [Цели](/docs/concepts/goals) — зачем указывать `goalId`
+- [Проекты](/docs/concepts/projects) — зачем указывать `projectId`

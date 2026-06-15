@@ -8,9 +8,9 @@ description: Project workspace и execution workspace в Datagent — репоз
 
 # Рабочие пространства
 
-> **Зачем:** Дать агенту **изолированную среду** с кодом, git и сервисами — как отдельную «машину под задачу», а не только чат в браузере.
+> **Зачем:** Дать agent **изолированную среду** с кодом, git и сервисами — как отдельную «машину под задачу», а не только чат в браузере.
 
-В Datagent два связанных уровня: **project workspace** (шаблон среды у [проекта](./projects)) и **execution workspace** (конкретный экземпляр на время run). Оператору CRM это обычно не нужно; разработчикам и агентам с кодом — обязательно.
+Два уровня: **project workspace** (шаблон у [проекта](./projects)) и **execution workspace** (живой экземпляр на время run). Оператору CRM обычно не нужно; разработчикам и agent с кодом — нужно.
 
 ## Два уровня
 
@@ -28,8 +28,8 @@ description: Project workspace и execution workspace в Datagent — репоз
 3. Адаптер работает в этой среде: git, shell, файлы — по политике проекта.
 4. По завершении run workspace может **закрыться** или остаться для reuse — зависит от политики и статуса finalize.
 
-:::info Облако vs свой сервер
-В **облаке** [app.datagent.ru](https://app.datagent.ru) типичны sandbox и SSH к выделенной среде. Полный self-hosted runbook — только enterprise — [on-premise](/docs/cloud/on-premise).
+:::info Облако и свой сервер
+На [app.datagent.ru](https://app.datagent.ru) чаще sandbox и SSH. Полный runbook своего сервера — [on-premise](/docs/cloud/on-premise).
 :::
 
 ## Project workspace — что настраивают
@@ -81,6 +81,6 @@ BrowserBridge — браузер на **вашей** станции. Execution w
 ## Что дальше?
 
 - [Настроить проект](/docs/concepts/projects) — портфель и политика среды
-- [Задачи и run](/docs/concepts/issues) — checkout и журнал
-- [Секреты для среды](/docs/concepts/secrets) — ключи без утечек
-- [Обзор REST API](/docs/api-reference/overview) — execution-workspaces endpoints
+- [Разобраться с задачами и run](/docs/concepts/issues) — checkout и журнал
+- [Хранить ключи среды в секретах](/docs/concepts/secrets) — без утечек в чат
+- [Посмотреть execution-workspaces в API](/docs/api-reference/overview) — для автоматизации

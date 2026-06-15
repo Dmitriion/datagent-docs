@@ -5,12 +5,12 @@ sidebar_label: Обзор API
 description: REST API Datagent — здоровье сервиса, агенты, задачи, плагины; для разработчиков и интеграторов.
 ---
 
-**REST API** Datagent — способ управлять платформой из скриптов и интеграций: агентами, задачами, запусками, плагинами. В **облаке** все запросы идут на `https://app.datagent.ru/api/...` — тот же хост, что и у панели в браузере.
+**REST API** Datagent помогает управлять платформой из скриптов: agent, задачи, run, plugin. В облаке все запросы идут на `https://app.datagent.ru/api/...` — тот же адрес, что у панели.
 
-Агент **не стартует** отдельной кнопкой «создать запуск» в API — за это отвечает внутренний цикл сервера. **Плагины** дают агенту **инструменты** (браузер, файлы, CRM), **адаптеры** — **модель**. Подробнее — в [архитектуре агентов](../concepts/agent-architecture.md).
+Отдельной кнопки «создать run» в API нет — запуск идёт через внутренний цикл сервера. **Plugin** даёт agent **инструменты** (браузер, файлы, CRM), **адаптер** — **модель**. Подробнее — [архитектура agent](../concepts/agent-architecture.md).
 
 :::note Для инженеров
-Все маршруты под `/api`; пробуждение — `POST /api/agents/:id/wakeup`; журнал — `heartbeat-runs`. Детали — в разделах ниже.
+Маршруты под `/api`; пробуждение — `POST /api/agents/:id/wakeup`; журнал — heartbeat-runs.
 :::
 
 ## Содержание
@@ -27,7 +27,7 @@ description: REST API Datagent — здоровье сервиса, агенты
 
 ## Аутентификация
 
-Перед любым запросом сервер определяет, **кто вы**: оператор панели, внешний скрипт или сам агент. В облаке обычно используется **сессия входа** (cookie после авторизации на app.datagent.ru) или **ключ API** в заголовке `Authorization: Bearer …`.
+Перед запросом сервер понимает, **кто Вы**: оператор панели, внешний скрипт или agent. В облаке — **сессия** (cookie после входа) или **ключ API** в `Authorization: Bearer …`.
 
 | Режим | Когда встречается | Как авторизоваться |
 | --- | --- | --- |
@@ -41,13 +41,13 @@ description: REST API Datagent — здоровье сервиса, агенты
 
 Тела запросов — JSON (`Content-Type: application/json`), если не указано иное. При ошибке чаще всего приходит `{ "error": "<текст>" }` — единого каталога кодов ошибок для всего API нет.
 
-:::info Заголовок идентификатора запуска
-Некоторые клиенты передают опциональный заголовок с id текущего запуска — только если ваш адаптер или CLI уже на это рассчитан (`cli/src/client/http.ts`, `packages/adapter-utils`).
+:::info Заголовок id запуска
+Некоторые клиенты передают id текущего run — только если Ваш адаптер или CLI уже это поддерживает.
 :::
 
 ## Схема
 
-На высоком уровне клиент (панель, скрипт или агент) обращается к одному HTTP-серверу; тот маршрутизирует запросы к агентам, задачам, плагинам и журналу запусков.
+Клиент (панель, скрипт или agent) обращается к одному HTTP-серверу; тот направляет запросы к agent, задачам, plugin и журналу run.
 
 ```mermaid
 flowchart LR
@@ -110,8 +110,8 @@ curl -s -X POST "https://app.datagent.ru/api/agents/${AGENT_ID}/wakeup" \
 | Память | `/api/companies/:companyId/memory/*` |
 | Текст для настройки агента | `GET /llms/agent-configuration.txt` — **вне** префикса `/api` |
 
-:::warning Путь к LLM-тексту
-Маршрут `llmRoutes` в `app.ts` монтируется **без** `/api` — используйте `GET /llms/agent-configuration.txt`, не `/api/llms/...`.
+:::warning Путь к тексту для LLM
+Используйте `GET /llms/agent-configuration.txt` — **без** префикса `/api`.
 :::
 
 ## OpenAPI и спецификации
@@ -155,11 +155,11 @@ curl -s -X POST "https://app.datagent.ru/api/agents/${AGENT_ID}/wakeup" \
 
 ## Что дальше?
 
-- [Агенты (API)](/docs/api-reference/agents) — wakeup, ключи, heartbeat-runs
-- [Задачи (API)](/docs/api-reference/issues) — checkout, план, Output
-- [Плагины (API)](/docs/api-reference/plugins) — install, tools, webhooks
-- [Доступ (API)](/docs/api-reference/access) — invites и members
-- [Собрать свой плагин](/docs/tutorials/build-plugin) — инструменты агента
+- [Открыть справку по agent (API)](/docs/api-reference/agents) — wakeup, ключи, heartbeat-runs
+- [Открыть справку по задачам (API)](/docs/api-reference/issues) — checkout и Output
+- [Открыть справку по plugin (API)](/docs/api-reference/plugins) — install, tools, webhooks
+- [Открыть справку по доступу (API)](/docs/api-reference/access) — invites и members
+- [Собрать свой plugin](/docs/tutorials/build-plugin) — расширить набор tools
 
 ## Связанные разделы
 
