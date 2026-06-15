@@ -13,18 +13,16 @@ description: REST API Datagent — здоровье сервиса, агенты
 Все маршруты под `/api`; пробуждение — `POST /api/agents/:id/wakeup`; журнал — `heartbeat-runs`. Детали — в разделах ниже.
 :::
 
-## Содержание (разделы этого обзора и будущие справочники)
+## Содержание
 
-Куда смотреть сейчас и что появится отдельными страницами:
-
-| Тема | Статус | Ссылка |
-| --- | --- | --- |
-| Аутентификация, схема | в этом документе | [перейти к разделу](#аутентификация) |
-| Агенты, wakeup, keys | в этом документе | [раздел «Агенты»](#агенты) |
-| Задачи (issues) | 🟡 пока только здесь | [задачи и согласования](#компании-задачи-и-согласования) → отдельная страница `api-reference/issues` (P2) |
-| Память (слои, фрагменты) | ✅ | [Память (API)](./memory) |
-| Артефакты компании | ✅ | [Артефакты (API)](./artifacts) · [каталог в панели](/docs/artifacts/overview) |
-| Плагины, tools | в этом документе | [раздел «Плагины»](#плагины) |
+| Тема | Где читать |
+| --- | --- |
+| Аутентификация, схема, health | этот документ — [ниже](#аутентификация) |
+| Агенты, wakeup, keys, runs | [Агенты (API)](./agents) |
+| Задачи, checkout, plan, work products | [Задачи (API)](./issues) |
+| Память (слои, фрагменты) | [Память (API)](./memory) |
+| Артефакты компании | [Артефакты (API)](./artifacts) · [каталог](/docs/artifacts/overview) |
+| Плагины, tools | этот документ — [ниже](#плагины) |
 
 ## Аутентификация
 
@@ -75,121 +73,29 @@ flowchart LR
 curl -s https://app.datagent.ru/api/health
 ```
 
-## Агенты
+## Агенты и запуски
 
-Агенты всегда привязаны к **компании**. Глобального списка «все агенты» без id компании в API нет.
+Агенты — в scope **компании**; новый run только через **`POST /api/agents/:id/wakeup`** (отдельного `POST /runs` нет). CRUD, ключи, `heartbeat-runs`, org и бюджет — в справочнике [Агенты (API)](./agents).
 
-| Метод | Путь | Назначение |
-| --- | --- | --- |
-| `GET` | `/api/companies/:companyId/agents` | Список агентов компании |
-| `GET` | `/api/agents/:id` | Карточка одного агента |
-| `POST` | `/api/companies/:companyId/agents` | Создать агента |
-| `PATCH` | `/api/agents/:id` | Обновить настройки |
-| `POST` | `/api/agents/:id/pause` | Приостановить |
-| `POST` | `/api/agents/:id/resume` | Возобновить |
-| `POST` | `/api/agents/:id/keys` | Выпустить ключ API агента |
-| `GET` | `/api/agents/:id/runtime-state` | Состояние выполнения |
-
-Модели и проверка окружения адаптера: `GET /api/companies/:companyId/adapters/:type/models`, `POST …/test-environment`.
-
-## Запуск агента (журнал heartbeat)
-
-**Важно:** публичного `POST /api/runs` **нет**. Новый запуск создаётся через **пробуждение** агента — тот же механизм, что кнопка «Запуск» в панели.
-
-| Метод | Путь | Назначение |
-| --- | --- | --- |
-| `POST` | `/api/agents/:id/wakeup` | Запустить агента (`202` + объект запуска или `{ status: "skipped" }`) |
-| `POST` | `/api/agents/:id/heartbeat/invoke` | Устаревший псевдоним wakeup |
-| `GET` | `/api/companies/:companyId/heartbeat-runs` | Список запусков (фильтры `agentId`, `limit`) |
-| `GET` | `/api/heartbeat-runs/:runId` | Один запуск и метаданные |
-| `GET` | `/api/heartbeat-runs/:runId/events` | События по шагам |
-| `GET` | `/api/heartbeat-runs/:runId/log` | Текстовый журнал |
-| `POST` | `/api/heartbeat-runs/:runId/cancel` | Отмена (оператор панели) |
-| `GET` | `/api/issues/:issueId/live-runs` | Активные запуски по задаче |
-| `GET` | `/api/issues/:issueId/active-run` | Текущий запуск задачи |
-
-### POST /api/agents/:id/wakeup
-
-Тело запроса (схема `wakeAgentSchema`):
-
-```json
-{
-  "source": "on_demand",
-  "triggerDetail": "manual",
-  "reason": "Проверка API",
-  "payload": { "issueId": "uuid-задачи" },
-  "idempotencyKey": "мой-запуск-2026-06-03",
-  "forceFreshSession": false
-}
-```
-
-| Поле | Значения | Смысл |
-| --- | --- | --- |
-| `source` | `timer`, `assignment`, `on_demand`, `automation` | Откуда инициирован запуск (по умолчанию `on_demand`) |
-| `triggerDetail` | `manual`, `ping`, `callback`, `system` | Уточнение источника |
-| `reason` | строка | Произвольный комментарий |
-| `payload` | объект | Контекст для адаптера (например id задачи) |
-| `idempotencyKey` | строка | Повтор с тем же ключом не создаст дубликат |
-| `forceFreshSession` | boolean | Начать с новой сессии адаптера |
-
-Пример (ключ панели или агента в `Authorization`):
+Краткий пример wakeup:
 
 ```bash
-export DATAGENT_API=https://app.datagent.ru/api
-export AGENT_ID="<uuid-агента>"
-
-curl -s -X POST "${DATAGENT_API}/agents/${AGENT_ID}/wakeup" \
+curl -s -X POST "https://app.datagent.ru/api/agents/${AGENT_ID}/wakeup" \
+  -H "Authorization: Bearer ${TOKEN}" \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer ${КЛЮЧ_ПАНЕЛИ_ИЛИ_АГЕНТА}" \
-  -d '{"source":"on_demand","reason":"Проверка API","payload":{"note":"привет"}}'
+  -d '{"source":"on_demand","reason":"Проверка API"}'
 ```
 
-### GET /api/heartbeat-runs/:runId
+## Задачи и согласования
 
-Возвращает запись запуска из БД: `status`, `agentId`, `companyId`, `startedAt`, `finishedAt`, `resultJson` и др. Типичные статусы: `queued`, `running`, `succeeded`, `failed`.
-
-Ожидание завершения (опрос раз в 2 с):
-
-```bash
-RUN_ID="<uuid-запуска>"
-until [ "$(curl -s -H "Authorization: Bearer ${TOKEN}" \
-  "${DATAGENT_API}/heartbeat-runs/${RUN_ID}" | jq -r '.status')" = "succeeded" ] \
-  || [ "$(curl -s ... | jq -r '.status')" = "failed" ]; do
-  sleep 2
-done
-curl -s -H "Authorization: Bearer ${TOKEN}" \
-  "${DATAGENT_API}/heartbeat-runs/${RUN_ID}" | jq .
-```
-
-### Пример цепочки событий
-
-Упрощённый вид (нейросеть + инструмент плагина):
-
-```json
-{
-  "runId": "550e8400-e29b-41d4-a716-446655440000",
-  "status": "succeeded",
-  "steps": [
-    {"type": "llm", "model": "gigachat/GigaChat-2-Pro"},
-    {"type": "tool", "name": "datagent.browserbridge:browser_screenshot"},
-    {"type": "finish", "output": "…"}
-  ]
-}
-```
-
-Полный журнал: `GET …/events` и `GET …/log`. Плагин Битрикс24 не добавляет отдельные CRM-инструменты — см. [Битрикс24](../integrations/bitrix24.md).
-
-## Компании, задачи и согласования
-
-Группы маршрутов для повседневной работы оператора и интеграций.
+Задачи: список, CRUD, **checkout**, plan-документы, декомпозиция, work products — [Задачи (API)](./issues). Концепции для оператора — [задачи](/docs/concepts/issues).
 
 | Группа | Примеры путей |
 | --- | --- |
 | Компании | `GET/POST /api/companies`, `GET /api/companies/:companyId` |
-| Задачи | `GET /api/companies/:companyId/issues`, `POST …/issues`, `GET /api/issues/:id`, комментарии, документы |
-| Согласования | `GET /api/companies/:companyId/approvals`, `POST …/approvals`, `POST /api/approvals/:id/approve` |
-| Секреты | `/api/companies/:companyId/secrets` |
-| История | `GET /api/issues/:id/runs` — активность по задаче (не путать с планировщиком heartbeat) |
+| Согласования | `GET /api/companies/:companyId/approvals`, `POST /api/approvals/:id/approve` |
+| Секреты | `/api/companies/:companyId/secrets` — [секреты](/docs/concepts/secrets) |
+| Доступ | `/api/companies/:companyId/members`, `/api/invite/:token` — [команда](/docs/concepts/collaboration) |
 
 ## Плагины
 
@@ -259,9 +165,10 @@ curl -s -H "Authorization: Bearer ${TOKEN}" \
 
 ## Что дальше?
 
-- [Запустить первого агента](/docs/cloud/first-agent) — проверить API на живом агенте в облаке
-- [Разобраться, как устроена платформа](/docs/concepts/how-it-works) — контекст перед глубокой интеграцией
-- [Собрать свой плагин](/docs/tutorials/build-plugin) — расширить API инструментами агента
+- [Агенты (API)](/docs/api-reference/agents) — wakeup, ключи, heartbeat-runs
+- [Задачи (API)](/docs/api-reference/issues) — checkout, план, Output
+- [Запустить первого агента](/docs/cloud/first-agent) — проверить API в облаке
+- [Собрать свой плагин](/docs/tutorials/build-plugin) — инструменты агента
 
 ## Связанные разделы
 
