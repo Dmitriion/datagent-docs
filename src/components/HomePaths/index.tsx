@@ -19,7 +19,8 @@ const paths = [
   },
   {
     title: 'Тарифы и кредиты',
-    description: 'Free, Solo 990 ₽, Studio 3 900 ₽, Business 12 900 ₽ — что входит и лимиты.',
+    description:
+      'Бесплатный, Solo 990 ₽, Studio 3 900 ₽, Business 12 900 ₽ — что входит и лимиты.',
     to: '/docs/cloud/pricing',
     tag: 'Цены',
   },
@@ -59,7 +60,7 @@ const paths = [
 
 const stackPills = [
   'Облако SaaS',
-  'Free · 3 агента',
+  'Бесплатный · 3 агента',
   'GigaChat',
   'YandexGPT',
   'Битрикс24',
