@@ -118,16 +118,16 @@ function companyUrl(prefix, route = '') {
 }
 
 async function resolvePrefix() {
-  if (process.env.COMPANY_PREFIX?.trim()) {
-    return process.env.COMPANY_PREFIX.trim().toUpperCase();
-  }
   const companies = await fetchJson(`${BOARD_URL}/api/companies`);
   const list = Array.isArray(companies) ? companies : [companies];
-  const preferred = list.find((c) => c.issuePrefix?.toUpperCase() === 'TES')
-    ?? list.find((c) => c.issuePrefix?.toUpperCase() === 'CMP')
-    ?? list[0];
+  const envPrefix = process.env.COMPANY_PREFIX?.trim().toUpperCase();
+  const preferred = envPrefix
+    ? list.find((c) => c.issuePrefix?.toUpperCase() === envPrefix)
+    : list.find((c) => c.issuePrefix?.toUpperCase() === 'TES')
+      ?? list.find((c) => c.issuePrefix?.toUpperCase() === 'CMP')
+      ?? list[0];
   const prefix = preferred?.issuePrefix?.toUpperCase();
-  if (!prefix) throw new Error('No company on Board');
+  if (!prefix) throw new Error(envPrefix ? `No company with prefix ${envPrefix}` : 'No company on Board');
   return { prefix, companyId: preferred.id, name: preferred.name };
 }
 
