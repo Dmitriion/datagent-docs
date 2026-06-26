@@ -2,7 +2,7 @@ import type {SidebarsConfig} from '@docusaurus/plugin-content-docs';
 
 /**
  * Явный порядок sidebar = путь читателя (от простого к сложному).
- * id документов — из frontmatter (id:) или путь guides/01-first-day.
+ * Подписи пунктов — операторские; переопределяют sidebar_label в frontmatter.
  */
 const sidebars: SidebarsConfig = {
   docsSidebar: [
@@ -60,7 +60,11 @@ const sidebars: SidebarsConfig = {
             'concepts/budgets',
             'concepts/secrets',
             'concepts/company-settings',
-            'concepts/how-it-works',
+            {
+              type: 'doc',
+              id: 'concepts/how-it-works',
+              label: 'Как работает Datagent',
+            },
             'concepts/agent-architecture',
             'concepts/llm-adapters',
           ],
@@ -77,20 +81,28 @@ const sidebars: SidebarsConfig = {
           type: 'category',
           label: 'Первые шаги',
           items: [
-            'guides/01-first-day',
-            'guides/02-your-team',
-            'guides/03-one-task',
-            'guides/04-trust-and-approval',
+            {type: 'doc', id: 'guides/01-first-day', label: 'Первый день'},
+            {type: 'doc', id: 'guides/02-your-team', label: 'Ваша команда'},
+            {type: 'doc', id: 'guides/03-one-task', label: 'Первая задача'},
+            {
+              type: 'doc',
+              id: 'guides/04-trust-and-approval',
+              label: 'Доверие и контроль',
+            },
           ],
         },
         {
           type: 'category',
-          label: 'Сценарии использования',
+          label: 'На практике',
           items: [
             'guides/05-office-field',
             'guides/06-channels',
-            'guides/07-documents',
-            'guides/08-1c-bridge',
+            {
+              type: 'doc',
+              id: 'guides/07-documents',
+              label: 'Работа с документами',
+            },
+            {type: 'doc', id: 'guides/08-1c-bridge', label: 'Подключение 1С'},
             'guides/playbook-index',
           ],
         },
@@ -127,7 +139,10 @@ const sidebars: SidebarsConfig = {
         description:
           'Локальная служба на рабочей станции, связь с облаком и диагностика.',
       },
-      items: ['browser/overview', 'browser/setup'],
+      items: [
+        {type: 'doc', id: 'browser/overview', label: 'Обзор'},
+        'browser/setup',
+      ],
     },
     {
       type: 'category',
@@ -137,7 +152,10 @@ const sidebars: SidebarsConfig = {
         type: 'doc',
         id: 'artifacts/overview',
       },
-      items: ['artifacts/overview', 'artifacts/agent-upload'],
+      items: [
+        {type: 'doc', id: 'artifacts/overview', label: 'Обзор'},
+        'artifacts/agent-upload',
+      ],
     },
     {
       type: 'category',
@@ -150,7 +168,10 @@ const sidebars: SidebarsConfig = {
         description:
           'Пространство «Офис» в панели и работа с Excel и PowerPoint на задаче.',
       },
-      items: ['office/overview', 'office/excel-pptx'],
+      items: [
+        {type: 'doc', id: 'office/overview', label: 'Обзор'},
+        'office/excel-pptx',
+      ],
     },
     {
       type: 'category',
@@ -163,7 +184,7 @@ const sidebars: SidebarsConfig = {
         description: 'REST API на /api: wakeup, heartbeat-runs, issues, plugins.',
       },
       items: [
-        'api-reference/overview',
+        {type: 'doc', id: 'api-reference/overview', label: 'Обзор'},
         'api-reference/agents-api',
         'api-reference/issues-api',
         'api-reference/memory-api',
@@ -182,8 +203,16 @@ const sidebars: SidebarsConfig = {
       },
       items: ['tutorials/automate-crm', 'tutorials/build-plugin'],
     },
-    'troubleshooting',
-    'changelog',
+    {
+      type: 'doc',
+      id: 'troubleshooting',
+      label: 'Решение проблем',
+    },
+    {
+      type: 'doc',
+      id: 'changelog',
+      label: 'История изменений',
+    },
   ],
 };
 

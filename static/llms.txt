@@ -32,7 +32,7 @@
 ## Концепции
 
 - /concepts/what-is-datagent: Что такое Datagent
-- /concepts/how-it-works: Как работают агенты
+- /concepts/how-it-works: Как работает Datagent
 - /concepts/agent-architecture: Архитектура агентов
 - /concepts/llm-adapters: LLM-адаптеры
 - /concepts/agents: Агенты
@@ -56,13 +56,13 @@
 
 - /guides: Обложка учебника
 - /guides/01-first-day: Первый день в панели
-- /guides/02-your-team: Команда агентов
+- /guides/02-your-team: Ваша команда
 - /guides/03-one-task: Первая задача
-- /guides/04-trust-and-approval: Одобрения
+- /guides/04-trust-and-approval: Доверие и контроль
 - /guides/05-office-field: Поле для руководителя (Office)
 - /guides/06-channels: Bitrix24 и Телеграм
-- /guides/07-documents: Документы на задаче
-- /guides/08-1c-bridge: 1С в контуре
+- /guides/07-documents: Работа с документами
+- /guides/08-1c-bridge: Подключение 1С
 - /guides/playbook-index: Шпаргалка по ситуациям
 
 ## Интеграции
