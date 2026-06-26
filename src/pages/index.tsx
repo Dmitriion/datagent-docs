@@ -42,7 +42,7 @@ const CARDS = [
   },
   {
     icon: '🏢',
-    title: 'Офис агентов',
+    title: 'Office',
     desc: 'Живой виртуальный офис.',
     href: '/docs/office/overview',
   },
@@ -55,7 +55,7 @@ const CARDS = [
   },
   {
     icon: '🛠',
-    title: 'Туториалы',
+    title: 'Сценарии',
     desc: 'CRM, браузер, плагины пошагово.',
     href: '/docs/tutorials',
   },
@@ -67,7 +67,7 @@ const CARDS = [
   },
   {
     icon: '📋',
-    title: 'Changelog',
+    title: 'История изменений',
     desc: 'Что нового в каждой версии.',
     href: '/docs/changelog',
   },

@@ -1,20 +1,21 @@
 import type {SidebarsConfig} from '@docusaurus/plugin-content-docs';
 
 /**
- * Явный порядок sidebar = путь читателя.
+ * Явный порядок sidebar = путь читателя (от простого к сложному).
  * id документов — из frontmatter (id:) или путь guides/01-first-day.
  */
 const sidebars: SidebarsConfig = {
   docsSidebar: [
     {
       type: 'category',
-      label: 'Облачная версия',
+      label: 'Начало работы',
       collapsed: false,
       link: {
         type: 'doc',
         id: 'cloud/cloud-index',
       },
       items: [
+        'intro',
         'cloud/cloud-getting-started',
         'cloud/cloud-first-agent',
         'cloud/cloud-pricing',
@@ -24,7 +25,48 @@ const sidebars: SidebarsConfig = {
         'cloud/cloud-account',
       ],
     },
-    'intro',
+    {
+      type: 'category',
+      label: 'Концепции',
+      collapsed: true,
+      link: {
+        type: 'doc',
+        id: 'concepts/what-is-datagent',
+      },
+      items: [
+        {
+          type: 'category',
+          label: 'Как работают агенты',
+          items: [
+            'concepts/agents',
+            'concepts/issues',
+            'concepts/projects',
+            'concepts/goals',
+            'concepts/workspaces',
+            'concepts/collaboration',
+            'concepts/heartbeat',
+            'concepts/memory',
+            'concepts/routines',
+            'concepts/approvals',
+            'concepts/inbox',
+            'concepts/channels',
+          ],
+        },
+        {
+          type: 'category',
+          label: 'Платформа и тарифы',
+          items: [
+            'concepts/credits',
+            'concepts/budgets',
+            'concepts/secrets',
+            'concepts/company-settings',
+            'concepts/how-it-works',
+            'concepts/agent-architecture',
+            'concepts/llm-adapters',
+          ],
+        },
+      ],
+    },
     {
       type: 'category',
       label: 'Учебник',
@@ -33,7 +75,7 @@ const sidebars: SidebarsConfig = {
       items: [
         {
           type: 'category',
-          label: 'Начало работы',
+          label: 'Первые шаги',
           items: [
             'guides/01-first-day',
             'guides/02-your-team',
@@ -52,40 +94,6 @@ const sidebars: SidebarsConfig = {
             'guides/playbook-index',
           ],
         },
-      ],
-    },
-    {
-      type: 'category',
-      label: 'Как работают агенты',
-      collapsed: true,
-      items: [
-        'concepts/agents',
-        'concepts/issues',
-        'concepts/projects',
-        'concepts/goals',
-        'concepts/workspaces',
-        'concepts/collaboration',
-        'concepts/heartbeat',
-        'concepts/memory',
-        'concepts/routines',
-        'concepts/approvals',
-        'concepts/inbox',
-        'concepts/channels',
-      ],
-    },
-    {
-      type: 'category',
-      label: 'Платформа и тарифы',
-      collapsed: true,
-      items: [
-        'concepts/what-is-datagent',
-        'concepts/credits',
-        'concepts/budgets',
-        'concepts/secrets',
-        'concepts/company-settings',
-        'concepts/how-it-works',
-        'concepts/agent-architecture',
-        'concepts/llm-adapters',
       ],
     },
     {
@@ -110,29 +118,16 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: 'category',
-      label: 'Управление браузером',
+      label: 'Браузер',
       collapsed: true,
       link: {
         type: 'generated-index',
         slug: 'browser',
-        title: 'Управление браузером',
+        title: 'Браузер',
         description:
           'Локальная служба на рабочей станции, связь с облаком и диагностика.',
       },
       items: ['browser/overview', 'browser/setup'],
-    },
-    {
-      type: 'category',
-      label: 'Офис и документы',
-      collapsed: true,
-      link: {
-        type: 'generated-index',
-        slug: 'office',
-        title: 'Офис и документы',
-        description:
-          'Пространство «Офис» в панели и работа с Excel и PowerPoint на задаче.',
-      },
-      items: ['office/overview', 'office/excel-pptx'],
     },
     {
       type: 'category',
@@ -146,22 +141,25 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: 'category',
-      label: 'Практические сценарии',
+      label: 'Office',
       collapsed: true,
       link: {
-        type: 'doc',
-        id: 'tutorials/index',
+        type: 'generated-index',
+        slug: 'office',
+        title: 'Office',
+        description:
+          'Пространство «Офис» в панели и работа с Excel и PowerPoint на задаче.',
       },
-      items: ['tutorials/build-plugin', 'tutorials/automate-crm'],
+      items: ['office/overview', 'office/excel-pptx'],
     },
     {
       type: 'category',
-      label: 'API',
+      label: 'API Reference',
       collapsed: true,
       link: {
         type: 'generated-index',
         slug: 'api-reference',
-        title: 'API',
+        title: 'API Reference',
         description: 'REST API на /api: wakeup, heartbeat-runs, issues, plugins.',
       },
       items: [
@@ -176,10 +174,15 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: 'category',
-      label: 'Справка',
+      label: 'Сценарии',
       collapsed: true,
-      items: ['troubleshooting'],
+      link: {
+        type: 'doc',
+        id: 'tutorials/index',
+      },
+      items: ['tutorials/automate-crm', 'tutorials/build-plugin'],
     },
+    'troubleshooting',
     'changelog',
   ],
 };

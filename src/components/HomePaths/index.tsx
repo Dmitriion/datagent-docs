@@ -19,7 +19,7 @@ const paths = [
   },
   {
     title: 'Тарифы и кредиты',
-    description: 'Free, PRO 990 ₽, Business 3 900 ₽ — что входит и как тратятся кредиты.',
+    description: 'Free, Solo 990 ₽, Studio 3 900 ₽, Business 12 900 ₽ — что входит и лимиты.',
     to: '/docs/cloud/pricing',
     tag: 'Цены',
   },

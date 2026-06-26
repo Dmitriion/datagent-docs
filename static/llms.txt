@@ -1,79 +1,111 @@
-# Документация Datagent (RU)
+# Datagent Documentation
 
-> Платформа управления ИИ-агентами в компании. Облако: app.datagent.ru. Развёртывание на своём сервере — корпоративный тариф (sales@datagent.ru).
+> Datagent — платформа для управления ИИ-агентами в бизнесе.
+> Облако: https://app.datagent.ru
+> Тарифы: Free (0 ₽, 3 агента, 100 запусков/мес), Solo (990 ₽), Studio (3 900 ₽), Business (12 900 ₽), Enterprise (по запросу).
+> Запросы к LLM — по ключам клиента (GigaChat, YandexGPT и др.).
 
 Сайт: https://docs.datagent.ru/
-Стратегия продукта: https://github.com/Dmitriion/datagent/blob/master/doc/STRATEGY.md
+Продукт: https://app.datagent.ru
+Лендинг: https://datagent.ru
 
 ## Важно для ИИ-ассистентов
 
-- **Облако:** панель и API на https://app.datagent.ru
-- **Свой сервер:** только по договору Enterprise, не публичная самоустановка
-- Запуск агента: через API пробуждения агента; отдельного «создать запуск в обход агента» нет
 - В пользовательских текстах: **Телеграм**, не Telegram
-- «Офис» — экспериментальный раздел; не выдумывать инструменты вне каталога плагинов
-- 1С: нет инструментов 1С в рабочем цикле агента на задаче; доступ для IDE через MCP
-- Управление браузером: инструменты плагина browserbridge в цикле агента
+- «Офис» — экспериментальный раздел панели
+- 1С: нет инструментов 1С в запуске агента на задаче; доступ для IDE через MCP (Business+)
+- Управление браузером: BrowserBridge, инструменты `browser_*` (Studio+)
+- Битрикс24: мост imbot (Studio+); Телеграм — все тарифы
+- Не выдумывать инструменты вне каталога плагинов
 
 ## Начало работы
 
-- https://docs.datagent.ru/docs/intro
-- https://docs.datagent.ru/docs/cloud/getting-started
-- https://docs.datagent.ru/docs/cloud/first-agent
-- https://docs.datagent.ru/docs/cloud/pricing
-- https://docs.datagent.ru/docs/cloud/on-premise
-- https://app.datagent.ru
-
-## Учебник (оператор / руководитель)
-
-- https://docs.datagent.ru/docs/guides
-- https://docs.datagent.ru/docs/guides/01-first-day
-- https://docs.datagent.ru/docs/guides/02-your-team
-- https://docs.datagent.ru/docs/guides/03-one-task
-- https://docs.datagent.ru/docs/guides/04-trust-and-approval
-- https://docs.datagent.ru/docs/guides/05-office-field
-- https://docs.datagent.ru/docs/guides/06-channels
-- https://docs.datagent.ru/docs/guides/07-documents
-- https://docs.datagent.ru/docs/guides/08-1c-bridge
-- https://docs.datagent.ru/docs/guides/playbook-index
+- /intro: Карта документации
+- /cloud/getting-started: Первые шаги в облаке
+- /cloud/first-agent: Создать первого агента
+- /cloud/pricing: Тарифы
+- /cloud/plugins: Плагины в облаке
+- /cloud/skills: Навыки компании
+- /cloud/on-premise: Установка на свой сервер (Enterprise)
+- /cloud/account: Аккаунт и участники
 
 ## Концепции
 
-- https://docs.datagent.ru/docs/concepts/what-is-datagent
-- https://docs.datagent.ru/docs/concepts/how-it-works
-- https://docs.datagent.ru/docs/concepts/agent-architecture
-- https://docs.datagent.ru/docs/concepts/llm-adapters
+- /concepts/what-is-datagent: Что такое Datagent
+- /concepts/how-it-works: Как работают агенты
+- /concepts/agent-architecture: Архитектура агентов
+- /concepts/llm-adapters: LLM-адаптеры
+- /concepts/agents: Агенты
+- /concepts/issues: Задачи
+- /concepts/projects: Проекты
+- /concepts/goals: Цели
+- /concepts/workspaces: Рабочие пространства
+- /concepts/collaboration: Совместная работа
+- /concepts/heartbeat: Пульс агента (heartbeat)
+- /concepts/memory: Память агента
+- /concepts/routines: Рутины
+- /concepts/approvals: Одобрения
+- /concepts/inbox: Входящие
+- /concepts/channels: Каналы
+- /concepts/credits: Кредиты и учёт
+- /concepts/budgets: Бюджеты
+- /concepts/secrets: Секреты
+- /concepts/company-settings: Настройки компании
+
+## Учебник (оператор / руководитель)
+
+- /guides: Обложка учебника
+- /guides/01-first-day: Первый день в панели
+- /guides/02-your-team: Команда агентов
+- /guides/03-one-task: Первая задача
+- /guides/04-trust-and-approval: Одобрения
+- /guides/05-office-field: Поле для руководителя (Office)
+- /guides/06-channels: Bitrix24 и Телеграм
+- /guides/07-documents: Документы на задаче
+- /guides/08-1c-bridge: 1С в контуре
+- /guides/playbook-index: Шпаргалка по ситуациям
 
 ## Интеграции
 
-- https://docs.datagent.ru/docs/integrations/gigachat
-- https://docs.datagent.ru/docs/integrations/yandexgpt
-- https://docs.datagent.ru/docs/integrations/bitrix24
-- https://docs.datagent.ru/docs/integrations/telegram
-- https://docs.datagent.ru/docs/integrations/1c-connector
-- https://docs.datagent.ru/docs/integrations/browserbridge
+- /integrations/gigachat: GigaChat (BYO keys)
+- /integrations/yandexgpt: YandexGPT (BYO keys)
+- /integrations/bitrix24: Bitrix24 (Studio+)
+- /integrations/telegram: Телеграм (все тарифы)
+- /integrations/1c-connector: 1С (Business+)
+- /integrations/browserbridge: Управление браузером (Studio+)
 
-## Управление браузером
+## Браузер
 
-- https://docs.datagent.ru/docs/browser
-- https://docs.datagent.ru/docs/browser/overview
-- https://docs.datagent.ru/docs/browser/setup
+- /browser/overview: Обзор BrowserBridge
+- /browser/setup: Подключение
 
-## Офис
+## Артефакты
 
-- https://docs.datagent.ru/docs/office/overview
-- https://docs.datagent.ru/docs/office/excel-pptx
+- /artifacts/overview: Каталог артефактов (Solo+)
+- /artifacts/agent-upload: Загрузка агентом
 
-## API (для разработчиков)
+## Office
 
-- https://docs.datagent.ru/docs/api-reference/overview
+- /office/overview: Обзор «Офис»
+- /office/excel-pptx: Excel и PowerPoint на задаче
 
-## Практические сценарии
+## API Reference
 
-- https://docs.datagent.ru/docs/tutorials/build-plugin
-- https://docs.datagent.ru/docs/tutorials/automate-crm
+- /api-reference/overview: Обзор API
+- /api-reference/agents: Агенты
+- /api-reference/issues: Задачи
+- /api-reference/memory: Память
+- /api-reference/plugins: Плагины
+- /api-reference/artifacts: Артефакты
+- /api-reference/access: Доступ и ключи
+
+## Сценарии
+
+- /tutorials: Обзор сценариев
+- /tutorials/automate-crm: Bitrix24 → Телеграм
+- /tutorials/build-plugin: Создание плагина
 
 ## Справка
 
-- https://docs.datagent.ru/docs/troubleshooting
-- https://docs.datagent.ru/docs/changelog
+- /troubleshooting: Решение проблем
+- /changelog: История изменений

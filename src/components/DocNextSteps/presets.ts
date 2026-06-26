@@ -20,7 +20,7 @@ export const introNextSteps: NextStepItem[] = [
     tag: 'Пользователям',
   },
   {
-    title: 'Программный интерфейс',
+    title: 'API Reference',
     description: 'Для разработчиков: запуск агентов и задачи.',
     to: '/docs/api-reference/overview',
     tag: 'Инженерам',
@@ -36,7 +36,7 @@ export const cloudFirstAgentNextSteps: NextStepItem[] = [
   },
   {
     title: 'Тарифы',
-    description: 'Бесплатный, PRO, Business и корпоративный.',
+    description: 'Free, Solo, Studio, Business и корпоративный.',
     to: '/docs/cloud/pricing',
     tag: 'Облако',
   },
