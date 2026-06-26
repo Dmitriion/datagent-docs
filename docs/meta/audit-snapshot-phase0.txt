@@ -1,0 +1,84 @@
+=== Baseline 2026-06-15 (фаза 0 — до правок тарифов) ===
+
+Источник: grep по docs/**/*.md и docs/**/*.mdx (исключён cloud/pricing.md как уже актуальный).
+
+--- Сводка по категориям ---
+
+| Категория | Файлов | Строк (ориентир) |
+|-----------|--------|------------------|
+| Устаревшее имя тарифа PRO | 14 | 29 |
+| Устаревшие лимиты (10 агентов, 2 000 / 20 000 запусков) | 5 | 8 |
+| Неверная цена Business (3 900 ₽ вместо Studio) | 3 | 3 |
+| BrowserBridge / интеграции с привязкой к PRO | 6 | — |
+
+Уникальных файлов с любым дрейфом тарифов/лимитов: **15** (включая пересечения).
+
+--- Файлы с устаревшим PRO (тариф) ---
+
+browser/overview.md
+browser/setup.md
+concepts/agents.md
+concepts/budgets.md
+concepts/channels.md
+concepts/company-settings.md
+concepts/credits.md
+concepts/projects.md
+concepts/what-is-datagent.md
+integrations/bitrix24.md
+integrations/browserbridge.md
+integrations/gigachat.md
+intro.mdx
+
+Исключено из списка PRO (ложные срабатывания, не тариф):
+- concepts/llm-adapters.md (PROXY)
+- integrations/telegram.md (APPROVAL)
+- integrations/yandexgpt.md (PROXY_DISABLED)
+
+--- Файлы с устаревшими лимитами (10 агентов / 2 000 / 20 000) ---
+
+intro.mdx
+concepts/what-is-datagent.md
+concepts/agents.md
+concepts/credits.md
+integrations/bitrix24.md
+
+--- Строки с устаревшими лимитами и ценами (детально) ---
+
+concepts/agents.md:44:**BrowserBridge** и расширенный набор плагинов — с **PRO**, 990 ₽/мес, 10 агентов и 2 000 запусков.
+concepts/agents.md:59:| **PRO** | 990 ₽/мес | 10 | 2 000 | Линия в Битрикс24 + BrowserBridge |
+concepts/agents.md:60:| **Business** | 3 900 ₽/мес | 50 | 20 000 | Несколько отделов, десятки процессов |
+concepts/credits.md:39:| **PRO** | 990 ₽/мес | 10 | 2 000 | Постоянная линия в CRM + браузер |
+concepts/credits.md:40:| **Business** | 3 900 ₽/мес | 50 | 20 000 | Несколько отделов, десятки агентов |
+concepts/what-is-datagent.md:98:| **PRO** | 990 ₽ | 10 | 2 000 |
+concepts/what-is-datagent.md:99:| **Business** | 3 900 ₽ | 50 | 20 000 |
+integrations/bitrix24.md:95:**Нет.** Базовая связка на **Free**. **PRO** — больше агентов (10), запусков (2 000) и [BrowserBridge](../integrations/browserbridge).
+intro.mdx:38:На **Free** — 0 ₽, 3 агента, 100 запусков в месяц. Нужно больше? **PRO** — 990 ₽/мес, 10 агентов и 2 000 запусков: [тарифы](./cloud/pricing).
+
+--- Итого строк дрейфа (паттерны тариф PRO / 2 000 / BrowserBridge PRO / 10 агент) ---
+
+browser/overview.md:2
+browser/setup.md:3
+concepts/agents.md:5
+concepts/budgets.md:1
+concepts/channels.md:1
+concepts/company-settings.md:2
+concepts/credits.md:6
+concepts/projects.md:1
+concepts/what-is-datagent.md:7
+integrations/bitrix24.md:2
+integrations/browserbridge.md:5
+integrations/gigachat.md:1
+intro.mdx:2
+
+Сумма совпадений по файлам (с пересечением паттернов): **38** строк.
+Строк только по тарифному PRO (без PROXY/APPROVAL): **29**.
+
+--- Эталон без дрейфа ---
+
+cloud/pricing.md — актуальная сетка Free / Solo / Studio / Business / Enterprise
+cloud/account.md — ссылки на Solo / Studio / Business
+cloud/index.md — краткая сетка совпадает с каноном
+
+--- Следующий шаг (фаза 1) ---
+
+Правки по meta/VOCAB-CANON-2026-Q3.md: cloud/pricing.md (проверка), concepts/credits.md, concepts/what-is-datagent.md, concepts/agents.md, integrations/*, browser/*, intro.mdx

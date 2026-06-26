@@ -9,6 +9,15 @@ description: Внутренний план закрытия пробелов д�
 **Self-hosted:** в публичной справке только enterprise-лендинг [`cloud/on-premise`](../cloud/on-premise.md), не пошаговый runbook.  
 **Снимок аудита:** [`audit-snapshot-2026-06-15.json`](./audit-snapshot-2026-06-15.json) (продукт `632e957d9`, docs `692f934`).
 
+## Статус — Фаза 0 (Словарь и канон)
+
+- **Дата:** 15 июня 2026
+- **Статус:** ✅ Выполнено
+- **Baseline:** 14 файлов с устаревшим PRO, 29 строк тарифного дрейфа, 15 уникальных файлов с любым дрейфом лимитов/тарифов
+- **Артефакт:** [`meta/VOCAB-CANON-2026-Q3.md`](./VOCAB-CANON-2026-Q3.md)
+- **Снимок дрейфа:** [`meta/audit-snapshot-phase0.txt`](./audit-snapshot-phase0.txt)
+- **Следующая фаза:** Phase 1 — Тарифы и монетизация (`concepts/credits.md`, `concepts/what-is-datagent.md`, `concepts/agents.md`, `integrations/*`, `browser/*`, `intro.mdx`; `cloud/pricing.md` — верификация)
+
 ## Счётчики gap-таблицы
 
 | Статус | Количество |
