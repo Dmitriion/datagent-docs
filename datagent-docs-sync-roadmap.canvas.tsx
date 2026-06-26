@@ -30,6 +30,7 @@ type Phase = {
   status: "done" | "partial" | "todo";
   goal: string;
   canon: string[];
+  gaps?: readonly string[];
   sections: readonly {
     path: string;
     action: string;
@@ -55,6 +56,15 @@ const VOCAB = [
   ["1С на Studio", "1С Business+"],
   ["Кредиты = валюта (сейчас)", "Runs по подписке; wallet — planned (модель B)"],
 ] as const;
+
+/** Снимок gap-audit 2026-06-15 — операторская аудитория */
+const CONTENT_HEALTH = {
+  totalPages: 64,
+  fullPages: 58,
+  thinPages: 3,
+  stubs: 1,
+  missingRequired: 0,
+} as const;
 
 const PHASES: readonly Phase[] = [
   {
@@ -209,9 +219,12 @@ const PHASES: readonly Phase[] = [
     title: "Учебник и сценарии",
     priority: "P2",
     effort: 3,
-    status: "done",
+    status: "partial",
     goal: "8 глав playbook ведут оператора; тарифы и gates согласованы с p1–p4.",
     canon: ["guides/playbook-index", "PRODUCT user scenario"],
+    gaps: [
+      "guides/01–08 — навигация «Следующая глава», не единый заголовок «Что дальше» (backlog)",
+    ],
     sections: [
       { path: "guides/index.mdx", action: "VERIFY hub" },
       { path: "guides/01-first-day.mdx", action: "SYNC onboarding" },
@@ -336,14 +349,24 @@ export default function DatagentDocsSyncRoadmap() {
       <Grid columns={4} gap={12}>
         <Stat label="Фаз" value={String(PHASES.length)} tone="info" />
         <Stat label="Страниц в плане" value={String(pageCount)} />
-        <Stat label="Известный drift (baseline)" value={String(driftCount)} />
-        <Stat label="Фаз partial/todo" value={`${partialCount} / ${todoCount}`} tone="success" />
+        <Stat label="Фаз partial/todo" value={`${partialCount} / ${todoCount}`} tone={partialCount > 0 ? "warning" : "success"} />
+        <Stat label="Полных страниц" value={String(CONTENT_HEALTH.fullPages)} tone="success" />
       </Grid>
 
-      <Callout tone="success" title="Синхронизация Q3 2026 — завершена">
-        Фазы 0–9 выполнены: drift PRO/localhost/Paperclip = 0 в user-facing потоке, plan gates
-        совпадают с pricing.md, npm run build зелёный (onBrokenLinks: throw). Остаточный backlog →
-        docs/meta/issues-post-qa.md.
+      <Callout tone="success" title="Gap-audit 15.06.2026 — операторская аудитория">
+        {CONTENT_HEALTH.totalPages} страниц: 0 публичных заглушек, 0 отсутствующих обязательных разделов.
+        Примеры дописаны в channels, collaboration, projects, workspaces. Отчёт: gap-report-2026-06-15.md
+      </Callout>
+
+      <Grid columns={4} gap={12}>
+        <Stat label="Всего страниц" value={String(CONTENT_HEALTH.totalPages)} />
+        <Stat label="Полных (≥300 сл)" value={String(CONTENT_HEALTH.fullPages)} tone="success" />
+        <Stat label="Заглушек" value={String(CONTENT_HEALTH.stubs)} />
+        <Stat label="Отсутствующих" value={String(CONTENT_HEALTH.missingRequired)} tone="success" />
+      </Grid>
+
+      <Callout tone="info" title="Синхронизация Q3 2026">
+        Drift PRO/localhost = 0. Plan gates = pricing.md. Backlog: issues-post-qa.md, p7 навигация учебника.
       </Callout>
 
       <Card>
@@ -416,6 +439,11 @@ export default function DatagentDocsSyncRoadmap() {
           >
             <Stack gap={10} style={{ paddingTop: 8, paddingLeft: 4 }}>
               <Text>{phase.goal}</Text>
+              {phase.gaps && phase.gaps.length > 0 ? (
+                <Callout tone="warning" title="Найденные gaps">
+                  {phase.gaps.join(" · ")}
+                </Callout>
+              ) : null}
               <Row gap={8} wrap>
                 {phase.canon.map((c, i) => (
                   <Pill tone="neutral" size="sm">

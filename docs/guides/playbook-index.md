@@ -55,3 +55,7 @@ sidebar_position: 10
 1. [Обложка](./)  
 2. [01](./01-first-day) → [02](./02-your-team) → [03](./03-one-task) → [04](./04-trust-and-approval)  
 3. По роли: [05](./05-office-field), [06](./06-channels), [07](./07-documents), [08](./08-1c-bridge)
+
+## Что дальше
+
+→ [Обложка учебника](./) — полный маршрут с нуля
