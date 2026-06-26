@@ -2,85 +2,74 @@
 id: yandexgpt
 title: Как подключить YandexGPT к AI-агентам — Datagent
 sidebar_label: YandexGPT
-description: "YandexGPT в Datagent: сервисный аккаунт Yandex Cloud, агент с tools. Free на app.datagent.ru."
+description: "YandexGPT в Datagent: сервисный аккаунт Yandex Cloud, агент с действиями. Free на app.datagent.ru."
 ---
 
 # Как подключить YandexGPT к AI-агентам — Datagent
 
-> **Зачем:** Чтобы агенты работали на **YandexGPT** в контуре **Yandex Cloud** — альтернатива или дополнение к GigaChat для российских команд. **Datagent** подключает модель к задачам на [app.datagent.ru](https://app.datagent.ru).
+Агент **отвечает на задачи**, **вызывает плагины** (таблицы, CRM) и **работает в контуре Yandex Cloud** — альтернатива или дополнение к GigaChat в одной компании.
 
-Подключите **YandexGPT** за те же шаги, что и GigaChat: каталог в Yandex Cloud, JSON-ключ сервисного аккаунта, модель в карточке агента.
+Если у вас уже есть каталог в Yandex Cloud и политика «данные не за рубеж» — YandexGPT держит обработку в РФ, часто дешевле на коротких ответах Lite-моделью, а оплату считает Яндекс по своему тарифу.
 
-> **Для подключения YandexGPT нужен JSON-ключ сервисного аккаунта Yandex Cloud.**  
-> **Ограничений по тарифу Datagent нет** — подключается на **любом** плане. Оплата вызовов — по тарифам Yandex Cloud; Datagent списывает **запуски** платформы.
+**Начните так:** выпустите **JSON-ключ** сервисного аккаунта в [Yandex Cloud](https://cloud.yandex.ru/) → [app.datagent.ru](https://app.datagent.ru) → **Агенты** → **Новый агент** → **YandexGPT** → укажите **идентификатор каталога** и секрет с JSON.
 
-## Это работает так
-
-1. В [Yandex Cloud](https://cloud.yandex.ru/) создаёте каталог и **сервисный аккаунт**.
-2. Выпускаете **JSON-ключ** сервисного аккаунта.
-3. В **Datagent** — агент с адаптером **YandexGPT**, указываете **folder id** и секрет с JSON.
-4. Для агентов с инструментами выбираете модель **с поддержкой tools** (`yandexgpt/rc`).
-5. Запускаете задачу — ответ и журнал в панели; при связке с CRM — см. [Битрикс24](./bitrix24).
-
-:::tip Доступно бесплатно
-**YandexGPT** доступен на **Free** (3 агента, 100 запусков). Оплата вызовов — по тарифам Yandex Cloud.
-[Попробовать →](https://app.datagent.ru/signup)
-:::
+> **Нужен JSON-ключ сервисного аккаунта Yandex Cloud.**  
+> **Ограничений по тарифу Datagent нет** — на **любом** плане. Datagent списывает **запуски**; вызовы модели — по тарифам Yandex Cloud.
 
 ## Какие задачи решать
 
 | Сценарий | Модель |
 | --- | --- |
-| Агент с **инструментами** (таблицы, плагины) | `yandexgpt/rc` |
-| Простые текстовые ответы без tools | `yandexgpt-lite/rc` (без tool calls) |
+| Агент с **плагинами** (таблицы, CRM) | `yandexgpt/rc` |
+| Простые текстовые ответы | `yandexgpt-lite/rc` |
 | Параллельно с GigaChat | Разные агенты на разных моделях в одной компании |
 
-Для диалогов в **Битрикс24** обычно берут модель **с tools**, если агент вызывает плагины.
+Для **Битрикс24** обычно берут модель **с поддержкой действий**, если агент вызывает плагины.
 
 ## Подключение в три шага
 
 ### 1. Yandex Cloud
 
-1. Создайте [каталог](https://cloud.yandex.ru/) — скопируйте **folder id** (`b1g…`).
-2. Создайте **сервисный аккаунт** с правами на вызов Foundation Models / YandexGPT в этом каталоге.
+1. Создайте [каталог](https://cloud.yandex.ru/) — скопируйте **идентификатор каталога** (`b1g…`).
+2. Создайте **сервисный аккаунт** с правами на вызов YandexGPT в этом каталоге.
 3. Создайте **авторизованный ключ** (JSON) — сохраните файл целиком.
 
 ### 2. Агент в Datagent
 
 1. [app.datagent.ru](https://app.datagent.ru) → **Агенты** → **Новый агент**.
-2. Адаптер: **YandexGPT** (`yandexgpt_local`).
-3. **Folder id** — идентификатор каталога.
-4. **Model** — `yandexgpt/rc` для агентов с инструментами.
-5. Секрет `YANDEX_SA_KEY_JSON` — полный JSON ключа (`secret_ref`).
+2. Адаптер: **YandexGPT**.
+3. **Идентификатор каталога** — из Yandex Cloud.
+4. **Модель** — `yandexgpt/rc` для агентов с плагинами.
+5. Секрет с полным JSON ключа.
 6. **Проверить окружение**.
 
 ### 3. Проверка
 
-Запустите учебную задачу. В журнале не должно быть ошибок IAM или «folder id missing».
+Запустите учебную задачу. В журнале не должно быть ошибок доступа или «не указан каталог».
 
 ## GigaChat или YandexGPT?
 
 | | **GigaChat** | **YandexGPT** |
 | --- | --- | --- |
-| Ключи | OAuth Сбер (Client ID/Secret) | JSON ключа SA в Yandex Cloud |
+| Ключи | Client ID/Secret Сбера | JSON ключа в Yandex Cloud |
 | Контур | Сбер | Yandex Cloud |
 | В Datagent | `gigachat_local` | `yandexgpt_local` |
 
-Можно держать оба: например, GigaChat на линии Битрикс24, YandexGPT — на внутренних задачах.
+Можно держать оба: GigaChat на линии Битрикс24, YandexGPT — на внутренних задачах.
 
 ## Частые вопросы
 
-**Нужен ли API-ключ вместо JSON?**  
-В текущем адаптере Datagent — только **JSON сервисного аккаунта** → автоматический IAM-токен.
+**Нужен ли отдельный API-ключ вместо JSON?**  
+В адаптере Datagent — только **JSON сервисного аккаунта**; токен доступа обновляется автоматически.
 
-**Почему агент не вызывает tools?**  
-Проверьте модель: для tools нужен **`yandexgpt/rc`**, не Lite.
+**Почему агент не вызывает плагины?**  
+Проверьте модель: нужен **`yandexgpt/rc`**, не Lite.
 
 **Данные уходят за рубеж?**  
-Обработка — в **Yandex Cloud** при корректной настройке каталога и модели.
+При корректной настройке каталога — обработка в **Yandex Cloud**.
 
 **Сколько стоит?**  
-Тарифы Yandex Cloud + **запуски Datagent** по вашему плану. См. [Запуски и лимиты](../concepts/credits).
+Тарифы Yandex Cloud + **запуски Datagent**. См. [Запуски и лимиты](../concepts/credits).
 
 ## Что дальше
 
@@ -108,35 +97,6 @@ description: "YandexGPT в Datagent: сервисный аккаунт Yandex Cl
 | --- | --- |
 | `yandexgpt/rc` | Да |
 | `yandexgpt-lite/rc` | Нет |
-
-При run URI вида `gpt://{folderId}/{variant}`.
-
-### Пример `adapterConfig`
-
-```json
-{
-  "folderId": "b1g2abc3def4ghijklmnop",
-  "model": "yandexgpt/rc",
-  "command": "opencode",
-  "env": {
-    "YANDEX_SA_KEY_JSON": {
-      "type": "secret_ref",
-      "secretId": "<uuid-company-secret>"
-    }
-  }
-}
-```
-
-### Типичные ошибки
-
-| Симптом | Что сделать |
-| --- | --- |
-| IAM 401 | Перевыпустить ключ SA, обновить secret |
-| 403 | Права SA на LLM в folder |
-| `folderId` пустой | Заполнить в Board |
-| `yandexgpt_tools_unsupported_model` | Переключить на `yandexgpt/rc` |
-
-Токен кэшируется в PostgreSQL (`adapter_oauth_tokens`). Исполнение = OpenCode + IAM + опциональный proxy.
 
 См. [GigaChat](./gigachat.md), [LLM-адаптеры](../concepts/llm-adapters.md).
 

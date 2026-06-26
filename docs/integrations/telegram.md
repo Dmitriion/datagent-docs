@@ -7,21 +7,33 @@ description: "Плагин Телеграм в Datagent: бот, уведомл�
 
 # Телеграм в Datagent — уведомления и согласования
 
-> **Зачем:** **Datagent** на [app.datagent.ru](https://app.datagent.ru) присылает в **Телеграм** уведомления о задачах и запросы «разрешить или отклонить» действие агента — без постоянного мониторинга панели.
+Бот **присылает уведомления о задачах** в Телеграм, **передаёт ваши сообщения агенту** и **просит подтвердить** рискованные действия кнопками — не нужно держать панель открытой весь день.
+
+Если руководитель узнаёт о сбоях агента с опозданием или согласования зависают в браузере — Телеграм даёт ответ «одобрить / отклонить» прямо в мессенджере.
+
+**Начните так:** создайте бота в [@BotFather](https://t.me/BotFather) → [app.datagent.ru](https://app.datagent.ru) → **Менеджер плагинов** → **Телеграм** → вставьте **ключ бота** в настройки компании.
 
 > **Интеграция с Telegram доступна на всех тарифах, включая Free.**
 
-## Это работает так
+## Как это работает
 
 1. Создайте бота в BotFather и подключите плагин в **менеджере плагинов**.
-2. Направляйте сообщения и команды в **задачи** Datagent — агент отвечает через платформу.
-3. Подтверждайте рискованные шаги кнопками прямо в чате (при настроенном доступе).
+2. Сообщения из чата попадают в **задачи** Datagent — агент отвечает через платформу.
+3. Рискованные шаги — кнопками **Одобрить** / **Отклонить** в Телеграм (при настроенном доступе).
 
-Это не отдельная нейросеть: бот передаёт сообщения в задачи и присылает запросы «разрешить или отклонить». Связка с Битрикс24 — в [практическом сценарии](../tutorials/automate-crm).
+Это не отдельная нейросеть: бот связывает мессенджер с задачами и [согласованиями](../concepts/approvals). Связка с Битрикс24 — в [практическом сценарии](../tutorials/automate-crm).
 
-:::note Для инженеров
-Пакет из npm, long polling `getUpdates`, worker и маршруты к задачам и согласованиям — см. разделы ниже.
-:::
+## Подключение за пять минут
+
+1. **BotFather** → `/newbot` → сохраните **ключ бота**.
+2. **Менеджер плагинов** → установите **Телеграм** → включите для компании.
+3. **Настройки компании → Телеграм** → укажите ключ как **секрет компании** (не текстом в открытом поле).
+4. Напишите боту `/help` — должен ответить списком команд.
+
+<details>
+<summary>Для инженеров: схема, long polling, поля конфигурации</summary>
+
+Пакет из npm, опрос `getUpdates`, worker и маршруты к задачам и согласованиям — см. разделы ниже.
 
 ## Схема
 
@@ -161,24 +173,7 @@ curl -X POST https://app.datagent.ru/api/plugins/install \
 
 Плагины **независимы**: Bitrix24 bridge и плагин Telegram Datagent не делят общий issue-bridge в коде монорепозитория. Сквозной сценарий imbot → агент → Telegram — [Bitrix24 → Telegram](../tutorials/automate-crm.md) (без CRM tools).
 
-## Проверка
-
-1. **Plugin Manager** → **Plugin Settings** → worker status **running**; вкладка webhook deliveries (для Telegram обычно пусто — long poll).
-2. `POST /api/plugins/{pluginId}/config/test` — если плагин реализует `validateConfig` (`server/src/routes/plugins.ts`).
-3. `pnpm datagent doctor` — instance / DB / adapters (не специфичен для Telegram).
-4. Отправьте боту `/help`; в логах worker — обработка `getUpdates`.
-5. Создайте тестовый `request_board_approval` в Board — уведомление в `approvalsChatId` или `defaultChatId`.
-
-## Типичные ошибки
-
-| Симптом | Причина | Что сделать |
-| --- | --- | --- |
-| 401 от Telegram | Неверный token / не UUID в `telegramBotTokenRef` | Пересоздать company secret, вставить UUID |
-| Команды не работают | Allowlist / `enableCommands: false` | Проверить `allowedTelegramChatIds`, `allowedTelegramUserIds` |
-| Кнопки Approve 403 | Нет board token | **Connect board access** в UI плагина |
-| Нет входящих | Worker stopped / неверный offset | Перезапуск плагина, проверить статус worker |
-| Таймаут fetch | Сеть / прокси | `DATAGENT_PLUGIN_HTTP_PROXY`, firewall к `api.telegram.org` |
-| Старый URL webhook | Ожидание `/integrations/telegram/webhook` | Использовать long poll; не настраивать фиктивный path |
+</details>
 
 ## Частые вопросы
 
@@ -196,22 +191,33 @@ curl -X POST https://app.datagent.ru/api/plugins/install \
 → [Битрикс24](./bitrix24)
 
 <details>
-<summary>Связанные разделы</summary>
+<summary>Связанные разделы и техническая справка</summary>
 
 - [Согласования](../concepts/approvals) · [Старт в облаке](../cloud/getting-started)
 - [Практический сценарий CRM](../tutorials/automate-crm) · [Архитектура](../concepts/agent-architecture)
 
-</details>
+## Проверка
 
-[^tg-fields]: В schema npm-пакета эти три поля могут иметь legacy-имена; в Board UI — URL API Datagent, публичный URL и secret ref токена Board (см. manifest установленного пакета).
+1. **Менеджер плагинов** → настройки → worker **running**.
+2. Отправьте боту `/help`.
+3. Создайте тестовое согласование в панели — уведомление в чат из настроек.
+
+## Типичные ошибки
+
+| Симптом | Что сделать |
+| --- | --- |
+| 401 от Telegram | Пересоздать секрет с ключом бота |
+| Команды не работают | Проверить список разрешённых чатов |
+| Кнопки «Одобрить» не срабатывают | Подключить доступ к панели в настройках плагина |
 
 ## Технические идентификаторы
 
 | Идентификатор | Значение |
 | --- | --- |
 | Ключ в registry Datagent | `datagent.plugin-telegram` |
-| npm / install | Предпочтительно `datagent.plugin-telegram`; устаревшие имена пакетов сопоставляются в `packages/shared/src/constants/plugin-keys.ts` |
-| CLI / REST install | `pnpm datagent plugin install datagent.plugin-telegram` или `{"packageName":"datagent.plugin-telegram"}` |
+| npm / install | `datagent.plugin-telegram` |
 | Слот UI настроек | `telegram-settings` |
 
-Поля config в schema опубликованного npm-пакета могут использовать legacy-префикс в именах (см. manifest пакета в Plugin Manager); в Board UI — URL инстанса Datagent, публичный URL и ссылка на secret API-токена Board.
+[^tg-fields]: В schema npm-пакета поля могут иметь legacy-имена; в Board UI — URL API Datagent, публичный URL и ссылка на секрет токена панели.
+
+</details>
