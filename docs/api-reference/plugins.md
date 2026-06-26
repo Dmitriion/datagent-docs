@@ -103,9 +103,13 @@ curl -s "https://app.datagent.ru/api/plugins/${PLUGIN_ID}" \
 
 ## DELETE /plugins/:pluginId
 
-Удалить плагин с instance.
+Удалить плагин с instance (только **администратор instance**).
 
-**Ответ `204 No Content`** — удалён.
+Query **`purge=true`** — полное удаление данных плагина; без флага — мягкое удаление с retention **30 дней**.
+
+**Ответ `200 OK`** — объект **`PluginRecord`** удалённого плагина (тело **не пустое**).
+
+**Ответ `403`** — нет прав instance admin.
 
 **Ответ `404`** — плагин не найден:
 
