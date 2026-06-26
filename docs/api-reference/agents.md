@@ -18,65 +18,67 @@ description: REST API агентов Datagent — CRUD, возобновлени
 
 | Метод | Endpoint | Описание |
 | --- | --- | --- |
-| `GET` | `/companies/:companyId/agents` | Список агентов |
-| `POST` | `/companies/:companyId/agents` | Создать агента |
-| `GET` | `/agents/:id` | Получить агента |
-| `PATCH` | `/agents/:id` | Обновить агента |
-| `DELETE` | `/agents/:id` | Удалить агента |
-| `POST` | `/agents/:id/wakeup` | Возобновить работу агента (новый run) |
-| `GET` | `/agents/me` | Профиль агента по ключу |
-| `POST` | `/agents/:id/keys` | Создать ключ API агента |
+| `GET` | `/companies/:companyId/agents` | Список агентов — для дашборда команды или выбора исполнителя в скрипте |
+| `POST` | `/companies/:companyId/agents` | Создать агента — при онбординге новой роли из HR или IaC |
+| `GET` | `/agents/:id` | Карточка агента — проверить настройки перед run |
+| `PATCH` | `/agents/:id` | Обновить агента — сменить модель или инструкции без панели |
+| `DELETE` | `/agents/:id` | Удалить агента — очистка тестовых или уволенных ролей |
+| `POST` | `/agents/:id/wakeup` | Возобновить работу агента — запуск после webhook или по расписанию CI |
+| `GET` | `/agents/me` | Профиль по ключу агента — узнать свой `id` и компанию в run |
+| `POST` | `/agents/:id/keys` | Выдать ключ агенту — подключить адаптер или внешний worker |
 
 ## Агенты компании
 
-Список агентов всегда привязан к **компании**.
-
 | Метод | Путь | Назначение |
 | --- | --- | --- |
-| `GET` | `/companies/:companyId/agents` | Список агентов |
-| `POST` | `/companies/:companyId/agents` | Создать агента |
-| `POST` | `/companies/:companyId/agent-hires` | Сценарий «найма» с оргструктурой |
-| `GET` | `/agents/:id` | Карточка агента |
-| `PATCH` | `/agents/:id` | Обновить настройки |
-| `DELETE` | `/agents/:id` | Удалить |
-| `POST` | `/agents/:id/pause` | Пауза |
-| `POST` | `/agents/:id/resume` | Снять с паузы |
-| `POST` | `/agents/:id/terminate` | Завершить активность |
+| `GET` | `/companies/:companyId/agents` | Список агентов компании для отчётов и назначения задач |
+| `POST` | `/companies/:companyId/agents` | Создать агента с базовой конфигурацией |
+| `POST` | `/companies/:companyId/agent-hires` | «Нанять» агента вместе с узлом оргструктуры |
+| `GET` | `/agents/:id` | Прочитать карточку перед изменением или run |
+| `PATCH` | `/agents/:id` | Обновить поля агента из скрипта деплоя |
+| `DELETE` | `/agents/:id` | Удалить агента, когда роль больше не нужна |
+| `POST` | `/agents/:id/pause` | Остановить новые run — например, на время инцидента |
+| `POST` | `/agents/:id/resume` | Снять паузу после устранения проблемы |
+| `POST` | `/agents/:id/terminate` | Прервать активность агента принудительно |
 
 ### Агент по API-ключу
 
 | Метод | Путь | Назначение |
 | --- | --- | --- |
-| `GET` | `/agents/me` | Профиль текущего агента |
-| `GET` | `/agents/me/inbox-lite` | Упрощённый inbox |
-| `POST` | `/agents/me/plugin-tools/execute` | Вызов tool из run |
+| `GET` | `/agents/me` | Узнать свой профиль из run или CLI адаптера |
+| `GET` | `/agents/me/inbox-lite` | Короткий список входящих без полной панели |
+| `POST` | `/agents/me/plugin-tools/execute` | Вызвать tool плагина из run по ключу агента |
 
-Ключ agent видит только себя: не управляет другими агентами и не читает чужую компанию.
+Ключ агента видит только себя: не управляет другими агентами и не читает чужую компанию.
 
 ## Модели и адаптеры
 
-| Метод | Путь |
-| --- | --- |
-| `GET` | `/companies/:companyId/adapters/:type/models` |
-| `GET` | `/companies/:companyId/adapters/:type/model-profiles` |
-| `POST` | `/companies/:companyId/adapters/:type/test-environment` |
+| Метод | Путь | Назначение |
+| --- | --- | --- |
+| `GET` | `/companies/:companyId/adapters/:type/models` | Список моделей — перед сменой модели в `PATCH /agents/:id` |
+| `GET` | `/companies/:companyId/adapters/:type/model-profiles` | Профили модели для тонкой настройки |
+| `POST` | `/companies/:companyId/adapters/:type/test-environment` | Проверить секреты и окружение до боевого run |
 
 ## Возобновление работы и heartbeat-runs
 
-Отдельного `POST /runs` нет — новый run создаёте через **`POST /agents/:id/wakeup`** (возобновить работу агента).
+Отдельного `POST /runs` нет — новый run через **`POST /agents/:id/wakeup`**.
 
 | Метод | Путь | Назначение |
 | --- | --- | --- |
-| `POST` | `/agents/:id/wakeup` | Возобновить работу (`202` + run или `skipped`) |
-| `POST` | `/agents/:id/heartbeat/invoke` | Устаревший псевдоним wakeup |
-| `GET` | `/companies/:companyId/heartbeat-runs` | Список run (`agentId`, `limit`) |
-| `GET` | `/companies/:companyId/live-runs` | Активные run |
-| `GET` | `/heartbeat-runs/:runId` | Метаданные run |
-| `GET` | `/heartbeat-runs/:runId/events` | События по шагам |
-| `GET` | `/heartbeat-runs/:runId/log` | Текстовый журнал |
-| `POST` | `/heartbeat-runs/:runId/cancel` | Отмена (board) |
+| `POST` | `/agents/:id/wakeup` | Возобновить работу агента после паузы или по внешнему событию |
+| `POST` | `/agents/:id/heartbeat/invoke` | **Устарело** — псевдоним `wakeup`; используйте `/wakeup` |
+| `GET` | `/companies/:companyId/heartbeat-runs` | Журнал run — аудит и отладка интеграции |
+| `GET` | `/companies/:companyId/live-runs` | Активные run — не дублировать запуск |
+| `GET` | `/heartbeat-runs/:runId` | Метаданные одного run для статус-страницы |
+| `GET` | `/heartbeat-runs/:runId/events` | Пошаговые события — разбор сбоя |
+| `GET` | `/heartbeat-runs/:runId/log` | Текстовый журнал для выгрузки в SIEM |
+| `POST` | `/heartbeat-runs/:runId/cancel` | Отменить зависший run из панели или скрипта |
 
 ### POST /agents/:id/wakeup
+
+Возобновляет работу агента. Используйте, когда нужно запустить агента по внешнему событию — например, после получения данных из CRM.
+
+**Тело запроса:**
 
 ```json
 {
@@ -106,35 +108,35 @@ curl -s -X POST "https://app.datagent.ru/api/agents/${AGENT_ID}/wakeup" \
 
 ## Ключи API агента
 
-| Метод | Путь |
-| --- | --- |
-| `GET` | `/agents/:id/keys` |
-| `POST` | `/agents/:id/keys` |
-| `DELETE` | `/agents/:id/keys/:keyId` |
+| Метод | Путь | Назначение |
+| --- | --- | --- |
+| `GET` | `/agents/:id/keys` | Список ключей — ротация без удаления агента |
+| `POST` | `/agents/:id/keys` | Создать ключ для адаптера или CI |
+| `DELETE` | `/agents/:id/keys/:keyId` | Отозвать скомпрометированный ключ |
 
 Секрет ключа показывается **один раз** — сохраните его как пароль.
 
 ## Конфигурация и инструкции
 
-| Метод | Путь |
-| --- | --- |
-| `GET` | `/agents/:id/configuration` |
-| `GET` | `/agents/:id/config-revisions` |
-| `POST` | `/agents/:id/config-revisions/:revisionId/rollback` |
-| `GET/PATCH` | `/agents/:id/instructions-bundle` |
-| `GET` | `/agents/:id/skills` |
+| Метод | Путь | Назначение |
+| --- | --- | --- |
+| `GET` | `/agents/:id/configuration` | Снимок конфигурации для бэкапа |
+| `GET` | `/agents/:id/config-revisions` | История ревизий — откат после ошибочного деплоя |
+| `POST` | `/agents/:id/config-revisions/:revisionId/rollback` | Откатить конфигурацию на выбранную ревизию |
+| `GET/PATCH` | `/agents/:id/instructions-bundle` | Читать или обновить инструкции из GitOps |
+| `GET` | `/agents/:id/skills` | Список навыков агента для проверки каталога |
 
 ## Оргструктура и бюджет
 
-| Метод | Путь |
-| --- | --- |
-| `GET` | `/companies/:companyId/org` |
-| `PATCH` | `/agents/:id/budgets` |
+| Метод | Путь | Назначение |
+| --- | --- | --- |
+| `GET` | `/companies/:companyId/org` | Оргструктура для отчётов и внешних HR-систем |
+| `PATCH` | `/agents/:id/budgets` | Задать месячный лимит — автоматическая пауза при превышении |
 
 См. [команду и доступ](/docs/concepts/collaboration), [бюджеты](/docs/concepts/budgets).
 
 ## Что дальше?
 
-- **Возьмите задачу в работу** — [задачи (API)](./issues): checkout после wakeup
+- **Возьмите задачу в работу** — [задачи (API)](./issues): checkout после возобновления работы
 - **Память агента** — [память (API)](./memory): слои по `agentId`
 - **Аутентификация** — [обзор API](./overview)

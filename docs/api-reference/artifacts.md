@@ -10,7 +10,7 @@ description: GET /api/companies/:id/artifacts — список файлов ко
 
 > **Зачем:** Выгрузить медиатеку компании в свой дашборд или скрипт — те же данные, что в панели `/{префикс}/artifacts`.
 
-Обзор в панели — [каталог артефактов](/docs/artifacts/overview). Как agent прикрепляет файлы — [прикрепление агентом](/docs/artifacts/agent-upload).
+Обзор в панели — [каталог артефактов](/docs/artifacts/overview). Как агент прикрепляет файлы — [прикрепление агентом](/docs/artifacts/agent-upload).
 
 **Тариф:** каталог артефактов и Excel Workbench — **Solo и выше** ([тарифы](/docs/cloud/pricing)).
 
@@ -20,10 +20,10 @@ description: GET /api/companies/:id/artifacts — список файлов ко
 
 | Метод | Endpoint | Описание |
 | --- | --- | --- |
-| `GET` | `/companies/:companyId/artifacts` | Список артефактов компании |
-| `POST` | `/companies/:companyId/issues/:issueId/attachments` | Прикрепить файл к задаче (агент или board) |
-| `GET` | `/attachments/:attachmentId/content` | Скачать или открыть вложение |
-| `POST` | `/issues/:issueId/work-products` | Типизированный результат run |
+| `GET` | `/companies/:companyId/artifacts` | Список артефактов — медиатека для портала или отчёта |
+| `POST` | `/companies/:companyId/issues/:issueId/attachments` | Прикрепить файл — загрузка результата run |
+| `GET` | `/attachments/:attachmentId/content` | Скачать или открыть вложение в браузере |
+| `POST` | `/issues/:issueId/work-products` | Зафиксировать типизированный результат run |
 
 ## Основной маршрут каталога
 
@@ -31,19 +31,19 @@ description: GET /api/companies/:id/artifacts — список файлов ко
 GET /companies/:companyId/artifacts
 ```
 
-**Ответ:** JSON с `artifacts[]`, опционально `groups`, `selectedGroup`, `nextCursor`.
+Возвращает JSON с `artifacts[]`, при необходимости `groups`, `selectedGroup`, `nextCursor`.
 
 ### Query-параметры
 
 | Параметр | Тип | По умолчанию | Описание |
 | --- | --- | --- | --- |
-| `kind` | `all` \| `image` \| `video` \| `text` \| `document` \| `file` | `all` | Фильтр по типу |
+| `kind` | `all` \| `image` \| `video` \| `text` \| `document` \| `file` | `all` | Фильтр по типу медиа |
 | `q` | строка, ≤160 | — | Поиск по названию |
-| `projectId` | UUID | все проекты | Артефакты задач проекта |
-| `groupBy` | `none` \| `task` \| `parent_task` | `none` | Группировка |
-| `groupIssueId` | UUID | — | Drill-in в группу задачи |
+| `projectId` | UUID | все проекты | Только артефакты задач проекта |
+| `groupBy` | `none` \| `task` \| `parent_task` | `none` | Группировка в ответе |
+| `groupIssueId` | UUID | — | Провалиться в группу задачи |
 | `limit` | 1–100 | `30` | Размер страницы |
-| `cursor` | строка | — | Пагинация |
+| `cursor` | строка | — | Курсор из `nextCursor` предыдущего ответа |
 
 ## Поля артефакта
 
@@ -54,13 +54,17 @@ GET /companies/:companyId/artifacts
 
 ## Скачивание и прикрепление
 
-**Скачать файл:**
+### GET /attachments/:attachmentId/content
+
+Отдаёт содержимое файла — для скачивания в архив или открытия в браузере.
 
 ```http
 GET /attachments/:attachmentId/content?download=1
 ```
 
-**Прикрепить файл агентом** (multipart, ключ агента или board):
+### POST /companies/:companyId/issues/:issueId/attachments
+
+Принимает multipart-файл — когда агент или скрипт прикрепляет результат к задаче.
 
 ```http
 POST /companies/:companyId/issues/:issueId/attachments

@@ -8,61 +8,61 @@ description: REST API плагинов Datagent — install, enable, tools/execu
 
 # REST API — плагины
 
-> **Зачем:** Ставить и отлаживать plugin из CI, админ-скрипта или при разработке своего расширения.
+> **Зачем:** Ставить и отлаживать плагин из CI, админ-скрипта или при разработке своего расширения.
 
 Установка через панель — [плагины в облаке](/docs/cloud/plugins). Как войти в API — [обзор REST API](./overview). База: `https://app.datagent.ru/api`.
 
-**Аутентификация:** `Authorization: Bearer <your-api-key>` (board для install; agent — для `agents/me/plugin-tools/execute`).
+**Аутентификация:** `Authorization: Bearer <your-api-key>` (панель для install; агент — для `agents/me/plugin-tools/execute`).
 
 ## Сводка endpoints
 
 | Метод | Endpoint | Описание |
 | --- | --- | --- |
-| `GET` | `/plugins` | Установленные плагины |
-| `POST` | `/plugins/install` | Установить плагин |
-| `GET` | `/plugins/tools` | Список tools |
-| `POST` | `/plugins/tools/execute` | Вызов tool (отладка) |
-| `POST` | `/plugins/:pluginId/webhooks/:endpointKey` | Webhook плагина |
-| `POST` | `/agents/me/plugin-tools/execute` | Tool из run агента |
+| `GET` | `/plugins` | Установленные плагины — инвентарь instance перед деплоем |
+| `POST` | `/plugins/install` | Установить плагин — CI/CD или dev-машина |
+| `GET` | `/plugins/tools` | Список tools — выбор имени для `execute` |
+| `POST` | `/plugins/tools/execute` | Вызов tool вручную — отладка без полного run |
+| `POST` | `/plugins/:pluginId/webhooks/:endpointKey` | Входящий webhook — Telegram, Bitrix и др. |
+| `POST` | `/agents/me/plugin-tools/execute` | Tool из run агента по ключу агента |
 
 ## Установка и жизненный цикл
 
 | Метод | Путь | Назначение |
 | --- | --- | --- |
-| `GET` | `/plugins` | Установленные плагины instance |
-| `POST` | `/plugins/install` | Установка (npm-имя или `file:` путь) |
-| `GET` | `/plugins/:pluginId` | Метаданные |
-| `DELETE` | `/plugins/:pluginId` | Удалить |
-| `POST` | `/plugins/:pluginId/enable` | Включить worker |
-| `POST` | `/plugins/:pluginId/disable` | Выключить |
-| `GET` | `/plugins/:pluginId/health` | Healthcheck worker |
+| `GET` | `/plugins` | Список плагинов на instance |
+| `POST` | `/plugins/install` | Установить из npm или `file:` пути |
+| `GET` | `/plugins/:pluginId` | Метаданные — версия и capabilities |
+| `DELETE` | `/plugins/:pluginId` | Удалить неиспользуемый плагин |
+| `POST` | `/plugins/:pluginId/enable` | Поднять worker после установки |
+| `POST` | `/plugins/:pluginId/disable` | Остановить worker на время обслуживания |
+| `GET` | `/plugins/:pluginId/health` | Проверка состояния worker в мониторинге |
 
 ## Включение для компании
 
-| Метод | Путь |
-| --- | --- |
-| `GET` | `/companies/:companyId/plugins/catalog` |
-| `PATCH` | `/companies/:companyId/plugins/:pluginId/enabled` |
+| Метод | Путь | Назначение |
+| --- | --- | --- |
+| `GET` | `/companies/:companyId/plugins/catalog` | Какие плагины доступны организации |
+| `PATCH` | `/companies/:companyId/plugins/:pluginId/enabled` | Включить плагин для компании без переустановки |
 
 ## Конфигурация
 
-| Метод | Путь |
-| --- | --- |
-| `GET` | `/plugins/:pluginId/config` |
-| `POST` | `/plugins/:pluginId/config` |
-| `POST` | `/plugins/:pluginId/companies/:companyId/config` |
+| Метод | Путь | Назначение |
+| --- | --- | --- |
+| `GET` | `/plugins/:pluginId/config` | Прочитать глобальный config instance |
+| `POST` | `/plugins/:pluginId/config` | Записать глобальный config |
+| `POST` | `/plugins/:pluginId/companies/:companyId/config` | Config для конкретной компании |
 
 Токены — в [секретах](/docs/concepts/secrets), не в открытом config.
 
 ## Вызов инструмента плагина
 
-В run агент вызывает tools через адаптер автоматически. Для **отладки без полного wakeup** — board endpoint:
+### POST /plugins/tools/execute
+
+Выполняет tool по полному имени `pluginId:toolName` — когда нужно проверить интеграцию без возобновления работы агента.
 
 ```http
 POST /plugins/tools/execute
 ```
-
-Выполняет конкретный tool установленного плагина по полному имени `pluginId:toolName`.
 
 ```bash
 curl -s -X POST "https://app.datagent.ru/api/plugins/tools/execute" \
@@ -76,12 +76,14 @@ curl -s -X POST "https://app.datagent.ru/api/plugins/tools/execute" \
 
 | Поле | Описание |
 | --- | --- |
-| `toolName` | Именованный tool, например `datagent.browserbridge:browser_navigate` |
+| `toolName` | Полное имя tool, например `datagent.browserbridge:browser_navigate` |
 | `input` | JSON-аргументы tool |
 
 Список tools: `GET /plugins/tools`.
 
-**Из run агента** (ключ агента):
+### POST /agents/me/plugin-tools/execute
+
+Тот же вызов из run агента — адаптер дергает tool от имени текущего run.
 
 ```http
 POST /agents/me/plugin-tools/execute
@@ -90,26 +92,26 @@ POST /agents/me/plugin-tools/execute
 См. [агенты (API)](./agents).
 
 :::note Путь в манифесте
-В документации плагинов иногда встречается шаблон `/plugins/{plugin_id}/tools/{tool_name}/execute` — в открытом API хоста используется единый **`POST /plugins/tools/execute`** с полем `toolName`.
+Шаблон `/plugins/{plugin_id}/tools/{tool_name}/execute` в открытом API хоста **не используется**. Рабочий маршрут — **`POST /plugins/tools/execute`** с полем `toolName`.
 :::
 
 ## Bridge, webhooks, jobs
 
-| Метод | Путь |
-| --- | --- |
-| `POST` | `/plugins/:pluginId/bridge/data` |
-| `POST` | `/plugins/:pluginId/webhooks/:endpointKey` |
-| `GET` | `/plugins/:pluginId/jobs` |
-| `POST` | `/plugins/:pluginId/jobs/:jobId/trigger` |
+| Метод | Путь | Назначение |
+| --- | --- | --- |
+| `POST` | `/plugins/:pluginId/bridge/data` | Данные для UI настроек плагина |
+| `POST` | `/plugins/:pluginId/webhooks/:endpointKey` | Внешнее событие → задачи и run |
+| `GET` | `/plugins/:pluginId/jobs` | Список фоновых jobs плагина |
+| `POST` | `/plugins/:pluginId/jobs/:jobId/trigger` | Запустить job вручную из скрипта |
 
-Webhook без worker — `501`.
+Webhook без поднятого worker — `501`.
 
 ## Ошибки
 
 | Код | Когда |
 | --- | --- |
 | **400** | Невалидный manifest / тело |
-| **403** | Нет прав board |
+| **403** | Нет прав панели |
 | **404** | Плагин не установлен |
 | **501** | Worker не поднят |
 
