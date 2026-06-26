@@ -3,76 +3,90 @@ id: memory-api
 slug: /api-reference/memory
 title: REST API — память агента
 sidebar_label: Память (API)
-description: REST endpoints памяти Datagent — слои, chunks, bindings, gardener; для интеграторов облака.
+description: REST endpoints памяти Datagent — слои, chunks, operator vs agent scope; для интеграторов.
 ---
 
 # REST API — память
 
 > **Зачем:** Подключить память к скриптам, agent по API-ключу или внешней системе — не только через панель.
 
-Настройка для оператора — [память в панели](/docs/concepts/memory). Ниже — маршруты под `/api` на `https://app.datagent.ru/api/...`.
+Настройка для оператора — [память в панели](/docs/concepts/memory). База: `https://app.datagent.ru/api`.
 
-## Аутентификация
+**Аутентификация:** `Authorization: Bearer <your-api-key>`.
 
-| Кто вызывает | Как |
+## Сводка endpoints
+
+| Метод | Endpoint | Описание |
+| --- | --- | --- |
+| `GET` | `/companies/:companyId/memory/dashboard` | Сводка памяти компании |
+| `GET` | `/companies/:companyId/memory/chunks/:chunkId` | Chunk по id |
+| `POST` | `/companies/:companyId/memory/agents/ensure-default-layers` | Слои для всех агентов |
+| `GET` | `/agents/:agentId/memory/layers` | Слои агента |
+| `POST` | `/agents/:agentId/memory/query` | Запрос к памяти агента |
+
+## Кто и что видит
+
+| Контур | Читает | Пишет | Описание |
+| --- | --- | --- | --- |
+| **Агент** (ключ агента) | `/agents/:agentId/memory/*` — только свой `agentId` | Свои слои, если на binding включён `selfEditEnabled`; capture/query в своём scope | Личная память агента; чужие агенты и компании — `403` |
+| **Оператор** (сессия / ключ панели) | `/companies/:companyId/memory/*`, audit, gardener preview | bindings, policy, gardener run, freeze, review flagged | Память всей компании и администрирование |
+
+Агент **не читает** chunks и слои других агентов. Операторские операции (gardener, freeze, audit export) для ключа агента — `403`.
+
+## Привязка слоёв (binding targets)
+
+| `targetType` | Описание |
 | --- | --- |
-| Оператор панели | Сессия (cookie после входа) |
-| Интеграция | `Authorization: Bearer <ключ панели>` |
-| Агент | `Authorization: Bearer <ключ агента>` — **только свои** слои и chunks |
+| `agent` | Слой подключён к конкретному агенту (`memory_agent_layers`) |
+| `company` | Общий слой компании (shared knowledge base) |
 
-Агент **не видит** память других агентов и других компаний. Нарушение границы — `403`.
+Типы слоёв в коде: `rag`, `wiki`, `episodic`, `working`, `graph`, `reflective`. Роли сборки: `knowledge_base`, `episodic_log`, `working_memory`, и др. — см. `packages/shared/src/constants/memory.ts`.
+
+## Scope фрагментов (MemoryScope)
+
+Каждый chunk привязан к scope с полями (не все обязательны):
+
+| Поле | Смысл |
+| --- | --- |
+| `companyId` | Компания (обязательно) |
+| `agentId` | Память конкретного агента |
+| `projectId` | Контекст проекта |
+| `issueId` | Контекст задачи |
+| `runId` | Контекст run |
+| `namespace` | Дополнительное пространство имён binding |
+
+Контракт V1 — `doc/SPEC-implementation.md` §22; as-built — `doc/memory-control-plane-as-built.md` §5–6.
 
 ## Уровни API
 
-### Компания — ` /api/companies/:companyId/memory/*`
+### Компания — `/companies/:companyId/memory/*`
 
-Управление памятью на уровне организации (оператор или ключ с доступом к компании).
+| Группа | Примеры маршрутов |
+| --- | --- |
+| Bindings | `GET/POST/PATCH/DELETE …/bindings` |
+| Policy | `GET/PUT …/policy` |
+| Chunks | `GET …/chunks/:chunkId`, flagged, duplicates |
+| Gardener | `GET …/gardener/preview`, `POST …/gardener/run` |
+| Утилиты | `POST …/ensure-defaults`, `…/agents/ensure-default-layers` |
 
-| Группа | Примеры маршрутов | Назначение |
-| --- | --- | --- |
-| **Привязки (bindings)** | `GET/POST/PATCH/DELETE …/bindings` | Какие слои к кому подключены |
-| **Политика** | `GET/PUT …/policy` | Лимиты, freeze, правила записи |
-| **Chunks** | `GET …/chunks/:chunkId`, аудит, flagged, duplicates | Фрагменты знаний |
-| **Gardener** | `GET …/gardener/preview`, `POST …/gardener/run` | Очистка и обслуживание памяти |
-| **Дашборд** | `GET …/dashboard`, `…/health`, `…/operations` | Сводки для админа |
-| **Экспорт / аудит** | `GET …/export`, `…/audit-log` | Выгрузка и журнал |
-| **Утилиты** | `POST …/ensure-defaults`, `…/agents/ensure-default-layers` | Стартовый набор слоёв |
+### Агент — `/agents/:agentId/memory/*`
 
-### Агент — `/api/agents/:agentId/memory/*`
+| Группа | Примеры |
+| --- | --- |
+| Слои | `GET/PUT/DELETE …/layers` |
+| Query | `POST …/query` → `layerResults` + `combined` |
+| Kernel | `GET/POST …/kernel/snapshots` |
 
-Память в scope одного агента (ключ агента или панель).
-
-| Группа | Примеры | Назначение |
-| --- | --- | --- |
-| **Слои** | `GET/PUT/DELETE …/layers` | Подключённые слои агента |
-| **Запись** | `POST …/layers`, ensure-defaults | Создание и bootstrap |
-| **Kernel snapshots** | `GET/POST …/kernel/snapshots` | Снимки ядра контекста (продвинутое) |
-
-Полный список — в `server/src/routes/memory.ts` (~50+ handlers). Частичная OpenAPI-спека для памяти есть в репозитории продукта.
-
-## Gardener и заморозка
-
-- **Gardener** — фоновая очистка: устаревшие chunks, дубликаты, флаги на проверку. Превью: `GET …/gardener/preview`; ручной запуск: `POST …/gardener/run`.
-- **Freeze (заморозка)** — через политику компании: новые записи в память временно запрещены.
+Полный список — `server/src/routes/memory.ts`. Частичная OpenAPI: `doc/openapi/memory-control-plane.yaml`.
 
 ## Типичные ошибки
 
 | Код | Когда |
 | --- | --- |
-| **400** | Невалидный UUID chunk или тело запроса |
+| **400** | Невалидный UUID chunk |
 | **404** | Chunk или слой не найден |
-| **403** | Чужая компания или слой агента |
-| **422** | Конфликт политики или бизнес-правило |
-
-Тело ошибки обычно `{ "error": "<текст>" }`.
-
-## MCP
-
-Сервер `@datagent/mcp-server` экспонирует часть операций памяти для агентов в IDE — параллельный путь к тем же данным, не замена REST.
-
-:::note Для инженеров
-Контракт V1 — `doc/SPEC-implementation.md` §22; в интеграциях опирайтесь на маршруты и validators в `@datagent/shared`.
-:::
+| **403** | Чужая компания, слой другого агента, board-only операция |
+| **422** | Конфликт политики |
 
 ## Пример: получить chunk
 
@@ -83,6 +97,6 @@ curl -s "https://app.datagent.ru/api/companies/${COMPANY_ID}/memory/chunks/${CHU
 
 ## Что дальше?
 
-- **Настройте память в панели** — [концепция](/docs/concepts/memory): слои и Gardener без кода
-- **Проверьте аутентификацию** — [обзор REST API](/docs/api-reference/overview): ключи панели и агента
-- **Свяжите с задачами** — [задачи](/docs/concepts/issues): откуда в память попадает контекст после run
+- **Память в панели** — [концепция](/docs/concepts/memory)
+- **Аутентификация** — [обзор REST API](./overview)
+- **Задачи** — [задачи](/docs/concepts/issues): откуда в память попадает контекст после run

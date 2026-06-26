@@ -3,7 +3,7 @@ id: plugins-api
 slug: /api-reference/plugins
 title: REST API — плагины
 sidebar_label: Плагины (API)
-description: REST API плагинов Datagent — install, enable, tools, webhooks, config, jobs.
+description: REST API плагинов Datagent — install, enable, tools/execute, webhooks, config.
 ---
 
 # REST API — плагины
@@ -12,26 +12,32 @@ description: REST API плагинов Datagent — install, enable, tools, webh
 
 Установка через панель — [плагины в облаке](/docs/cloud/plugins). Как войти в API — [обзор REST API](./overview). База: `https://app.datagent.ru/api`.
 
+**Аутентификация:** `Authorization: Bearer <your-api-key>` (board для install; agent — для `agents/me/plugin-tools/execute`).
+
+## Сводка endpoints
+
+| Метод | Endpoint | Описание |
+| --- | --- | --- |
+| `GET` | `/plugins` | Установленные плагины |
+| `POST` | `/plugins/install` | Установить плагин |
+| `GET` | `/plugins/tools` | Список tools |
+| `POST` | `/plugins/tools/execute` | Вызов tool (отладка) |
+| `POST` | `/plugins/:pluginId/webhooks/:endpointKey` | Webhook плагина |
+| `POST` | `/agents/me/plugin-tools/execute` | Tool из run агента |
+
 ## Установка и жизненный цикл
 
 | Метод | Путь | Назначение |
 | --- | --- | --- |
 | `GET` | `/plugins` | Установленные плагины instance |
-| `GET` | `/plugins/examples` | Примеры для разработчиков |
 | `POST` | `/plugins/install` | Установка (npm-имя или `file:` путь) |
-| `GET` | `/plugins/:pluginId` | Метаданные плагина |
+| `GET` | `/plugins/:pluginId` | Метаданные |
 | `DELETE` | `/plugins/:pluginId` | Удалить |
 | `POST` | `/plugins/:pluginId/enable` | Включить worker |
 | `POST` | `/plugins/:pluginId/disable` | Выключить |
-| `POST` | `/plugins/:pluginId/upgrade` | Обновить версию |
 | `GET` | `/plugins/:pluginId/health` | Healthcheck worker |
-| `GET` | `/plugins/:pluginId/logs` | Логи worker |
-
-Нужны права администратора панели (board) — доступ к менеджеру плагинов.
 
 ## Включение для компании
-
-Включите plugin для организации, не переустанавливая его на instance:
 
 | Метод | Путь |
 | --- | --- |
@@ -44,21 +50,19 @@ description: REST API плагинов Datagent — install, enable, tools, webh
 | --- | --- |
 | `GET` | `/plugins/:pluginId/config` |
 | `POST` | `/plugins/:pluginId/config` |
-| `GET` | `/plugins/:pluginId/companies/:companyId/config` |
 | `POST` | `/plugins/:pluginId/companies/:companyId/config` |
-| `POST` | `/plugins/:pluginId/config/test` |
 
-В конфиге — URL webhook, id линии Bitrix24, allowlist браузера. Токены храните в [секретах](/docs/concepts/secrets), не в открытом config.
+Токены — в [секретах](/docs/concepts/secrets), не в открытом config.
 
-## Инструменты агента (tools)
+## Вызов инструмента плагина
 
-| Метод | Путь |
-| --- | --- |
-| `GET` | `/plugins/tools` | Список всех tools |
-| `POST` | `/plugins/tools/execute` | Отладочный вызов tool |
-| `GET` | `/plugins/ui-contributions` | UI-вклады плагинов в панель |
+В run агент вызывает tools через адаптер автоматически. Для **отладки без полного wakeup** — board endpoint:
 
-Имена tools: `pluginId:toolName`, например `datagent.browserbridge:browser_navigate`.
+```http
+POST /plugins/tools/execute
+```
+
+Выполняет конкретный tool установленного плагина по полному имени `pluginId:toolName`.
 
 ```bash
 curl -s -X POST "https://app.datagent.ru/api/plugins/tools/execute" \
@@ -70,48 +74,35 @@ curl -s -X POST "https://app.datagent.ru/api/plugins/tools/execute" \
   }'
 ```
 
-В run agent вызывает tools через адаптер; `execute` — для отладки инженером без полного wakeup.
+| Поле | Описание |
+| --- | --- |
+| `toolName` | Именованный tool, например `datagent.browserbridge:browser_navigate` |
+| `input` | JSON-аргументы tool |
 
-## Bridge, data, actions
+Список tools: `GET /plugins/tools`.
 
-Для страниц настроек plugin и long-poll (Telegram, Bitrix):
+**Из run агента** (ключ агента):
+
+```http
+POST /agents/me/plugin-tools/execute
+```
+
+См. [агенты (API)](./agents).
+
+:::note Путь в манифесте
+В документации плагинов иногда встречается шаблон `/plugins/{plugin_id}/tools/{tool_name}/execute` — в открытом API хоста используется единый **`POST /plugins/tools/execute`** с полем `toolName`.
+:::
+
+## Bridge, webhooks, jobs
 
 | Метод | Путь |
 | --- | --- |
 | `POST` | `/plugins/:pluginId/bridge/data` |
-| `POST` | `/plugins/:pluginId/bridge/action` |
-| `GET` | `/plugins/:pluginId/bridge/stream/:channel` |
-| `POST` | `/plugins/:pluginId/data/:key` |
-| `POST` | `/plugins/:pluginId/actions/:key` |
-
-## Webhooks и jobs
-
-| Метод | Путь |
-| --- | --- |
 | `POST` | `/plugins/:pluginId/webhooks/:endpointKey` |
 | `GET` | `/plugins/:pluginId/jobs` |
-| `GET` | `/plugins/:pluginId/jobs/:jobId/runs` |
 | `POST` | `/plugins/:pluginId/jobs/:jobId/trigger` |
 
-Webhook объявляют в **манифесте** plugin; без worker ответ будет `501`.
-
-## Local folders (BrowserBridge)
-
-| Метод | Путь |
-| --- | --- |
-| `GET` | `/plugins/:pluginId/companies/:companyId/local-folders` |
-| `GET` | `…/local-folders/:folderKey/status` |
-| `POST` | `…/local-folders/:folderKey/validate` |
-
-См. [установить BrowserBridge](/docs/browser/setup).
-
-## Dashboard плагина
-
-`GET /api/plugins/:pluginId/dashboard` — метрики для вкладки plugin в панели (если объявлено).
-
-## Агент и plugin-tools
-
-По API-ключу agent: `POST /api/agents/me/plugin-tools/execute` — вызов tool внутри run. См. [агенты (API)](./agents).
+Webhook без worker — `501`.
 
 ## Ошибки
 
@@ -120,11 +111,10 @@ Webhook объявляют в **манифесте** plugin; без worker от�
 | **400** | Невалидный manifest / тело |
 | **403** | Нет прав board |
 | **404** | Плагин не установлен |
-| **501** | Worker не поднят или webhook без зависимостей |
+| **501** | Worker не поднят |
 
 ## Что дальше?
 
-- **Соберите свой plugin** — [туториал](/docs/tutorials/build-plugin): SDK и manifest
-- **Подключите интеграции** — [BrowserBridge](/docs/integrations/browserbridge) · [Bitrix24](/docs/integrations/bitrix24)
-- **Настройте каналы** — [каналы](/docs/concepts/channels): как plugin ведёт диалог в задачи
-- **Проверьте аутентификацию** — [обзор API](/docs/api-reference/overview): ключи и смежные разделы
+- **Соберите plugin** — [туториал](/docs/tutorials/build-plugin)
+- **Интеграции** — [BrowserBridge](/docs/integrations/browserbridge) · [Bitrix24](/docs/integrations/bitrix24)
+- **Аутентификация** — [обзор API](./overview)

@@ -72,6 +72,25 @@ description: Внутренний план закрытия пробелов д�
 - **Артефакты Solo+, mobile disclaimer:** ✅
 - **Следующая фаза:** Phase 5 Polish → затем Phase 6 — API Reference
 
+## Статус — Фаза 5 polish (Копирайтинг артефакты / Office)
+
+- **Дата:** 15 июня 2026
+- **Статус:** ✅ Выполнено
+- **Изменено файлов:** 5 (`artifacts/overview`, `artifacts/agent-upload`, `office/overview`, `office/excel-pptx`, `guides/05-office-field`)
+- **Office — тестовый режим в первом абзаце:** ✅
+- **Артефакты — уверенный тон (стабильная функция):** ✅
+
+## Статус — Фаза 6 (API Reference)
+
+- **Дата:** 15 июня 2026
+- **Статус:** ✅ Выполнено
+- **Изменено файлов:** 7 (`api-reference/overview`, `agents`, `issues`, `memory`, `artifacts`, `plugins`, `access` + `meta/DOC-PLAN-2026-Q3.md`)
+- **Billing planned badge:** ✅
+- **Decompose Studio+ добавлен:** ✅ (`POST /issues/:id/accepted-plan-decompositions`)
+- **Memory operator/agent scope:** ✅
+- **Таблицы endpoints на всех страницах:** ✅
+- **Следующая фаза:** Phase 7 — Учебник и сценарии
+
 ## Счётчики gap-таблицы
 
 | Статус | Количество |

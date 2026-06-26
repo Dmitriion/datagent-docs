@@ -3,7 +3,7 @@ id: agents-api
 slug: /api-reference/agents
 title: REST API — агенты и запуски
 sidebar_label: Агенты (API)
-description: REST API агентов Datagent — CRUD, wakeup, heartbeat-runs, ключи, пауза, org.
+description: REST API агентов Datagent — CRUD, возобновление работы, heartbeat-runs, ключи, пауза, org.
 ---
 
 # REST API — агенты и запуски
@@ -12,9 +12,24 @@ description: REST API агентов Datagent — CRUD, wakeup, heartbeat-runs, 
 
 Как войти в API — [обзор REST API](./overview). Для оператора — [агенты](/docs/concepts/agents) и [heartbeat](/docs/concepts/heartbeat). База: `https://app.datagent.ru/api`.
 
+**Аутентификация:** `Authorization: Bearer <your-api-key>`.
+
+## Сводка endpoints
+
+| Метод | Endpoint | Описание |
+| --- | --- | --- |
+| `GET` | `/companies/:companyId/agents` | Список агентов |
+| `POST` | `/companies/:companyId/agents` | Создать агента |
+| `GET` | `/agents/:id` | Получить агента |
+| `PATCH` | `/agents/:id` | Обновить агента |
+| `DELETE` | `/agents/:id` | Удалить агента |
+| `POST` | `/agents/:id/wakeup` | Возобновить работу агента (новый run) |
+| `GET` | `/agents/me` | Профиль агента по ключу |
+| `POST` | `/agents/:id/keys` | Создать ключ API агента |
+
 ## Агенты компании
 
-Список агентов всегда привязан к **компании** — без `companyId` общего каталога нет.
+Список агентов всегда привязан к **компании**.
 
 | Метод | Путь | Назначение |
 | --- | --- | --- |
@@ -40,21 +55,19 @@ description: REST API агентов Datagent — CRUD, wakeup, heartbeat-runs, 
 
 ## Модели и адаптеры
 
-Перед боевым run проверьте окружение и секреты — [GigaChat](/docs/integrations/gigachat), [YandexGPT](/docs/integrations/yandexgpt).
-
 | Метод | Путь |
 | --- | --- |
 | `GET` | `/companies/:companyId/adapters/:type/models` |
 | `GET` | `/companies/:companyId/adapters/:type/model-profiles` |
 | `POST` | `/companies/:companyId/adapters/:type/test-environment` |
 
-## Запуск (wakeup) и heartbeat-runs
+## Возобновление работы и heartbeat-runs
 
-Отдельного `POST /api/runs` нет — новый run создаёте через **wakeup** (пробуждение агента).
+Отдельного `POST /runs` нет — новый run создаёте через **`POST /agents/:id/wakeup`** (возобновить работу агента).
 
 | Метод | Путь | Назначение |
 | --- | --- | --- |
-| `POST` | `/agents/:id/wakeup` | Запустить агента (`202` + run или `skipped`) |
+| `POST` | `/agents/:id/wakeup` | Возобновить работу (`202` + run или `skipped`) |
 | `POST` | `/agents/:id/heartbeat/invoke` | Устаревший псевдоним wakeup |
 | `GET` | `/companies/:companyId/heartbeat-runs` | Список run (`agentId`, `limit`) |
 | `GET` | `/companies/:companyId/live-runs` | Активные run |
@@ -63,9 +76,7 @@ description: REST API агентов Datagent — CRUD, wakeup, heartbeat-runs, 
 | `GET` | `/heartbeat-runs/:runId/log` | Текстовый журнал |
 | `POST` | `/heartbeat-runs/:runId/cancel` | Отмена (board) |
 
-Статусы run: `queued`, `running`, `succeeded`, `failed`, и др.
-
-### POST /api/agents/:id/wakeup
+### POST /agents/:id/wakeup
 
 ```json
 {
@@ -113,23 +124,17 @@ curl -s -X POST "https://app.datagent.ru/api/agents/${AGENT_ID}/wakeup" \
 | `GET/PATCH` | `/agents/:id/instructions-bundle` |
 | `GET` | `/agents/:id/skills` |
 
-## Оргструктура
+## Оргструктура и бюджет
 
 | Метод | Путь |
 | --- | --- |
 | `GET` | `/companies/:companyId/org` |
-| `GET` | `/companies/:companyId/org.svg` |
-| `GET` | `/companies/:companyId/org.png` |
+| `PATCH` | `/agents/:id/budgets` |
 
-См. [команду и доступ](/docs/concepts/collaboration).
-
-## Бюджет агента
-
-`PATCH /api/agents/:id/budgets` — месячный лимит в копейках. Подробнее — [бюджеты](/docs/concepts/budgets).
+См. [команду и доступ](/docs/concepts/collaboration), [бюджеты](/docs/concepts/budgets).
 
 ## Что дальше?
 
-- **Возьмите задачу в работу** — [задачи (API)](/docs/api-reference/issues): checkout и work products после wakeup
-- **Подключите память** — [память (API)](/docs/api-reference/memory): слои конкретного агента
-- **Проверьте аутентификацию** — [обзор API](/docs/api-reference/overview): ключи и плагины
-- **Создайте агента в панели** — [первый агент](/docs/cloud/first-agent): проверить API на живом примере
+- **Возьмите задачу в работу** — [задачи (API)](./issues): checkout после wakeup
+- **Память агента** — [память (API)](./memory): слои по `agentId`
+- **Аутентификация** — [обзор API](./overview)

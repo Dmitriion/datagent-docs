@@ -3,87 +3,88 @@ id: artifacts-api
 slug: /api-reference/artifacts
 title: REST API — каталог артефактов
 sidebar_label: Артефакты (API)
-description: GET /api/companies/:id/artifacts — список файлов компании, фильтры, группировка, пагинация.
+description: GET /api/companies/:id/artifacts — список файлов компании; прикрепление и скачивание.
 ---
 
 # REST API — каталог артефактов
 
 > **Зачем:** Выгрузить медиатеку компании в свой дашборд или скрипт — те же данные, что в панели `/{префикс}/artifacts`.
 
-Обзор в панели — [каталог артефактов](/docs/artifacts/overview). Как agent грузит файлы — [загрузка агентом](/docs/artifacts/agent-upload).
+Обзор в панели — [каталог артефактов](/docs/artifacts/overview). Как agent прикрепляет файлы — [прикрепление агентом](/docs/artifacts/agent-upload).
 
-## Основной маршрут
+**Тариф:** каталог артефактов и Excel Workbench — **Solo и выше** ([тарифы](/docs/cloud/pricing)).
+
+**Аутентификация:** `Authorization: Bearer <your-api-key>` или сессия панели.
+
+## Сводка endpoints
+
+| Метод | Endpoint | Описание |
+| --- | --- | --- |
+| `GET` | `/companies/:companyId/artifacts` | Список артефактов компании |
+| `POST` | `/companies/:companyId/issues/:issueId/attachments` | Прикрепить файл к задаче (агент или board) |
+| `GET` | `/attachments/:attachmentId/content` | Скачать или открыть вложение |
+| `POST` | `/issues/:issueId/work-products` | Типизированный результат run |
+
+## Основной маршрут каталога
 
 ```http
-GET /api/companies/:companyId/artifacts
+GET /companies/:companyId/artifacts
 ```
 
-**Аутентификация:** сессия панели или `Authorization: Bearer` с доступом к компании.
+**Ответ:** JSON с `artifacts[]`, опционально `groups`, `selectedGroup`, `nextCursor`.
 
-**Ответ:** JSON с массивом `artifacts`, опционально `groups`, `selectedGroup`, `nextCursor` для пагинации.
-
-## Query-параметры
+### Query-параметры
 
 | Параметр | Тип | По умолчанию | Описание |
 | --- | --- | --- | --- |
-| `kind` | `all` \| `image` \| `video` \| `text` \| `document` \| `file` | `all` | Фильтр по типу медиа |
-| `q` | строка, ≤160 символов | — | Поиск по названию |
-| `projectId` | UUID | все проекты | Только артефакты задач проекта |
-| `groupBy` | `none` \| `task` \| `parent_task` | `none` | Группировка в ответе |
-| `groupIssueId` | UUID | — | Drill-in внутрь группы задачи |
+| `kind` | `all` \| `image` \| `video` \| `text` \| `document` \| `file` | `all` | Фильтр по типу |
+| `q` | строка, ≤160 | — | Поиск по названию |
+| `projectId` | UUID | все проекты | Артефакты задач проекта |
+| `groupBy` | `none` \| `task` \| `parent_task` | `none` | Группировка |
+| `groupIssueId` | UUID | — | Drill-in в группу задачи |
 | `limit` | 1–100 | `30` | Размер страницы |
-| `cursor` | строка | — | Курсор из `nextCursor` предыдущего ответа |
+| `cursor` | строка | — | Пагинация |
 
-Панель синхронизирует те же параметры с URL — см. [обзор каталога](/docs/artifacts/overview).
-
-## Поля артефакта (кратко)
-
-Каждый элемент `artifacts[]` содержит, в частности:
+## Поля артефакта
 
 - `id`, `source` (`document` \| `attachment` \| `work_product`)
-- `mediaKind` — `image`, `video`, `text`, `document`, `file`, …
-- `title`, `previewText`, `contentType`
-- `openPath`, `downloadPath` — ссылки для просмотра и скачивания
-- `issue` — `{ id, identifier, title }` задачи-источника
-- `project` — проект задачи или `null`
-- `createdByAgent` — кто прикрепил (если известно)
-- `updatedAt`, `href`
+- `mediaKind`, `title`, `contentType`
+- `openPath`, `downloadPath` — просмотр и скачивание
+- `issue`, `project`, `createdByAgent`, `updatedAt`
 
-При `groupBy=task` или `parent_task` в ответе приходят `groups[]` с превью и счётчиком файлов в группе.
+## Скачивание и прикрепление
 
-## Пример запроса
+**Скачать файл:**
+
+```http
+GET /attachments/:attachmentId/content?download=1
+```
+
+**Прикрепить файл агентом** (multipart, ключ агента или board):
+
+```http
+POST /companies/:companyId/issues/:issueId/attachments
+```
+
+После загрузки запись появляется в `GET /companies/:companyId/artifacts` и в Output задачи.
+
+## Пример: список артефактов
 
 ```bash
 curl -s "https://app.datagent.ru/api/companies/${COMPANY_ID}/artifacts?kind=image&limit=30" \
   -H "Authorization: Bearer ${BOARD_API_KEY}"
 ```
 
-Следующая страница:
-
-```bash
-curl -s "https://app.datagent.ru/api/companies/${COMPANY_ID}/artifacts?cursor=${NEXT_CURSOR}" \
-  -H "Authorization: Bearer ${BOARD_API_KEY}"
-```
-
-## Связанные маршруты (загрузка)
-
-Артефакты **появляются** в каталоге после загрузки на задачу:
-
-- `POST /api/companies/:companyId/issues/:issueId/attachments` — файл
-- `POST /api/issues/:issueId/work-products` — типизированный результат run
-
-Подробнее — [загрузка агентом](/docs/artifacts/agent-upload).
-
 ## Ошибки
 
 | Код | Причина |
 | --- | --- |
-| **400** | Невалидный `cursor`, `groupBy` или `projectId` |
+| **400** | Невалидный `cursor` или `groupBy` |
 | **403** | Нет доступа к компании |
-| **404** | Компания не найдена |
+| **404** | Компания или вложение не найдены |
 
 ## Что дальше?
 
-- **Откройте каталог в панели** — [обзор](/docs/artifacts/overview): фильтры и быстрый просмотр
-- **Разберите загрузку агентом** — [agent-upload](/docs/artifacts/agent-upload): откуда записи в API
-- **Проверьте ключи API** — [обзор REST API](/docs/api-reference/overview): аутентификация и лимиты
+- **Каталог в панели** — [обзор](/docs/artifacts/overview)
+- **Прикрепление агентом** — [agent-upload](/docs/artifacts/agent-upload)
+- **Аутентификация** — [обзор REST API](./overview)

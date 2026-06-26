@@ -8,31 +8,35 @@ description: REST API приглашений, участников компан�
 
 # REST API — доступ и приглашения
 
-> **Зачем:** Подключать коллег и автоматизировать онбординг — скриптами, HR-системой или вручную, с теми же правилами, что кнопка «Пригласить» в панели.
+> **Зачем:** Подключать коллег и автоматизировать онбординг — с теми же правилами, что кнопка «Пригласить» в панели.
 
 Для оператора — [команда и доступ](/docs/concepts/collaboration). Аутентификация — [обзор REST API](./overview). База: `https://app.datagent.ru/api`.
 
+**Аутентификация:** `Authorization: Bearer <your-api-key>` (board) или сессия.
+
+## Сводка endpoints
+
+| Метод | Endpoint | Статус | Описание |
+| --- | --- | --- | --- |
+| `POST` | `/companies/:companyId/invites` | ✅ | Создать приглашение |
+| `GET` | `/companies/:companyId/invites` | ✅ | Список приглашений |
+| `GET` | `/companies/:companyId/members` | ✅ | Участники компании |
+| `PATCH` | `/companies/:companyId/members/:memberId` | ✅ | Роль и статус участника |
+| `DELETE` | `/companies/:companyId/members/:memberId` | ✅ | Удалить участника |
+| `POST` | `/invites/:token/accept` | ✅ | Принять приглашение |
+| `PATCH` | `/companies/:companyId/members/:memberId/role-and-grants` | ✅ | Расширенные права (grants) |
+
 ## Публичные маршруты invite (без входа)
 
-Коллега открывает ссылку `/invite/{token}` в браузере. Эти маршруты отдают данные для страницы приглашения:
+Страница в браузере: `/invite/{token}`. API: `/api/invites/…` (с «s»).
 
 | Метод | Путь | Назначение |
 | --- | --- | --- |
 | `GET` | `/invites/:token` | Метаданные: компания, роль, срок |
-| `GET` | `/invites/:token/logo` | Логотип компании |
-| `GET` | `/invites/:token/onboarding` | Текст онбординга (JSON) |
-| `GET` | `/invites/:token/onboarding.txt` | Тот же текст plain |
-| `GET` | `/invites/:token/skills/index` | Навыки для онбординга агента |
-| `GET` | `/invites/:token/skills/:skillName` | Один навык |
+| `GET` | `/invites/:token/onboarding` | Текст онбординга |
 | `POST` | `/invites/:token/accept` | Принять (после auth) |
 
-:::tip Не путайте адрес в браузере и в API
-Страница: **`/invite/…`**. Запросы: **`/api/invites/…`** (с «s»).
-:::
-
 ## Управление приглашениями (board)
-
-Доступны с сессией администратора панели:
 
 | Метод | Путь |
 | --- | --- |
@@ -43,55 +47,45 @@ description: REST API приглашений, участников компан�
 | `POST` | `/companies/:companyId/join-requests/:requestId/approve` |
 | `POST` | `/companies/:companyId/join-requests/:requestId/reject` |
 
-При создании укажите тип (человек или agent), роль, срок `expiresAt` и при желании текст онбординга.
+При создании укажите тип (человек или agent), роль, `expiresAt`, текст онбординга.
+
+### Пример: создать приглашение
+
+```bash
+curl -s -X POST "https://app.datagent.ru/api/companies/${COMPANY_ID}/invites" \
+  -H "Authorization: Bearer ${BOARD_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "principalType": "user",
+    "membershipRole": "operator",
+    "expiresAt": "2026-07-01T00:00:00.000Z"
+  }'
+```
 
 ## Участники компании
-
-Список людей в организации и управление ролями:
 
 | Метод | Путь |
 | --- | --- |
 | `GET` | `/companies/:companyId/members` |
 | `GET` | `/companies/:companyId/user-directory` |
-| `PATCH` | `/companies/:companyId/members/:membershipId` |
-| `DELETE` | `/companies/:companyId/members/:membershipId` |
+| `PATCH` | `/companies/:companyId/members/:memberId` |
+| `DELETE` | `/companies/:companyId/members/:memberId` |
+| `PATCH` | `/companies/:companyId/members/:memberId/role-and-grants` |
 
-Роли: `owner`, `admin`, `operator`, `viewer` — подробнее в [справке про команду и доступ](/docs/concepts/collaboration).
+`PATCH …/members/:memberId` — смена `membershipRole` (`owner`, `admin`, `operator`, `viewer`) и статуса. Требует `users:manage_permissions`.
 
 ## Компании (контекст доступа)
 
-Профиль организации и список компаний, к которым у Вас есть доступ:
-
 | Метод | Путь |
 | --- | --- |
-| `GET` | `/companies` | Список компаний текущего пользователя |
-| `GET` | `/companies/:companyId` | Профиль компании |
-| `PATCH` | `/companies/:companyId` | Название, настройки |
-| `PATCH` | `/companies/:companyId/branding` | Брендинг invite |
+| `GET` | `/companies` |
+| `GET` | `/companies/:companyId` |
+| `PATCH` | `/companies/:companyId` |
+| `PATCH` | `/companies/:companyId/branding` |
 
-Поля в панели — в [настройках компании](/docs/concepts/company-settings).
+## Planned
 
-## Board claim (редко)
-
-Передача прав на board instance — в основном для **своего сервера**, не для облака:
-
-| Метод | Путь |
-| --- | --- |
-| `GET` | `/board-claim/:token` |
-| `POST` | `/board-claim/:token/claim` |
-
-В облаке [app.datagent.ru](https://app.datagent.ru) этот сценарий обычно не нужен.
-
-## CLI auth (не cloud onboarding)
-
-Маршруты `/cli-auth/*` — вход CLI Datagent на машине разработчика, не приглашение операторов.
-
-## Пример: список участников
-
-```bash
-curl -s "https://app.datagent.ru/api/companies/${COMPANY_ID}/members" \
-  -H "Authorization: Bearer ${BOARD_TOKEN}" | jq .
-```
+> **Planned.** Публичный REST для **самообслуживания биллинга** и смены тарифа через API — в разработке. См. [обзор API — биллинг](./overview#биллинг-planned).
 
 ## Ошибки
 
@@ -103,7 +97,6 @@ curl -s "https://app.datagent.ru/api/companies/${COMPANY_ID}/members" \
 
 ## Что дальше?
 
-- **Настройте компанию** — [настройки](/docs/concepts/company-settings): что подготовить до приглашений
-- **Разберитесь с аккаунтом** — [облако](/docs/cloud/account): несколько компаний на одну почту
-- **Сравните ключи** — [агенты (API)](/docs/api-reference/agents): ключ агента vs доступ людей
-- **Ограничьте секреты** — [секреты](/docs/concepts/secrets): кто видит значения ключей
+- **Настройки компании** — [company-settings](/docs/concepts/company-settings)
+- **Ключ агента vs люди** — [агенты (API)](./agents)
+- **Секреты** — [секреты](/docs/concepts/secrets)
