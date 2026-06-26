@@ -5,7 +5,7 @@ sidebar_label: Bitrix24 → Telegram
 description: Сценарий — чат Битрикс24, ответ агента и уведомления в Телеграм.
 ---
 
-**Сценарий:** сотрудник пишет боту в **чате Битрикс24** → в Datagent создаётся **задача**, агент отвечает → ответ возвращается в Битрикс. Параллельно **Телеграм** присылает дайджесты или запросы на согласование команде.
+**Ситуация:** сотрудник пишет боту в **чате Битрикс24** — и ответ снова уходит в личку без журнала. После этого сценария в Datagent создаётся **задача**, агент отвечает, ответ возвращается в Битрикс. Параллельно **Телеграм** присылает дайджесты или запросы на согласование команде.
 
 :::info Тариф
 Мост **Bitrix24** — с тарифа **Studio** и выше. **Telegram** — на всех тарифах. См. [тарифы](/docs/cloud/pricing).
@@ -16,7 +16,7 @@ description: Сценарий — чат Битрикс24, ответ агент
 ## Предварительные условия
 
 - [Старт в Cloud](../cloud/getting-started) — [app.datagent.ru](https://app.datagent.ru).
-- Bitrix24: входящий REST webhook, scope **imbot** (+ user/department/disk по гайду).
+- Bitrix24: входящий REST webhook, scope **imbot** (+ user/department/disk по [инструкции Bitrix24](../integrations/bitrix24.md)).
 - Плагины: `datagent.bitrix24` и **плагин Telegram Datagent**[^tg-npm].
 - Агент: `gigachat_local` или `yandexgpt_local`, модель `gigachat/GigaChat-2-Pro` или `yandexgpt/rc`.
 
@@ -31,7 +31,7 @@ description: Сценарий — чат Битрикс24, ответ агент
 | Model | `gigachat/GigaChat-2-Pro` или `yandexgpt/rc` (+ `folderId` для Yandex) |
 | Инструменты | Только из **включённых** плагинов |
 
-System prompt:
+Системные инструкции агента:
 
 ```text
 Ты ассистент в открытой линии Битрикс24. Контекст — задача и комментарии в Datagent.
@@ -40,7 +40,7 @@ System prompt:
 
 Секреты LLM — env агента с `secret_ref` ([GigaChat](../integrations/gigachat.md), [YandexGPT](../integrations/yandexgpt.md)).
 
-## Шаг 2. Портал, бот, binding, polling
+## Шаг 2. Портал, бот, привязка, опрос
 
 По [Bitrix24](../integrations/bitrix24.md):
 
@@ -49,8 +49,8 @@ System prompt:
    - URL портала, webhook REST (`…/rest/USER/TOKEN/`);
    - регистрация imbot (`imbot.v2.Bot.register`) или привязка существующего;
    - **APPLICATION TOKEN** imbot в UI бота / `bot_token_secret_ref`.
-3. **Binding** — выбрать агента `bitrix-chat-assistant` (поле agent в связке бота); опционально project и ACL.
-4. **Запустить bridge** — `poll_enabled`; job плагина **`bitrix-poll`** (cron `* * * * *`) вызывает `imbot.v2.Event.get`.
+3. **Привязка** — выбрать агента `bitrix-chat-assistant` (поле agent в связке бота); опционально project и ACL.
+4. **Запустить мост** — `poll_enabled`; job плагина **`bitrix-poll`** (cron `* * * * *`) вызывает `imbot.v2.Event.get`.
 5. **Проверить соединение** — `profile` + `imbot.v2.Event.get`.
 
 Тест: сообщение боту в Битрикс24 → задача в панели → запуск агента → ответ в чате Битрикс24.
