@@ -53,6 +53,15 @@ description: Внутренний план закрытия пробелов д�
 - **Ключевые правки:** Gardener и sandbox BYOC → Studio+; декомпозиция задач → Studio+; Bitrix24 → Studio+; Telegram → все тарифы; GigaChat/Yandex BYO без paywall
 - **Следующая фаза:** Phase 4 — Интеграции и браузер
 
+## Статус — Фаза 4 (Интеграции и браузер)
+
+- **Дата:** 15 июня 2026
+- **Статус:** ✅ Выполнено
+- **Изменено файлов:** 10 (`browser/overview`, `browser/setup`, `integrations/browserbridge`, `integrations/bitrix24`, `integrations/telegram`, `integrations/gigachat`, `integrations/yandexgpt`, `integrations/1c-connector`, `cloud/plugins`, `cloud/skills`)
+- **PRO → Studio/Business исправлено:** подтверждено
+- **Plan gates совпадают с pricing.md:** ✅
+- **Следующая фаза:** Phase 4 Polish → затем Phase 5 — Артефакты и Office
+
 ## Счётчики gap-таблицы
 
 | Статус | Количество |

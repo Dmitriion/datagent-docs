@@ -11,6 +11,9 @@ description: "YandexGPT в Datagent: сервисный аккаунт Yandex Cl
 
 Подключите **YandexGPT** за те же шаги, что и GigaChat: каталог в Yandex Cloud, JSON-ключ сервисного аккаунта, модель в карточке агента.
 
+> **Для подключения YandexGPT нужен JSON-ключ сервисного аккаунта Yandex Cloud.**  
+> **Ограничений по тарифу Datagent нет** — подключается на **любом** плане. Оплата вызовов — по тарифам Yandex Cloud; Datagent списывает **запуски** платформы.
+
 ## Это работает так
 
 1. В [Yandex Cloud](https://cloud.yandex.ru/) создаёте каталог и **сервисный аккаунт**.
@@ -77,14 +80,11 @@ description: "YandexGPT в Datagent: сервисный аккаунт Yandex Cl
 Обработка — в **Yandex Cloud** при корректной настройке каталога и модели.
 
 **Сколько стоит?**  
-Тарифы Yandex Cloud + **кредиты Datagent** за запуски. См. [Кредиты](../concepts/credits).
+Тарифы Yandex Cloud + **запуски Datagent** по вашему плану. См. [Запуски и лимиты](../concepts/credits).
 
-## Что дальше?
+## Что дальше
 
-- [GigaChat (Сбер) →](./gigachat)
-- [Битрикс24 →](./bitrix24)
-- [Первый агент →](../cloud/first-agent)
-- [Зарегистрироваться →](https://app.datagent.ru/signup)
+→ [GigaChat (Сбер)](./gigachat)
 
 :::note Для инженеров
 
