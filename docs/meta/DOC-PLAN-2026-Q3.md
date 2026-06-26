@@ -25,7 +25,23 @@ description: Внутренний план закрытия пробелов д�
 - **Изменено файлов:** 6 (`credits`, `what-is-datagent`, `agents`, `budgets`, `company-settings`, `intro`)
 - **Устранено строк дрейфа:** 23 из 29 (в шести файлах фазы)
 - **Оставшийся дрейф:** ~11 строк в `browser/*`, `integrations/browserbridge.md`, `integrations/bitrix24.md`, `concepts/channels.md`, `concepts/projects.md`, `integrations/gigachat.md` — фазы 2–4
-- **Следующая фаза:** Phase 2 — Вход в облако (`cloud/getting-started.md`, `cloud/first-agent.md`)
+- **Следующая фаза:** Phase 1 polish + Phase 2
+
+## Статус — Фаза 1 polish (Копирайтинг)
+
+- **Дата:** 15 июня 2026
+- **Статус:** ✅ Выполнено
+- **Изменено файлов:** 6 (те же страницы concepts + intro)
+- **Артефакт:** живой русский, один блок «Что дальше» на страницу
+
+## Статус — Фаза 2 (Вход в облако)
+
+- **Дата:** 15 июня 2026
+- **Статус:** ✅ Выполнено
+- **Изменено файлов:** 6 (`intro`, `cloud/getting-started`, `cloud/first-agent`, `cloud/account`, `cloud/on-premise`, `changelog`)
+- **localhost/Docker в основном потоке:** 0
+- **CTA на app.datagent.ru:** подтверждены в intro и getting-started
+- **Следующая фаза:** Phase 3 — Ядро: как работают агенты (`concepts/how-it-works.md`, `heartbeat.md`)
 
 ## Счётчики gap-таблицы
 
