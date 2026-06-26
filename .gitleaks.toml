@@ -1,0 +1,24 @@
+title = "Datagent Docs — Gitleaks config"
+
+[allowlist]
+  description = "Safe patterns in docs"
+  regexes = [
+    # Плейсхолдеры в документации
+    "YOUR_[A-Z_]+",
+    "\\$\\{[A-Z_]+\\}",
+    "<your[_-][a-z]+>",
+    "Bearer \\$\\{TOKEN\\}",
+    "eyJ[A-Za-z0-9_-]{10}\\.\\.\\.",  # обрезанные JWT-примеры
+    # Демо-данные для скриншотов
+    "demo@example\\.com",
+    "Demo1234!",
+    # GigaChat OAuth — публичный эндпоинт Сбера
+    "ngw\\.devices\\.sberbank\\.ru",
+  ]
+  paths = [
+    # Скрипты съёмки — содержат demo credentials намеренно
+    "scripts/setup-demo-data.ts",
+    "scripts/capture-all.ts",
+    # Примеры в документации
+    "docs/api-reference",
+  ]

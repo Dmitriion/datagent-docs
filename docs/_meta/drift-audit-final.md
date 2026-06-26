@@ -40,4 +40,4 @@
 
 Файлы `docs/api-reference/{agents,issues,memory,plugins,artifacts,access}.md` в sidebar зарегистрированы как `api-reference/*-api` (id frontmatter). Пути на диске ≠ id в `sidebars.ts` — ожидаемо.
 
-Намеренно вне sidebar: `docs/meta/*`, `docs/BRAND.md`, `docs/getting-started/*` (redirect / exclude).
+Намеренно вне sidebar: `docs/_meta/*`, `docs/BRAND.md`, `docs/getting-started/*` (redirect / exclude).

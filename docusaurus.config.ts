@@ -88,7 +88,7 @@ const config: Config = {
           routeBasePath: 'docs',
           // Сохраняем префиксы 01-, 02-… в URL учебника (guides/01-first-day).
           numberPrefixParser: false,
-          exclude: ['**/getting-started/**', '**/BRAND.md'],
+          exclude: ['**/getting-started/**', '**/BRAND.md', '**/_meta/**', '**/meta/**'],
         },
         blog: {
           showReadingTime: true,

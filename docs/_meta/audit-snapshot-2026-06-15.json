@@ -2,7 +2,7 @@
   "generatedAt": "2026-06-15",
   "audience": "cloud-first",
   "product": {
-    "repo": "C:/Datagent",
+    "repo": "[local-repo]",
     "commit": "632e957d9",
     "metrics": {
       "apiRouteHandlers": 474,
@@ -20,7 +20,7 @@
     }
   },
   "docs": {
-    "repo": "C:/Datagent-docs",
+    "repo": "[local-repo]",
     "commit": "692f934",
     "metrics": {
       "pagesTotal": 45,

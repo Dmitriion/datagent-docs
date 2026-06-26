@@ -30,3 +30,18 @@ yarn-debug.log*
 yarn-error.log*
 
 scripts/capture-guide-screenshots-report.json
+
+# Security — keys & credentials (P1 security fix)
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+*.cer
+id_rsa
+id_ed25519
+secrets.json
+credentials.json
+serviceAccount*.json
+*-service-account.json
+google-credentials.json
