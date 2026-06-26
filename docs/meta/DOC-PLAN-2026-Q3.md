@@ -16,7 +16,16 @@ description: Внутренний план закрытия пробелов д�
 - **Baseline:** 14 файлов с устаревшим PRO, 29 строк тарифного дрейфа, 15 уникальных файлов с любым дрейфом лимитов/тарифов
 - **Артефакт:** [`meta/VOCAB-CANON-2026-Q3.md`](./VOCAB-CANON-2026-Q3.md)
 - **Снимок дрейфа:** [`meta/audit-snapshot-phase0.txt`](./audit-snapshot-phase0.txt)
-- **Следующая фаза:** Phase 1 — Тарифы и монетизация (`concepts/credits.md`, `concepts/what-is-datagent.md`, `concepts/agents.md`, `integrations/*`, `browser/*`, `intro.mdx`; `cloud/pricing.md` — верификация)
+- **Следующая фаза:** Phase 1 — Тарифы и монетизация
+
+## Статус — Фаза 1 (Тарифы и монетизация)
+
+- **Дата:** 15 июня 2026
+- **Статус:** ✅ Выполнено
+- **Изменено файлов:** 6 (`credits`, `what-is-datagent`, `agents`, `budgets`, `company-settings`, `intro`)
+- **Устранено строк дрейфа:** 23 из 29 (в шести файлах фазы)
+- **Оставшийся дрейф:** ~11 строк в `browser/*`, `integrations/browserbridge.md`, `integrations/bitrix24.md`, `concepts/channels.md`, `concepts/projects.md`, `integrations/gigachat.md` — фазы 2–4
+- **Следующая фаза:** Phase 2 — Вход в облако (`cloud/getting-started.md`, `cloud/first-agent.md`)
 
 ## Счётчики gap-таблицы
 
