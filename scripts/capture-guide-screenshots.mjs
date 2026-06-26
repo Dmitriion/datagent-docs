@@ -357,12 +357,29 @@ const SHOTS = [
   },
   {
     id: 'G01a',
-    file: 'board/01-onboarding-step.webp',
+    file: 'stories/01-first-day-00-onboarding.webp',
     chapter: 'index',
     type: 'A',
-    skip: () => true,
-    skipReason: 'onboarding already completed on instance',
-    capture: async () => '',
+    capture: async (page) => {
+      await page.evaluate(() => {
+        sessionStorage.setItem('datagent.cloudOnboarding.inProgress', '1');
+      });
+      await page.goto(`${BOARD_URL}/onboarding`, { waitUntil: 'domcontentloaded', timeout: 45_000 });
+      await waitStable(page);
+      await page.getByText('Назовите компанию').first().waitFor({ state: 'visible', timeout: 20_000 });
+      const panel = page.locator('div.fixed.inset-0.z-50.flex').first();
+      await panel.waitFor({ state: 'visible', timeout: 10_000 });
+      const rel = await captureMain(page, 'stories/01-first-day-00-onboarding.webp', {
+        locator: panel,
+        minBytes: 12_000,
+      });
+      // Legacy path used in board chapter reports
+      const src = path.join(OUT_ROOT, rel);
+      const legacy = path.join(OUT_ROOT, 'board/01-onboarding-step.webp');
+      fs.mkdirSync(path.dirname(legacy), { recursive: true });
+      fs.copyFileSync(src, legacy);
+      return rel;
+    },
   },
   {
     id: 'G02',
