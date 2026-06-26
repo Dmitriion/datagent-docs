@@ -5,9 +5,12 @@ sidebar_label: Архитектура
 description: Из чего состоит Datagent — панель, сервер, адаптеры нейросетей, плагины и база данных.
 ---
 
-> **Зачем:** Увидеть на [app.datagent.ru](https://app.datagent.ru) единую карту платформы — панель, сервер, адаптеры и плагины для **Битрикс24**, **GigaChat**, таблиц и браузера — без погружения в репозиторий.
+> **Эта страница для разработчиков и интеграторов.**  
+> Если вы оператор и хотите просто начать работу — смотрите [Начало работы](/docs/cloud/getting-started) и [Как это работает](./how-it-works).
 
-Сквозной путь одного запуска — в [Как это работает](./how-it-works). Ниже — **карта частей**: сервер оркестрирует run, панель показывает интерфейс, плагины добавляют интеграции.
+# Архитектура платформы и агента
+
+Сквозной путь одного запуска для операторов — в [Как это работает](./how-it-works). Ниже — **карта частей**: сервер оркестрирует запуски, панель показывает интерфейс, плагины добавляют интеграции.
 
 :::note Для инженеров
 Монорепозиторий pnpm, `server/`, `ui/`, `packages/adapters`, heartbeat — см. таблицы и схемы ниже.
@@ -123,7 +126,7 @@ flowchart TB
 | Перед run | Preflight в `heartbeat.ts` — не запускать adapter при blockers |
 | Deliverable | xlsx: auto-validate после apply; pptx: attachment gate + post-run continuation |
 
-Control plane **оркестрирует**, worker **исполняет** OfficeCLI. Оператор в happy path не жмёт Validate/Enable — только governance opt-in (approvals, instance admin). Детали: [Excel и PowerPoint](../office/excel-pptx.md), канон приёмки в репозитории Datagent — `doc/community-skills-acceptance.md` v2.8.
+Сервер платформы **оркестрирует**, worker **исполняет** OfficeCLI. Оператор в happy path не жмёт Validate/Enable — только governance opt-in (approvals, instance admin). Детали: [Excel и PowerPoint](../office/excel-pptx.md), канон приёмки в репозитории Datagent — `doc/community-skills-acceptance.md` v2.8.
 
 ## BrowserBridge
 
@@ -158,13 +161,11 @@ Control plane **оркестрирует**, worker **исполняет** Office
 Нет — для большинства команд достаточно облака [app.datagent.ru](https://app.datagent.ru). Свой контур — по корпоративному тарифу.
 
 **Где выполняются запуски агентов?**  
-На сервере платформы (control plane): панель показывает интерфейс, сервер оркестрирует адаптеры и плагины.
+На сервере платформы: панель показывает интерфейс, сервер оркестрирует адаптеры и плагины.
 
 **Чем панель отличается от «чата с ChatGPT»?**  
-В Datagent есть компании, задачи, роли, согласования, кредиты и интеграции (**Битрикс24**, **Телеграм**) — не один изолированный диалог.
+В Datagent есть компании, задачи, роли, согласования, лимиты запусков и интеграции (**Битрикс24**, **Телеграм**) — не один изолированный диалог.
 
 ## Что дальше?
 
-- **Пройдите цикл запуска** — [как это работает](/docs/concepts/how-it-works): от wakeup до результата
-- **Создайте первого агента** — [первый агент](/docs/cloud/first-agent) · [старт](/docs/cloud/getting-started)
-- **Войдите в облако** — [app.datagent.ru](https://app.datagent.ru)
+→ [Начало работы в облаке](/docs/cloud/getting-started)

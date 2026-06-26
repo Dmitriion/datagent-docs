@@ -41,7 +41,17 @@ description: Внутренний план закрытия пробелов д�
 - **Изменено файлов:** 6 (`intro`, `cloud/getting-started`, `cloud/first-agent`, `cloud/account`, `cloud/on-premise`, `changelog`)
 - **localhost/Docker в основном потоке:** 0
 - **CTA на app.datagent.ru:** подтверждены в intro и getting-started
-- **Следующая фаза:** Phase 3 — Ядро: как работают агенты (`concepts/how-it-works.md`, `heartbeat.md`)
+- **Следующая фаза:** Phase 3 — Ядро: как работают агенты
+
+## Статус — Фаза 3 (Ядро: как работают агенты)
+
+- **Дата:** 15 июня 2026
+- **Статус:** ✅ Выполнено
+- **Изменено файлов:** 16 (блок concepts: how-it-works → agent-architecture)
+- **Технических терминов в пользовательском тексте:** 0 (вынесены в `<details>` для разработчиков)
+- **Блоки «Что дальше»:** все 16 страниц фазы
+- **Ключевые правки:** Gardener и sandbox BYOC → Studio+; декомпозиция задач → Studio+; Bitrix24 → Studio+; Telegram → все тарифы; GigaChat/Yandex BYO без paywall
+- **Следующая фаза:** Phase 4 — Интеграции и браузер
 
 ## Счётчики gap-таблицы
 

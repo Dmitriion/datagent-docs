@@ -2,86 +2,72 @@
 id: llm-adapters
 title: Нейросети в Datagent — GigaChat, YandexGPT и адаптеры
 sidebar_label: LLM-адаптеры
-description: "Как Datagent подключает GigaChat и YandexGPT: выбор модели, ключи и tool calling в облаке app.datagent.ru."
+description: "Как Datagent подключает GigaChat и YandexGPT: выбор модели, ключи и инструменты в облаке app.datagent.ru."
 ---
 
-> **Зачем:** Вы настраиваете агента и выбираете **нейросеть**. **Datagent** на [app.datagent.ru](https://app.datagent.ru) подключает **GigaChat** и **YandexGPT** через готовые адаптеры — без своего сервера и без кода.
+# Нейросети и адаптеры
+
+В карточке агента вы выбираете **нейросеть** — **GigaChat**, **YandexGPT** или универсальный **OpenCode** для других провайдеров. Ключи хранятся в [секретах](./secrets); при запуске платформа подставляет их сама и пишет ответ в журнал задачи.
+
+**GigaChat** и **YandexGPT** доступны на **всех тарифах**, включая **Free**, если вы используете **свои ключи** провайдера (BYO). Ограничение по тарифу касается **запусков агента в месяц**, а не права выбрать российскую модель.
 
 ## Это работает так
 
-1. В карточке агента выберите тип адаптера и модель (например GigaChat-2-Pro).
-2. Администратор привяжет ключи через **секреты** — не в открытом тексте.
-3. При запуске платформа подставит токен и запишет ответ в журнал задачи.
+1. **Создайте секрет** с ключами GigaChat или Yandex Cloud — [инструкции](/docs/integrations/gigachat).
+2. В **Новый агент** выберите тип **GigaChat** или **YandexGPT** и модель (например GigaChat-2-Pro).
+3. Привяжите секрет в настройках агента — не в тексте задачи.
+4. **Запустите** задачу — токен обновится автоматически, результат появится в журнале.
 
-Российские **GigaChat** и **YandexGPT** идут через OpenCode; универсальный вариант без отдельного OAuth-слоя — **OpenCode (локальный)**. Пошаговые инструкции — [GigaChat](/docs/integrations/gigachat), [YandexGPT](/docs/integrations/yandexgpt).
+Пошагово — [Первый агент](/docs/cloud/first-agent).
 
-## Сравнительная таблица
+## Сравнение для оператора
 
-| | **GigaChat (Сбер)** | **YandexGPT** | **OpenCode (local)** |
-| --- | --- | --- | --- |
-| **Тип адаптера** | `gigachat_local` | `yandexgpt_local` | `opencode_local` |
-| **Пакет** | `packages/adapters/gigachat-local` | `packages/adapters/yandexgpt-local` | `packages/adapters/opencode-local` |
-| **Авторизация** | OAuth 2.0 client credentials: `GIGACHAT_CLIENT_ID` + `GIGACHAT_CLIENT_SECRET` в env агента (`secret_ref`); scope по умолчанию `GIGACHAT_API_PERS` | IAM: полный JSON ключа SA в `YANDEX_SA_KEY_JSON` (`secret_ref`); JWT → `iam.api.cloud.yandex.net` | Ключи/токены провайдеров в env агента (например `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`) — как требует OpenCode; **без** `adapter_oauth_tokens` |
-| **Кэш в PostgreSQL** | Да — `adapter_oauth_tokens`, provider `gigachat`; TTL ~30 мин, refresh за 120 с до истечения | Да — provider `yandexgpt`; IAM ~12 ч, refresh за 30 мин | Нет — server не кэширует OAuth для этого типа |
-| **Примеры model id** | `gigachat/GigaChat-2-Pro`, `gigachat/GigaChat-2-Max` | `yandexgpt/rc` (tools), `yandexgpt-lite/rc`; в run → `gpt://{folderId}/yandexgpt/rc` | `openai/gpt-5.2-codex` (default), `openai/gpt-5.4`, … формат `provider/model` |
-| **Доп. поля config** | — | `folderId` (каталог YC, обязателен) | — |
-| **Inference** | Через **OpenCode CLI** (`@datagent/adapter-opencode-local`); не прямой REST Chat из Board | То же + proxy `x-folder-id` (`YANDEXGPT_PROXY_DISABLED=1` отключает proxy) | Нативный OpenCode |
-| **Tool-use** | Условно — проверить на своих credentials ([гайд](../integrations/gigachat.md)) | Условно — `yandexgpt/rc`; Lite без tools ([гайд](../integrations/yandexgpt.md)) | Зависит от провайдера в OpenCode |
-| **Конфиг YAML** | Нет `config/llm/*.yaml` — только `adapterConfig` агента в Board/API | То же | То же |
+| | **GigaChat** | **YandexGPT** |
+| --- | --- | --- |
+| **Когда выбирать** | Типичный старт в РФ, OAuth Сбера | Yandex Cloud, нужны инструменты в каталоге YC |
+| **Ключи** | Client ID + Secret в секрете | JSON ключа сервисного аккаунта + ID каталога |
+| **Модели** | GigaChat-2-Pro, GigaChat-2-Max | `yandexgpt` (с инструментами), `yandexgpt-lite` (легче) |
+| **Оплата токенов** | Ваш договор со Сбером | Ваш счёт в Yandex Cloud |
+| **Тариф Datagent** | Любой, со своими ключами | Любой, со своими ключами |
 
-Подробная настройка: [GigaChat](../integrations/gigachat.md), [YandexGPT](../integrations/yandexgpt.md). Общая схема — [Архитектура](./agent-architecture.md).
+Платформа **сама обновляет** краткоживущие токены перед запуском — в задачу ключ доступа вставлять не нужно.
 
-## Кэш токенов (GigaChat и YandexGPT)
+## Инструменты (таблицы, CRM, браузер)
 
-Платформа **сама обновляет** токены перед запуском; оператор не вставляет ключ доступа в задачу. Токены хранятся **зашифрованно** в базе данных.
+Вызов **инструментов** идёт через ту же нейросеть и журнал запуска. Если агент «не трогает» таблицу или CRM:
 
-**Не делайте:** копировать ключи в системный промпт или комментарии задачи — они попадут в переписку и журнал.
+- проверьте модель (для Yandex с tools — не lite-версия);
+- проверьте **установленные плагины** и тариф (браузер — **Studio+**);
+- откройте **журнал запуска**, а не только текст ответа.
 
-:::note Для инженеров
-Таблица `adapter_oauth_tokens`, сервис `adapter-oauth-tokens.ts` — см. [GigaChat](../integrations/gigachat.md), [YandexGPT](../integrations/yandexgpt.md).
-:::
+## OpenCode (для продвинутых)
 
-## Конфигурация в панели
-
-В UI выбирается **тип адаптера** (`gigachat_local`, `yandexgpt_local`, `opencode_local`), поле **model** и env bindings (`secret_ref`). Отдельных файлов `config/llm/*.yaml` и поля `provider: gigachat` в API нет — только `adapterConfig` агента.
-
-Примеры `adapterConfig.model`:
-
-```text
-gigachat/GigaChat-2-Pro
-yandexgpt/rc
-openai/gpt-5.2-codex
-```
-
-## Выбор модели
-
-| Сценарий | Рекомендация |
-| --- | --- |
-| Российский LLM, OAuth Сбер | `gigachat_local` + `gigachat/GigaChat-2-Pro` |
-| Российский LLM, Yandex Cloud + tools | `yandexgpt_local` + `folderId` + `yandexgpt/rc` |
-| Дешёвый чат без tools в YC | `yandexgpt-lite/rc` |
-| Несколько облачных провайдеров через один CLI | `opencode_local` + `provider/model` |
-| Self-hosted OpenAI-compatible endpoint | `opencode_local`, ключи в env OpenCode |
-
-Перед production с tool calling сверьте поведение на **своих** ключах — заявления провайдеров и фактический JSONL OpenCode могут расходиться.
-
-## Tool calling
-
-У **GigaChat** и **YandexGPT** инструменты идут через OpenCode JSONL, не через отдельный REST-слой Datagent. Для Yandex tool calls заявлены на `yandexgpt/rc`. Если агент «не видит» tools — проверьте модель, manifest плагина и журнал run, а не только текст промпта.
+Тип **OpenCode** — один адаптер для нескольких облачных провайдеров через CLI. Нужен, если вы сознательно ведёте несколько моделей вне GigaChat/Yandex. Настройка сложнее — для первого агента обычно достаточно GigaChat или YandexGPT.
 
 ## Частые вопросы
 
-**Какую нейросеть выбрать для начала в России?**  
-**GigaChat** через адаптер `gigachat_local` — типичный старт: OAuth Сбера, модели Pro/Max, поддержка инструментов через OpenCode.
+**Нужно ли платить Datagent за GigaChat?**  
+Нет отдельной «подписки на модель» в Datagent — платите **провайдеру** за токены. Datagent считает **запуски агента** по [тарифу](/docs/cloud/pricing).
 
-**Нужно ли ставить CLI на свой компьютер?**  
-Нет для облака **app.datagent.ru**: адаптеры и runtime работают на стороне платформы. Вам нужны только ключи в настройках агента.
+**Нужно ли ставить программы на компьютер?**  
+Нет для **app.datagent.ru** — runtime на стороне платформы. Нужны только ключи в секретах.
 
 **Почему агент не вызывает инструменты?**  
-Проверьте модель (для Yandex — `yandexgpt/rc`), установленные плагины и журнал запуска, а не только текст промпта.
+См. модель, плагины и журнал — [Как это работает](./how-it-works).
+
+<details>
+<summary>Технические идентификаторы (для разработчиков)</summary>
+
+| Тип в API | Пакет | Примеры model id |
+| --- | --- | --- |
+| `gigachat_local` | `adapter-gigachat-local` | `gigachat/GigaChat-2-Pro` |
+| `yandexgpt_local` | `adapter-yandexgpt-local` | `yandexgpt/rc` |
+| `opencode_local` | `adapter-opencode-local` | `openai/gpt-5.2-codex` |
+
+Кэш OAuth: таблица `adapter_oauth_tokens`. Inference через OpenCode CLI. Схема — [Архитектура](./agent-architecture).
+
+</details>
 
 ## Что дальше?
 
-- **Подключите GigaChat** — [интеграция](/docs/integrations/gigachat) · [YandexGPT](/docs/integrations/yandexgpt)
-- **Создайте первого агента** — [первый агент](/docs/cloud/first-agent) · [тарифы](/docs/cloud/pricing)
-- **Войдите в облако** — [app.datagent.ru](https://app.datagent.ru)
+→ [Архитектура](./agent-architecture) — карта платформы для интеграторов
