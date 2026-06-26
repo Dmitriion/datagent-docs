@@ -62,6 +62,16 @@ description: Внутренний план закрытия пробелов д�
 - **Plan gates совпадают с pricing.md:** ✅
 - **Следующая фаза:** Phase 4 Polish → затем Phase 5 — Артефакты и Office
 
+## Статус — Фаза 5 (Артефакты и Office)
+
+- **Дата:** 15 июня 2026
+- **Статус:** ✅ Выполнено
+- **Изменено файлов:** 5 (`artifacts/overview`, `artifacts/agent-upload`, `office/overview`, `office/excel-pptx`, `guides/05-office-field`)
+- **Office помечен как experimental:** ✅
+- **Office Chat Solo+, Annotations Studio+:** ✅
+- **Артефакты Solo+, mobile disclaimer:** ✅
+- **Следующая фаза:** Phase 5 Polish → затем Phase 6 — API Reference
+
 ## Счётчики gap-таблицы
 
 | Статус | Количество |
