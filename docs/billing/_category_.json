@@ -1,0 +1,10 @@
+{
+  "label": "Биллинг",
+  "position": 5,
+  "link": {
+    "type": "generated-index",
+    "slug": "billing",
+    "title": "Биллинг и лимиты",
+    "description": "Оплата подписки, смена тарифа и полная таблица лимитов."
+  }
+}

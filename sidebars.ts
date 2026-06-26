@@ -19,6 +19,8 @@ const sidebars: SidebarsConfig = {
         'cloud/cloud-getting-started',
         'cloud/cloud-first-agent',
         'cloud/cloud-pricing',
+        'billing/billing-overview',
+        'billing/billing-limits',
         'cloud/cloud-plugins',
         'cloud/cloud-skills',
         'cloud/cloud-on-premise',
