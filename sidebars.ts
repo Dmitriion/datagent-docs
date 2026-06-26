@@ -75,6 +75,26 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: 'category',
+      label: 'Интеграции',
+      collapsed: true,
+      link: {
+        type: 'generated-index',
+        slug: 'integrations',
+        title: 'Интеграции',
+        description:
+          'GigaChat, YandexGPT, Битрикс24, Телеграм, 1С и управление браузером.',
+      },
+      items: [
+        'integrations/gigachat',
+        'integrations/yandexgpt',
+        'integrations/bitrix24',
+        'integrations/telegram',
+        'integrations/1c-connector',
+        'integrations/browserbridge',
+      ],
+    },
+    {
+      type: 'category',
       label: 'Учебник',
       collapsed: false,
       link: {type: 'doc', id: 'guides/index'},
@@ -108,26 +128,6 @@ const sidebars: SidebarsConfig = {
             'guides/playbook-index',
           ],
         },
-      ],
-    },
-    {
-      type: 'category',
-      label: 'Интеграции',
-      collapsed: true,
-      link: {
-        type: 'generated-index',
-        slug: 'integrations',
-        title: 'Интеграции',
-        description:
-          'GigaChat, YandexGPT, Битрикс24, Телеграм, 1С и управление браузером.',
-      },
-      items: [
-        'integrations/gigachat',
-        'integrations/yandexgpt',
-        'integrations/bitrix24',
-        'integrations/telegram',
-        'integrations/1c-connector',
-        'integrations/browserbridge',
       ],
     },
     {

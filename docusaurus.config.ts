@@ -170,6 +170,12 @@ const config: Config = {
         },
         {to: '/docs/guides', label: 'Учебник', position: 'left'},
         {
+          to: '/docs/cloud/pricing',
+          label: 'Тарифы',
+          position: 'left',
+          className: 'navbar__link--hide-lg',
+        },
+        {
           to: '/docs/concepts/what-is-datagent',
           label: 'Концепции',
           position: 'left',
@@ -215,6 +221,8 @@ const config: Config = {
           items: [
             {label: 'Облачная версия', to: '/docs/cloud'},
             {label: 'Тарифы', to: '/docs/cloud/pricing'},
+            {label: 'Лимиты по тарифам', to: '/docs/billing/limits'},
+            {label: 'Биллинг', to: '/docs/billing/overview'},
             {label: 'Свой сервер', to: '/docs/cloud/on-premise'},
             {label: 'Сценарии', to: '/docs/tutorials'},
             {label: 'История изменений', to: '/docs/changelog'},
