@@ -1,7 +1,7 @@
 # Финальный drift-audit — 15 июня 2026
 
-Прогон по чеклисту Фазы 9 (`docs/sync-phase-9-qa`).  
-База: `main` @ `6ff1fa3`, `npm run build` — **SUCCESS** (`onBrokenLinks: throw`).
+Прогон: **Фаза 9** + **финальная QA** (`docs/sync-final-qa`).  
+База: фазы 0–9, `npm run build` — **SUCCESS** (`onBrokenLinks: throw`), **82** HTML-страниц.
 
 ## Найдено (требует отдельного PR)
 
@@ -18,21 +18,26 @@
 |------|--------|----------|
 | — | — | **Не найдено** |
 
-## Сводка по категориям
+## Сводка по категориям (финальный прогон)
 
 | Проверка | Результат |
 |----------|-----------|
-| PRO / 2 000 run / Business 3 900 в user-facing `docs/` | **0** (кроме `meta/VOCAB-CANON`, `meta/DOC-PLAN` — исторический контекст) |
+| PRO / 2 000 run / Business 3 900 в user-facing `docs/` (без `meta/`) | **0** |
 | Paperclip | **0** |
-| localhost в intro / cloud / guides | **0** |
+| localhost в intro / cloud / guides / `src/` | **0** |
 | localhost в tutorials/build-plugin, agent-architecture | Есть — **допустимо** (dev / API tutorial) |
+| Английские заголовки `# Getting Started` и т.п. | **0** |
 | Broken links (`npm run build`) | **0** |
-| Orphan страницы в sidebar | **0** публичных (см. ниже) |
-| Plan gates vs `pricing.md` | **Совпадают** (BrowserBridge/Bitrix24/аннотации Studio+; 1С Business+; артефакты Solo+; Telegram без gate) |
-| CTA `app.datagent.ru` | intro, getting-started, index, docusaurus navbar/footer — **≥ 4** |
+| Orphan страницы (публичный контент) | **0** |
+| Cross-links `/docs/...` (ручная выборка) | **0** мёртвых |
+| Plan gates vs `pricing.md` | **10/10** подтверждено |
+| CTA `app.datagent.ru` | intro, getting-started, index, docusaurus — **≥ 4** |
+| `static/llms.txt` — устаревшие тарифы | **0** |
+| `concepts/*` — блок «Что дальше» | **20/20** |
+| `guides/0*` — финал с результатом / следующей главой | **8/8** |
 
 ### Orphan-скрипт (ложные срабатывания)
 
-Файлы `docs/api-reference/{agents,issues,memory,plugins,artifacts,access}.md` в sidebar зарегистрированы как `api-reference/*-api` (id frontmatter). Пути на диске ≠ id в `sidebars.ts` — это ожидаемо, не orphan.
+Файлы `docs/api-reference/{agents,issues,memory,plugins,artifacts,access}.md` в sidebar зарегистрированы как `api-reference/*-api` (id frontmatter). Пути на диске ≠ id в `sidebars.ts` — ожидаемо.
 
 Намеренно вне sidebar: `docs/meta/*`, `docs/BRAND.md`, `docs/getting-started/*` (redirect / exclude).

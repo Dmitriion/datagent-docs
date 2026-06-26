@@ -145,7 +145,48 @@ description: Внутренний план закрытия пробелов д�
 
 ---
 
-# DOC-PLAN-2026-Q3 — Финальный статус
+## ✅ Синхронизация Q3 2026 — ЗАВЕРШЕНА
+
+**Дата закрытия:** 15 июня 2026  
+**Фаз выполнено:** 10 (p0–p9)  
+**Страниц в build:** **82** HTML (Docusaurus `npm run build`)
+
+### Финальный drift-audit
+
+- Устаревшие тарифы PRO/Business: **0** (user-facing, без `meta/`)
+- localhost в user-facing контенте: **0** (исключения: `tutorials/build-plugin`, `concepts/agent-architecture` dev-блоки)
+- Paperclip (старый бренд): **0**
+- Битые ссылки: **0** (`onBrokenLinks: throw`)
+- Orphan страницы: **0** (публичный контент)
+
+### Plan gates — финальная матрица
+
+| Функция | Тариф | Подтверждено |
+|---------|-------|-------------|
+| BrowserBridge | Studio+ | ✅ |
+| Bitrix24 | Studio+ | ✅ |
+| 1С-коннектор | Business+ | ✅ |
+| Артефакты | Solo+ | ✅ |
+| Office Chat | Solo+ | ✅ |
+| Аннотации | Studio+ | ✅ |
+| Декомпозиция задач | Studio+ | ✅ |
+| Memory Gardener | Studio+ | ✅ |
+| Telegram | Все тарифы | ✅ |
+| GigaChat / YandexGPT | BYO, без gate | ✅ |
+
+### Остаточные issues (не блокируют)
+
+→ [`meta/issues-post-qa.md`](./issues-post-qa.md)
+
+### Следующая синхронизация
+
+При изменении тарифов или релизе новых функций открыть новый DOC-PLAN по шаблону этого документа.
+
+**Canvas roadmap:** `datagent-docs-sync-roadmap.canvas.tsx` (все фазы `status: done`)
+
+---
+
+# DOC-PLAN-2026-Q3 — Финальный статус (архив)
 
 ## Все фазы
 
@@ -166,13 +207,14 @@ description: Внутренний план закрытия пробелов д�
 
 - Страниц и поверхностей обновлено в sync Q3: **~75+** (concepts, cloud, integrations, guides, API, nav, meta)
 - Drift PRO / localhost в user-facing потоке: **0**
-- Build: **✅ зелёный**
+- Build: **✅ зелёный** (82 HTML)
 - Дата публикации: **15 июня 2026**
 
 ## Оставшиеся issues (не блокируют)
 
 → [`meta/issues-post-qa.md`](./issues-post-qa.md)
 
+## Счётчики gap-таблицы (post-sync backlog)
 
 | Статус | Количество |
 |--------|------------|
