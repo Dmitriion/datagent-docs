@@ -631,16 +631,10 @@ const SHOTS = [
     skipReason: 'no active demo issue',
     capture: async (page, ctx) => {
       await gotoCompany(page, ctx.prefix, issueRoute(ctx.demo));
-      const section = page.locator('h3').filter({ hasText: /вложен|attachment/i }).first();
-      const block = section.locator('xpath=ancestor::div[contains(@class,"border")]').first();
-      if (await block.isVisible().catch(() => false)) {
-        return captureMain(page, 'issues/07-attachments.webp', { locator: block });
-      }
-      const link = page.getByRole('link', { name: /demo-plan\.pdf|\.pdf/i }).first();
-      if (await link.isVisible().catch(() => false)) {
-        return captureMain(page, 'issues/07-attachments.webp', { locator: link.locator('xpath=ancestor::div[1]') });
-      }
-      return captureMain(page, 'issues/07-attachments.webp');
+      const heading = page.getByRole('heading', { name: /Attachments|Вложения/i }).first();
+      await heading.waitFor({ state: 'visible', timeout: 12_000 });
+      const block = heading.locator('xpath=ancestor::div[contains(@class,"rounded-lg")]').first();
+      return captureMain(page, 'issues/07-attachments.webp', { locator: block, minBytes: 6000 });
     },
   },
   {
@@ -745,11 +739,15 @@ const SHOTS = [
       const id = ctx.demo.approvals.pending?.id;
       if (!id) throw new Error('no pending approval');
       await gotoCompany(page, ctx.prefix, `/approvals/${id}`);
-      const link = page.getByRole('link', { name: /CMP-|TES-|задач|issue/i }).first();
-      if (await link.isVisible().catch(() => false)) {
-        return captureMain(page, 'approvals/06-linked-issue.webp', { locator: link });
+      const section = page
+        .locator('div.border-t')
+        .filter({ has: page.getByRole('link', { name: /CMP-|TES-/ }) })
+        .first();
+      if (await section.isVisible().catch(() => false)) {
+        return captureMain(page, 'approvals/06-linked-issue.webp', { locator: section, minBytes: 5000 });
       }
-      return captureMain(page, 'approvals/06-linked-issue.webp');
+      const main = page.locator('main').first();
+      return captureMain(page, 'approvals/06-linked-issue.webp', { locator: main, minBytes: 12_000 });
     },
   },
   {
@@ -836,10 +834,27 @@ const SHOTS = [
     type: 'C',
     capture: async (page, { prefix, demo }) => {
       await gotoOfficeReady(page, prefix);
-      const agentId = demo.agents.analyst?.id ?? demo.agents.pending?.id;
+      const agentId = demo.agents.pending?.id ?? demo.agents.analyst?.id;
       if (!agentId) throw new Error('no agent for side panel');
-      const hit = page.locator(`.agent-desk-root[data-agent-id="${agentId}"] .agent-desk-hit`).first();
-      await hit.click({ timeout: 8000 });
+      const attentionBtn = page.locator('.office-toolbar-attention').first();
+      if (await attentionBtn.isVisible().catch(() => false)) {
+        await attentionBtn.click({ timeout: 8000 });
+        await page.waitForTimeout(600);
+        const item = page.locator(`.team-spirit-attention-item[data-agent-id="${agentId}"]`).first();
+        if (await item.isVisible().catch(() => false)) {
+          await item.click({ timeout: 8000 });
+        } else {
+          await page.locator('.team-spirit-attention-item').first().click({ timeout: 8000 });
+        }
+      } else {
+        const hit = page.locator(`.agent-desk-root[data-agent-id="${agentId}"] .agent-desk-hit`).first();
+        await hit.click({ timeout: 8000 });
+        await page.waitForTimeout(400);
+        const openPanel = page.locator('[data-testid="office-agent-hover-open-panel"]').first();
+        if (await openPanel.isVisible().catch(() => false)) {
+          await openPanel.click({ timeout: 8000 });
+        }
+      }
       await page.waitForTimeout(700);
       const panel = page.locator('[data-testid="office-agent-panel"]').first();
       await panel.waitFor({ state: 'visible', timeout: 12_000 });
@@ -1009,6 +1024,47 @@ const SHOTS = [
     capture: async (page, { prefix }) => {
       await gotoCompany(page, prefix, '/inbox/mine');
       return captureMain(page, 'channels/issues-inbox.webp', { fullPage: true });
+    },
+  },
+  {
+    id: 'M01',
+    file: 'memory/01-company-memory.webp',
+    chapter: 'concepts/memory',
+    type: 'A',
+    capture: async (page, { prefix }) => {
+      await gotoCompany(page, prefix, '/settings?scope=company&tab=memory');
+      await page.waitForTimeout(900);
+      const main = page.locator('main').first();
+      await main.waitFor({ state: 'visible', timeout: 20_000 });
+      await page.locator('h1').filter({ hasText: /памят|memory/i }).first()
+        .waitFor({ state: 'visible', timeout: 20_000 });
+      return captureMain(page, 'memory/01-company-memory.webp', { locator: main, minBytes: 15_000 });
+    },
+  },
+  {
+    id: 'SK01',
+    file: 'skills/01-catalog.webp',
+    chapter: 'cloud/skills',
+    type: 'A',
+    capture: async (page, { prefix }) => {
+      await gotoCompany(page, prefix, '/skills/catalog');
+      await page.waitForTimeout(900);
+      const main = page.locator('main').first();
+      await main.waitFor({ state: 'visible', timeout: 20_000 });
+      return captureMain(page, 'skills/01-catalog.webp', { locator: main, minBytes: 12_000 });
+    },
+  },
+  {
+    id: 'AR01',
+    file: 'artifacts/01-catalog.webp',
+    chapter: 'artifacts/overview',
+    type: 'A',
+    capture: async (page, { prefix }) => {
+      await gotoCompany(page, prefix, '/artifacts');
+      await page.waitForTimeout(900);
+      const main = page.locator('main').first();
+      await main.waitFor({ state: 'visible', timeout: 20_000 });
+      return captureMain(page, 'artifacts/01-catalog.webp', { locator: main, minBytes: 12_000 });
     },
   },
 ];

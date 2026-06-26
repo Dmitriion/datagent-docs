@@ -308,10 +308,89 @@ export async function seedGuideDemo(request, boardUrl, companyId) {
   if (!approvalResolved) approvalResolved = approvals.find((a) => a.status === 'approved');
   if (!approvalRejected) approvalRejected = approvals.find((a) => a.status === 'rejected');
 
+  await request.post(url(`/api/companies/${companyId}/memory/ensure-defaults`)).catch(() => null);
+  const memoryNotes = [
+    'Клиентов в письмах называем по юрлицу; тон — деловой, без канцелярита.',
+    'Сводки по продажам оформляем в Excel: лист Summary, столбцы План / Факт / Δ.',
+    'Перед отправкой КП проверяем остатки на складе «Север».',
+  ];
+  for (const [index, text] of memoryNotes.entries()) {
+    const capRes = await request.post(url(`/api/companies/${companyId}/memory/capture`), {
+      data: {
+        bindingKey: 'default',
+        text,
+        memoryType: 'user',
+        idempotencyKey: `guide-demo-memory-${index}`,
+      },
+    });
+    log.push({ step: 'memory-capture', index, ok: capRes.ok(), status: capRes.status() });
+  }
+
+  const catalogRes = await request.get(url('/api/skills/catalog'));
+  const catalogSkills = catalogRes.ok() ? (await catalogRes.json()) : [];
+  const skillIdsToInstall = [
+    'datagent:bundled:datagent-operations:issue-triage',
+    'datagent:bundled:datagent-operations:task-planning',
+    'datagent:community:excel:xlsx',
+  ];
+  const installedSkills = [];
+  for (const catalogSkillId of skillIdsToInstall) {
+    const found = Array.isArray(catalogSkills)
+      ? catalogSkills.find((s) => s.id === catalogSkillId)
+      : null;
+    if (!found) {
+      log.push({ step: 'skill-install', catalogSkillId, skipped: true });
+      continue;
+    }
+    const installRes = await request.post(url(`/api/companies/${companyId}/skills/install-catalog`), {
+      data: { catalogSkillId, slug: found.slug ?? null, force: true },
+    });
+    if (installRes.ok()) {
+      installedSkills.push(await installRes.json());
+      log.push({ step: 'skill-install', catalogSkillId, ok: true });
+    } else {
+      log.push({ step: 'skill-install', catalogSkillId, ok: false, error: await installRes.text() });
+    }
+  }
+
+  const demoWorkProducts = [
+    {
+      title: 'Сводка «Север» — май.xlsx',
+      metadata: { contentType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' },
+    },
+    {
+      title: 'Ответ клиенту — черновик.pdf',
+      metadata: { contentType: 'application/pdf' },
+    },
+    {
+      title: 'КП на партию B.csv',
+      metadata: { contentType: 'text/csv' },
+    },
+  ];
+  if (issueActive?.id) {
+    for (const [index, product] of demoWorkProducts.entries()) {
+      const wpRes = await request.post(url(`/api/issues/${issueActive.id}/work-products`), {
+        data: {
+          type: 'artifact',
+          provider: 'datagent',
+          title: product.title,
+          metadata: product.metadata,
+        },
+      });
+      log.push({
+        step: 'artifact-work-product',
+        title: product.title,
+        ok: wpRes.ok(),
+        status: wpRes.status(),
+      });
+    }
+  }
+
   return {
     log,
     agents: { analyst, pendingHire, pending: pendingHire, error: agentError, all: agents },
     issues: { active: issueActive, waiting: issueWaiting, all: issues },
     approvals: { pending: approvalPending, resolved: approvalResolved, rejected: approvalRejected, all: approvals },
+    skills: { installed: installedSkills },
   };
 }

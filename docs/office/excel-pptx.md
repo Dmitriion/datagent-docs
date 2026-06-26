@@ -10,6 +10,8 @@ description: Excel — правки с согласованием; PowerPoint и
 
 Плагин Office — с тарифа **Solo** и выше. Подключите [навык](/docs/cloud/skills) из каталога (вкладка **Сообщество**, сценарии **Excel** / **pptx**). Обзор и тарифы — [Office — обзор](./overview) (раздел в **тестовом режиме**).
 
+![Задача с вложением Excel — сценарий Office](/img/guides/stories/06-excel-office-01-issue.webp)
+
 ## Excel
 
 **Что умеет агент:**
