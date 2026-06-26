@@ -5,219 +5,84 @@ sidebar_label: Телеграм
 description: "Плагин Телеграм в Datagent: бот, уведомления о задачах и согласования действий агента из мессенджера."
 ---
 
-# Телеграм в Datagent — уведомления и согласования
+# Телеграм
 
-Бот **присылает уведомления о задачах** в Телеграм, **передаёт ваши сообщения агенту** и **просит подтвердить** рискованные действия кнопками — не нужно держать панель открытой весь день.
+:::tip Доступно на всех тарифах
+✅ Интеграция с **Телеграм** доступна на всех тарифах, включая **Free**. Нужен только **токен** бота из [@BotFather](https://t.me/BotFather).
+:::
 
-Если руководитель узнаёт о сбоях агента с опозданием или согласования зависают в браузере — Телеграм даёт ответ «одобрить / отклонить» прямо в мессенджере.
+Подключите **Телеграм-бота** — и сотрудники смогут ставить задачи агенту прямо из мессенджера, получать уведомления и **одобрять** рискованные действия кнопками. Агент отвечает через платформу; ответ можно получить в чате, не держа панель открытой весь день.
 
-**Начните так:** создайте бота в [@BotFather](https://t.me/BotFather) → [app.datagent.ru](https://app.datagent.ru) → **Менеджер плагинов** → **Телеграм** → вставьте **ключ бота** в настройки компании.
+**Первый шаг:** создайте бота в [@BotFather](https://t.me/BotFather) → [app.datagent.ru](https://app.datagent.ru) → **Менеджер плагинов** → **Телеграм**.
 
-> **Интеграция с Telegram доступна на всех тарифах, включая Free.**
+## Как подключить
 
-## Как это работает
-
-1. Создайте бота в BotFather и подключите плагин в **менеджере плагинов**.
-2. Сообщения из чата попадают в **задачи** Datagent — агент отвечает через платформу.
-3. Рискованные шаги — кнопками **Одобрить** / **Отклонить** в Телеграм (при настроенном доступе).
-
-Это не отдельная нейросеть: бот связывает мессенджер с задачами и [согласованиями](../concepts/approvals). Связка с Битрикс24 — в [практическом сценарии](../tutorials/automate-crm).
-
-## Подключение за пять минут
-
-1. **BotFather** → `/newbot` → сохраните **ключ бота**.
-2. **Менеджер плагинов** → установите **Телеграм** → включите для компании.
-3. **Настройки компании → Телеграм** → укажите ключ как **секрет компании** (не текстом в открытом поле).
+1. Создайте бота через [@BotFather](https://t.me/BotFather) (`/newbot`) и скопируйте **токен**.
+2. В Datagent: **Менеджер плагинов** → установите и включите плагин **Телеграм**.
+3. Откройте **Настройки компании → Телеграм** — сохраните токен как **секрет компании** (не в открытом тексте задачи).
 4. Напишите боту `/help` — должен ответить списком команд.
 
-<details>
-<summary>Для инженеров: схема, long polling, поля конфигурации</summary>
+## Что умеет агент в Телеграм
 
-Пакет из npm, опрос `getUpdates`, worker и маршруты к задачам и согласованиям — см. разделы ниже.
+- Принимать сообщения в **личном чате** или **группе** — они попадают в **задачи** Datagent
+- Отвечать **текстом и файлами** через платформу (при настроенном мосте)
+- Присылать **уведомления** о статусе задачи и [согласованиях](../concepts/approvals)
+- Работать с **несколькими пользователями** — при настройке списка разрешённых чатов
 
-## Схема
-
-```mermaid
-flowchart LR
-  TG[Telegram Bot API] -->|long poll getUpdates| Worker[Plugin worker]
-  Worker --> PWM[PluginWorkerManager]
-  PWM --> API[server :3100 /api]
-  API --> HB[heartbeat / issues / approvals]
-  HB --> Agent[Агенты Datagent]
-  Agent --> HB
-  HB --> Worker
-  Worker --> TG
-  Board[Board UI] --> PM[Plugin Manager / Telegram Settings]
-  PM --> Worker
-```
-
-## Создание бота
-
-1. [@BotFather](https://t.me/BotFather) → `/newbot` → сохраните **bot token**.
-2. Узнайте `chat.id`: напишите боту, затем `GET https://api.telegram.org/bot<TOKEN>/getUpdates` (или команда `/connect` в плагине после настройки).
-3. Токен храните как **company secret** (UUID), не в корневом `.env` — в `.env.example` Datagent **нет** `TELEGRAM_*`.
-
-## Установка в Datagent
-
-1. **Plugin Manager** → установить плагин Telegram → включить для instance.
-2. Либо из checkout monorepo (для разработки плагина; в Cloud — Plugin Manager в Board, см. [Старт в Cloud](../cloud/getting-started)):
-
-```bash
-pnpm datagent plugin install <npm-пакет из раздела «Технические идентификаторы»>
-```
-
-REST (Board на [app.datagent.ru](https://app.datagent.ru); для установки из UI используйте Plugin Manager):
-
-```bash
-curl -X POST https://app.datagent.ru/api/plugins/install \
-  -H "Content-Type: application/json" \
-  -d "{\"packageName\":\"<npm-пакет>\"}"
-```
-
-3. **Company → Telegram Settings** (страница настроек плагина). После обновления worker перезапустите **server** на `PORT=3100`.
-
-Секрет бота: **Company / Agent → Environment variables** → создать secret → UUID в поле `telegramBotTokenRef` (см. тест `server/src/__tests__/plugin-secrets-handler.test.ts` и emergency UI в `ui/src/pages/PluginSettings.tsx`). Сырой токен в поле не принимается (ожидается UUID secret ref).
-
-## Настройка (instance config)
-
-Поля задаются в UI плагина Telegram Datagent (в монорепозитории проверено имя `telegramBotTokenRef`).
-
-| Поле | Обязательность | Назначение |
-| --- | --- | --- |
-| `telegramBotTokenRef` | Да | UUID company secret с bot token |
-| `defaultChatId` | Нет | Чат по умолчанию для уведомлений |
-| `approvalsChatId` / `approvalsTopicId` | Нет | Отдельный чат/топик для апрувов |
-| `errorsChatId` / `errorsTopicId` | Нет | Ошибки агентов |
-| `digestChatId` / `digestTopicId` | Нет | Дайджесты (`digestMode`: off / daily / bidaily / tridaily) |
-| `escalationChatId` | Нет | Канал HITL-эскалаций |
-| Base URL API | Нет | URL Datagent (default `https://app.datagent.ru`)[^tg-fields] |
-| Public URL инстанса | Нет | Публичный URL для ссылок на issues в сообщениях[^tg-fields] |
-| Board API token ref | Нет | Secret ref board token (кнопки апрува); лучше **Board Access Connection** в UI[^tg-fields] |
-| `enableCommands` | Нет | Команды бота (default true) |
-| `enableInbound` | Нет | Ответы в Telegram → комментарии issue (default true) |
-| `onlyNotifyBoardApprovals` | Нет | Только апрувы типа `request_board_approval` |
-| `allowedTelegramUserIds` | Нет | Allowlist user id (пусто = без ограничения) |
-| `allowedTelegramChatIds` | Нет | Allowlist chat id (пусто = без ограничения) |
-| `escalationTimeoutMs` | Нет | Таймаут эскалации (default 900000 ms ≈ 15 мин) |
-| `briefAgentId`, `briefAgentChatIds`, `transcriptionApiKeyRef` | Нет | Медиа-пайплайн / Whisper |
-
-Переменная окружения **`TELEGRAM_ALLOWED_CHAT_IDS`** в коде Datagent **не** используется — только `allowedTelegramChatIds` в config плагина.
-
-Исходящие запросы к `api.telegram.org` идут через capability `http.outbound`; для прокси на хосте: `DATAGENT_PLUGIN_HTTP_PROXY` / `ALL_PROXY` (`server/src/services/plugin-host-services.ts`).
-
-## Входящие апдейты (long polling, не server webhook)
-
-Плагин Telegram Datagent **не** объявляет `webhooks.receive` в manifest — маршрут хоста
-
-`POST /api/plugins/:pluginId/webhooks/:endpointKey`
-
-(`server/src/routes/plugins.ts`) для этого плагина **не** принимает входящие от Telegram.
-
-Вместо этого worker опрашивает Bot API:
-
-`https://api.telegram.org/bot<token>/getUpdates?offset=…&timeout=10&allowed_updates=…`
-
-Хост увеличивает таймаут `http.fetch` плагина до **90 с** для URL с `api.telegram.org` и путём `/getUpdates` (`PLUGIN_FETCH_TELEGRAM_LONG_POLL_TIMEOUT_MS` в `plugin-host-services.ts`).
-
-Следствия:
-
-- Публичный URL инстанса Datagent **не обязателен** для приёма сообщений от Telegram (в отличие от входящего webhook Bitrix24).
-- Старый путь `POST …/integrations/telegram/webhook` и корневые `TELEGRAM_WEBHOOK_*` в `.env` — **не** соответствуют реализации.
-- `setWebhook` / `secret_token` Telegram — только при ручной настройке webhook **вне** штатного worker; штатный режим — **getUpdates**.
-
-Для ссылок на issues в сообщениях задайте **публичный URL инстанса** в настройках плагина (при локальной разработке — туннель на Board, например ngrok на **3100**). Это не замена long poll.
-
-## Команды бота
-
-Команды реализованы в worker плагина Telegram Datagent. В монорепозитории Datagent handler-кода нет.
-
-| Команда | Поведение |
-| --- | --- |
-| `/help` | Список команд |
-| `/status` | Активные агенты и недавние завершения |
-| `/issues` | Открытые issues |
-| `/agents` | Список агентов со статусами |
-| `/approve <id>` | Подтвердить pending approval (нужен board access) |
-| `/connect <company>` | Привязать чат к компании |
-| `/connect_topic [topic-id]` | Топик форума → project |
-| `/topics list` / `remove` / `clear` | Управление маппингом топиков |
-| `/acp spawn` / `status` / `cancel` / `close` | Сессии агентов в треде |
-| `/commands import` / `list` / `run` / `delete` | Пользовательские workflow-команды |
-
-Команды **`/run`**, **`/reject`** как в старой доке — **не** входят в список built-in команд (отклонение — inline-кнопка **Reject** на уведомлении апрува).
-
-Отключение: `enableCommands: false`. Ограничение доступа: `allowedTelegramUserIds`, `allowedTelegramChatIds`.
-
-## Agent tools (manifest плагина)
-
-Имена в Board после установки — с namespace плагина (например `datagent.plugin-telegram:escalate_to_human`). **Нет** tool `telegram_send_message` в manifest.
-
-| Tool | Назначение |
-| --- | --- |
-| `escalate_to_human` | Эскалация оператору (HITL) |
-| `handoff_to_agent` | Передача другому агенту в треде |
-| `discuss_with_agent` | Диалог двух агентов |
-| `register_watch` | Проактивные watch / suggestions |
-
-## Апрувы (human-in-the-loop)
-
-Апрувы создаёт **Datagent** (`POST /api/companies/:companyId/approvals`, типы в `APPROVAL_TYPES`: `request_board_approval`, `browser_action`, `hire_agent`, `budget_override_required`, … — `packages/shared/src/constants.ts`). Плагин Telegram подписывается на события (issue/approval/agent) и шлёт уведомления с inline **Approve** / **Reject**.
-
-- Фильтр только board-апрувов: `onlyNotifyBoardApprovals: true` → в основном `request_board_approval`.
-- Решение в Telegram: inline-кнопки или `/approve <approval_id>`; для мутаций API нужен **Board Access Connection** (альтернатива — board token ref в config плагина[^tg-fields]).
-- Таймаут **эскалаций** в Telegram: `escalationTimeoutMs` (default 15 мин), действие по умолчанию `escalationDefaultAction` (`defer` / `auto_reply` / `close`).
-
-**Не документировать:** `requireApprovalFor: ["bitrix24_update_lead"]`, tool `bitrix24_update_lead` — таких типов и CRM tools в Datagent/Bitrix-плагине **нет** (см. [Bitrix24](./bitrix24.md)).
-
-## Связь с Bitrix24
-
-Плагины **независимы**: Bitrix24 bridge и плагин Telegram Datagent не делят общий issue-bridge в коде монорепозитория. Сквозной сценарий imbot → агент → Telegram — [Bitrix24 → Telegram](../tutorials/automate-crm.md) (без CRM tools).
-
-</details>
+Это не отдельная нейросеть: бот связывает мессенджер с задачами и согласованиями. Сквозной сценарий с Битрикс24 — [практический сценарий](../tutorials/automate-crm).
 
 ## Частые вопросы
 
 **Нужен ли отдельный агент «для Телеграма»?**  
-Нет — бот связан с **задачами и согласованиями** существующих агентов. Нейросеть настраивается как обычно ([GigaChat](./gigachat.md)).
+Нет — бот связан с **задачами** существующих агентов. Модель настраивается как обычно ([GigaChat](./gigachat)).
 
 **Работает ли вместе с Битрикс24?**  
-Да — типичный сценарий: чат в CRM → агент → уведомление в Телеграм. См. [практический сценарий](../tutorials/automate-crm.md).
+Да — типичный сценарий: чат в CRM → агент → уведомление в Телеграм.
 
-**Где включить плагин?**  
-**Менеджер плагинов** на [app.datagent.ru](https://app.datagent.ru) после регистрации компании.
+**Платный тариф нужен?**  
+**Нет** — Телеграм на **всех** тарифах, как в [таблице каналов](../concepts/channels).
 
 ## Что дальше
 
-→ [Битрикс24](./bitrix24)
+→ [Каналы](../concepts/channels)
 
 <details>
-<summary>Связанные разделы и техническая справка</summary>
+<summary>Для инженеров: схема, long polling, поля конфигурации</summary>
 
-- [Согласования](../concepts/approvals) · [Старт в облаке](../cloud/getting-started)
-- [Практический сценарий CRM](../tutorials/automate-crm) · [Архитектура](../concepts/agent-architecture)
+Пакет `datagent.plugin-telegram`, опрос `getUpdates` (long polling), worker и маршруты к задачам и согласованиям. Публичный URL инстанса **не обязателен** для приёма сообщений.
 
-## Проверка
+```mermaid
+flowchart LR
+  TG[Telegram Bot API] -->|getUpdates| Worker[Plugin worker]
+  Worker --> API[server /api]
+  API --> Agent[Агенты Datagent]
+  Agent --> API
+  API --> Worker
+  Worker --> TG
+```
 
-1. **Менеджер плагинов** → настройки → worker **running**.
-2. Отправьте боту `/help`.
-3. Создайте тестовое согласование в панели — уведомление в чат из настроек.
+### Поля конфигурации (основные)
 
-## Типичные ошибки
+| Поле | Назначение |
+| --- | --- |
+| `telegramBotTokenRef` | UUID секрета с токеном бота |
+| `defaultChatId` | Чат по умолчанию для уведомлений |
+| `approvalsChatId` | Чат для согласований |
+| `enableCommands` / `enableInbound` | Команды и входящие в задачи |
+| `allowedTelegramUserIds` | Список разрешённых пользователей |
+
+### Команды бота
+
+`/help`, `/status`, `/issues`, `/agents`, `/approve <id>`, `/connect <company>` — полный список в worker плагина.
+
+### Типичные ошибки
 
 | Симптом | Что сделать |
 | --- | --- |
-| 401 от Telegram | Пересоздать секрет с ключом бота |
+| 401 от Telegram | Пересоздать секрет с токеном |
 | Команды не работают | Проверить список разрешённых чатов |
 | Кнопки «Одобрить» не срабатывают | Подключить доступ к панели в настройках плагина |
 
-## Технические идентификаторы
-
-| Идентификатор | Значение |
-| --- | --- |
-| Ключ в registry Datagent | `datagent.plugin-telegram` |
-| npm / install | `datagent.plugin-telegram` |
-| Слот UI настроек | `telegram-settings` |
-
-[^tg-fields]: В schema npm-пакета поля могут иметь legacy-имена; в Board UI — URL API Datagent, публичный URL и ссылка на секрет токена панели.
+См. [Архитектура](../concepts/agent-architecture), [Битрикс24](./bitrix24).
 
 </details>
