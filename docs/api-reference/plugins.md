@@ -3,65 +3,142 @@ id: plugins-api
 slug: /api-reference/plugins
 title: REST API — плагины
 sidebar_label: Плагины (API)
-description: REST API плагинов Datagent — install, enable, tools/execute, webhooks, config.
+description: REST API плагинов — install, enable, tools/execute, webhooks; примеры curl и JSON.
 ---
 
 # REST API — плагины
 
-> **Зачем:** Ставить и отлаживать плагин из CI, админ-скрипта или при разработке своего расширения.
+API для **установки и управления плагинами** на instance Datagent. Плагин — пакет с **manifest**, **worker** и **tools**, которые агент вызывает в run.
 
-Установка через панель — [плагины в облаке](/docs/cloud/plugins). Как войти в API — [обзор REST API](./overview). База: `https://app.datagent.ru/api`.
+**База:** `https://app.datagent.ru/api` · **Auth:** `Authorization: Bearer <board-api-key>`
 
-**Аутентификация:** `Authorization: Bearer <your-api-key>` (панель для install; агент — для `agents/me/plugin-tools/execute`).
+Установка через UI — [плагины в облаке](/docs/cloud/plugins). Обзор API — [REST API](./overview).
 
-## Сводка endpoints
+---
 
-| Метод | Endpoint | Описание |
-| --- | --- | --- |
-| `GET` | `/plugins` | Установленные плагины — инвентарь instance перед деплоем |
-| `POST` | `/plugins/install` | Установить плагин — CI/CD или dev-машина |
-| `GET` | `/plugins/tools` | Список tools — выбор имени для `execute` |
-| `POST` | `/plugins/tools/execute` | Вызов tool вручную — отладка без полного run |
-| `POST` | `/plugins/:pluginId/webhooks/:endpointKey` | Входящий webhook — Telegram, Bitrix и др. |
-| `POST` | `/agents/me/plugin-tools/execute` | Tool из run агента по ключу агента |
+## POST /plugins/install
 
-## Установка и жизненный цикл
+Установить плагин с **npm** или с **локального пути** (только **администратор instance**).
 
-| Метод | Путь | Назначение |
-| --- | --- | --- |
-| `GET` | `/plugins` | Список плагинов на instance |
-| `POST` | `/plugins/install` | Установить из npm или `file:` пути |
-| `GET` | `/plugins/:pluginId` | Метаданные — версия и capabilities |
-| `DELETE` | `/plugins/:pluginId` | Удалить неиспользуемый плагин |
-| `POST` | `/plugins/:pluginId/enable` | Поднять worker после установки |
-| `POST` | `/plugins/:pluginId/disable` | Остановить worker на время обслуживания |
-| `GET` | `/plugins/:pluginId/health` | Проверка состояния worker в мониторинге |
+**Тело запроса:**
 
-## Включение для компании
+```json
+{
+  "packageName": "@datagent/plugin-excel-workbench",
+  "version": "1.2.0"
+}
+```
 
-| Метод | Путь | Назначение |
-| --- | --- | --- |
-| `GET` | `/companies/:companyId/plugins/catalog` | Какие плагины доступны организации |
-| `PATCH` | `/companies/:companyId/plugins/:pluginId/enabled` | Включить плагин для компании без переустановки |
+Локальный путь:
 
-## Конфигурация
+```json
+{
+  "packageName": "/path/to/my-plugin",
+  "isLocalPath": true
+}
+```
 
-| Метод | Путь | Назначение |
-| --- | --- | --- |
-| `GET` | `/plugins/:pluginId/config` | Прочитать глобальный config instance |
-| `POST` | `/plugins/:pluginId/config` | Записать глобальный config |
-| `POST` | `/plugins/:pluginId/companies/:companyId/config` | Config для конкретной компании |
+**Ответ `200`** — объект плагина (`PluginRecord`: `id`, `pluginKey`, `status`, …).
 
-Токены — в [секретах](/docs/concepts/secrets), не в открытом config.
+**Ошибка `400`:**
 
-## Вызов инструмента плагина
+```json
+{
+  "error": "packageName is required and must be a string"
+}
+```
 
-### POST /plugins/tools/execute
+**Пример curl:**
 
-Выполняет tool по полному имени `pluginId:toolName` — когда нужно проверить интеграцию без возобновления работы агента.
+```bash
+curl -s -X POST "https://app.datagent.ru/api/plugins/install" \
+  -H "Authorization: Bearer ${BOARD_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "packageName": "@datagent/plugin-excel-workbench"
+  }'
+```
 
-```http
-POST /plugins/tools/execute
+После install: `POST /plugins/:pluginId/enable` и `PATCH /companies/:companyId/plugins/:pluginId/enabled`.
+
+---
+
+## GET /plugins
+
+Список плагинов, установленных на **instance**.
+
+**Ответ `200 OK`:**
+
+```json
+[
+  {
+    "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "pluginKey": "datagent.excel-workbench",
+    "displayName": "Excel Workbench",
+    "status": "ready",
+    "version": "1.2.0"
+  }
+]
+```
+
+**Пример curl:**
+
+```bash
+curl -s "https://app.datagent.ru/api/plugins" \
+  -H "Authorization: Bearer ${BOARD_TOKEN}"
+```
+
+---
+
+## GET /plugins/:pluginId
+
+Метаданные одного плагина — версия, capabilities, health.
+
+```bash
+curl -s "https://app.datagent.ru/api/plugins/${PLUGIN_ID}" \
+  -H "Authorization: Bearer ${BOARD_TOKEN}"
+```
+
+---
+
+## DELETE /plugins/:pluginId
+
+Удалить плагин с instance (только **администратор instance**).
+
+Query **`purge=true`** — полное удаление данных плагина; без флага — мягкое удаление с retention **30 дней**.
+
+**Ответ `200 OK`** — объект **`PluginRecord`** удалённого плагина (тело **не пустое**).
+
+**Ответ `403`** — нет прав instance admin.
+
+**Ответ `404`** — плагин не найден:
+
+```json
+{
+  "error": "Plugin not found"
+}
+```
+
+```bash
+curl -s -X DELETE "https://app.datagent.ru/api/plugins/${PLUGIN_ID}" \
+  -H "Authorization: Bearer ${BOARD_TOKEN}"
+```
+
+---
+
+## POST /plugins/tools/execute
+
+Вызвать tool **вручную** (отладка без полного run агента).
+
+**Тело:**
+
+```json
+{
+  "toolName": "datagent.excel-workbench:inspect_workbook",
+  "input": {
+    "issueId": "00000000-0000-4000-8000-000000000001"
+  }
+}
 ```
 
 ```bash
@@ -69,54 +146,63 @@ curl -s -X POST "https://app.datagent.ru/api/plugins/tools/execute" \
   -H "Authorization: Bearer ${BOARD_TOKEN}" \
   -H "Content-Type: application/json" \
   -d '{
-    "toolName": "datagent.browserbridge:browser_screenshot",
+    "toolName": "datagent.excel-workbench:inspect_workbook",
     "input": {}
   }'
 ```
 
-| Поле | Описание |
-| --- | --- |
-| `toolName` | Полное имя tool, например `datagent.browserbridge:browser_navigate` |
-| `input` | JSON-аргументы tool |
+Список имён: **`GET /plugins/tools`**.
 
-Список tools: `GET /plugins/tools`.
-
-### POST /agents/me/plugin-tools/execute
-
-Тот же вызов из run агента — адаптер дергает tool от имени текущего run.
-
-```http
-POST /agents/me/plugin-tools/execute
-```
-
-См. [агенты (API)](./agents).
-
-:::note Путь в манифесте
-Шаблон `/plugins/{plugin_id}/tools/{tool_name}/execute` в открытом API хоста **не используется**. Рабочий маршрут — **`POST /plugins/tools/execute`** с полем `toolName`.
+:::note
+Шаблон `/plugins/{id}/tools/{name}/execute` **не используется**. Рабочий маршрут — **`POST /plugins/tools/execute`** с полем **`toolName`** (`pluginId:toolName`).
 :::
 
-## Bridge, webhooks, jobs
+---
+
+## POST /agents/me/plugin-tools/execute
+
+Тот же вызов **из run агента** — Bearer **ключ агента**, не панели. См. [Агенты (API)](./agents).
+
+---
+
+## Webhooks и jobs
 
 | Метод | Путь | Назначение |
 | --- | --- | --- |
-| `POST` | `/plugins/:pluginId/bridge/data` | Данные для UI настроек плагина |
-| `POST` | `/plugins/:pluginId/webhooks/:endpointKey` | Внешнее событие → задачи и run |
-| `GET` | `/plugins/:pluginId/jobs` | Список фоновых jobs плагина |
-| `POST` | `/plugins/:pluginId/jobs/:jobId/trigger` | Запустить job вручную из скрипта |
+| `POST` | `/plugins/:pluginId/webhooks/:endpointKey` | Входящее событие (Telegram, Bitrix24) |
+| `GET` | `/plugins/:pluginId/jobs` | Фоновые jobs |
+| `POST` | `/plugins/:pluginId/jobs/:jobId/trigger` | Запуск job вручную |
 
-Webhook без поднятого worker — `501`.
+Worker не поднят — **`501`**.
 
-## Ошибки
+---
+
+## Конфигурация и компания
+
+| Метод | Путь |
+| --- | --- |
+| `GET` | `/companies/:companyId/plugins/catalog` |
+| `PATCH` | `/companies/:companyId/plugins/:pluginId/enabled` |
+| `GET/POST` | `/plugins/:pluginId/config` |
+| `GET/POST` | `/plugins/:pluginId/companies/:companyId/config` |
+
+Секреты — в [секретах](/docs/concepts/secrets), не в открытом JSON config.
+
+---
+
+## Коды ошибок
 
 | Код | Когда |
 | --- | --- |
-| **400** | Невалидный manifest / тело |
-| **403** | Нет прав панели |
-| **404** | Плагин не установлен |
-| **501** | Worker не поднят |
+| `400` | Невалидное тело / manifest |
+| `403` | Нет прав (install — только admin instance) |
+| `404` | Плагин не установлен |
+| `501` | Worker не запущен |
 
 ## Что дальше?
 
-- **Соберите plugin** — [туториал](/docs/tutorials/build-plugin)
-- **Интеграции** — [BrowserBridge](/docs/integrations/browserbridge) · [Bitrix24](/docs/integrations/bitrix24)
-- **Аутентификация** — [обзор API](./overview)
+→ [Сборка плагина](/docs/tutorials/build-plugin)
+
+→ [BrowserBridge](/docs/integrations/browserbridge) · [Bitrix24](/docs/integrations/bitrix24)
+
+→ [Обзор API](./overview)

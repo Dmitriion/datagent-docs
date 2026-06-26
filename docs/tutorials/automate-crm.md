@@ -57,7 +57,7 @@ description: Сценарий — чат Битрикс24, ответ агент
 
 ## Шаг 3. Телеграм (уведомления и согласования)
 
-[^tg-npm]: Ключ registry: `datagent.plugin-telegram`; алиасы npm — [Технические идентификаторы](../integrations/telegram.md#технические-идентификаторы).
+[^tg-npm]: Ключ registry: `datagent.plugin-telegram`; npm-пакет и поля конфигурации — [Телеграм](../integrations/telegram.md).
 
 1. BotFather → token → company secret → `telegramBotTokenRef`.
 2. **Менеджер плагинов** → установить плагин Телеграм → **Компания → Настройки Телеграм**.

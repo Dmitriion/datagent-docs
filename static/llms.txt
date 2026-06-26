@@ -1,4 +1,6 @@
 # Datagent Documentation
+# Version: 2026-Q3 (canon v1.4)
+# Updated: 2026-06-15
 
 > Datagent — платформа для управления ИИ-агентами в бизнесе.
 > Облако: https://app.datagent.ru
@@ -24,6 +26,8 @@
 - /cloud/getting-started: Первые шаги в облаке
 - /cloud/first-agent: Создать первого агента
 - /cloud/pricing: Тарифы
+- /billing/overview: Биллинг и подписка
+- /billing/limits: Лимиты по тарифам
 - /cloud/plugins: Плагины в облаке
 - /cloud/skills: Навыки компании
 - /cloud/on-premise: Установка на свой сервер (Enterprise)

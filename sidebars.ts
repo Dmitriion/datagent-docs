@@ -19,6 +19,8 @@ const sidebars: SidebarsConfig = {
         'cloud/cloud-getting-started',
         'cloud/cloud-first-agent',
         'cloud/cloud-pricing',
+        'billing/billing-overview',
+        'billing/billing-limits',
         'cloud/cloud-plugins',
         'cloud/cloud-skills',
         'cloud/cloud-on-premise',
@@ -73,6 +75,26 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: 'category',
+      label: 'Интеграции',
+      collapsed: true,
+      link: {
+        type: 'generated-index',
+        slug: 'integrations',
+        title: 'Интеграции',
+        description:
+          'GigaChat, YandexGPT, Битрикс24, Телеграм, 1С и управление браузером.',
+      },
+      items: [
+        'integrations/gigachat',
+        'integrations/yandexgpt',
+        'integrations/bitrix24',
+        'integrations/telegram',
+        'integrations/1c-connector',
+        'integrations/browserbridge',
+      ],
+    },
+    {
+      type: 'category',
       label: 'Учебник',
       collapsed: false,
       link: {type: 'doc', id: 'guides/index'},
@@ -106,26 +128,6 @@ const sidebars: SidebarsConfig = {
             'guides/playbook-index',
           ],
         },
-      ],
-    },
-    {
-      type: 'category',
-      label: 'Интеграции',
-      collapsed: true,
-      link: {
-        type: 'generated-index',
-        slug: 'integrations',
-        title: 'Интеграции',
-        description:
-          'GigaChat, YandexGPT, Битрикс24, Телеграм, 1С и управление браузером.',
-      },
-      items: [
-        'integrations/gigachat',
-        'integrations/yandexgpt',
-        'integrations/bitrix24',
-        'integrations/telegram',
-        'integrations/1c-connector',
-        'integrations/browserbridge',
       ],
     },
     {
