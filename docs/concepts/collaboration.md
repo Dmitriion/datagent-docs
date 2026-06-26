@@ -79,4 +79,4 @@ API приглашений: `POST /api/companies/:companyId/invites`, приня
 
 ## Что дальше?
 
-→ [Секреты](./secrets) — как хранить ключи GigaChat и интеграций
+→ [Ключи доступа](./secrets)

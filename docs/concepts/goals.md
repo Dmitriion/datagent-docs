@@ -86,4 +86,4 @@ API: `GET/POST /api/companies/:companyId/goals`, `PATCH /api/goals/:id`. Пол�
 
 ## Что дальше?
 
-→ [Команда и доступ](./collaboration) — пригласить коллег к целям и задачам
+→ [Команда и доступ](./collaboration)
