@@ -79,6 +79,8 @@ const config: Config = {
     ],
   ],
 
+  clientModules: [require.resolve('./src/clientModules/yandex-metrika.ts')],
+
   presets: [
     [
       'classic',
