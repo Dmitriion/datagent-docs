@@ -140,6 +140,7 @@ const config: Config = {
         type: 'text/javascript',
       },
       // Official snippet in SSR HTML so Yandex «Проверить счётчик» finds ym(110571227).
+      // Docusaurus 3.10 requires attributes on every headTag (build fails without it).
       innerHTML: `(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
 m[i].l=1*new Date();
 for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
@@ -149,6 +150,7 @@ ym(110571227, "init", {clickmap:true, trackLinks:true, accurateTrackBounce:true,
     },
     {
       tagName: 'noscript',
+      attributes: {},
       innerHTML: `<div><img src="https://mc.yandex.ru/watch/110571227" style="position:absolute; left:-9999px;" alt="" /></div>`,
     },
   ],
