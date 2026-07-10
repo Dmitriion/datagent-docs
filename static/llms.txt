@@ -1,115 +1,40 @@
-# Datagent Documentation
-# Version: 2026-Q3 (canon v1.4)
-# Updated: 2026-06-15
+# Datagent
+> Документация операционной платформы для AI-агентов: облако, self-hosted, интеграции, API. Данные в РФ.
 
-> Datagent — платформа для управления ИИ-агентами в бизнесе.
-> Облако: https://app.datagent.ru
-> Тарифы: Free (0 ₽, 3 агента, 100 запусков/мес), Solo (990 ₽), Studio (3 900 ₽), Business (12 900 ₽), Enterprise (по запросу).
-> Запросы к LLM — по ключам клиента (GigaChat, YandexGPT и др.).
+## Product
+- [Лендинг](https://datagent.ru/): позиционирование, тарифы Free/Solo/Studio/Business, FAQ
+- [Данные в РФ](https://datagent.ru/privacy/russia): локализация и 152-ФЗ
+- [Облако](https://app.datagent.ru/): панель управления (регистрация)
+- [Тарифы](https://docs.datagent.ru/docs/cloud/pricing): полная матрица возможностей; выделенный контур — по запросу
 
-Сайт: https://docs.datagent.ru/
-Продукт: https://app.datagent.ru
-Лендинг: https://datagent.ru
+## Start here
+- [Быстрый старт](https://docs.datagent.ru/docs/cloud/getting-started): первые шаги в облаке
+- [Первый агент](https://docs.datagent.ru/docs/cloud/first-agent): создать агента
+- [Self-hosted](https://docs.datagent.ru/docs/cloud/on-premise): установка на своей инфраструктуре
+- [Карта документации](https://docs.datagent.ru/docs/intro): обзор разделов
 
-## Важно для ИИ-ассистентов
+## Concepts
+- [Что такое Datagent](https://docs.datagent.ru/docs/concepts/what-is-datagent)
+- [Как работает](https://docs.datagent.ru/docs/concepts/how-it-works)
+- [Одобрения](https://docs.datagent.ru/docs/concepts/approvals)
+- [Память](https://docs.datagent.ru/docs/concepts/memory)
+- [Бюджеты](https://docs.datagent.ru/docs/concepts/budgets)
 
+## Integrations
+- [1С](https://docs.datagent.ru/docs/integrations/1c-connector)
+- [Битрикс24](https://docs.datagent.ru/docs/integrations/bitrix24)
+- [GigaChat](https://docs.datagent.ru/docs/integrations/gigachat)
+- [YandexGPT](https://docs.datagent.ru/docs/integrations/yandexgpt)
+- [BrowserBridge](https://docs.datagent.ru/docs/integrations/browserbridge)
+- [Телеграм](https://docs.datagent.ru/docs/integrations/telegram)
+
+## API
+- [Обзор API](https://docs.datagent.ru/docs/api-reference/overview)
+- [Агенты](https://docs.datagent.ru/docs/api-reference/agents)
+- [Задачи](https://docs.datagent.ru/docs/api-reference/issues)
+
+## Notes for assistants
 - В пользовательских текстах: **Телеграм**, не Telegram
 - «Офис» — экспериментальный раздел панели
-- 1С: нет инструментов 1С в запуске агента на задаче; доступ для IDE через MCP (Business+)
-- Управление браузером: BrowserBridge, инструменты `browser_*` (Studio+)
-- Битрикс24: мост imbot (Studio+); Телеграм — все тарифы
+- Запросы к LLM — по ключам клиента (BYO)
 - Не выдумывать инструменты вне каталога плагинов
-
-## Начало работы
-
-- /intro: Карта документации
-- /cloud/getting-started: Первые шаги в облаке
-- /cloud/first-agent: Создать первого агента
-- /cloud/pricing: Тарифы
-- /billing/overview: Биллинг и подписка
-- /billing/limits: Лимиты по тарифам
-- /cloud/plugins: Плагины в облаке
-- /cloud/skills: Навыки компании
-- /cloud/on-premise: Установка на свой сервер (Enterprise)
-- /cloud/account: Аккаунт и участники
-
-## Концепции
-
-- /concepts/what-is-datagent: Что такое Datagent
-- /concepts/how-it-works: Как работает Datagent
-- /concepts/agent-architecture: Архитектура агентов
-- /concepts/llm-adapters: LLM-адаптеры
-- /concepts/agents: Агенты
-- /concepts/issues: Задачи
-- /concepts/projects: Проекты
-- /concepts/goals: Цели
-- /concepts/workspaces: Рабочие пространства
-- /concepts/collaboration: Совместная работа
-- /concepts/heartbeat: Пульс агента (heartbeat)
-- /concepts/memory: Память агента
-- /concepts/routines: Рутины
-- /concepts/approvals: Одобрения
-- /concepts/inbox: Входящие
-- /concepts/channels: Каналы
-- /concepts/credits: Кредиты и учёт
-- /concepts/budgets: Бюджеты
-- /concepts/secrets: Секреты
-- /concepts/company-settings: Настройки компании
-
-## Учебник (оператор / руководитель)
-
-- /guides: Обложка учебника
-- /guides/01-first-day: Первый день в панели
-- /guides/02-your-team: Ваша команда
-- /guides/03-one-task: Первая задача
-- /guides/04-trust-and-approval: Доверие и контроль
-- /guides/05-office-field: Поле для руководителя (Office)
-- /guides/06-channels: Bitrix24 и Телеграм
-- /guides/07-documents: Работа с документами
-- /guides/08-1c-bridge: Подключение 1С
-- /guides/playbook-index: Шпаргалка по ситуациям
-
-## Интеграции
-
-- /integrations/gigachat: GigaChat (BYO keys)
-- /integrations/yandexgpt: YandexGPT (BYO keys)
-- /integrations/bitrix24: Bitrix24 (Studio+)
-- /integrations/telegram: Телеграм (все тарифы)
-- /integrations/1c-connector: 1С (Business+)
-- /integrations/browserbridge: Управление браузером (Studio+)
-
-## Браузер
-
-- /browser/overview: Обзор BrowserBridge
-- /browser/setup: Подключение
-
-## Артефакты
-
-- /artifacts/overview: Каталог артефактов (Solo+)
-- /artifacts/agent-upload: Загрузка агентом
-
-## Office
-
-- /office/overview: Обзор «Офис»
-- /office/excel-pptx: Excel и PowerPoint на задаче
-
-## API Reference
-
-- /api-reference/overview: Обзор API
-- /api-reference/agents: Агенты
-- /api-reference/issues: Задачи
-- /api-reference/memory: Память
-- /api-reference/plugins: Плагины
-- /api-reference/artifacts: Артефакты
-- /api-reference/access: Доступ и ключи
-
-## Сценарии
-
-- /tutorials: Обзор сценариев
-- /tutorials/automate-crm: Bitrix24 → Телеграм
-- /tutorials/build-plugin: Создание плагина
-
-## Справка
-
-- /troubleshooting: Решение проблем
-- /changelog: История изменений
