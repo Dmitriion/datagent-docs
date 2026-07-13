@@ -113,7 +113,7 @@ flowchart TB
 
 Плагины объявляют manifest и tools; host общается с worker по JSON-RPC 2.0 (stdio). **Менеджер** включает плагин в компании и выдаёт tools агенту; **агент** вызывает только то, что есть в manifest.
 
-Агент вызывает plugin tools через `POST /api/agents/me/plugin-tools/execute` (run JWT). Descriptors попадают в heartbeat **по умолчанию** (`plugin_tools_in_heartbeat`). Для `cursor_local` дополнительно доступен native MCP `datagent-plugins` (proxy на тот же route).
+Агент вызывает plugin tools через `POST /api/agents/me/plugin-tools/execute` (run JWT). Descriptors попадают в heartbeat **по умолчанию** (`plugin_tools_in_heartbeat`). Для research/data/presentation skills с `plugin-tool:*` в catalog `requires` действует **fail-closed allowlist**: exact tools должны быть в `adapterConfig.datagentPluginToolsSync.desiredTools`; иначе readiness → `desired_tools_missing`. На board: AgentDetail → Skills — предупреждение и **«Разрешить обязательные»** (данные из `GET …/capabilities` → `skills[].requiredPluginTools`). Для `cursor_local` дополнительно доступен native MCP `datagent-plugins` (proxy на тот же route).
 
 ## Community skills и автономные host-gates
 
@@ -122,11 +122,11 @@ flowchart TB
 | Этап | Механизм |
 | --- | --- |
 | Install skill | `POST …/skills/install-catalog` → auto-enable company plugin (`plugin-company-auto-enable.ts`) |
-| Observability | `GET …/capabilities`, `GET …/skills/:id/readiness` (blockers + remediation) |
+| Observability | `GET …/capabilities` (`skills[].requiredPluginTools`), `GET …/skills/:id/readiness` (blockers + remediation, в т.ч. `configure_desired_tools`) |
 | Перед run | Preflight в `heartbeat.ts` — не запускать adapter при blockers |
 | Deliverable | xlsx: auto-validate после apply; pptx: attachment gate + post-run continuation |
 
-Сервер платформы **оркестрирует**, worker **исполняет** OfficeCLI. Оператор в happy path не жмёт Validate/Enable — только governance opt-in (approvals, instance admin). Детали: [Excel и PowerPoint](../office/excel-pptx.md), канон приёмки в репозитории Datagent — `doc/community-skills-acceptance.md` v2.8.
+Сервер платформы **оркестрирует**, worker **исполняет** OfficeCLI. Оператор в happy path не жмёт Validate/Enable — только governance opt-in (approvals, instance admin) и one-click allowlist remediation на Skills tab. Детали: [Excel и PowerPoint](../office/excel-pptx.md), канон приёмки в репозитории Datagent — `doc/community-skills-acceptance.md` v2.9.1.
 
 ## BrowserBridge
 
