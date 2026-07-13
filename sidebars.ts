@@ -18,13 +18,20 @@ const sidebars: SidebarsConfig = {
         'intro',
         'cloud/cloud-getting-started',
         'cloud/cloud-first-agent',
+        'cloud/cloud-account',
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Тарифы и расширения',
+      collapsed: true,
+      items: [
         'cloud/cloud-pricing',
         'billing/billing-overview',
         'billing/billing-limits',
         'cloud/cloud-plugins',
         'cloud/cloud-skills',
         'cloud/cloud-on-premise',
-        'cloud/cloud-account',
       ],
     },
     {
@@ -75,6 +82,22 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: 'category',
+      label: 'Рабочие процессы',
+      collapsed: false,
+      link: {
+        type: 'generated-index',
+        slug: 'workflows',
+        title: 'Рабочие процессы',
+        description:
+          'Конвейеры многоэтапной работы и Таймлайн запусков — стандартные возможности панели.',
+      },
+      items: [
+        {type: 'doc', id: 'workflows/pipelines', label: 'Конвейеры'},
+        {type: 'doc', id: 'workflows/timeline', label: 'Таймлайн'},
+      ],
+    },
+    {
+      type: 'category',
       label: 'Интеграции',
       collapsed: true,
       link: {
@@ -82,7 +105,7 @@ const sidebars: SidebarsConfig = {
         slug: 'integrations',
         title: 'Интеграции',
         description:
-          'GigaChat, YandexGPT, Битрикс24, Телеграм, 1С и управление браузером.',
+          'GigaChat, YandexGPT, Битрикс24, Телеграм, 1С, внешние инструменты и управление браузером.',
       },
       items: [
         'integrations/gigachat',
@@ -90,6 +113,7 @@ const sidebars: SidebarsConfig = {
         'integrations/bitrix24',
         'integrations/telegram',
         'integrations/1c-connector',
+        'integrations/mcp',
         'integrations/browserbridge',
       ],
     },
@@ -139,10 +163,10 @@ const sidebars: SidebarsConfig = {
         slug: 'browser',
         title: 'Браузер',
         description:
-          'Локальная служба на рабочей станции, связь с облаком и диагностика.',
+          'Расширение BrowserBridge, персональный токен и работа боковой панели.',
       },
       items: [
-        {type: 'doc', id: 'browser/overview', label: 'Обзор'},
+        {type: 'doc', id: 'browser/overview', label: 'Обзор', key: 'browser-overview'},
         'browser/setup',
       ],
     },
@@ -155,7 +179,7 @@ const sidebars: SidebarsConfig = {
         id: 'artifacts/overview',
       },
       items: [
-        {type: 'doc', id: 'artifacts/overview', label: 'Обзор'},
+        {type: 'doc', id: 'artifacts/overview', label: 'Обзор', key: 'artifacts-overview'},
         'artifacts/agent-upload',
       ],
     },
@@ -171,7 +195,7 @@ const sidebars: SidebarsConfig = {
           'Пространство «Офис» в панели и работа с Excel и PowerPoint на задаче.',
       },
       items: [
-        {type: 'doc', id: 'office/overview', label: 'Обзор'},
+        {type: 'doc', id: 'office/overview', label: 'Обзор', key: 'office-overview'},
         'office/excel-pptx',
       ],
     },
@@ -186,7 +210,7 @@ const sidebars: SidebarsConfig = {
         description: 'REST API на /api: wakeup, heartbeat-runs, issues, plugins.',
       },
       items: [
-        {type: 'doc', id: 'api-reference/overview', label: 'Обзор'},
+        'api-reference/overview',
         'api-reference/agents-api',
         'api-reference/issues-api',
         'api-reference/memory-api',

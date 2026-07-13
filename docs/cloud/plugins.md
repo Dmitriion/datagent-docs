@@ -3,7 +3,7 @@ id: cloud-plugins
 slug: /cloud/plugins
 title: Плагины Datagent — подключения и действия агента
 sidebar_label: Плагины
-description: "Плагины Datagent: Битрикс24, Телеграм, браузер, 1С. Установка в облаке без кода."
+description: "Плагины Datagent: Битрикс24, Телеграм, браузер, 1С и внешние инструменты (MCP)."
 ---
 
 # Плагины Datagent — подключения и действия агента
@@ -42,6 +42,7 @@ description: "Плагины Datagent: Битрикс24, Телеграм, бр�
 | [Битрикс24](../integrations/bitrix24) | Чаты CRM → задачи и ответы агента (**Studio+**) |
 | [Телеграм](../integrations/telegram) | Уведомления и согласования в мессенджере (все тарифы) |
 | [BrowserBridge](../integrations/browserbridge) | Сайты и формы на вашем ПК (**Studio+**) |
+| [Внешние инструменты (MCP)](../integrations/mcp) | Корпоративные сервисы и данные для Cursor-агентов (**Studio+**) |
 | [1С Коннектор](../integrations/1c-connector) | Данные учёта из 1С (**Business+**) |
 | Excel / Office | Таблицы и слайды на задаче — [документы](../office/excel-pptx) |
 
@@ -62,7 +63,7 @@ description: "Плагины Datagent: Битрикс24, Телеграм, бр�
 | Возможность | Free, Solo | Studio, Business |
 | --- | --- | --- |
 | Телеграм, базовые плагины | ✅ | ✅ |
-| Битрикс24, BrowserBridge | — | ✅ |
+| Битрикс24, BrowserBridge, внешний MCP | — | ✅ |
 | 1С | — | только **Business** |
 
 [Тарифы →](./pricing)

@@ -64,7 +64,7 @@ description: Профиль компании, префикс URL, брендин
 
 Часть разделов включается флагами (например **«Офис»** — `enableOffice`). Без флага пункт меню не появится — [обзор Офиса](/docs/office/overview).
 
-:::info Studio для BrowserBridge
+:::info[Studio для BrowserBridge]
 BrowserBridge и полный набор коннекторов — с тарифа **Studio** и выше, см. [тарифы](/docs/cloud/pricing).
 :::
 

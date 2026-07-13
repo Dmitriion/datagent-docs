@@ -1,5 +1,5 @@
 # Datagent
-> Документация операционной платформы для AI-агентов: облако, self-hosted, интеграции, API. Данные в РФ.
+> Документация панели управления ИИ-исполнителями: облако, интеграции, рабочие процессы, API. Данные в РФ.
 
 ## Product
 - [Лендинг](https://datagent.ru/): позиционирование, тарифы Free/Solo/Studio/Business, FAQ
@@ -10,23 +10,36 @@
 ## Start here
 - [Быстрый старт](https://docs.datagent.ru/docs/cloud/getting-started): первые шаги в облаке
 - [Первый агент](https://docs.datagent.ru/docs/cloud/first-agent): создать агента
-- [Self-hosted](https://docs.datagent.ru/docs/cloud/on-premise): установка на своей инфраструктуре
+- [Свой контур (Enterprise)](https://docs.datagent.ru/docs/cloud/on-premise): развёртывание в контуре заказчика по заявке
 - [Карта документации](https://docs.datagent.ru/docs/intro): обзор разделов
+
+## Workflows
+- [Конвейеры](https://docs.datagent.ru/docs/workflows/pipelines): многоэтапные процессы
+- [Таймлайн](https://docs.datagent.ru/docs/workflows/timeline): запуски агентов по времени
+
+## По ролям
+- [Руководитель](https://docs.datagent.ru/docs/guides): учебник, согласования и контроль команды
+- [Шпаргалка по ситуациям](https://docs.datagent.ru/docs/guides/playbook-index): куда открыть за минуту
+- [Коммерция](https://docs.datagent.ru/docs/integrations/bitrix24): обращения клиентов и конвейеры
+- [Финансы](https://docs.datagent.ru/docs/integrations/1c-connector): данные 1С, бюджеты и тарифы
+- [Поддержка](https://docs.datagent.ru/docs/concepts/inbox): входящие, согласования и Телеграм
 
 ## Concepts
 - [Что такое Datagent](https://docs.datagent.ru/docs/concepts/what-is-datagent)
 - [Как работает](https://docs.datagent.ru/docs/concepts/how-it-works)
-- [Одобрения](https://docs.datagent.ru/docs/concepts/approvals)
+- [Согласования](https://docs.datagent.ru/docs/concepts/approvals)
 - [Память](https://docs.datagent.ru/docs/concepts/memory)
 - [Бюджеты](https://docs.datagent.ru/docs/concepts/budgets)
 
 ## Integrations
 - [1С](https://docs.datagent.ru/docs/integrations/1c-connector)
+- [Внешние инструменты (MCP)](https://docs.datagent.ru/docs/integrations/mcp)
 - [Битрикс24](https://docs.datagent.ru/docs/integrations/bitrix24)
 - [GigaChat](https://docs.datagent.ru/docs/integrations/gigachat)
 - [YandexGPT](https://docs.datagent.ru/docs/integrations/yandexgpt)
 - [BrowserBridge](https://docs.datagent.ru/docs/integrations/browserbridge)
 - [Телеграм](https://docs.datagent.ru/docs/integrations/telegram)
+- [Установка BrowserBridge](https://chromewebstore.google.com/detail/datagent-browserbridge/onlphfpiiegbgjmfihbimgnmpbleaelh): расширение в Chrome Web Store
 
 ## API
 - [Обзор API](https://docs.datagent.ru/docs/api-reference/overview)
@@ -34,7 +47,8 @@
 - [Задачи](https://docs.datagent.ru/docs/api-reference/issues)
 
 ## Notes for assistants
-- В пользовательских текстах: **Телеграм**, не Telegram
-- «Офис» — экспериментальный раздел панели
+- В пользовательских текстах: **Телеграм**, не Telegram; **ИИ-исполнитель**, **панель управления**, **согласование**, **своя установка**
+- «Офис» — экспериментальный раздел панели; **Конвейеры** и **Таймлайн** — стандартные возможности для всех
 - Запросы к LLM — по ключам клиента (BYO)
 - Не выдумывать инструменты вне каталога плагинов
+- Не обещать самостоятельную промышленную установку из открытого репозитория — Enterprise через sales@datagent.ru

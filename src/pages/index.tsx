@@ -7,11 +7,11 @@ import styles from './index.module.css';
 const JOURNEY_STEPS = [
   {n: '1', title: 'Зарегистрируйтесь', desc: 'Бесплатно, без карты — на app.datagent.ru'},
   {n: '2', title: 'Запустите агента', desc: 'Шаблон или с нуля. Первый результат — 5 минут.'},
-  {n: '3', title: 'Подключите инструменты', desc: 'Bitrix24, 1С, Telegram, браузер.'},
-  {n: '4', title: 'Контролируйте', desc: 'Одобряйте действия, смотрите отчёты, масштабируйте.'},
+  {n: '3', title: 'Подключите инструменты', desc: 'Битрикс24, 1С, внешние сервисы, браузер.'},
+  {n: '4', title: 'Выстройте процесс', desc: 'Конвейеры, согласования и контроль по Таймлайну.'},
 ] as const;
 
-const INTEGRATIONS = ['Bitrix24', '1С', 'GigaChat', 'Telegram', 'BrowserBridge'] as const;
+const INTEGRATIONS = ['Битрикс24', '1С', 'GigaChat', 'Телеграм', 'BrowserBridge', 'MCP'] as const;
 
 const CARDS = [
   {
@@ -34,10 +34,17 @@ const CARDS = [
     href: '/docs/guides',
   },
   {
+    icon: '🔄',
+    title: 'Рабочие процессы',
+    desc: 'Конвейеры и Таймлайн — многоэтапная работа и контроль запусков.',
+    href: '/docs/workflows/pipelines',
+    accent: true,
+  },
+  {
     icon: '🔌',
     title: 'Интеграции',
-    desc: 'Битрикс24, 1С, GigaChat и Телеграм — подключить к своим агентам.',
-    href: '/docs/integrations/bitrix24',
+    desc: 'Битрикс24, 1С, MCP, браузер и Телеграм — подключить к своим агентам.',
+    href: '/docs/integrations',
     accent: true,
   },
   {
@@ -51,7 +58,6 @@ const CARDS = [
     title: 'Артефакты',
     desc: 'Каталог файлов — найти всё, что агент создал в задачах.',
     href: '/docs/artifacts/overview',
-    accent: true,
   },
   {
     icon: '🛠',
@@ -76,19 +82,19 @@ const CARDS = [
 export default function Home(): ReactNode {
   return (
     <Layout
-      title="Datagent"
-      description="Запустите AI-агентов для бизнеса за 5 минут. Bitrix24, 1С, GigaChat, Telegram — из коробки.">
+      title="Datagent — ИИ-исполнители для бизнеса"
+      description="ИИ-исполнители для руководителей и операционных команд: задачи, согласования, Битрикс24, 1С и контроль в одной панели.">
       <main className={styles.homePage}>
         <section className={styles.hero} aria-labelledby="home-title">
           <div className={clsx('container', styles.heroGrid)}>
             <div className={styles.heroCopy}>
               <p className={styles.eyebrow}>Облачная платформа · app.datagent.ru</p>
               <h1 id="home-title" className={styles.heroTitle}>
-                <span className="text-gradient">Datagent</span>
+                Поручите рутину <span className="text-gradient">ИИ-исполнителям</span>
               </h1>
               <p className={styles.heroSubline}>
-                Запустите AI-агентов для своего бизнеса за 5 минут. Bitrix24, 1С,
-                GigaChat и Telegram — из коробки, с журналом и одобрениями.
+                Просроченные сделки, ответы клиентам, сводки из 1С — агент готовит
+                результат, а вы контролируете работу в журнале и согласованиях.
               </p>
 
               <ul className={styles.chipRow} aria-label="Интеграции">
@@ -112,7 +118,10 @@ export default function Home(): ReactNode {
                 </Link>
               </div>
 
-              <p className={styles.timeBadge}>⏱ ~5 мин до первого агента · Free: 3 агента, 100 запусков</p>
+              <p className={styles.timeBadge}>
+                <span aria-hidden="true">⏱</span> ~5 мин до первого агента · Free: 3
+                агента, 100 запусков
+              </p>
             </div>
 
             <div className={styles.heroPreview} aria-hidden="true">
@@ -121,7 +130,7 @@ export default function Home(): ReactNode {
                   <span className={styles.previewDot} />
                   <span className={styles.previewDot} />
                   <span className={styles.previewDot} />
-                  <span className={styles.previewChromeTitle}>Задача · Bitrix24</span>
+                  <span className={styles.previewChromeTitle}>Задача · Битрикс24</span>
                 </div>
                 <div className={styles.previewBody}>
                   <div className={styles.previewMeta}>

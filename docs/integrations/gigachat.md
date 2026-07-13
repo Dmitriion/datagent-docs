@@ -71,7 +71,7 @@ description: "GigaChat в Datagent: ключи Сбера, агент в обл�
 
 → [Подключить Битрикс24](./bitrix24)
 
-:::note Для инженеров
+:::note[Для инженеров]
 
 Адаптер `gigachat_local`, пакет `@datagent/adapter-gigachat-local`, выполнение через OpenCode CLI и кэш OAuth в PostgreSQL.
 

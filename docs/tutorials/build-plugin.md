@@ -15,7 +15,7 @@ description: Как создать плагин для Datagent — манифе
 
 В облаке плагины ставятся через **менеджер плагинов** на [app.datagent.ru](https://app.datagent.ru). Пример без написания кода — [Битрикс24](../integrations/bitrix24.md). Дальше определите тип расширения в таблице ниже.
 
-:::note Для инженеров
+:::note[Для инженеров]
 Plugin SDK, обмен JSON-RPC по stdio, внутренний цикл heartbeat, `PluginWorkerManager` — детали в разделах ниже.
 :::
 

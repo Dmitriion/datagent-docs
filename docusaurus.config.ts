@@ -155,11 +155,6 @@ const config: Config = {
         src: '/js/yandex-metrika.js',
       },
     },
-    {
-      tagName: 'noscript',
-      attributes: {},
-      innerHTML: `<div><img src="https://mc.yandex.ru/watch/110571227" style="position:absolute; left:-9999px;" alt="" /></div>`,
-    },
   ],
 
   themeConfig: {
@@ -168,7 +163,7 @@ const config: Config = {
       {
         name: 'description',
         content:
-          'Справка по Datagent: облачная версия, первые шаги, GigaChat, YandexGPT, Битрикс24 и работа с агентами.',
+          'Справка Datagent для руководителей и операторов: ИИ-исполнители, согласования, Битрикс24, 1С и тарифы.',
       },
     ],
     colorMode: {
@@ -244,6 +239,9 @@ const config: Config = {
             {label: 'Быстрый старт', to: '/docs/cloud/getting-started'},
             {label: 'Введение', to: '/docs/intro'},
             {label: 'Учебник', to: '/docs/guides'},
+            {label: 'Шпаргалка по ситуациям', to: '/docs/guides/playbook-index'},
+            {label: 'Конвейеры', to: '/docs/workflows/pipelines'},
+            {label: 'Таймлайн', to: '/docs/workflows/timeline'},
             {label: 'Концепции', to: '/docs/concepts/what-is-datagent'},
             {label: 'Артефакты', to: '/docs/artifacts/overview'},
             {label: 'API Reference', to: '/docs/api-reference/overview'},
@@ -257,7 +255,7 @@ const config: Config = {
             {label: 'Тарифы', to: '/docs/cloud/pricing'},
             {label: 'Лимиты по тарифам', to: '/docs/billing/limits'},
             {label: 'Биллинг', to: '/docs/billing/overview'},
-            {label: 'Свой сервер', to: '/docs/cloud/on-premise'},
+            {label: 'Свой контур', to: '/docs/cloud/on-premise'},
             {label: 'Сценарии', to: '/docs/tutorials'},
             {label: 'История изменений', to: '/docs/changelog'},
             {label: 'Поддержка', href: 'mailto:sales@datagent.ru'},
@@ -278,6 +276,7 @@ const config: Config = {
             {label: 'YandexGPT', to: '/docs/integrations/yandexgpt'},
             {label: 'Битрикс24', to: '/docs/integrations/bitrix24'},
             {label: '1С', to: '/docs/integrations/1c-connector'},
+            {label: 'Внешние инструменты (MCP)', to: '/docs/integrations/mcp'},
             {label: 'Управление браузером', to: '/docs/integrations/browserbridge'},
             {label: 'Телеграм', to: '/docs/integrations/telegram'},
           ],

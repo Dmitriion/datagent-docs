@@ -2,7 +2,7 @@
 title: Практические сценарии
 slug: /tutorials
 sidebar_label: Обзор сценариев
-description: Пошаговые сценарии Datagent — CRM, плагины, автоматизация для операторов облака.
+description: Пошаговые сценарии Datagent — CRM, плагины, конвейеры и интеграции для операторов облака.
 ---
 
 # Практические сценарии
@@ -15,7 +15,7 @@ description: Пошаговые сценарии Datagent — CRM, плагин�
 
 | Сценарий | Для кого | Результат |
 | --- | --- | --- |
-| [Автоматизация CRM](/docs/tutorials/automate-crm) | **Оператор** и админ Bitrix24 | Чаты и лиды из CRM превращаются в задачи агенту |
+| [Автоматизация CRM](/docs/tutorials/automate-crm) | **Оператор** и админ Битрикс24 | Чаты и лиды из CRM превращаются в задачи агенту |
 | [Создание плагина](/docs/tutorials/build-plugin) | **Разработчик** интеграций | Свой worker и tools в менеджере плагинов |
 
 > **Операторам:** начните с [автоматизации CRM](/docs/tutorials/automate-crm), не с создания плагина.  
@@ -24,16 +24,15 @@ description: Пошаговые сценарии Datagent — CRM, плагин�
 ## Когда какой материал читать
 
 1. **Первый день в облаке** — [запустите первого агента за 5 минут](/docs/cloud/getting-started), затем [день 1 в учебнике](/docs/guides/01-first-day).
-2. **Нужна CRM** — [сценарий Bitrix24 → Telegram](/docs/tutorials/automate-crm) и [справка по интеграции](/docs/integrations/bitrix24).
-3. **Нужен свой инструмент** — [создание плагина](/docs/tutorials/build-plugin) и [плагины в облаке](/docs/cloud/plugins).
-4. **Задачи, память, согласования** — [задачи](/docs/concepts/issues), [память](/docs/concepts/memory), [одобрения](/docs/concepts/approvals).
-
-## Что появится дальше
-
-В плане на Q3 готовятся сценарии про **артефакты**, **рутины** и **навыки компании** — страницы появятся по мере готовности. Следите за обновлениями в [истории версий](/docs/changelog).
+2. **Нужна CRM** — [сценарий Битрикс24](/docs/tutorials/automate-crm) и [справка по интеграции](/docs/integrations/bitrix24).
+3. **Нужны данные учёта** — [1С](/docs/integrations/1c-connector) и [глава учебника](/docs/guides/08-1c-bridge).
+4. **Нужны внешние инструменты** — [MCP](/docs/integrations/mcp); браузер — [BrowserBridge](/docs/browser/setup).
+5. **Нужен повторяющийся процесс** — [Конвейеры](/docs/workflows/pipelines) и контроль по [Таймлайну](/docs/workflows/timeline).
+6. **Нужен свой инструмент** — [создание плагина](/docs/tutorials/build-plugin) и [плагины в облаке](/docs/cloud/plugins).
 
 ## Что дальше?
 
-- [Запустить первого агента](/docs/cloud/first-agent) — закрепить базовую настройку перед сложными сценариями
-- [Выбрать интеграцию](/docs/integrations) — Bitrix24, 1С, GigaChat, Telegram
+- [Запустить первого агента](/docs/cloud/first-agent) — закрепить базовую настройку
+- [Выбрать интеграцию](/docs/integrations) — Битрикс24, 1С, MCP, GigaChat, Телеграм
 - [Собрать свой плагин](/docs/tutorials/build-plugin) — когда встроенных инструментов мало
+- [История изменений](/docs/changelog) — что уже доступно в продукте

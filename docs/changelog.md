@@ -11,6 +11,20 @@ description: Что нового в Datagent — новые функции, ул
 
 ---
 
+## Июль 2026 — Конвейеры, Таймлайн, MCP и браузер из магазина
+
+**Что нового в справке:**
+
+- [Конвейеры](./workflows/pipelines) и [Таймлайн](./workflows/timeline) — стандартные рабочие процессы для всех пользователей
+- [Внешние инструменты (MCP)](./integrations/mcp) — реестр подключений для Cursor-агентов (Studio+)
+- [BrowserBridge](./integrations/browserbridge) — основной путь через [Chrome Web Store](https://chromewebstore.google.com/detail/datagent-browserbridge/onlphfpiiegbgjmfihbimgnmpbleaelh)
+- [1С](./integrations/1c-connector) — доступ Cursor-агента к разрешённым инструментам после настройки коннектора
+- [Свой сервер](./cloud/on-premise) — короткая Enterprise-страница с заявкой на [sales@datagent.ru](mailto:sales@datagent.ru)
+
+**Для кого:** операторы и руководители на [app.datagent.ru](https://app.datagent.ru).
+
+---
+
 ## Июнь 2026 — Биллинг, лимиты и справка API
 
 **Что нового:** страницы [Тарифы](./cloud/pricing), [Биллинг](./billing/overview) и [Лимиты по тарифам](./billing/limits) — единая сетка Free → Enterprise. Для разработчиков — [обзор REST API](./api-reference/overview) и [плагины (API)](./api-reference/plugins).

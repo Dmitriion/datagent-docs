@@ -36,12 +36,12 @@ description: "Облачный Datagent: регистрация, тарифы о
 
 ## Нужен свой сервер?
 
-Для компаний с жёсткими требованиями к хранению данных и отдельным условиям поддержки — раздел [Установка на свой сервер](/docs/cloud/on-premise). Напишите на **[sales@datagent.ru](mailto:sales@datagent.ru?subject=Заявка%20на%20on-premise%20Datagent)**.
+Для компаний с жёсткими требованиями к хранению данных — раздел [Свой сервер](/docs/cloud/on-premise): развёртывание в своём контуре по заявке. Напишите на **[sales@datagent.ru](mailto:sales@datagent.ru?subject=Заявка%20на%20Enterprise%20Datagent)**.
 
 ## Частые вопросы
 
 **Нужно ли что-то устанавливать на компьютер?**  
-Нет для обычной работы — только браузер и [app.datagent.ru](https://app.datagent.ru). На ПК нужны скрипты подключения только для [BrowserBridge](/docs/browser/setup).
+Нет для обычной работы — только браузер и [app.datagent.ru](https://app.datagent.ru). Для управления сайтами агентом установите расширение [BrowserBridge](/docs/browser/setup) из Chrome Web Store.
 
 **Сколько стоит начать?**  
 **Бесплатный** тариф: до 3 агентов и 100 запусков в месяц. **Solo** — 990 ₽/мес, **Studio** — 3 900 ₽/мес, **Business** — 12 900 ₽/мес. Подробнее — [Тарифы](/docs/cloud/pricing).
@@ -52,4 +52,4 @@ description: "Облачный Datagent: регистрация, тарифы о
 ## Что дальше?
 
 - [Зарегистрироваться](https://app.datagent.ru/signup) · [Быстрый старт](/docs/cloud/getting-started)
-- [Первый агент](/docs/cloud/first-agent) · [GigaChat](/docs/integrations/gigachat)
+- [Первый агент](/docs/cloud/first-agent) · [Конвейеры](/docs/workflows/pipelines) · [GigaChat](/docs/integrations/gigachat)

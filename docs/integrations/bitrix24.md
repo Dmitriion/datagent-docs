@@ -7,7 +7,7 @@ description: "Битрикс24 + GigaChat в Datagent: агент отвечае
 
 # Битрикс24
 
-:::info Studio — ответы клиентам прямо в CRM
+:::info[Studio — ответы клиентам прямо в CRM]
 **Studio** (3 900 ₽/мес) — агент читает чаты Битрикс24 и открытые линии, готовит ответ в задаче Datagent и отправляет его в CRM после вашего одобрения. [Тарифы →](../cloud/pricing)
 :::
 
@@ -17,7 +17,7 @@ description: "Битрикс24 + GigaChat в Datagent: агент отвечае
 
 ![Менеджер плагинов — установка интеграций](/img/guides/stories/06-excel-office-04-plugins.webp)
 
-:::tip Честно о возможностях
+:::tip[Честно о возможностях]
 Плагин рассчитан на **чаты и ботов**, не на полную выгрузку воронки сделок одной кнопкой. Сценарии со сделками вне чата — через [браузер](../browser/overview) (**Studio+**) или доработку под ваш процесс.
 :::
 
@@ -61,7 +61,7 @@ description: "Битрикс24 + GigaChat в Datagent: агент отвечае
 
 → [Каналы](../concepts/channels)
 
-:::note Для инженеров
+:::note[Для инженеров]
 
 Плагин `datagent.bitrix24`, polling `imbot.v2.Event.get`, issues + wakeup. **Нет** agent tools `bitrix24_*` в manifest. CRM (`crm.lead.*`, `crm.deal.*`) **не** вызывается.
 

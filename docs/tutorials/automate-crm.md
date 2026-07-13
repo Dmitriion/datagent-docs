@@ -7,7 +7,7 @@ description: Сценарий — чат Битрикс24, ответ агент
 
 **Ситуация:** сотрудник пишет боту в **чате Битрикс24** — и ответ снова уходит в личку без журнала. После этого сценария в Datagent создаётся **задача**, агент отвечает, ответ возвращается в Битрикс. Параллельно **Телеграм** присылает дайджесты или запросы на согласование команде.
 
-:::info Тариф
+:::info[Тариф]
 Мост **Bitrix24** — с тарифа **Studio** и выше. **Telegram** — на всех тарифах. См. [тарифы](/docs/cloud/pricing).
 :::
 
@@ -73,13 +73,13 @@ sequenceDiagram
   participant U as Пользователь Bitrix
   participant B24 as imbot.v2
   participant W as bitrix24 worker bitrix-poll
-  participant S as server heartbeat
+  participant S as служба запуска
   participant A as gigachat_local / yandexgpt_local
   participant TG as Telegram worker getUpdates
   U->>B24: текст в чат бота
   B24->>W: Event.get
   W->>S: issue + comment + wakeup binding.agent
-  S->>A: heartbeat run
+  S->>A: запуск агента
   A->>S: комментарий issue
   W->>B24: Chat.Message.send
   Note over TG: Параллельно: notify / digest / approvals<br/>в настроенный chat_id

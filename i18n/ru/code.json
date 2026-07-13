@@ -1,0 +1,26 @@
+{
+  "theme.SearchPage.existingResultsTitle": {
+    "message": "Результаты поиска по запросу «{query}»"
+  },
+  "theme.SearchPage.emptyResultsTitle": {
+    "message": "Поиск по документации"
+  },
+  "theme.SearchPage.searchContext.everywhere": {
+    "message": "Везде"
+  },
+  "theme.SearchPage.documentsFound.plurals": {
+    "message": "Найден 1 документ|Найдено документов: {count}"
+  },
+  "theme.SearchPage.noResultsText": {
+    "message": "Документы не найдены"
+  },
+  "theme.SearchBar.noResultsText": {
+    "message": "Ничего не найдено"
+  },
+  "theme.SearchBar.seeAll": {
+    "message": "Показать все результаты"
+  },
+  "theme.SearchBar.label": {
+    "message": "Поиск"
+  }
+}

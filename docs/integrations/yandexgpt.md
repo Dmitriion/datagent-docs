@@ -75,7 +75,7 @@ description: "YandexGPT в Datagent: сервисный аккаунт Yandex Cl
 
 → [GigaChat (Сбер)](./gigachat)
 
-:::note Для инженеров
+:::note[Для инженеров]
 
 Адаптер `yandexgpt_local`, IAM refresh, OpenCode CLI, опциональный локальный proxy с `x-folder-id`.
 

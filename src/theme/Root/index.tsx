@@ -32,10 +32,37 @@ function FaviconThemeSync(): null {
   return null;
 }
 
+function SearchLabelSync(): null {
+  React.useEffect(() => {
+    const localizeSearchLabel = () => {
+      document.querySelectorAll<HTMLInputElement>('input[aria-label="Search"]').forEach((input) => {
+        input.setAttribute('aria-label', 'Поиск');
+      });
+    };
+
+    localizeSearchLabel();
+    const observer = new MutationObserver(localizeSearchLabel);
+    observer.observe(document.body, {childList: true, subtree: true});
+
+    return () => observer.disconnect();
+  }, []);
+  return null;
+}
+
 export default function RootWrapper(props: Props): ReactNode {
   return (
     <>
       <FaviconThemeSync />
+      <SearchLabelSync />
+      <noscript>
+        <div>
+          <img
+            src="https://mc.yandex.ru/watch/110571227"
+            className="metrika-pixel"
+            alt=""
+          />
+        </div>
+      </noscript>
       <Root {...props} />
     </>
   );

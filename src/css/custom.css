@@ -54,6 +54,11 @@ body {
   color: var(--color-text);
 }
 
+.metrika-pixel {
+  position: absolute;
+  left: -9999px;
+}
+
 /* Focus */
 :focus-visible {
   outline: 2px solid var(--color-focus);
