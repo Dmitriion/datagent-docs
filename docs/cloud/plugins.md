@@ -3,7 +3,7 @@ id: cloud-plugins
 slug: /cloud/plugins
 title: Плагины Datagent — подключения и действия агента
 sidebar_label: Плагины
-description: "Плагины Datagent: Битрикс24, Телеграм, браузер, 1С и внешние инструменты (MCP)."
+description: "Плагины Datagent: Битрикс24, amoCRM / Ozon / Wildberries / ВКонтакте / VK Реклама / Авиасейлс / Селектел (preview), Телеграм, браузер, 1С и внешние инструменты (MCP)."
 ---
 
 # Плагины Datagent — подключения и действия агента
@@ -20,7 +20,7 @@ description: "Плагины Datagent: Битрикс24, Телеграм, бр�
 
 ### Коннекторы
 
-Подключают агента к внешним сервисам: [Битрикс24](../integrations/bitrix24), [Телеграм](../integrations/telegram), [1С](../integrations/1c-connector). Агент получает данные и действует от вашего имени — в рамках выданных прав и политик.
+Подключают агента к внешним сервисам: [Битрикс24](../integrations/bitrix24), [amoCRM](../integrations/amocrm), [Ozon Seller](../integrations/ozon), [Wildberries](../integrations/wildberries), [ВКонтакте](../integrations/vk), [VK Реклама](../integrations/vk-ads), [Селектел](../integrations/selectel), [Телеграм](../integrations/telegram), [1С](../integrations/1c-connector). Агент получает данные и действует от вашего имени — в рамках выданных прав и политик.
 
 ### Автоматизации
 
@@ -40,6 +40,15 @@ description: "Плагины Datagent: Битрикс24, Телеграм, бр�
 | Плагин | Зачем вам |
 | --- | --- |
 | [Битрикс24](../integrations/bitrix24) | Чаты CRM → задачи и ответы агента (**Studio+**) |
+| [amoCRM (preview)](../integrations/amocrm) | Чтение воронки / сделок / контактов через tools (**preview**, без write) |
+| [Ozon Seller (preview)](../integrations/ozon) | Каталог / FBO/FBS / аналитика / финансы — **105** tools (**preview**, без write) |
+| [Wildberries (preview)](../integrations/wildberries) | Seller API — **165** tools (**preview**, без write / ZIP) |
+| [ВКонтакте (preview)](../integrations/vk) | Сообщества / стена / медиа / маркет — **93** tools (**preview**, без write) |
+| [VK Реклама (preview)](../integrations/vk-ads) | Кабинеты Ads / статистика — **69** tools (**preview**, без write) |
+| [Яндекс 360 (preview)](../integrations/yandex360) | Directory / Admin Mail / Security — **36** tools (**preview**, без write) |
+| [Яндекс Трекер (preview)](../integrations/yandex-tracker) | Issues / очереди / scroll search — **76** tools (**preview**, без write) |
+| [Селектел (preview)](../integrations/selectel) | Облачный инвентарь Selectel — **139** tools (**preview**, без write/lifecycle) |
+| [Авиасейлс (preview)](../integrations/aviasales) | Travelpayouts цены / Flight Search — **32** tools (**preview**, без mass harvest / write) |
 | [Телеграм](../integrations/telegram) | Уведомления и согласования в мессенджере (все тарифы) |
 | [BrowserBridge](../integrations/browserbridge) | Сайты и формы на вашем ПК (**Studio+**) |
 | [Внешние инструменты (MCP)](../integrations/mcp) | Корпоративные сервисы и данные для Cursor-агентов (**Studio+**) |

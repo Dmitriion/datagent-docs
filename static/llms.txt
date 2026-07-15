@@ -33,8 +33,17 @@
 
 ## Integrations
 - [1С](https://docs.datagent.ru/docs/integrations/1c-connector)
-- [Внешние инструменты (MCP)](https://docs.datagent.ru/docs/integrations/mcp)
 - [Битрикс24](https://docs.datagent.ru/docs/integrations/bitrix24)
+- [amoCRM (preview)](https://docs.datagent.ru/docs/integrations/amocrm)
+- [Ozon Seller (preview)](https://docs.datagent.ru/docs/integrations/ozon)
+- [Wildberries (preview)](https://docs.datagent.ru/docs/integrations/wildberries)
+- [ВКонтакте (preview)](https://docs.datagent.ru/docs/integrations/vk)
+- [VK Реклама (preview)](https://docs.datagent.ru/docs/integrations/vk-ads)
+- [Яндекс 360 (preview)](https://docs.datagent.ru/docs/integrations/yandex360)
+- [Яндекс Трекер (preview)](https://docs.datagent.ru/docs/integrations/yandex-tracker)
+- [Селектел (preview)](https://docs.datagent.ru/docs/integrations/selectel)
+- [Авиасейлс (preview)](https://docs.datagent.ru/docs/integrations/aviasales)
+- [Внешние инструменты (MCP)](https://docs.datagent.ru/docs/integrations/mcp)
 - [GigaChat](https://docs.datagent.ru/docs/integrations/gigachat)
 - [YandexGPT](https://docs.datagent.ru/docs/integrations/yandexgpt)
 - [BrowserBridge](https://docs.datagent.ru/docs/integrations/browserbridge)

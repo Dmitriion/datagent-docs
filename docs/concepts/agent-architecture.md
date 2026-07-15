@@ -113,7 +113,11 @@ flowchart TB
 
 Плагины объявляют manifest и tools; host общается с worker по JSON-RPC 2.0 (stdio). **Менеджер** включает плагин в компании и выдаёт tools агенту; **агент** вызывает только то, что есть в manifest.
 
-Агент вызывает plugin tools через `POST /api/agents/me/plugin-tools/execute` (run JWT). Descriptors попадают в heartbeat **по умолчанию** (`plugin_tools_in_heartbeat`). Для research/data/presentation skills с `plugin-tool:*` в catalog `requires` действует **fail-closed allowlist**: exact tools должны быть в `adapterConfig.datagentPluginToolsSync.desiredTools`; иначе readiness → `desired_tools_missing`. На board: AgentDetail → Skills — предупреждение и **«Разрешить обязательные»** (данные из `GET …/capabilities` → `skills[].requiredPluginTools`). Для `cursor_local` дополнительно доступен native MCP `datagent-plugins` (proxy на тот же route).
+Агент вызывает plugin tools через `POST /api/agents/me/plugin-tools/execute` (run JWT + `X-Datagent-Run-Id` / issue с `projectId`). Descriptors попадают в heartbeat **по умолчанию** (`plugin_tools_in_heartbeat`). Для research/data/presentation skills с `plugin-tool:*` в catalog `requires` действует **fail-closed allowlist**: exact tools должны быть в `adapterConfig.datagentPluginToolsSync.desiredTools`; иначе readiness → `desired_tools_missing`. На board: AgentDetail → Skills — предупреждение и **«Разрешить обязательные»** (данные из `GET …/capabilities` → `skills[].requiredPluginTools`). Для `cursor_local` дополнительно доступен native MCP `datagent-plugins` (proxy на тот же route) — через него же идут **Russia connectors** (например [amoCRM](../integrations/amocrm), [Ozon Seller](../integrations/ozon), [Wildberries](../integrations/wildberries), [ВКонтакте](../integrations/vk), [VK Реклама](../integrations/vk-ads), [Яндекс 360](../integrations/yandex360), [Яндекс Трекер](../integrations/yandex-tracker), [Селектел](../integrations/selectel), [Авиасейлс](../integrations/aviasales) — preview read-only). Канон: monorepo `doc/mcp-russia-connectors.md`.
+
+:::tip[Не путать с реестром внешних MCP]
+[Внешние инструменты (MCP)](../integrations/mcp) (`datagent.mcp`) — HTTP/SSE серверы для агентов с `supportsExternalMcp`. Russia connectors **не** добавляются туда: это отдельные company plugins + F5a.
+:::
 
 ## Community skills и автономные host-gates
 
