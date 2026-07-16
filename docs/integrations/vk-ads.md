@@ -35,7 +35,7 @@ description: "Preview read-only коннектор VK Ads: планы, камп�
 
 1. Установите плагин **VK Реклама** в менеджере плагинов компании.
 2. Укажите **Bearer-токен** через секрет компании и **непустой** `allowedAccountIds`.
-3. Разрешите нужные tools агенту (`vk_ads_*` в allowlist / Skills readiness).
+3. В карточке агента → **Подключения** включите VK Рекламу и при необходимости subset (`vk_ads_*`; или Skills readiness).
 4. Проверьте на тестовой задаче: «Покажи кампании кабинета X» / «Статистику за период» — агент должен только читать.
 
 Технический канон и maturity gates: в монорепо [`doc/mcp-russia-connectors.md`](https://github.com/Dmitriion/datagent/blob/master/doc/mcp-russia-connectors.md) §11a · Waves **VA-R3**.

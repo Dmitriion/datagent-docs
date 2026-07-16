@@ -11,17 +11,41 @@ description: Что нового в Datagent — новые функции, ул
 
 ---
 
+## Июль 2026 — Unified Company Connections
+
+**Что нового в справке:**
+
+- [Внешние инструменты (MCP)](./integrations/mcp) — назначение агенту через вкладку **Подключения**; роли manage vs assign; режим «нет доступа»; без ручного dual-write JSON политики на existing agent
+- [Архитектура](./concepts/agent-architecture) — facade grants → projection `mcpPolicy` / `datagentPluginToolsSync`; deny-all `toolSubset: []`; тот же путь для Russia connectors
+
+**Для инженеров (монорепо):** RBAC `integrations:manage` vs `integrations:assign`, atomic secret-ref materialization, manifest `connectionMetadata` + readiness probe — `doc/guides/company-connections.md`, `doc/DEVELOPING.md` § Board Company Connections.
+
+**Для кого:** админы Studio+ и операторы, которые выдают MCP / 1С / preview-коннекторы агентам без правки сырого JSON.
+
+---
+
 ## Июль 2026 — MCP hardening + границы коннекторов
 
 **Что нового в справке:**
 
 - [Внешние инструменты (MCP)](./integrations/mcp) — уточнены адаптеры с `supportsExternalMcp` (не только Cursor); политика id / legacy `1c-*`; граница с Russia connectors через `datagent-plugins`
 - [Архитектура](./concepts/agent-architecture) — plugin tools / fail-closed `desiredTools` без изменений по сути; опора на тот же путь для preview-коннекторов
-- Preview-страницы [amoCRM](./integrations/amocrm), [Ozon](./integrations/ozon), [Wildberries](./integrations/wildberries), [VK](./integrations/vk), [VK Ads](./integrations/vk-ads), [Selectel](./integrations/selectel), [Aviasales](./integrations/aviasales) — единый паттерн «установить → secret refs → allowlist tools → read-only»
+- Preview-страницы [amoCRM](./integrations/amocrm), [Ozon](./integrations/ozon), [Wildberries](./integrations/wildberries), [МойСклад](./integrations/moysklad), [VK](./integrations/vk), [VK Ads](./integrations/vk-ads), [Selectel](./integrations/selectel), [Aviasales](./integrations/aviasales) — единый паттерн «установить → secret refs → allowlist tools → read-only»
 
 **Для инженеров (монорепо):** managed gateway origin (`DATAGENT_MCP_GATEWAY_ORIGIN` / listen port), redacted `cursor-config` vs internal `runtime-config`, live fail-closed smoke Russia connectors — `doc/guides/mcp-plugin.md`, `doc/DEVELOPING.md` § Russia connector plugins.
 
 **Для кого:** админы Studio+ с внешним MCP; операторы preview Russia connectors без путаницы с реестром MCP.
+
+---
+
+## Июль 2026 — МойСклад (preview MCP)
+
+**Что нового в справке:**
+
+- [МойСклад (preview)](./integrations/moysklad) — Official Remap JSON API 1.2 (**211** tools, Waves MS0–MS17 + MS-R…MS-R3b, `PLUGIN_VERSION` 1.12.0): read-only через `datagent-plugins`; weight bucket 20/3s; concurrency 2; dual probe; soft `moysklad-rate-limit-soft`; Accept charset+gzip; без write / Basic / Kaya embed / `raw_request`
+- Уточнены границы Russia connectors на [внешних инструментах (MCP)](./integrations/mcp) и в [плагинах](./cloud/plugins)
+
+**Для кого:** операторы склада / учёта МойСклад на preview; live pilot и GA — после harness evidence (`moysklad-pilot.json`).
 
 ---
 

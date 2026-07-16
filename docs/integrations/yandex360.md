@@ -34,7 +34,7 @@ description: "Preview read-only коннектор Яндекс 360: оргст�
 
 1. Установите плагин **Яндекс 360** в менеджере плагинов компании.
 2. Укажите **OAuth-токен** через секрет компании и **непустые** `allowedOrganizationIds` / `allowedDepartmentIds`.
-3. Разрешите нужные tools агенту (`y360_*` в allowlist / Skills readiness).
+3. В карточке агента → **Подключения** включите Яндекс 360 и при необходимости subset (`y360_*`; или Skills readiness).
 4. Проверьте на тестовой задаче: «Покажи пользователей отдела X» / «События аудита за сутки» — агент должен только читать.
 
 Технический канон и maturity gates: в монорепо [`doc/mcp-russia-connectors.md`](https://github.com/Dmitriion/datagent/blob/master/doc/mcp-russia-connectors.md) §5 · Waves **Y360-R3**.

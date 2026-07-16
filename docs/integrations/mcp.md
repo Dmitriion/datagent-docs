@@ -15,7 +15,7 @@ description: Подключите внешние сервисы и данные 
 Внешний реестр MCP инжектируется в локальные CLI-агенты с capability **`supportsExternalMcp`**: **Cursor**, **OpenCode** (и RU-обёртки GigaChat / YandexGPT / Qwen / DeepSeek), **Claude Code**, **Codex**. Самый типичный сценарий на board — Cursor. Адаптеры без этой capability (например gateway/process-only) внешний реестр **не** получают.
 :::
 
-**MCP** — способ подключить к ИИ-исполнителю **внешние инструменты и данные**: справочники, документацию, корпоративные сервисы, специализированные API. Сначала вы добавляете подключение в панели Datagent, затем разрешаете его нужному агенту с поддержкой внешнего MCP.
+**MCP** — способ подключить к ИИ-исполнителю **внешние инструменты и данные**: справочники, документацию, корпоративные сервисы, специализированные API. Сначала вы добавляете подключение в панели Datagent, затем назначаете его агенту на вкладке **Подключения** (единый каталог company connections).
 
 Расшифровка для любопытных: MCP — *Model Context Protocol*, общий язык, на котором агент и внешний сервис договариваются о доступных действиях.
 
@@ -29,6 +29,7 @@ description: Подключите внешние сервисы и данные 
 | **[ВКонтакте](./vk)** / **[VK Реклама](./vk-ads)** | Оператор SMM / Ads | Read-only Social (**93**) и Ads (**69**) — тоже через `datagent-plugins`, не через этот реестр |
 | **[Яндекс 360](./yandex360)** / **[Яндекс Трекер](./yandex-tracker)** | Оператор Directory / Tracker | Read-only оргструктура/почта/audit и задачи/очереди — тоже через `datagent-plugins`, не через этот реестр |
 | **[Селектел](./selectel)** | Оператор облака | Read-only инвентарь Selectel (**139** tools) — тоже через `datagent-plugins`, не через этот реестр |
+| **[МойСклад](./moysklad)** | Оператор склада / учёта | Read-only Remap 1.2 (**211** tools) — тоже через `datagent-plugins`, не через этот реестр |
 | **[Авиасейлс](./aviasales)** | Оператор travel / цены | Read-only Travelpayouts Data API + Flight Search (**32** tools) — тоже через `datagent-plugins`, не через этот реестр |
 | **MCP-сервер Datagent** | Разработчики | Доступ к API Datagent из внешних IDE — не этот раздел |
 
@@ -52,11 +53,15 @@ description: Подключите внешние сервисы и данные 
 
 1. Убедитесь, что тариф компании **Studio** или выше.
 2. [app.datagent.ru](https://app.datagent.ru) → **Менеджер плагинов** → включите плагин **MCP**.
-3. Откройте страницу **MCP** компании (или вкладку интеграций MCP).
+3. Откройте страницу **MCP** компании (или вкладку интеграций MCP). Нужны права **управления интеграциями** (`integrations:manage`).
 4. Добавьте подключение: понятное имя, адрес сервиса, способ входа (без входа / токен / авторизация по ссылке).
 5. Нажмите **Проверить** — дождитесь статуса «в сети» и списка доступных инструментов.
-6. В карточке агента (**Cursor** или другой с external MCP) разрешите это подключение в группе инструментов MCP. **Имя в политике агента должно совпасть** с id подключения (`policyServerId` / legacy `cursorServerName`). Для 1С допустимы исторические id вида `1c-erp-http`.
+6. В карточке агента откройте **Подключения** и включите это подключение (при необходимости — только выбранные инструменты или «нет доступа»). Нужны права **назначения** (`integrations:assign`; у operator есть по умолчанию). **Имя / id подключения** должно совпасть с id в реестре (`policyServerId` / legacy `cursorServerName`). Для 1С допустимы исторические id вида `1c-erp-http`.
 7. Создайте короткую тестовую задачу и попросите агента вызвать инструмент из списка.
+
+:::tip[Не правьте JSON политики вручную]
+На уже созданном агенте блок MCP в настройках — **только сводка**. Назначение и снятие — через **Подключения**, иначе можно получить рассинхрон.
+:::
 
 ## Состояния подключения
 
@@ -75,8 +80,10 @@ description: Подключите внешние сервисы и данные 
 ## Ограничения
 
 - Секреты и токены храните в **секретах компании**, не в тексте задачи.
-- Не обещайте доступ «любому агенту сразу» — только тем, кому выдали разрешение.
-- 1С подключается отдельно через [1С Коннектор](./1c-connector), даже если там тоже используется MCP-протокол.
+- Не обещайте доступ «любому агенту сразу» — только тем, кому выдали разрешение на вкладке **Подключения**.
+- Режим «нет доступа» (пустой список tools при включённом подключении) блокирует инструменты этого connection.
+- 1С подключается отдельно через [1С Коннектор](./1c-connector), даже если там тоже используется MCP-протокол. Назначение агенту — тот же экран **Подключения**.
+- Preview Russia connectors ([amoCRM](./amocrm) и др.) тоже назначаются через **Подключения**, но вызываются как plugin tools, не через этот реестр HTTP MCP.
 
 ## Частые вопросы
 
@@ -105,6 +112,10 @@ description: Подключите внешние сервисы и данные 
 
 → [Ozon Seller (preview)](./ozon)
 
+→ [Авито (preview)](./avito)
+
+→ [МойСклад (preview)](./moysklad)
+
 → [Селектел (preview)](./selectel)
 
 → [Авиасейлс (preview)](./aviasales)
@@ -118,6 +129,6 @@ description: Подключите внешние сервисы и данные 
 <details>
 <summary>Для разработчиков</summary>
 
-Плагин `datagent.mcp`, инжекция в local CLI runs через `datagentInjectedMcpServers` (адаптеры с `supportsExternalMcp`), политика агента по `policyServerId` (legacy `cursorServerName`; legacy `1c-*` IDs допустимы). Managed gateway: `DATAGENT_MCP_GATEWAY_MODE=1` + origin через `resolveMcpGatewayHttpOrigin` (`DATAGENT_MCP_GATEWAY_ORIGIN` / `DATAGENT_PUBLIC_URL` / listen port). Отдельно: `@datagent/mcp-server` (stdio → REST Datagent), virtual `datagent-plugins` (в т.ч. Russia connectors: amoCRM, **Ozon Seller 105** / OR4, **Wildberries 165** / W-R3, **ВКонтакте 93** / V-R3, **VK Ads 69** / VA-R3, Яндекс 360 **36** / Y360-R3, Трекер **76**, Селектел **139** / SE-R3, Авиасейлс **32** / AS-R4), канон [`mcp-russia-connectors.md`](https://github.com/Dmitriion/datagent/blob/master/doc/mcp-russia-connectors.md). См. [Архитектура](../concepts/agent-architecture).
+Плагин `datagent.mcp`, инжекция в local CLI runs через `datagentInjectedMcpServers` (адаптеры с `supportsExternalMcp`), политика агента по `policyServerId` (legacy `cursorServerName`; legacy `1c-*` IDs допустимы). Managed gateway: `DATAGENT_MCP_GATEWAY_MODE=1` + origin через `resolveMcpGatewayHttpOrigin` (`DATAGENT_MCP_GATEWAY_ORIGIN` / `DATAGENT_PUBLIC_URL` / listen port). Отдельно: `@datagent/mcp-server` (stdio → REST Datagent), virtual `datagent-plugins` (в т.ч. Russia connectors: amoCRM, **МойСклад 211** / MS-R3b, **Ozon Seller 105** / OR4, **Wildberries 165** / W-R3, **Авито 104** / AV-R4a, **ВКонтакте 93** / V-R3, **VK Ads 69** / VA-R3, Яндекс 360 **36** / Y360-R3, Трекер **76**, Селектел **139** / SE-R3, Авиасейлс **32** / AS-R4), канон [`mcp-russia-connectors.md`](https://github.com/Dmitriion/datagent/blob/master/doc/mcp-russia-connectors.md). См. [Архитектура](../concepts/agent-architecture).
 
 </details>

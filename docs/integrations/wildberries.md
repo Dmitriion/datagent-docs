@@ -47,7 +47,7 @@ description: "Preview read-only коннектор Wildberries: карточки
 1. Установите плагин **Wildberries** в менеджере плагинов компании.
 2. Создайте secret с Seller API JWT и укажите `apiTokenSecretRef` (токен в запрос уходит **как есть**, без префикса `Bearer`).
 3. При ограничении складов заполните **`allowedWarehouseIds`** (пустой allowlist блокирует warehouse-scoped tools).
-4. Разрешите нужные tools агенту (`wb_*` в allowlist / Skills readiness). Учитывайте **pii** / **money** tools.
+4. В карточке агента → **Подключения** включите Wildberries и при необходимости subset (`wb_*`; или Skills readiness). Учитывайте **pii** / **money** tools.
 5. Проверьте на тестовой задаче: «Покажи новые FBS-заказы» / «Список карточек» — агент должен только читать.
 
 Технический канон и maturity gates: в монорепо [`doc/mcp-russia-connectors.md`](https://github.com/Dmitriion/datagent/blob/master/doc/mcp-russia-connectors.md) §10 · Waves **W-R3**.
@@ -62,6 +62,10 @@ description: "Preview read-only коннектор Wildberries: карточки
 ## Что дальше
 
 → [Ozon Seller (preview)](./ozon) — каталог и продажи Ozon  
+
+→ [Авито (preview)](./avito) — Business API объявления / Ads / Autoteka  
+
+→ [МойСклад (preview)](./moysklad) — склад / учёт Remap  
 
 → [amoCRM (preview)](./amocrm) — чтение CRM  
 

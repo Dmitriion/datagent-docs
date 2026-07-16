@@ -105,7 +105,7 @@ const sidebars: SidebarsConfig = {
         slug: 'integrations',
         title: 'Интеграции',
         description:
-          'GigaChat, YandexGPT, Битрикс24, amoCRM / Ozon / Wildberries / ВКонтакте / VK Реклама (preview), Селектел / Авиасейлс (preview), Телеграм, 1С, внешние инструменты и управление браузером.',
+          'GigaChat, YandexGPT, Битрикс24, amoCRM / Ozon / Wildberries / Авито / МойСклад / ВКонтакте / VK Реклама (preview), Селектел / Авиасейлс (preview), Телеграм, 1С, внешние инструменты и управление браузером.',
       },
       items: [
         'integrations/gigachat',
@@ -114,6 +114,8 @@ const sidebars: SidebarsConfig = {
         'integrations/amocrm',
         'integrations/ozon',
         'integrations/wildberries',
+        'integrations/avito',
+        'integrations/moysklad',
         'integrations/vk',
         'integrations/vk-ads',
         'integrations/yandex360',

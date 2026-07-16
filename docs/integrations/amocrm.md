@@ -41,7 +41,7 @@ description: "Preview read-only коннектор amoCRM: сделки, кон�
 
 1. Установите плагин **amoCRM** в менеджере плагинов компании.
 2. В настройках укажите **Bearer-токен** через **секрет компании** (`secret_ref`) и **непустой** список `allowedPipelineIds`.
-3. Разрешите нужные plugin tools агенту (allowlist / Skills readiness, если skill требует tools).
+3. В карточке агента откройте **Подключения**, включите amoCRM и при необходимости выберите subset tools (или Skills readiness, если skill требует tools).
 4. Проверьте на тестовой задаче: «Покажи сделки в воронке X» — агент должен вызвать tools чтения, не пытаться писать в CRM.
 
 Технический канон и maturity gates: в монорепо [`doc/mcp-russia-connectors.md`](https://github.com/Dmitriion/datagent/blob/master/doc/mcp-russia-connectors.md).

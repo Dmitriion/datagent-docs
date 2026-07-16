@@ -45,7 +45,7 @@ description: "Preview read-only коннектор Ozon Seller API: товары
 1. Установите плагин **Ozon Seller** в менеджере плагинов компании.
 2. Укажите **Client-Id** и **Api-Key** через секреты компании (`clientIdSecretRef`, `apiKeySecretRef`).
 3. При необходимости задайте **allowedWarehouseIds** (остатки / склады / поставки фильтруются по allowlist).
-4. Разрешите нужные tools агенту (`ozon_*` в allowlist / Skills readiness).
+4. В карточке агента → **Подключения** включите Ozon и при необходимости subset (`ozon_*`; или Skills readiness).
 5. Проверьте: «Список товаров» / «Невыполненные FBS» / «Остатки по складам» — агент должен только читать.
 
 Технический канон и maturity gates: в монорепо [`doc/mcp-russia-connectors.md`](https://github.com/Dmitriion/datagent/blob/master/doc/mcp-russia-connectors.md) §9 · Waves **OR4** · package README `packages/plugins/plugin-ozon-seller`.
@@ -60,6 +60,10 @@ description: "Preview read-only коннектор Ozon Seller API: товары
 ## Что дальше
 
 → [Wildberries (preview)](./wildberries) — Seller API WB  
+
+→ [Авито (preview)](./avito) — Business API объявления / Ads / Autoteka  
+
+→ [МойСклад (preview)](./moysklad) — склад / учёт Remap  
 
 → [Селектел (preview)](./selectel) — облачный инвентарь  
 

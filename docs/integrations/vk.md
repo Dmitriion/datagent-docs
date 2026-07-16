@@ -35,7 +35,7 @@ description: "Preview read-only коннектор VK Social: сообществ
 
 1. Установите плагин **ВКонтакте** в менеджере плагинов компании.
 2. Укажите **access token** через секрет компании и **непустой** `allowedGroupIds`.
-3. Разрешите нужные tools агенту (`vk_*` в allowlist / Skills readiness).
+3. В карточке агента → **Подключения** включите ВКонтакте и при необходимости subset (`vk_*`; или Skills readiness).
 4. Проверьте на тестовой задаче: «Покажи последние посты сообщества X» — агент должен только читать.
 
 Технический канон и maturity gates: в монорепо [`doc/mcp-russia-connectors.md`](https://github.com/Dmitriion/datagent/blob/master/doc/mcp-russia-connectors.md) §11 · Waves **V-R3**.

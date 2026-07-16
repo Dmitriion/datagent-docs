@@ -33,7 +33,7 @@ description: "Preview read-only коннектор Яндекс Трекер: is
 
 1. Установите плагин **Яндекс Трекер**.
 2. Укажите **OAuth-токен** (секрет) и **X-Cloud-Org-Id**; задайте **непустой** `allowedQueueKeys`.
-3. Разрешите tools агенту (`ytracker_*`).
+3. В карточке агента → **Подключения** включите Яндекс Трекер и при необходимости subset (`ytracker_*`).
 4. Проверьте: «Найди открытые задачи в очереди ENG» — только чтение; scroll — через search + clear scroll.
 
 Технический канон: [`doc/mcp-russia-connectors.md`](https://github.com/Dmitriion/datagent/blob/master/doc/mcp-russia-connectors.md) · package README в монорепо `packages/plugins/plugin-yandex-tracker`.

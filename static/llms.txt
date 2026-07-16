@@ -37,6 +37,7 @@
 - [amoCRM (preview)](https://docs.datagent.ru/docs/integrations/amocrm)
 - [Ozon Seller (preview)](https://docs.datagent.ru/docs/integrations/ozon)
 - [Wildberries (preview)](https://docs.datagent.ru/docs/integrations/wildberries)
+- [МойСклад (preview)](https://docs.datagent.ru/docs/integrations/moysklad)
 - [ВКонтакте (preview)](https://docs.datagent.ru/docs/integrations/vk)
 - [VK Реклама (preview)](https://docs.datagent.ru/docs/integrations/vk-ads)
 - [Яндекс 360 (preview)](https://docs.datagent.ru/docs/integrations/yandex360)
@@ -57,6 +58,7 @@
 
 ## Notes for assistants
 - В пользовательских текстах: **Телеграм**, не Telegram; **ИИ-исполнитель**, **панель управления**, **согласование**, **своя установка**
+- Назначение MCP / 1С / preview-коннекторов агенту — вкладка **Подключения** (не dual-write сырого JSON политики на существующем агенте)
 - «Офис» — экспериментальный раздел панели; **Конвейеры** и **Таймлайн** — стандартные возможности для всех
 - Запросы к LLM — по ключам клиента (BYO)
 - Не выдумывать инструменты вне каталога плагинов

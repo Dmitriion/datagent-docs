@@ -44,7 +44,7 @@ description: "Preview read-only коннектор Selectel: проекты, с�
 2. Укажите **static token** (`tokenSecretRef`) **или** Keystone username/password через секреты компании.
 3. Задайте **projectId** и **region** в config плагина (агент не может переопределить их в вызове tool).
 4. Для OpenStack при static token укажите `openstackEndpoints` и/или `openstackBaseUrl`. Tickets / IPAM / reports требуют **static** `tokenSecretRef`.
-5. Разрешите нужные tools агенту (`selectel_*` в allowlist / Skills readiness).
+5. В карточке агента → **Подключения** включите Selectel и при необходимости subset (`selectel_*`; или Skills readiness).
 6. Проверьте на тестовой задаче: «Покажи проекты и квоты» / «Список серверов» — агент должен только читать.
 
 Технический канон и maturity gates: в монорепо [`doc/mcp-russia-connectors.md`](https://github.com/Dmitriion/datagent/blob/master/doc/mcp-russia-connectors.md) §15 · Waves **SE-R3**.
@@ -57,6 +57,8 @@ description: "Preview read-only коннектор Selectel: проекты, с�
 - **SE-R4** (жёсткий RPS SlidingWindow, durable Keystone в plugin.state) — backlog: только после live-метрик `rateLimited` / подтверждённого multi-worker stampede.
 
 ## Что дальше
+
+→ [МойСклад (preview)](./moysklad) — склад / учёт Remap  
 
 → [Авиасейлс (preview)](./aviasales) — цены / Flight Search  
 

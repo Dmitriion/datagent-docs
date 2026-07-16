@@ -43,7 +43,7 @@ description: "Preview read-only коннектор Travelpayouts/Aviasales: Data
 2. Укажите **Travelpayouts token** через секрет компании (`tokenSecretRef`).
 3. Для Flight Search задайте **partnerMarker** и **searchHost**; передавайте **публичный** `user_ip` (не localhost).
 4. Booking-clicks: включите **`enableBookingClicks`** только при пользовательском intent; сначала `list_offer_agencies`.
-5. Разрешите нужные tools агенту (`aviasales_*` в allowlist / Skills readiness).
+5. В карточке агента → **Подключения** включите Авиасейлс и при необходимости subset (`aviasales_*`; или Skills readiness).
 6. Проверьте: «Дешёвые цены MOW→LED на август» / «Живой поиск на завтра» — агент должен читать, без массовых кликов.
 
 Технический канон и maturity gates: в монорепо [`doc/mcp-russia-connectors.md`](https://github.com/Dmitriion/datagent/blob/master/doc/mcp-russia-connectors.md) §7 · Waves **AS-R4** · package README `packages/plugins/plugin-aviasales`.

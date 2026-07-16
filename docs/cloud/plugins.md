@@ -3,7 +3,7 @@ id: cloud-plugins
 slug: /cloud/plugins
 title: Плагины Datagent — подключения и действия агента
 sidebar_label: Плагины
-description: "Плагины Datagent: Битрикс24, amoCRM / Ozon / Wildberries / ВКонтакте / VK Реклама / Авиасейлс / Селектел (preview), Телеграм, браузер, 1С и внешние инструменты (MCP)."
+description: "Плагины Datagent: Битрикс24, amoCRM / Ozon / Wildberries / МойСклад / ВКонтакте / VK Реклама / Авиасейлс / Селектел (preview), Телеграм, браузер, 1С и внешние инструменты (MCP)."
 ---
 
 # Плагины Datagent — подключения и действия агента
@@ -20,7 +20,7 @@ description: "Плагины Datagent: Битрикс24, amoCRM / Ozon / Wildber
 
 ### Коннекторы
 
-Подключают агента к внешним сервисам: [Битрикс24](../integrations/bitrix24), [amoCRM](../integrations/amocrm), [Ozon Seller](../integrations/ozon), [Wildberries](../integrations/wildberries), [ВКонтакте](../integrations/vk), [VK Реклама](../integrations/vk-ads), [Селектел](../integrations/selectel), [Телеграм](../integrations/telegram), [1С](../integrations/1c-connector). Агент получает данные и действует от вашего имени — в рамках выданных прав и политик.
+Подключают агента к внешним сервисам: [Битрикс24](../integrations/bitrix24), [amoCRM](../integrations/amocrm), [Ozon Seller](../integrations/ozon), [Wildberries](../integrations/wildberries), [МойСклад](../integrations/moysklad), [ВКонтакте](../integrations/vk), [VK Реклама](../integrations/vk-ads), [Селектел](../integrations/selectel), [Телеграм](../integrations/telegram), [1С](../integrations/1c-connector). Агент получает данные и действует от вашего имени — в рамках выданных прав и политик.
 
 ### Автоматизации
 
@@ -43,6 +43,7 @@ description: "Плагины Datagent: Битрикс24, amoCRM / Ozon / Wildber
 | [amoCRM (preview)](../integrations/amocrm) | Чтение воронки / сделок / контактов через tools (**preview**, без write) |
 | [Ozon Seller (preview)](../integrations/ozon) | Каталог / FBO/FBS / аналитика / финансы — **105** tools (**preview**, без write) |
 | [Wildberries (preview)](../integrations/wildberries) | Seller API — **165** tools (**preview**, без write / ZIP) |
+| [МойСклад (preview)](../integrations/moysklad) | Remap 1.2 склад / учёт — **211** tools (**preview**, без write / Basic / Kaya) |
 | [ВКонтакте (preview)](../integrations/vk) | Сообщества / стена / медиа / маркет — **93** tools (**preview**, без write) |
 | [VK Реклама (preview)](../integrations/vk-ads) | Кабинеты Ads / статистика — **69** tools (**preview**, без write) |
 | [Яндекс 360 (preview)](../integrations/yandex360) | Directory / Admin Mail / Security — **36** tools (**preview**, без write) |
