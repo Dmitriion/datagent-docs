@@ -4,7 +4,7 @@
 {
   "extends": "@docusaurus/tsconfig",
   "compilerOptions": {
-
+        "paths": { "*": ["./node_modules/@docusaurus/tsconfig/*"] },
     "ignoreDeprecations": "6.0",
     "strict": true
   },
