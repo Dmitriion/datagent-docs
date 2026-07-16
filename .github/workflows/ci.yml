@@ -23,8 +23,8 @@ jobs:
   build:
     name: build
     runs-on: ubuntu-latest
-        env:
-              YANDEX_VERIFICATION: ${{ secrets.YANDEX_VERIFICATION }}
+    env:
+      YANDEX_VERIFICATION: ${{ secrets.YANDEX_VERIFICATION }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
