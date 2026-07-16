@@ -84,6 +84,6 @@ description: Агент открывает сайты в вашем Chrome че�
 <details>
 <summary>Для разработчиков</summary>
 
-Плагин `datagent.browserbridge`, инструменты `browser_navigate`, `browser_screenshot`, `browser_click`, `browser_fill_form` и другие. API статуса: `GET …/browserbridge/status`. См. [Архитектура](../concepts/agent-architecture.md).
+Плагин `datagent.browserbridge`, инструменты `browser_navigate`, `browser_screenshot`, `browser_click`, `browser_fill_form` и другие. API статуса: `GET …/browserbridge/status`. См. [Архитектура](../concepts/agent-architecture).
 
 </details>

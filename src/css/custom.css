@@ -65,15 +65,10 @@ body {
   outline-offset: 2px;
 }
 
-.text-gradient {
-  background: linear-gradient(
-    135deg,
-    oklch(0.88 0.1 192),
-    oklch(0.78 0.12 75)
-  );
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+/* Brand emphasis — solid, no gradient text */
+.text-brand {
+  color: inherit;
+  font-weight: inherit;
 }
 
 .surface {
@@ -124,7 +119,7 @@ body {
   flex: 0 0 auto;
   min-width: 0;
   margin-right: 0.25rem;
-  max-width: 9rem;
+  max-width: none;
 }
 
 .navbar__logo {
@@ -145,13 +140,14 @@ body {
 
 .navbar__title {
   font-family: var(--font-display);
-  font-weight: 800;
+  font-weight: 700;
   font-size: clamp(0.9375rem, 1.2vw, 1.0625rem);
-  letter-spacing: -0.03em;
+  letter-spacing: -0.025em;
   line-height: 1.2;
   white-space: nowrap;
   overflow: visible;
   text-overflow: unset;
+  flex-shrink: 0;
 }
 
 .navbar__items {
@@ -193,7 +189,7 @@ body {
 
 @media (max-width: 768px) {
   .navbar__link--hide-md {
-    display: none;
+    display: none !important;
   }
 
   .navbar--cta,
@@ -205,7 +201,12 @@ body {
 
 @media (max-width: 480px) {
   .navbar__brand {
-    max-width: 6.5rem;
+    max-width: none;
+  }
+
+  /* Логотип достаточно идентифицирует бренд; освобождаем место под CTA */
+  .navbar__title {
+    display: none;
   }
 }
 
@@ -232,16 +233,13 @@ body {
   --ifm-heading-font-family: var(--font-display);
 }
 
-.theme-doc-markdown h1 {
-  text-wrap: balance;
-}
-
 .theme-doc-markdown table {
   display: table;
   width: 100%;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   overflow: hidden;
+  font-variant-numeric: tabular-nums;
 }
 
 .theme-doc-markdown th,
@@ -250,9 +248,10 @@ body {
 }
 
 .theme-doc-markdown blockquote {
-  border-left: 4px solid var(--color-primary);
+  border-left: 3px solid var(--color-border);
   background: var(--color-inset);
   border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  color: var(--color-text);
 }
 
 [data-theme='dark'] .docusaurus-highlighted-code-line {
@@ -286,10 +285,20 @@ body {
 
 /* ——— Premium docs chrome (P0–P2) ——— */
 
+/*
+ * IMPORTANT: do NOT put backdrop-filter / filter / transform on .navbar.
+ * They create a containing block and clip Infima's position:fixed
+ * .navbar-sidebar to the navbar height (~drawer broken on mobile).
+ */
 .navbar {
   border-bottom: 1px solid var(--color-border);
-  backdrop-filter: blur(12px) saturate(1.2);
-  background: color-mix(in oklch, var(--ifm-navbar-background-color) 88%, transparent);
+  background: color-mix(in oklch, var(--ifm-navbar-background-color) 96%, transparent);
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+/* Announcement уже учитывает notch — не дублируем отступ у navbar */
+body:has(div[class*='announcementBar']) .navbar {
+  padding-top: 0;
 }
 
 .navbar__link,
@@ -336,20 +345,27 @@ body {
 
 .theme-doc-markdown h1 {
   font-size: var(--text-doc-title);
-  letter-spacing: -0.03em;
+  letter-spacing: -0.025em;
   line-height: var(--leading-tight);
-  margin-bottom: 1rem;
+  font-weight: 700;
+  margin-block: 0 var(--space-4);
+  text-wrap: balance;
 }
 
 .theme-doc-markdown h2 {
   text-wrap: balance;
   letter-spacing: -0.02em;
-  margin-top: 2.25rem;
+  font-size: var(--text-h2);
+  font-weight: 700;
+  margin-block: var(--space-10) var(--space-3);
+  line-height: var(--leading-tight);
 }
 
 .theme-doc-markdown h3 {
   font-size: var(--text-h3);
   letter-spacing: -0.015em;
+  font-weight: 600;
+  margin-block: var(--space-8) var(--space-2);
 }
 
 .theme-doc-markdown p,
@@ -362,11 +378,27 @@ body {
   transition: opacity var(--duration) var(--ease-out);
 }
 
-.theme-doc-markdown
-  :is(h2, h3, h4):hover
-  .hash-link:focus-visible,
-.theme-doc-markdown :is(h2, h3, h4):hover .hash-link {
+.theme-doc-markdown :is(h2, h3, h4):focus-within .hash-link,
+.theme-doc-markdown a.hash-link:focus-visible {
   opacity: 1;
+}
+
+@media (hover: hover) {
+  .theme-doc-markdown :is(h2, h3, h4):hover .hash-link {
+    opacity: 1;
+  }
+}
+
+/* Touch / coarse pointer: якоря всегда слегка доступны */
+@media (hover: none) {
+  .theme-doc-markdown a.hash-link {
+    opacity: 0.45;
+  }
+
+  .theme-doc-markdown :is(h2, h3, h4):focus-within .hash-link,
+  .theme-doc-markdown a.hash-link:active {
+    opacity: 1;
+  }
 }
 
 .theme-doc-markdown tbody tr:nth-child(even) {
@@ -375,7 +407,7 @@ body {
 
 @media (hover: hover) {
   .theme-doc-markdown tbody tr:hover {
-    background: var(--color-primary-soft);
+    background: color-mix(in oklch, var(--color-inset) 70%, var(--color-primary-soft));
   }
 }
 
@@ -387,13 +419,14 @@ body {
   }
 }
 
-/* Admonitions — brand strip + surface */
+/* Admonitions — quiet brand strip */
 .alert {
   --ifm-alert-border-width: 0;
-  border-left-width: 4px;
+  border-left-width: 3px;
   border-left-style: solid;
-  padding: 1rem 1.15rem;
+  padding: var(--space-4) var(--space-5);
   box-shadow: none;
+  border-radius: var(--radius-sm);
 }
 
 .alert--secondary {
@@ -403,19 +436,19 @@ body {
 
 .alert--success,
 .alert--tip {
-  border-left-color: var(--color-success);
-  background: var(--color-success-bg);
+  border-left-color: color-mix(in oklch, var(--color-success) 70%, var(--color-border));
+  background: var(--color-inset);
   color: var(--color-text);
 }
 
 .alert--info {
-  border-left-color: var(--color-info);
-  background: var(--color-info-bg);
+  border-left-color: color-mix(in oklch, var(--color-info) 65%, var(--color-border));
+  background: var(--color-inset);
   color: var(--color-text);
 }
 
 .alert--warning {
-  border-left-color: var(--color-warning);
+  border-left-color: color-mix(in oklch, var(--color-warning) 75%, var(--color-border));
   background: var(--color-warning-bg);
   color: var(--color-text);
 }
@@ -428,7 +461,7 @@ body {
 
 .alert__title {
   font-family: var(--font-display);
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: -0.01em;
 }
 
@@ -450,6 +483,10 @@ mark,
 }
 
 /* Footer touch targets */
+.footer {
+  padding-bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px));
+}
+
 .footer__link-item {
   padding: 0.35rem 0;
   min-height: 2.75rem;
@@ -462,6 +499,26 @@ mark,
   letter-spacing: -0.01em;
 }
 
+@media (max-width: 768px) {
+  .footer__links {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem 0;
+  }
+
+  .footer__col {
+    margin-bottom: 0 !important;
+  }
+
+  .footer__title {
+    margin-bottom: 0.35rem;
+  }
+
+  .footer__item {
+    margin-top: 0 !important;
+  }
+}
+
 /* Color mode toggle */
 .navbar .clean-btn:focus-visible {
   outline: 2px solid var(--color-focus);
@@ -469,6 +526,40 @@ mark,
 }
 
 /* Breadcrumbs */
+.breadcrumbs {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 0.15rem;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.breadcrumbs__item {
+  flex: 0 1 auto;
+  min-width: 0;
+}
+
+.breadcrumbs__item:not(.breadcrumbs__item--active) {
+  max-width: 42%;
+}
+
+.breadcrumbs__link {
+  display: block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-height: 2rem;
+  line-height: 2rem;
+  padding-inline: 0.35rem;
+}
+
+.breadcrumbs__item--active {
+  flex: 0 1 auto;
+  max-width: 58%;
+}
+
 .breadcrumbs__item--active .breadcrumbs__link {
   color: var(--color-text);
   font-weight: 600;
@@ -494,32 +585,28 @@ main[class*='notFound'] h1 {
   justify-content: center;
   border-radius: var(--radius-md) !important;
   padding: 0.45rem 1rem !important;
-  font-weight: 700 !important;
+  font-weight: 600 !important;
   font-size: var(--text-small) !important;
   letter-spacing: -0.01em;
   line-height: 1.25;
-  border: 1.5px solid transparent;
+  border: 1px solid transparent;
   white-space: nowrap;
   transition:
     background var(--duration) var(--ease-out),
     border-color var(--duration) var(--ease-out),
-    box-shadow var(--duration) var(--ease-out),
-    color var(--duration) var(--ease-out),
-    translate var(--duration) var(--ease-out);
+    color var(--duration) var(--ease-out);
 }
 
 .navbar--cta {
   background: var(--ifm-color-primary) !important;
   border-color: var(--ifm-color-primary) !important;
   color: var(--color-text-inverse) !important;
-  box-shadow: 0 2px 10px color-mix(in oklch, var(--ifm-color-primary) 40%, transparent);
+  box-shadow: none;
 
   &:hover {
     background: var(--ifm-color-primary-dark) !important;
     border-color: var(--ifm-color-primary-dark) !important;
     color: var(--color-text-inverse) !important;
-    box-shadow: 0 4px 16px color-mix(in oklch, var(--ifm-color-primary) 50%, transparent);
-    translate: 0 -1px;
   }
 }
 
@@ -527,13 +614,12 @@ main[class*='notFound'] h1 {
   background: var(--color-surface-elevated) !important;
   border-color: var(--color-border) !important;
   color: var(--color-text) !important;
-  box-shadow: var(--shadow-sm);
+  box-shadow: none;
 
   &:hover {
     background: var(--color-inset) !important;
-    border-color: color-mix(in oklch, var(--color-primary) 40%, var(--color-border)) !important;
+    border-color: color-mix(in oklch, var(--color-primary) 35%, var(--color-border)) !important;
     color: var(--color-primary) !important;
-    translate: 0 -1px;
   }
 }
 
@@ -548,11 +634,19 @@ main[class*='notFound'] h1 {
   }
 }
 
+/* После pill-кнопок: hide-md должен перекрывать display:inline-flex !important */
+@media (max-width: 768px) {
+  .navbar__link--hide-md {
+    display: none !important;
+  }
+}
+
 /* Announcement bar */
 div[class*='announcementBar'] {
   font-size: var(--text-small);
   font-weight: 500;
   letter-spacing: 0.01em;
+  padding-top: env(safe-area-inset-top, 0px);
 
   a {
     color: inherit;
@@ -564,6 +658,135 @@ div[class*='announcementBar'] {
     &:hover {
       opacity: 0.92;
     }
+  }
+}
+
+@media (max-width: 430px) {
+  div[class*='announcementBar'] {
+    font-size: 0.75rem;
+    line-height: 1.35;
+    padding-block: 0.35rem;
+  }
+}
+
+/* ——— Mobile chrome: touch, drawer, density ——— */
+
+.navbar__toggle {
+  width: 2.75rem;
+  height: 2.75rem;
+  margin-inline: -0.35rem 0.1rem;
+}
+
+@media (max-width: 996px) {
+  .navbar__toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.navbar .navbar__toggle svg,
+.navbar-sidebar__close svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.navbar-sidebar__close {
+  width: 2.75rem;
+  height: 2.75rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+}
+
+.navbar .clean-btn.toggleButton_gllP,
+.navbar button[class*='colorModeToggle'],
+.navbar button[class*='toggleButton'] {
+  width: 2.75rem;
+  height: 2.75rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Drawer must fill the viewport (Infima default); reinforce after our chrome tweaks */
+.navbar-sidebar {
+  top: 0;
+  bottom: 0;
+  height: auto;
+  max-height: none;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  z-index: calc(var(--ifm-z-index-fixed) + 2);
+}
+
+.navbar-sidebar__brand {
+  padding-top: env(safe-area-inset-top, 0px);
+  min-height: calc(var(--ifm-navbar-height) + env(safe-area-inset-top, 0px));
+}
+
+.navbar-sidebar__items {
+  min-height: 0;
+  flex: 1 1 auto;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
+.navbar-sidebar .menu__link {
+  min-height: 2.75rem;
+  display: flex;
+  align-items: center;
+  padding-block: 0.55rem;
+}
+
+.navbar-sidebar .menu__list-item-collapsible,
+.navbar-sidebar .menu__caret {
+  min-height: 2.75rem;
+}
+
+.navbar-sidebar__backdrop {
+  background: oklch(0.2 0.02 250 / 0.45);
+}
+
+@media (max-width: 430px) {
+  /* Одна CTA в шапке теснит поиск и логотип — CTA остаётся в drawer */
+  .navbar__items--right .navbar--cta {
+    display: none !important;
+  }
+
+  .navbar__search-input {
+    width: 6.5rem;
+    min-width: 0;
+    font-size: 1rem; /* iOS: avoid input zoom */
+    min-height: 2.5rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .navbar__search-input {
+    width: 5.25rem;
+  }
+}
+
+/* Sticky anchor offset: navbar (+ optional announcement handled by Docusaurus) */
+html {
+  scroll-padding-top: calc(var(--ifm-navbar-height) + 0.75rem + env(safe-area-inset-top, 0px));
+}
+
+.theme-doc-markdown :is(h1, h2, h3, h4) {
+  scroll-margin-top: calc(var(--ifm-navbar-height) + 0.75rem + env(safe-area-inset-top, 0px));
+}
+
+@media (max-width: 996px) {
+  .theme-doc-markdown {
+    padding-inline: 0.15rem;
+  }
+
+  article .row,
+  .row .col {
+    padding-inline: max(0.25rem, env(safe-area-inset-left, 0px))
+      max(0.25rem, env(safe-area-inset-right, 0px));
   }
 }
 

@@ -1,6 +1,6 @@
 ---
 id: yandexgpt
-title: Как подключить YandexGPT к AI-агентам — Datagent
+title: Как подключить YandexGPT к ИИ-агентам Datagent
 sidebar_label: YandexGPT
 description: "YandexGPT в Datagent: сервисный аккаунт Yandex Cloud, агент с действиями. Free на app.datagent.ru."
 ---
@@ -98,6 +98,6 @@ description: "YandexGPT в Datagent: сервисный аккаунт Yandex Cl
 | `yandexgpt/rc` | Да |
 | `yandexgpt-lite/rc` | Нет |
 
-См. [GigaChat](./gigachat.md), [LLM-адаптеры](../concepts/llm-adapters.md).
+См. [GigaChat](./gigachat), [LLM-адаптеры](../concepts/llm-adapters).
 
 :::

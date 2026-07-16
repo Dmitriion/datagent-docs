@@ -5,15 +5,24 @@ sidebar_label: Архитектура
 description: Из чего состоит Datagent — панель, сервер, адаптеры нейросетей, плагины и база данных.
 ---
 
-> **Эта страница для разработчиков и интеграторов.**  
-> Если вы оператор и хотите просто начать работу — смотрите [Начало работы](/docs/cloud/getting-started) и [Как это работает](./how-it-works).
-
 # Архитектура платформы и агента
 
-Сквозной путь одного запуска для операторов — в [Как это работает](./how-it-works). Ниже — **карта частей**: сервер оркестрирует запуски, панель показывает интерфейс, плагины добавляют интеграции.
+Страница объясняет, из каких частей состоит Datagent и как они связаны при выполнении задачи. Это помогает понять, где настраиваются доступы, почему агент видит только разрешённые данные и куда смотреть при сбое. Повседневный сценарий оператора — в [Как это работает](./how-it-works); быстрый старт — в [Cloud](/docs/cloud/getting-started).
+
+## Если коротко
+
+- В панели ставится **задача** и назначается **агент**.
+- Агент работает только с **разрешёнными инструментами и данными** компании.
+- Ход работы и итог видны в **журнале** задачи; рискованные шаги можно согласовать вручную.
+- Доступы к сервисам и секретам задаются в настройках компании и на вкладке **Подключения** у агента.
+- Схемы и пакеты ниже нужны ИТ-команде и администраторам — оператору достаточно блоков выше и ссылок на [как это работает](./how-it-works).
+
+## Для ИТ-команды
+
+Ниже — карта слоёв платформы: панель (UI), сервер API, адаптеры моделей (LLM adapters), плагины (plugins) с отдельными процессами-worker, BrowserBridge и база данных. Термины в скобках совпадают с именами пакетов в репозитории.
 
 :::note[Для инженеров]
-Монорепозиторий pnpm, `server/`, `ui/`, `packages/adapters`, heartbeat — см. таблицы и схемы ниже.
+Монорепозиторий pnpm, каталоги `server/`, `ui/`, `packages/adapters`, планировщик запусков (heartbeat) — в таблицах и схемах ниже.
 :::
 
 ## Диаграмма слоёв
@@ -109,6 +118,29 @@ flowchart TB
 
 Каждый адаптер — workspace-пакет под `packages/adapters/` (`gigachat-local`, `yandexgpt-local`, `claude-local`, `openclaw-gateway`, …). Server импортирует `@datagent/adapter-*` и выбирает по типу агента в runtime. Контракт — `@datagent/adapter-utils` (`AdapterExecutionContext`, `AdapterExecutionResult`). Подробнее: [LLM-адаптеры](./llm-adapters).
 
+## Как работают интеграции (для операторов и интеграторов)
+
+Пользовательский путь «вопрос → данные сервиса» описан в [Как это работает](./how-it-works) и в [обзоре интеграций](../integrations/overview). Ниже — тот же поток на уровне компонентов.
+
+```mermaid
+flowchart LR
+  Op[Оператор / задача] --> Agent[Агент + LLM adapter]
+  Agent --> Bridge[Plugin tools / datagent-plugins]
+  Bridge --> Plug[Russia connector plugin]
+  Plug --> API[API сервиса]
+  API --> Plug
+  Plug --> Bridge
+  Bridge --> Agent
+```
+
+Инварианты V1 Russia connectors:
+
+- Наборы коннекторов работают в режиме **только чтение** — без записи в сервисы, без операций с деньгами и без произвольного `raw_request`
+- Назначение агенту — Unified Connections (`plugin/<id>`), credentials — Settings → Integrations
+- Реестр [внешних MCP](../integrations/mcp) — другой контур (HTTP/SSE); Russia connectors туда **не** добавляют
+
+Операторские страницы: [МойСклад](../integrations/moysklad), [Wildberries](../integrations/wildberries), [Ozon](../integrations/ozon), [Авито](../integrations/avito), [Селектел](../integrations/selectel). Канон as-built — monorepo `doc/mcp-russia-connectors.md`.
+
 ## Plugins
 
 Плагины объявляют manifest и tools; host общается с worker по JSON-RPC 2.0 (stdio). **Менеджер** включает плагин в компании и выдаёт tools агенту; **агент** вызывает только то, что есть в manifest.
@@ -130,7 +162,7 @@ flowchart TB
 | Перед run | Preflight в `heartbeat.ts` — не запускать adapter при blockers |
 | Deliverable | xlsx: auto-validate после apply; pptx: attachment gate + post-run continuation |
 
-Сервер платформы **оркестрирует**, worker **исполняет** OfficeCLI. Оператор в happy path не жмёт Validate/Enable — только governance opt-in (approvals, instance admin) и one-click allowlist remediation на Skills tab. Детали: [Excel и PowerPoint](../office/excel-pptx.md), канон приёмки в репозитории Datagent — `doc/community-skills-acceptance.md` v2.9.1.
+Сервер платформы **оркестрирует**, worker **исполняет** OfficeCLI. Оператор в happy path не жмёт Validate/Enable — только governance opt-in (approvals, instance admin) и one-click allowlist remediation на Skills tab. Детали: [Excel и PowerPoint](../office/excel-pptx), канон приёмки в репозитории Datagent — `doc/community-skills-acceptance.md` v2.9.1.
 
 ## BrowserBridge
 

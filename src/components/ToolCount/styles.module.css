@@ -1,0 +1,86 @@
+.card {
+  display: grid;
+  grid-template-columns: minmax(7rem, auto) 1fr;
+  gap: 1.25rem 1.75rem;
+  margin: 1.25rem 0 1.75rem;
+  padding: 1.25rem 1.4rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md, 12px);
+  background: var(--color-surface-elevated);
+}
+
+.numberBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding-right: 0.5rem;
+  border-right: 1px solid var(--color-border);
+}
+
+.number {
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 4vw, 3.1rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--color-primary);
+}
+
+.numberLabel {
+  margin-top: 0.35rem;
+  font-size: var(--text-caption, 0.75rem);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+}
+
+.body {
+  min-width: 0;
+}
+
+.lead {
+  margin: 0 0 0.75rem;
+  font-size: var(--text-ui, 0.95rem);
+  line-height: 1.5;
+  color: var(--color-text);
+}
+
+.categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0 0 0.75rem;
+  padding: 0;
+  list-style: none;
+}
+
+.categories li {
+  margin: 0;
+  padding: 0.25rem 0.65rem;
+  border-radius: 999px;
+  background: var(--color-inset);
+  border: 1px solid var(--color-border);
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
+.note {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+@media (max-width: 640px) {
+  .card {
+    grid-template-columns: 1fr;
+  }
+
+  .numberBlock {
+    border-right: none;
+    border-bottom: 1px solid var(--color-border);
+    padding-right: 0;
+    padding-bottom: 0.85rem;
+  }
+}

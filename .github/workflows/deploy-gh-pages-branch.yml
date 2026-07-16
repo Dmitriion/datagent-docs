@@ -1,5 +1,6 @@
 # Fallback: обновить ветку gh-pages вручную, если Source = Branch gh-pages / (root).
 # Не запускать при Source = GitHub Actions — иначе конфликт с deploy.yml (два деплоя в github-pages).
+# contents: write нужен только для push в ветку gh-pages; основной деплой — deploy.yml (pages: write).
 name: Publish gh-pages branch (fallback)
 
 on:

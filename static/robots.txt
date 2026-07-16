@@ -1,5 +1,7 @@
 # docs.datagent.ru — robots.txt
 # Policy: Search/Answer-first (aligned with datagent.ru)
+# Training crawlers (GPTBot, ClaudeBot, …) Disallow; search/user agents (OAI-SearchBot,
+# Perplexity*, Googlebot, Yandex) Allow — so answer engines can cite docs without bulk training scrape.
 
 User-agent: *
 Allow: /

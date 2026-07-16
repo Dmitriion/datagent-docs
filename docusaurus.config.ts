@@ -2,10 +2,24 @@ import {themes as prismThemes} from 'prism-react-renderer';
 import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 
+/** Optional Yandex Webmaster verification — never commit real values. Google Site Verification not used (RF ops policy, 2026). */
+const yandexVerification = process.env.YANDEX_VERIFICATION?.trim();
+
+const verificationHeadTags: NonNullable<Config['headTags']> = [];
+if (yandexVerification) {
+  verificationHeadTags.push({
+    tagName: 'meta',
+    attributes: {
+      name: 'yandex-verification',
+      content: yandexVerification,
+    },
+  });
+}
+
 const config: Config = {
   title: 'Datagent',
   tagline:
-    'Единый центр управления ИИ-агентами в компании. Облачная версия на app.datagent.ru.',
+    'Документация платформы ИИ-агентов: Cloud, интеграции с российскими сервисами, руководства и API.',
   favicon: 'img/brand/favicon-light.svg',
 
   future: {
@@ -51,6 +65,10 @@ const config: Config = {
       {
         redirects: [
           {
+            from: '/docs/integrations',
+            to: '/docs/integrations/overview',
+          },
+          {
             from: '/docs/office/1c-connector',
             to: '/docs/integrations/1c-connector',
           },
@@ -90,7 +108,24 @@ const config: Config = {
           routeBasePath: 'docs',
           // Сохраняем префиксы 01-, 02-… в URL учебника (guides/01-first-day).
           numberPrefixParser: false,
-          exclude: ['**/getting-started/**', '**/BRAND.md', '**/_meta/**', '**/meta/**'],
+          exclude: [
+            '**/getting-started/**',
+            '**/BRAND.md',
+            '**/_meta/**',
+            '**/meta/**',
+            '**/UX-SEO-GEO-AUDIT*.md',
+            '**/GUIDES-UX-SEO-GEO-AUDIT.md',
+            '**/POLISH-PASS-REPORT.md',
+            '**/FINAL-DOCS-POLISH-REPORT.md',
+            '**/RELEASE-CANDIDATE-QA-REPORT.md',
+            '**/MOBILE-UX-QA-REPORT.md',
+            '**/SEO-GEO-MASTER-AUDIT.md',
+            '**/SEO-CONTENT-BACKLOG.md',
+            '**/VISUAL-REFINEMENT-AUDIT.md',
+            '**/SEO-OPERATIONS-RUNBOOK.md',
+            '**/SECURITY-HARDENING-REPORT.md',
+            '**/SECURITY-OPERATIONS-RUNBOOK.md',
+          ],
         },
         blog: {
           showReadingTime: true,
@@ -111,7 +146,16 @@ const config: Config = {
         sitemap: {
           changefreq: 'weekly',
           priority: 0.5,
-          ignorePatterns: ['/tags/**'],
+          ignorePatterns: [
+            '/tags/**',
+            '/search/**',
+            '**/SEO-GEO-MASTER-AUDIT/**',
+            '**/SEO-CONTENT-BACKLOG/**',
+            '**/VISUAL-REFINEMENT-AUDIT/**',
+            '**/SEO-OPERATIONS-RUNBOOK/**',
+            '**/SECURITY-HARDENING-REPORT/**',
+            '**/SECURITY-OPERATIONS-RUNBOOK/**',
+          ],
           filename: 'sitemap.xml',
         },
       } satisfies Preset.Options,
@@ -119,11 +163,33 @@ const config: Config = {
   ],
 
   headTags: [
+    ...verificationHeadTags,
     {
       tagName: 'meta',
       attributes: {
         property: 'og:locale',
         content: 'ru_RU',
+      },
+    },
+    {
+      tagName: 'meta',
+      attributes: {
+        property: 'og:image:width',
+        content: '1200',
+      },
+    },
+    {
+      tagName: 'meta',
+      attributes: {
+        property: 'og:image:height',
+        content: '630',
+      },
+    },
+    {
+      tagName: 'meta',
+      attributes: {
+        property: 'og:image:alt',
+        content: 'Datagent — ИИ-агенты для бизнеса',
       },
     },
     {
@@ -158,12 +224,12 @@ const config: Config = {
   ],
 
   themeConfig: {
-    image: 'img/og-datagent-docs.svg',
+    image: 'img/og-datagent-docs.png',
     metadata: [
       {
         name: 'description',
         content:
-          'Справка Datagent для руководителей и операторов: ИИ-исполнители, согласования, Битрикс24, 1С и тарифы.',
+          'Документация Datagent: ИИ-агенты для бизнеса, Cloud на app.datagent.ru, интеграции с CRM и маркетплейсами, руководства и API.',
       },
     ],
     colorMode: {
@@ -174,7 +240,7 @@ const config: Config = {
     announcementBar: {
       id: 'cloud_launch_2026',
       content:
-        '🚀 Datagent Cloud запущен — <a href="https://app.datagent.ru">попробуйте бесплатно</a>',
+        'Datagent Cloud запущен — <a href="https://app.datagent.ru">попробуйте бесплатно</a>',
       backgroundColor: '#0f766e',
       textColor: '#ffffff',
       isCloseable: true,
@@ -197,7 +263,7 @@ const config: Config = {
           label: 'Начало работы',
           position: 'left',
         },
-        {to: '/docs/guides', label: 'Учебник', position: 'left'},
+        {to: '/docs/guides', label: 'Руководства', position: 'left'},
         {
           to: '/docs/cloud/pricing',
           label: 'Тарифы',
@@ -238,12 +304,12 @@ const config: Config = {
           items: [
             {label: 'Быстрый старт', to: '/docs/cloud/getting-started'},
             {label: 'Введение', to: '/docs/intro'},
-            {label: 'Учебник', to: '/docs/guides'},
+            {label: 'Что такое Datagent', to: '/docs/concepts/what-is-datagent'},
+            {label: 'Руководства', to: '/docs/guides'},
+            {label: 'Сценарии', to: '/docs/tutorials'},
+            {label: 'Интеграции', to: '/docs/integrations/overview'},
             {label: 'Шпаргалка по ситуациям', to: '/docs/guides/playbook-index'},
             {label: 'Конвейеры', to: '/docs/workflows/pipelines'},
-            {label: 'Таймлайн', to: '/docs/workflows/timeline'},
-            {label: 'Концепции', to: '/docs/concepts/what-is-datagent'},
-            {label: 'Артефакты', to: '/docs/artifacts/overview'},
             {label: 'API Reference', to: '/docs/api-reference/overview'},
             {label: 'Решение проблем', to: '/docs/troubleshooting'},
           ],

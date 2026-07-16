@@ -1,6 +1,6 @@
 ---
 id: gigachat
-title: Как подключить GigaChat к AI-агентам — Datagent
+title: Как подключить GigaChat к ИИ-агентам Datagent
 sidebar_label: GigaChat
 description: "GigaChat в Datagent: ключи Сбера, агент в облаке, Битрикс24. Работает на Free. app.datagent.ru."
 ---
@@ -124,6 +124,6 @@ description: "GigaChat в Datagent: ключи Сбера, агент в обл�
 | `gigachat_opencode_prerequisite` | Нет `opencode` | Установить OpenCode на execution target |
 | 429 | Квота GigaChat | Снизить параллелизм, бюджеты в Datagent |
 
-См. [LLM-адаптеры](../concepts/llm-adapters.md), [Архитектура](../concepts/agent-architecture.md).
+См. [LLM-адаптеры](../concepts/llm-adapters), [Архитектура](../concepts/agent-architecture).
 
 :::

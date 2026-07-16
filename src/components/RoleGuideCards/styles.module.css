@@ -1,0 +1,38 @@
+.section {
+  margin: 2rem 0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+  gap: 1rem;
+}
+
+.card {
+  padding: 0.85rem 0;
+  border-top: 1px solid var(--color-border);
+}
+
+.title {
+  margin: 0 0 0.35rem;
+  font-size: var(--text-h3);
+  font-weight: 650;
+}
+
+.when {
+  margin: 0 0 0.65rem;
+  color: var(--color-text-muted);
+  font-size: var(--text-small);
+  line-height: 1.45;
+}
+
+.links {
+  margin: 0;
+  padding-left: 1.1rem;
+  font-size: var(--text-ui);
+  line-height: 1.55;
+}
+
+.links li + li {
+  margin-top: 0.25rem;
+}

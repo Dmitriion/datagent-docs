@@ -1,0 +1,93 @@
+---
+title: Практические сценарии Datagent — CRM, интеграции, плагины
+slug: /tutorials
+sidebar_label: Обзор сценариев
+description: "Практические сценарии Datagent: первый результат в Cloud, CRM-канал, свой плагин. Не путать с ежедневными руководствами панели."
+hide_title: true
+---
+
+<ProductHero
+  eyebrow="Практика"
+  title="Практические сценарии: от первого результата дальше"
+  lead="Ниже — короткий путь от регистрации до полезного сценария. Начните с Cloud, затем подключите данные и закрепите регулярную работу. Ежедневные действия в панели — в разделе «Руководства». Сценарии для разработчиков плагинов вынесены отдельно."
+  primaryText="Старт в Cloud"
+  primaryUrl="/docs/cloud/getting-started"
+  secondaryText="Что такое Datagent"
+  secondaryHref="/docs/concepts/what-is-datagent"
+  facts={['Онбординг', 'Интеграции', 'CRM', 'Плагины']}
+/>
+
+## Рекомендуемый порядок
+
+1. [Старт в Cloud](/docs/cloud/getting-started) — компания, агент, первая задача.
+2. [Первый агент](/docs/cloud/first-agent) — поля, навыки, типичные ошибки.
+3. [Каталог интеграций](/docs/integrations/overview) — выберите сервис под вашу задачу.
+4. Закрепите канал или CRM, если нужно — сценарий ниже.
+5. При необходимости — [конвейеры](/docs/workflows/pipelines) и [тарифы](/docs/cloud/pricing).
+
+<TutorialCards
+  heading="Сценарии в этом разделе"
+  items={[
+    {
+      title: 'Чат Bitrix24 и уведомления в Telegram',
+      audience: 'Оператор · Studio+',
+      result: 'Сообщение из CRM становится задачей агенту с журналом и ответом.',
+      href: '/docs/tutorials/automate-crm',
+    },
+    {
+      title: 'Создание плагина',
+      audience: 'Разработчик',
+      result: 'Свой worker и инструменты в менеджере плагинов — когда готового коннектора нет.',
+      href: '/docs/tutorials/build-plugin',
+    },
+  ]}
+/>
+
+## Связанные руководства вне этого раздела
+
+| Задача | Куда идти |
+| --- | --- |
+| Понять продукт | [Что такое Datagent](/docs/concepts/what-is-datagent) |
+| Выбрать Cloud или свой контур | [Обзор Cloud](/docs/cloud) |
+| Подключить МойСклад, WB, Ozon, CRM… | [Интеграции](/docs/integrations/overview) |
+| Первый день оператора в панели | [Руководство: первый день](/docs/guides/01-first-day) |
+| 1С | [1С-коннектор](/docs/integrations/1c-connector) |
+| Браузер для агента | [BrowserBridge](/docs/browser/setup) |
+
+:::tip[Операторам]
+Начните с [старта в Cloud](/docs/cloud/getting-started) и [интеграций](/docs/integrations/overview), а не с [создания плагина](/docs/tutorials/build-plugin).
+:::
+
+<FaqSchema
+  pageUrl="https://docs.datagent.ru/docs/tutorials"
+  items={[
+    {
+      question: 'С чего начать практическую работу в Datagent?',
+      answer:
+        'Пройдите старт в Cloud: регистрация, компания, агент и первая задача. Затем выберите интеграцию под ваш сервис или сценарий Bitrix24 → Telegram.',
+    },
+    {
+      question: 'Нужен ли разработчик для первого сценария?',
+      answer:
+        'Обычно нет. Разработчик нужен для своего плагина или сложных контуров Enterprise. Готовые коннекторы и Cloud-онбординг рассчитаны на руководителя и оператора.',
+    },
+    {
+      question: 'Где сценарии по МойСклад и маркетплейсам?',
+      answer:
+        'В каталоге интеграций: у каждого сервиса есть примеры вопросов к агенту, подключение и ограничения только чтения.',
+    },
+  ]}
+/>
+
+## Смотрите также
+
+- [Как это работает](/docs/concepts/how-it-works)
+- [Тарифы](/docs/cloud/pricing)
+- [История изменений](/docs/changelog)
+
+<CtaBanner
+  title="Перейдите к первому запуску"
+  description="Создайте компанию на app.datagent.ru и закрепите сценарий из каталога интеграций."
+  buttonText="Зарегистрироваться"
+  buttonUrl="https://app.datagent.ru/signup"
+/>

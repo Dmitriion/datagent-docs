@@ -1,0 +1,27 @@
+.box {
+  margin: 1.75rem 0;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--color-border);
+  border-left: 3px solid var(--color-success);
+  border-radius: var(--radius-sm);
+  background: transparent;
+}
+
+.heading {
+  margin: 0 0 0.45rem;
+  font-size: var(--text-ui);
+  font-weight: 650;
+  color: var(--color-text);
+}
+
+.body {
+  margin: 0;
+  color: var(--color-text);
+  font-size: var(--text-ui);
+  line-height: 1.55;
+}
+
+.body :global(p):last-child,
+.body :global(ul):last-child {
+  margin-bottom: 0;
+}

@@ -1,6 +1,6 @@
 ---
 id: bitrix24
-title: Как подключить Битрикс24 к AI-агентам — Datagent
+title: Как подключить Битрикс24 к ИИ-агентам Datagent
 sidebar_label: Битрикс24
 description: "Битрикс24 + GigaChat в Datagent: агент отвечает в чатах CRM, готовит ответы, фиксирует в задаче. Пошагово за 10 минут."
 ---
@@ -83,6 +83,6 @@ pnpm --filter @datagent/plugin-bitrix24 build
 pnpm datagent plugin install packages/plugins/bitrix24
 ```
 
-См. [Архитектура](../concepts/agent-architecture.md), [API](../api-reference/overview.md).
+См. [Архитектура](../concepts/agent-architecture), [API](../api-reference/overview).
 
 :::

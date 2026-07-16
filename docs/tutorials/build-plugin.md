@@ -1,8 +1,8 @@
 ---
 id: build-plugin
-title: Создание плагина
+title: Как создать плагин для Datagent
 sidebar_label: Создание плагина
-description: Как создать плагин для Datagent — манифест, фоновый процесс, инструменты агента, установка через менеджер плагинов.
+description: "Как создать плагин для Datagent: манифест, фоновый процесс, инструменты агента, установка через менеджер плагинов."
 ---
 
 ---
@@ -13,7 +13,7 @@ description: Как создать плагин для Datagent — манифе
 
 **Плагины** расширяют Datagent **без правок ядра сервера**: отдельный фоновый процесс, доступ к задачам, секретам и **инструментам агента** (браузер, файлы, мессенджеры). Это не то же самое, что **адаптер нейросети** (GigaChat, YandexGPT) — адаптер подключает модель, плагин — действия в мире.
 
-В облаке плагины ставятся через **менеджер плагинов** на [app.datagent.ru](https://app.datagent.ru). Пример без написания кода — [Битрикс24](../integrations/bitrix24.md). Дальше определите тип расширения в таблице ниже.
+В облаке плагины ставятся через **менеджер плагинов** на [app.datagent.ru](https://app.datagent.ru). Пример без написания кода — [Битрикс24](../integrations/bitrix24). Дальше определите тип расширения в таблице ниже.
 
 :::note[Для инженеров]
 Plugin SDK, обмен JSON-RPC по stdio, внутренний цикл heartbeat, `PluginWorkerManager` — детали в разделах ниже.
@@ -26,11 +26,11 @@ Plugin SDK, обмен JSON-RPC по stdio, внутренний цикл heartb
 | Тип | Где в репозитории | Назначение |
 | --- | --- | --- |
 | **Плагин** | `packages/plugins/*`, npm-пакет | Фоновый процесс + опционально UI; инструменты, webhook, фоновые задачи, мосты |
-| **Адаптер LLM** | `packages/adapters/*` | Модель и среда выполнения агента — см. [LLM-адаптеры](../concepts/llm-adapters.md) |
-| **Управление браузером** | `plugin-browserbridge` + `browserbridge-local` | Десять инструментов `browser_*` — см. [интеграцию](../integrations/browserbridge.md) |
-| **Внешний коннектор** | npm через менеджер плагинов | Например Телеграм — см. [Телеграм](../integrations/telegram.md) |
+| **Адаптер LLM** | `packages/adapters/*` | Модель и среда выполнения агента — см. [LLM-адаптеры](../concepts/llm-adapters) |
+| **Управление браузером** | `plugin-browserbridge` + `browserbridge-local` | Десять инструментов `browser_*` — см. [интеграцию](../integrations/browserbridge) |
+| **Внешний коннектор** | npm через менеджер плагинов | Например Телеграм — см. [Телеграм](../integrations/telegram) |
 
-Пример **моста без инструментов в манифесте**: [Битрикс24](../integrations/bitrix24.md) — опрос чат-бота, создание задач.
+Пример **моста без инструментов в манифесте**: [Битрикс24](../integrations/bitrix24) — опрос чат-бота, создание задач.
 
 ## Архитектура (сервер ↔ worker)
 
@@ -274,8 +274,8 @@ curl -X POST http://127.0.0.1:3100/api/plugins/install \
 
 ## Связанные разделы
 
-- [Архитектура платформы](../concepts/agent-architecture.md)
+- [Архитектура платформы](../concepts/agent-architecture)
 - [Быстрый старт в облаке](../cloud/getting-started)
-- [Обзор API](../api-reference/overview.md) — установка и инструменты плагинов
-- [Битрикс24](../integrations/bitrix24.md) — jobs и apiRoutes без CRM-инструментов
-- [Управление браузером](../integrations/browserbridge.md) · [установка](../browser/setup.md)
+- [Обзор API](../api-reference/overview) — установка и инструменты плагинов
+- [Битрикс24](../integrations/bitrix24) — jobs и apiRoutes без CRM-инструментов
+- [Управление браузером](../integrations/browserbridge) · [установка](../browser/setup)

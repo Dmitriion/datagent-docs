@@ -1,0 +1,87 @@
+.section {
+  container-type: inline-size;
+  margin: 1.75rem 0 2rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+}
+
+.card,
+.cardRecommended {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  height: 100%;
+  margin: 0;
+  padding: 1.05rem 1.15rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md, 12px);
+  background: var(--color-surface-elevated);
+}
+
+.cardRecommended {
+  border-color: color-mix(in oklch, var(--color-primary) 28%, var(--color-border));
+  background: var(--color-surface-elevated);
+}
+
+.badge {
+  margin: 0;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+}
+
+.title {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.45;
+  color: var(--color-text-muted);
+}
+
+.points {
+  margin: 0.25rem 0 0.5rem;
+  padding-left: 1.1rem;
+  flex: 1;
+}
+
+.points li {
+  margin: 0.2rem 0;
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+.cta {
+  align-self: flex-start;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-decoration: none !important;
+  color: var(--color-primary) !important;
+}
+
+.cta:hover {
+  text-decoration: underline !important;
+}
+
+@container (min-width: 40rem) {
+  .grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}

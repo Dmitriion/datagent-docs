@@ -1,0 +1,49 @@
+.section {
+  margin: 1.75rem 0 2rem;
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  counter-reset: start-path;
+}
+
+.item {
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--color-border);
+  counter-increment: start-path;
+}
+
+.title {
+  margin: 0 0 0.35rem;
+  font-size: var(--text-h3);
+  font-weight: 650;
+}
+
+.title::before {
+  content: counter(start-path) '. ';
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+.description {
+  margin: 0 0 0.5rem;
+  color: var(--color-text-muted);
+  font-size: var(--text-ui);
+  line-height: 1.5;
+}
+
+.steps {
+  margin: 0;
+  padding-left: 1.2rem;
+  font-size: var(--text-ui);
+  line-height: 1.55;
+}
+
+.steps li + li {
+  margin-top: 0.2rem;
+}

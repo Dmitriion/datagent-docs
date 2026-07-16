@@ -1,0 +1,128 @@
+.section {
+  container-type: inline-size;
+  margin: 2rem 0;
+}
+
+.categories {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.categoryTitle {
+  margin: 0 0 0.65rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+}
+
+.list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.65rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  height: 100%;
+  margin: 0;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md, 12px);
+  background: var(--color-surface-elevated);
+}
+
+.cardTop {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.35rem 0.75rem;
+}
+
+.name {
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: -0.02em;
+  text-decoration: none !important;
+  color: var(--color-text) !important;
+}
+
+.name:hover {
+  color: var(--color-primary) !important;
+}
+
+.statusOk,
+.statusDev {
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.15rem 0.5rem;
+  border-radius: var(--radius-pill, 999px);
+}
+
+.statusOk {
+  background: var(--color-success-bg);
+  color: var(--color-success);
+}
+
+.statusDev {
+  background: var(--color-warning-bg);
+  color: oklch(0.42 0.1 75);
+}
+
+.outcome {
+  margin: 0;
+  flex: 1;
+  font-size: 0.88rem;
+  line-height: 1.45;
+  color: var(--color-text-muted);
+}
+
+.cardBottom {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.35rem 0.75rem;
+  margin-top: 0.15rem;
+}
+
+.tools {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+.more {
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-decoration: none !important;
+  color: var(--color-primary) !important;
+}
+
+.more:hover {
+  text-decoration: underline !important;
+}
+
+@container (min-width: 40rem) {
+  .list {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (min-width: 768px) {
+  .list {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@container (min-width: 56rem) {
+  .list {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}

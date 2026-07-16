@@ -8,6 +8,26 @@ description: Пошаговое подключение BrowserBridge — рас�
 
 Агент сможет работать с реальными сайтами на вашем компьютере: открывать страницы, снимать скриншоты, заполнять формы под вашим контролем.
 
+<HowToSchema
+  name="Как подключить BrowserBridge к Datagent"
+  description="Установите расширение Chrome, выпустите токен в панели и разрешите сайты для агента на тарифе Studio или Business."
+  pageUrl="https://docs.datagent.ru/docs/browser/setup"
+  steps={[
+    {
+      name: 'Установите расширение',
+      text: 'Установите Datagent BrowserBridge из Chrome Web Store и включите плагин BrowserBridge в панели.',
+    },
+    {
+      name: 'Подключите токен',
+      text: 'Выпустите персональный токен в разделе BrowserBridge и вставьте его в расширение.',
+    },
+    {
+      name: 'Разрешите сайты',
+      text: 'Укажите разрешённые сайты и дождитесь статуса «В сети» в расширении.',
+    },
+  ]}
+/>
+
 Если вы уже на тарифе **Studio** или **Business**, путь простой:
 
 1. Установите [Datagent BrowserBridge из Chrome Web Store](https://chromewebstore.google.com/detail/datagent-browserbridge/onlphfpiiegbgjmfihbimgnmpbleaelh?hl=ru).

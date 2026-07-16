@@ -11,12 +11,12 @@ description: Сценарий — чат Битрикс24, ответ агент
 Мост **Bitrix24** — с тарифа **Studio** и выше. **Telegram** — на всех тарифах. См. [тарифы](/docs/cloud/pricing).
 :::
 
-Это **не** автоматическая выгрузка «новых лидов» из CRM и не набор кнопок «создать сделку» в панели. Справка: [Битрикс24](../integrations/bitrix24.md), [Телеграм](../integrations/telegram.md). Начните с [предварительных условий](#предварительные-условия) ниже.
+Это **не** автоматическая выгрузка «новых лидов» из CRM и не набор кнопок «создать сделку» в панели. Справка: [Битрикс24](../integrations/bitrix24), [Телеграм](../integrations/telegram). Начните с [предварительных условий](#предварительные-условия) ниже.
 
 ## Предварительные условия
 
 - [Старт в Cloud](../cloud/getting-started) — [app.datagent.ru](https://app.datagent.ru).
-- Bitrix24: входящий REST webhook, scope **imbot** (+ user/department/disk по [инструкции Bitrix24](../integrations/bitrix24.md)).
+- Bitrix24: входящий REST webhook, scope **imbot** (+ user/department/disk по [инструкции Bitrix24](../integrations/bitrix24)).
 - Плагины: `datagent.bitrix24` и **плагин Telegram Datagent**[^tg-npm].
 - Агент: `gigachat_local` или `yandexgpt_local`, модель `gigachat/GigaChat-2-Pro` или `yandexgpt/rc`.
 
@@ -38,11 +38,11 @@ description: Сценарий — чат Битрикс24, ответ агент
 Отвечай кратко по-русски. Не выдумывай действия в CRM, которых нет в инструментах.
 ```
 
-Секреты LLM — env агента с `secret_ref` ([GigaChat](../integrations/gigachat.md), [YandexGPT](../integrations/yandexgpt.md)).
+Секреты LLM — env агента с `secret_ref` ([GigaChat](../integrations/gigachat), [YandexGPT](../integrations/yandexgpt)).
 
 ## Шаг 2. Портал, бот, привязка, опрос
 
-По [Bitrix24](../integrations/bitrix24.md):
+По [Bitrix24](../integrations/bitrix24):
 
 1. **Менеджер плагинов** — установить `datagent.bitrix24`, включить для компании.
 2. **Компания → Битрикс24**:
@@ -57,7 +57,7 @@ description: Сценарий — чат Битрикс24, ответ агент
 
 ## Шаг 3. Телеграм (уведомления и согласования)
 
-[^tg-npm]: Ключ registry: `datagent.plugin-telegram`; npm-пакет и поля конфигурации — [Телеграм](../integrations/telegram.md).
+[^tg-npm]: Ключ registry: `datagent.plugin-telegram`; npm-пакет и поля конфигурации — [Телеграм](../integrations/telegram).
 
 1. BotFather → token → company secret → `telegramBotTokenRef`.
 2. **Менеджер плагинов** → установить плагин Телеграм → **Компания → Настройки Телеграм**.
@@ -88,7 +88,7 @@ sequenceDiagram
 ## Шаг 5. Где смотреть результат
 
 - В панели: карточка агента → журнал запусков.
-- Для инженеров: API журнала запуска (см. [Обзор API](../api-reference/overview.md)).
+- Для инженеров: API журнала запуска (см. [Обзор API](../api-reference/overview)).
 
 ## Расширение
 
@@ -98,11 +98,11 @@ sequenceDiagram
 
 ## Итог
 
-Агент теперь **сам отвечает в чате Bitrix24** на входящие из открытой линии, а команда видит задачу и журнал в панели. Вы тратите на ручное копирование переписки **0 минут в день**; на согласования — только когда агент выходит за порог риска.
+Агент теперь **сам отвечает в чате Bitrix24** на входящие из открытой линии, а команда видит задачу и журнал в панели. Ручное копирование переписки из чата в панель больше не нужно; согласования остаются только для шагов за порогом риска.
 
 ## Связанные разделы
 
-- [Bitrix24](../integrations/bitrix24.md)
-- [Телеграм](../integrations/telegram.md)
+- [Bitrix24](../integrations/bitrix24)
+- [Телеграм](../integrations/telegram)
 - [Первый агент](../cloud/first-agent)
-- [Как это работает](../concepts/how-it-works.md)
+- [Как это работает](../concepts/how-it-works)

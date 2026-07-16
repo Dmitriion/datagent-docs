@@ -2,79 +2,77 @@ import type {ReactNode} from 'react';
 import clsx from 'clsx';
 import Link from '@docusaurus/Link';
 import Layout from '@theme/Layout';
+import SiteJsonLd from '@site/src/components/SiteJsonLd';
 import styles from './index.module.css';
 
 const JOURNEY_STEPS = [
   {n: '1', title: 'Зарегистрируйтесь', desc: 'Бесплатно, без карты — на app.datagent.ru'},
-  {n: '2', title: 'Запустите агента', desc: 'Шаблон или с нуля. Первый результат — 5 минут.'},
-  {n: '3', title: 'Подключите инструменты', desc: 'Битрикс24, 1С, внешние сервисы, браузер.'},
+  {n: '2', title: 'Запустите агента', desc: 'Шаблон или с нуля — первый ответ в журнале задачи.'},
+  {n: '3', title: 'Подключите данные', desc: 'CRM, маркетплейсы, склад, почта — только чтение.'},
   {n: '4', title: 'Выстройте процесс', desc: 'Конвейеры, согласования и контроль по Таймлайну.'},
 ] as const;
 
-const INTEGRATIONS = ['Битрикс24', '1С', 'GigaChat', 'Телеграм', 'BrowserBridge', 'MCP'] as const;
+const INTEGRATIONS = [
+  'МойСклад',
+  'Wildberries',
+  'amoCRM',
+  'Битрикс24',
+  '1С',
+  'GigaChat',
+] as const;
 
 const CARDS = [
   {
-    icon: '🚀',
+    title: 'Что такое Datagent',
+    desc: 'Платформа ИИ-агентов для бизнеса: задачи, доступы и журнал — не одиночный чат.',
+    href: '/docs/concepts/what-is-datagent',
+    accent: true,
+  },
+  {
     title: 'Начало работы',
-    desc: 'Регистрация и первый агент — чтобы увидеть результат в панели за пять минут.',
+    desc: 'Регистрация в Cloud и первый агент — чтобы увидеть результат в панели.',
     href: '/docs/cloud/getting-started',
     accent: true,
   },
   {
-    icon: '💡',
-    title: 'Концепции',
-    desc: 'Агенты, задачи и память — как устроена платформа изнутри.',
-    href: '/docs/concepts/what-is-datagent',
+    title: 'Интеграции',
+    desc: 'МойСклад, WB, Ozon, CRM, почта и облако — ответы по живым данным, только чтение.',
+    href: '/docs/integrations/overview',
+    accent: true,
   },
   {
-    icon: '📖',
-    title: 'Учебник',
-    desc: 'Восемь историй — для ежедневной работы оператора и руководителя.',
+    title: 'Руководства',
+    desc: 'Ежедневная работа в панели: задачи, доступы, каналы и согласования.',
     href: '/docs/guides',
   },
   {
-    icon: '🔄',
-    title: 'Рабочие процессы',
-    desc: 'Конвейеры и Таймлайн — многоэтапная работа и контроль запусков.',
-    href: '/docs/workflows/pipelines',
-    accent: true,
-  },
-  {
-    icon: '🔌',
-    title: 'Интеграции',
-    desc: 'Битрикс24, 1С, MCP, браузер и Телеграм — подключить к своим агентам.',
-    href: '/docs/integrations',
-    accent: true,
-  },
-  {
-    icon: '🏢',
-    title: 'Office',
-    desc: 'Виртуальный офис — чтобы видеть команду агентов на одном экране.',
-    href: '/docs/office/overview',
-  },
-  {
-    icon: '📎',
-    title: 'Артефакты',
-    desc: 'Каталог файлов — найти всё, что агент создал в задачах.',
-    href: '/docs/artifacts/overview',
-  },
-  {
-    icon: '🛠',
     title: 'Сценарии',
-    desc: 'Пошаговые инструкции — CRM, браузер или свой плагин.',
+    desc: 'Практические пути: CRM-канал, плагин и следующий шаг после онбординга.',
     href: '/docs/tutorials',
   },
   {
-    icon: '⚙️',
+    title: 'Cloud',
+    desc: 'Работа в браузере на app.datagent.ru — без своего сервера для старта.',
+    href: '/docs/cloud',
+  },
+  {
+    title: 'Рабочие процессы',
+    desc: 'Конвейеры и Таймлайн — многоэтапная работа и контроль запусков.',
+    href: '/docs/workflows/pipelines',
+  },
+  {
     title: 'API Reference',
-    desc: 'Справочник REST — для разработчиков, которые строят интеграции.',
+    desc: 'REST API Datagent — для разработчиков и автоматизации.',
     href: '/docs/api-reference/overview',
   },
   {
-    icon: '📋',
+    title: 'Office и артефакты',
+    desc: 'Документы на задаче и каталог файлов, которые подготовил агент.',
+    href: '/docs/office/overview',
+  },
+  {
     title: 'История изменений',
-    desc: 'Релизы и обновления — что нового появилось в продукте.',
+    desc: 'Релизы и обновления продукта.',
     href: '/docs/changelog',
   },
 ] as const;
@@ -82,19 +80,21 @@ const CARDS = [
 export default function Home(): ReactNode {
   return (
     <Layout
-      title="Datagent — ИИ-исполнители для бизнеса"
-      description="ИИ-исполнители для руководителей и операционных команд: задачи, согласования, Битрикс24, 1С и контроль в одной панели.">
+      title="Документация Datagent — ИИ-агенты для бизнеса"
+      description="Документация Datagent: ИИ-агенты для рабочих задач, Cloud, интеграции с российскими сервисами, руководства оператора и API. Старт на app.datagent.ru.">
+      <SiteJsonLd />
       <main className={styles.homePage}>
         <section className={styles.hero} aria-labelledby="home-title">
           <div className={clsx('container', styles.heroGrid)}>
             <div className={styles.heroCopy}>
-              <p className={styles.eyebrow}>Облачная платформа · app.datagent.ru</p>
+              <p className={styles.eyebrow}>Документация · app.datagent.ru</p>
               <h1 id="home-title" className={styles.heroTitle}>
-                Поручите рутину <span className="text-gradient">ИИ-исполнителям</span>
+                Документация <span className="text-brand">Datagent</span>
               </h1>
               <p className={styles.heroSubline}>
-                Просроченные сделки, ответы клиентам, сводки из 1С — агент готовит
-                результат, а вы контролируете работу в журнале и согласованиях.
+                Поручайте ИИ-агентам сводки, контроль отклонений и регулярные
+                отчёты по разрешённым данным компании. Результат — в задаче, с
+                журналом шагов и согласованиями.
               </p>
 
               <ul className={styles.chipRow} aria-label="Интеграции">
@@ -119,8 +119,7 @@ export default function Home(): ReactNode {
               </div>
 
               <p className={styles.timeBadge}>
-                <span aria-hidden="true">⏱</span> ~5 мин до первого агента · Free: 3
-                агента, 100 запусков
+                Free: до 3 агентов и 100 запусков в месяц · без карты
               </p>
             </div>
 
@@ -184,7 +183,7 @@ export default function Home(): ReactNode {
               Разделы документации
             </h2>
             <p className={styles.sectionLead}>
-              От быстрого старта до API — выберите, что нужно сейчас.
+              Понять продукт → Cloud → интеграции → ежедневные руководства.
             </p>
           </header>
 
@@ -197,9 +196,6 @@ export default function Home(): ReactNode {
                   'accent' in card && card.accent && styles.docCardAccent,
                 )}
                 to={card.href}>
-                <span className={styles.docCardIcon} aria-hidden="true">
-                  {card.icon}
-                </span>
                 <h3 className={styles.docCardTitle}>{card.title}</h3>
                 <p className={styles.docCardDesc}>{card.desc}</p>
                 <span className={styles.docCardArrow} aria-hidden="true">

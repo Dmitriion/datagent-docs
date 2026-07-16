@@ -14,10 +14,10 @@ export const introNextSteps: NextStepItem[] = [
     tag: 'Практика',
   },
   {
-    title: 'Учебник',
-    description: 'Восемь историй для оператора и руководителя.',
+    title: 'Руководства',
+    description: 'Ежедневная работа: задачи, доступы, интеграции.',
     to: '/docs/guides',
-    tag: 'Пользователям',
+    tag: 'Практика',
   },
   {
     title: 'Программный интерфейс',
@@ -32,7 +32,7 @@ export const cloudFirstAgentNextSteps: NextStepItem[] = [
     title: 'Первый день в панели',
     description: 'Сценарий оператора: задачи и согласования.',
     to: '/docs/guides/01-first-day',
-    tag: 'Учебник',
+    tag: 'Руководства',
   },
   {
     title: 'Тарифы',
@@ -57,9 +57,9 @@ export const cloudFirstAgentNextSteps: NextStepItem[] = [
 export const guidesIndexNextSteps: NextStepItem[] = [
   {
     title: 'Первый день в панели',
-    description: 'Мария: согласования, задачи, запуск агента.',
+    description: 'Компания, агент, первая задача и журнал.',
     to: '/docs/guides/01-first-day',
-    tag: 'Глава 1',
+    tag: 'Старт',
   },
   {
     title: 'Конвейеры',
@@ -86,40 +86,40 @@ export const firstDayNextSteps: NextStepItem[] = [
     title: 'Команда агентов',
     description: 'Собрать роли и не выдать лишних прав.',
     to: '/docs/guides/02-your-team',
-    tag: 'Глава 2',
+    tag: 'Настройка',
   },
   {
-    title: 'Одна задача',
+    title: 'Первая задача',
     description: 'Диалог с агентом и журнал запуска.',
     to: '/docs/guides/03-one-task',
-    tag: 'Глава 3',
+    tag: 'Практика',
   },
   {
     title: 'Первый агент',
-    description: 'Пошаговое создание агента в облаке.',
+    description: 'Поля агента и типичные сбои в облаке.',
     to: '/docs/cloud/first-agent',
     tag: 'Облако',
   },
   {
-    title: 'Обложка учебника',
-    description: 'Все главы и шпаргалка.',
+    title: 'Обзор руководств',
+    description: 'Выбор по роли или задаче.',
     to: '/docs/guides',
-    tag: 'Учебник',
+    tag: 'Каталог',
   },
 ];
 
 export const officeFieldNextSteps: NextStepItem[] = [
   {
-    title: 'Пульт в мессенджерах',
+    title: 'Каналы',
     description: 'Битрикс24 и Телеграм в задачах.',
     to: '/docs/guides/06-channels',
-    tag: 'Глава 6',
+    tag: 'Интеграции',
   },
   {
     title: 'Согласования',
     description: 'Очередь решений в панели.',
     to: '/docs/guides/04-trust-and-approval',
-    tag: 'Глава 4',
+    tag: 'Контроль',
   },
   {
     title: 'Обзор «Офис»',
@@ -128,9 +128,9 @@ export const officeFieldNextSteps: NextStepItem[] = [
     tag: 'Справка',
   },
   {
-    title: 'Обложка учебника',
-    description: 'Вернуться к оглавлению.',
+    title: 'Обзор руководств',
+    description: 'Вернуться к каталогу.',
     to: '/docs/guides',
-    tag: 'Учебник',
+    tag: 'Каталог',
   },
 ];

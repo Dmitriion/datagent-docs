@@ -4,67 +4,67 @@ import styles from './styles.module.css';
 
 const paths = [
   {
-    title: 'Быстрый старт',
-    description:
-      'Регистрация на app.datagent.ru и первый запущенный агент — пять шагов, около 5 минут.',
-    to: '/docs/cloud/getting-started',
-    tag: 'Старт',
-  },
-  {
     title: 'Что такое Datagent',
     description:
-      'Облачная платформа AI-агентов: зачем бизнесу, чем отличается от чата с GPT.',
+      'Платформа ИИ-агентов для бизнеса: задачи, доступы и журнал — не одиночный чат.',
     to: '/docs/concepts/what-is-datagent',
     tag: 'О продукте',
   },
   {
-    title: 'Тарифы и кредиты',
+    title: 'Быстрый старт в Cloud',
     description:
-      'Бесплатный, Solo 990 ₽, Studio 3 900 ₽, Business 12 900 ₽ — что входит и лимиты.',
+      'Регистрация на app.datagent.ru: компания, агент и первая задача в журнале.',
+    to: '/docs/cloud/getting-started',
+    tag: 'Старт',
+  },
+  {
+    title: 'Интеграции',
+    description:
+      'МойСклад, Wildberries, Ozon, amoCRM и другие сервисы — только чтение.',
+    to: '/docs/integrations/overview',
+    tag: 'Данные',
+  },
+  {
+    title: 'Руководства',
+    description:
+      'Ежедневная работа в панели: задачи, согласования, каналы и доступы.',
+    to: '/docs/guides',
+    tag: 'Практика',
+  },
+  {
+    title: 'Тарифы',
+    description:
+      'Free, Solo 990 ₽, Studio 3 900 ₽, Business 12 900 ₽ — лимиты и состав.',
     to: '/docs/cloud/pricing',
     tag: 'Цены',
   },
   {
-    title: 'Учебник',
-    description:
-      'Восемь коротких историй: задачи, согласования, «Офис», Битрикс24 и документы.',
-    to: '/docs/guides',
-    tag: 'Для команды',
-  },
-  {
-    title: 'Битрикс24 и GigaChat',
-    description:
-      'Российские интеграции из коробки — то, чего нет у n8n и Dify без доработок.',
-    to: '/docs/integrations/bitrix24',
-    tag: 'Интеграции',
-  },
-  {
     title: 'Первый агент',
-    description: 'Как выбрать модель, подключить ключи и нажать «Запустить».',
+    description: 'Как выбрать модель, подключить ключи и запустить задачу.',
     to: '/docs/cloud/first-agent',
-    tag: '5 минут',
+    tag: 'Практика',
   },
   {
-    title: 'Программный интерфейс',
-    description: 'Для разработчиков: автоматизация запусков и плагинов через API.',
+    title: 'REST API',
+    description: 'Справочник для разработчиков: автоматизация запусков и плагинов.',
     to: '/docs/api-reference/overview',
     tag: 'Для IT',
   },
   {
-    title: 'История версий',
-    description: 'Что изменилось в справке и продукте.',
-    to: '/docs/changelog',
-    tag: 'Обновления',
+    title: 'MCP и BrowserBridge',
+    description: 'Внешние инструменты и браузер для агентов с расширенными сценариями.',
+    to: '/docs/integrations/mcp',
+    tag: 'Для IT',
   },
 ] as const;
 
 const stackPills = [
-  'Облако SaaS',
-  'Бесплатный · 3 агента',
+  'Cloud SaaS',
+  'Free · 3 агента',
   'GigaChat',
   'YandexGPT',
-  'Битрикс24',
-  'Кредиты',
+  '16 коннекторов',
+  'Только чтение',
 ] as const;
 
 export default function HomePaths(): ReactNode {
@@ -78,10 +78,9 @@ export default function HomePaths(): ReactNode {
             </span>
           ))}
         </div>
-        <h2 className={styles.heading}>Куда идти дальше</h2>
         <div className={styles.grid}>
-          {paths.map((item) => (
-            <DocPathCard key={item.to} {...item} />
+          {paths.map((path) => (
+            <DocPathCard key={path.to} {...path} />
           ))}
         </div>
       </div>

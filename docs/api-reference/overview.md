@@ -1,11 +1,11 @@
 ---
 id: overview
-title: Обзор REST API
+title: REST API Datagent — справочник для разработчиков
 sidebar_label: Обзор API
-description: REST API Datagent — Bearer-токен, базовый URL app.datagent.ru/api, коды ошибок; для разработчиков.
+description: "REST API Datagent для разработчиков: Bearer-токен, базовый URL app.datagent.ru/api, агенты, задачи, плагины и коды ошибок."
 ---
 
-# Обзор REST API
+# REST API Datagent — справочник для разработчиков
 
 REST API для интеграции с Datagent: CI, CRM, скрипты, собственные панели. Сценарии оператора без кода — в [облаке](/docs/cloud/getting-started) и [концепциях](/docs/concepts/how-it-works).
 

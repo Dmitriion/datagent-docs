@@ -191,4 +191,4 @@ description: Что нового в Datagent — новые функции, ул
 
 ## Что дальше?
 
-[Начать за 5 минут →](./cloud/getting-started)
+[Начать в Cloud →](./cloud/getting-started)

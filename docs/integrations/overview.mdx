@@ -1,0 +1,244 @@
+---
+id: overview
+title: Интеграции Datagent — ИИ-агент для российских сервисов
+sidebar_label: Все интеграции
+description: "Каталог интеграций Datagent: МойСклад, Wildberries, Ozon, CRM и облако. Агент анализирует данные без ручных отчётов — только чтение."
+---
+
+<IntegrationListSchema
+  items={[
+    {name: 'МойСклад', url: 'https://docs.datagent.ru/docs/integrations/moysklad'},
+    {name: 'Wildberries', url: 'https://docs.datagent.ru/docs/integrations/wildberries'},
+    {name: 'Селектел', url: 'https://docs.datagent.ru/docs/integrations/selectel'},
+    {name: 'Ozon', url: 'https://docs.datagent.ru/docs/integrations/ozon'},
+    {name: 'Авито', url: 'https://docs.datagent.ru/docs/integrations/avito'},
+    {name: 'ВКонтакте', url: 'https://docs.datagent.ru/docs/integrations/vk'},
+    {name: 'Яндекс Трекер', url: 'https://docs.datagent.ru/docs/integrations/yandex-tracker'},
+    {name: 'VK Реклама', url: 'https://docs.datagent.ru/docs/integrations/vk-ads'},
+    {name: 'amoCRM', url: 'https://docs.datagent.ru/docs/integrations/amocrm'},
+    {name: 'Яндекс 360', url: 'https://docs.datagent.ru/docs/integrations/yandex360'},
+    {name: 'Авиасейлс', url: 'https://docs.datagent.ru/docs/integrations/aviasales'},
+    {name: 'ФНС / ЕГРЮЛ', url: 'https://docs.datagent.ru/docs/integrations/fns-egrul'},
+    {name: 'PostgreSQL', url: 'https://docs.datagent.ru/docs/integrations/postgresql'},
+    {name: 'ЮKassa', url: 'https://docs.datagent.ru/docs/integrations/yookassa'},
+    {name: 'Mail.ru', url: 'https://docs.datagent.ru/docs/integrations/mailru'},
+    {name: 'Cloud.ru', url: 'https://docs.datagent.ru/docs/integrations/cloud-ru'},
+  ]}
+/>
+
+# Интеграции Datagent: ответы по рабочим данным без ручных выгрузок
+
+Подключите российские сервисы к ИИ-агенту Datagent и спрашивайте обычным языком: про остатки, заказы, воронку, рекламу, задачи и инфраструктуру. Агент смотрит живые данные подключённого аккаунта — вам не нужно собирать Excel перед каждым совещанием.
+
+Интеграции полезны владельцу бизнеса, коммерческому директору, руководителям продаж, e-commerce, маркетинга, финансов и ИТ. Коннекторы работают в режиме **только чтение**: агент анализирует данные и не меняет цены, заказы, рекламу и платежи.
+
+Готовый каталог доступен на тарифах **Studio и выше** — см. [тарифы](/docs/cloud/pricing).
+
+## Ключевые факты
+
+- Datagent подключает **16** коннекторов к российским сервисам
+- Агент отвечает по данным склада, маркетплейсов, CRM, почты и облака
+- Режим доступа — **только чтение**
+- Права выдаёт администратор: доступ получают только выбранные агенты
+- Самые глубокие коннекторы по числу инструментов: МойСклад (**211**), Wildberries (**165**), Селектел (**139**)
+
+<TaskPicker
+  items={[
+    {
+      title: 'Контролировать продажи и остатки',
+      description: 'Склад, маркетплейсы и объявления в одной логике вопросов.',
+      hrefs: [
+        {label: 'МойСклад', to: './moysklad'},
+        {label: 'Wildberries', to: './wildberries'},
+        {label: 'Ozon', to: './ozon'},
+        {label: 'Авито', to: './avito'},
+      ],
+    },
+    {
+      title: 'Понимать эффективность рекламы',
+      description: 'Кампании, расход и результаты без ручной сборки отчёта.',
+      hrefs: [
+        {label: 'VK Реклама', to: './vk-ads'},
+        {label: 'VK', to: './vk'},
+        {label: 'Wildberries', to: './wildberries'},
+      ],
+    },
+    {
+      title: 'Собирать отчёты по задачам и командам',
+      description: 'Просрочки, загрузка и структура компании.',
+      hrefs: [
+        {label: 'Яндекс Трекер', to: './yandex-tracker'},
+        {label: 'Яндекс 360', to: './yandex360'},
+        {label: 'amoCRM', to: './amocrm'},
+      ],
+    },
+    {
+      title: 'Проверять контрагентов и платежи',
+      description: 'Первичная сверка по ИНН и статусы оплат.',
+      hrefs: [
+        {label: 'ФНС / ЕГРЮЛ', to: './fns-egrul'},
+        {label: 'ЮKassa', to: './yookassa'},
+        {label: 'amoCRM', to: './amocrm'},
+      ],
+    },
+    {
+      title: 'Работать с корпоративными данными',
+      description: 'Вопросы к разрешённым представлениям и почте.',
+      hrefs: [
+        {label: 'PostgreSQL', to: './postgresql'},
+        {label: 'Mail.ru', to: './mailru'},
+        {label: 'Яндекс 360', to: './yandex360'},
+      ],
+    },
+    {
+      title: 'Контролировать облачную инфраструктуру',
+      description: 'Инвентарь серверов, квот и проектов.',
+      hrefs: [
+        {label: 'Селектел', to: './selectel'},
+        {label: 'Cloud.ru', to: './cloud-ru'},
+      ],
+    },
+  ]}
+/>
+
+<IntegrationCatalog
+  categories={[
+    {
+      title: 'Продажи и торговля',
+      items: [
+        {name: 'МойСклад', href: './moysklad', outcome: 'Остатки, заказы и сводки по складу без Excel', tools: 211, status: 'available'},
+        {name: 'Ozon', href: './ozon', outcome: 'Товары, FBO/FBS, финансы и отзывы селлера', tools: 105, status: 'available'},
+        {name: 'Wildberries', href: './wildberries', outcome: 'Заказы, аналитика, реклама и финансы кабинета', tools: 165, status: 'available'},
+        {name: 'Авито', href: './avito', outcome: 'Объявления, заказы, чаты и продвижение', tools: 104, status: 'available'},
+        {name: 'amoCRM', href: './amocrm', outcome: 'Воронка, сделки и задачи отдела продаж', tools: 48, status: 'available'},
+        {name: 'ЮKassa', href: './yookassa', outcome: 'Статусы платежей и возвратов для сверки', tools: 12, status: 'available'},
+      ],
+    },
+    {
+      title: 'Маркетинг и коммуникации',
+      items: [
+        {name: 'VK', href: './vk', outcome: 'Сообщество, посты и аудитория', tools: 93, status: 'available'},
+        {name: 'VK Реклама', href: './vk-ads', outcome: 'Кампании, расход и результаты', tools: 69, status: 'available'},
+        {name: 'Mail.ru', href: './mailru', outcome: 'Поиск и сводка входящих писем', tools: 9, status: 'available'},
+      ],
+    },
+    {
+      title: 'Работа и управление',
+      items: [
+        {name: 'Яндекс 360', href: './yandex360', outcome: 'Сотрудники, отделы, почта и аудит', tools: 36, status: 'available'},
+        {name: 'Яндекс Трекер', href: './yandex-tracker', outcome: 'Задачи, очереди, доски и просрочки', tools: 76, status: 'available'},
+      ],
+    },
+    {
+      title: 'Проверка и финансы',
+      items: [
+        {name: 'ФНС / ЕГРЮЛ', href: './fns-egrul', outcome: 'Первичная проверка компании по ИНН', tools: 22, status: 'available'},
+      ],
+    },
+    {
+      title: 'Данные и инфраструктура',
+      items: [
+        {name: 'PostgreSQL', href: './postgresql', outcome: 'Вопросы к разрешённым данным без SQL', tools: 13, status: 'available'},
+        {name: 'Селектел', href: './selectel', outcome: 'Серверы, квоты, сети и биллинг', tools: 139, status: 'available'},
+        {name: 'Cloud.ru', href: './cloud-ru', outcome: 'Ранний инвентарь проектов и квот', tools: 2, status: 'developing'},
+      ],
+    },
+    {
+      title: 'Поездки и туризм',
+      items: [
+        {name: 'Aviasales', href: './aviasales', outcome: 'Цены и направления Travelpayouts', tools: 32, status: 'available'},
+      ],
+    },
+  ]}
+/>
+
+<TrustBlock
+  items={[
+    {
+      title: 'Официальный доступ сервиса',
+      text: 'Подключение идёт через токен, ключ или OAuth того сервиса, который вы подключаете. Секреты хранятся в компании, а не в тексте задачи.',
+    },
+    {
+      title: 'Разграничение прав',
+      text: 'Администратор сам выбирает, каким агентам доступен сервис, и может ограничить склады, воронки, сообщества или очереди.',
+    },
+    {
+      title: 'Только нужные данные',
+      text: 'Агент использует разрешённые категории данных, чтобы ответить на вопрос. Это не полный доступ ко всему аккаунту без контроля.',
+    },
+    {
+      title: 'Только чтение',
+      text: 'Готовые коннекторы Datagent анализируют данные и не выполняют запись: не меняют цены, заказы, рекламу, платежи и инфраструктуру.',
+    },
+  ]}
+/>
+
+## Как подключить за 3 шага
+
+1. Откройте [app.datagent.ru](https://app.datagent.ru) → **Настройки** → **Интеграции**.
+2. Выберите сервис и укажите ключ или токен — он хранится в секретах компании.
+3. В карточке агента откройте **Подключения**, включите сервис и задайте первый вопрос.
+
+Если агент «не видит» данные, проверьте, что доступ выдан именно этому агенту, и создайте **новую** задачу после настройки.
+
+## Другие возможности платформы
+
+| Сервис | Что умеет |
+| --- | --- |
+| [Битрикс24](./bitrix24) | Задачи из чатов и открытых линий |
+| [1С](./1c-connector) | Мост к учётной базе 1С (Business+) |
+| [GigaChat](./gigachat) / [YandexGPT](./yandexgpt) | Российские модели для агента |
+| [Внешние инструменты (MCP)](./mcp) | Свой HTTP-сервис для Cursor-агентов |
+| [BrowserBridge](./browserbridge) | Управление браузером |
+| [Телеграм](./telegram) | Задачи из мессенджера |
+
+<FaqSchema
+  pageUrl="https://docs.datagent.ru/docs/integrations/overview"
+  items={[
+    {
+      question: 'Что такое интеграции Datagent?',
+      answer:
+        'Это готовые подключения российских сервисов к ИИ-агенту. Вы спрашиваете обычным языком, агент отвечает по живым данным подключённого аккаунта в режиме только чтения.',
+    },
+    {
+      question: 'Чем это отличается от обычной API-интеграции?',
+      answer:
+        'Вам не нужно писать скрипты и собирать отчёты вручную. Агент работает в задачах компании с журналом шагов, правами и лимитами тарифа.',
+    },
+    {
+      question: 'Можно ли подключить несколько сервисов одному агенту?',
+      answer:
+        'Да. Например, Wildberries и Ozon вместе — чтобы сравнить продажи в одной задаче.',
+    },
+    {
+      question: 'Безопасно ли подключать рабочие кабинеты?',
+      answer:
+        'Ключи хранятся в секретах компании. Доступ выдаётся выбранным агентам. Коннекторы Datagent только читают данные и не меняют их.',
+    },
+    {
+      question: 'На каком тарифе доступен каталог?',
+      answer:
+        'Готовые коннекторы к российским сервисам — на Studio, Business и Enterprise.',
+    },
+    {
+      question: 'Агент может менять цены или отвечать покупателям?',
+      answer:
+        'Нет. Коннекторы читают данные. Публикация, ответы в чатах, изменение цен и платежи через агента недоступны.',
+    },
+  ]}
+/>
+
+## Смотрите также
+
+- [Как работают интеграции и доступы](../concepts/how-it-works)
+- [Datagent vs Zapier](./vs-zapier)
+- [Datagent vs Make](./vs-make)
+- [Тарифы](/docs/cloud/pricing)
+
+<CtaBanner
+  title="Подключите первый сервис к агенту"
+  description="Получайте ответы по остаткам, продажам и задачам без ручных выгрузок."
+  buttonText="Зарегистрироваться"
+  buttonUrl="https://app.datagent.ru/signup"
+  variant="primary"
+/>

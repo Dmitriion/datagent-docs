@@ -68,4 +68,5 @@ API: `GET/POST /api/companies/:companyId/routines`. Ручной запуск: `
 
 ## Что дальше?
 
+→ [Как получать регулярные отчёты](/docs/guides/regular-reports)  
 → [Подтверждения](./approvals)

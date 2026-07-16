@@ -1,0 +1,26 @@
+.section {
+  margin: 1.25rem 0 1.75rem;
+  padding: 0.85rem 1rem;
+  border-left: 3px solid var(--color-primary);
+  background: var(--color-inset);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+
+.heading {
+  margin: 0 0 0.5rem;
+  font-size: var(--text-ui);
+  font-weight: 650;
+  color: var(--color-text);
+}
+
+.list {
+  margin: 0;
+  padding-left: 1.15rem;
+  color: var(--color-text);
+  font-size: var(--text-ui);
+  line-height: 1.55;
+}
+
+.list li + li {
+  margin-top: 0.35rem;
+}

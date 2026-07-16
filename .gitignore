@@ -8,8 +8,9 @@
 .docusaurus
 .cache-loader
 
-# Misc
+# Misc / OS
 .DS_Store
+Thumbs.db
 
 # Environment and secrets (never commit)
 .env
@@ -31,7 +32,22 @@ yarn-error.log*
 
 scripts/capture-guide-screenshots-report.json
 
-# Security — keys & credentials (P1 security fix)
+# Coverage / local tooling
+coverage/
+
+# Archives and backups
+*.bak
+*.backup
+*.old
+*.orig
+*.sql
+*.dump
+*.tar
+*.tar.gz
+*.tgz
+*.zip
+
+# Security — keys & credentials
 *.pem
 *.key
 *.p12
@@ -40,6 +56,9 @@ scripts/capture-guide-screenshots-report.json
 *.cer
 id_rsa
 id_ed25519
+.netrc
+.npmrc
+!.npmrc.example
 secrets.json
 credentials.json
 serviceAccount*.json

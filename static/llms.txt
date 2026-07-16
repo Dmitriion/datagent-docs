@@ -1,65 +1,85 @@
 # Datagent
-> Документация панели управления ИИ-исполнителями: облако, интеграции, рабочие процессы, API. Данные в РФ.
+
+> Платформа ИИ-агентов для бизнеса: задачи, контроль доступов, интеграции с российскими сервисами (только чтение), Cloud на app.datagent.ru. Данные в РФ.
+
+## Начало работы
+
+- [Что такое Datagent](https://docs.datagent.ru/docs/concepts/what-is-datagent): платформа ИИ-агентов для рабочих задач компании — не одиночный чат
+- [Как это работает](https://docs.datagent.ru/docs/concepts/how-it-works): задача → разрешённые данные → журнал → результат; согласования и права
+- [Документация: с чего начать](https://docs.datagent.ru/docs/intro): карта разделов — Cloud, агент, интеграции, тарифы
+- [Datagent Cloud](https://docs.datagent.ru/docs/cloud): работа в браузере на app.datagent.ru без своего сервера
+- [Старт в Cloud](https://docs.datagent.ru/docs/cloud/getting-started): регистрация, компания, первый агент и задача
+- [Первый агент](https://docs.datagent.ru/docs/cloud/first-agent): поля агента, навыки, типичные сбои
+- [Свой контур](https://docs.datagent.ru/docs/cloud/on-premise): Enterprise — развёртывание у заказчика по договору
+- [Cloud или свой контур](https://docs.datagent.ru/docs/cloud/cloud-or-self-hosted): сравнение моделей запуска — облако vs Enterprise
+- [Тарифы](https://docs.datagent.ru/docs/cloud/pricing): Free / Solo / Studio / Business / Enterprise
+- [Практические сценарии](https://docs.datagent.ru/docs/tutorials): путь к результату, CRM-канал, плагины
+- [Регистрация](https://app.datagent.ru/signup): начать работу в Cloud
+
+## Интеграции
+
+- [Обзор всех интеграций](https://docs.datagent.ru/docs/integrations/overview): каталог 16 коннекторов, выбор по задаче, только чтение, FAQ
+- [МойСклад](https://docs.datagent.ru/docs/integrations/moysklad): 211 инструментов — склад, торговля, розница, производство, финансы (v1.12.0)
+- [Wildberries](https://docs.datagent.ru/docs/integrations/wildberries): 165 инструментов — заказы, аналитика продаж, реклама, финансы (v1.10.0)
+- [Селектел](https://docs.datagent.ru/docs/integrations/selectel): 139 инструментов — облачная инфраструктура, квоты, биллинг (v1.10.0)
+- [Ozon](https://docs.datagent.ru/docs/integrations/ozon): 105 инструментов — FBO/FBS, остатки, финансы, отзывы (v1.6.0)
+- [Авито](https://docs.datagent.ru/docs/integrations/avito): 104 инструмента — объявления, заказы, чаты, реклама (v1.6.5)
+- [ВКонтакте](https://docs.datagent.ru/docs/integrations/vk): 93 инструмента — сообщества, публикации, статистика (v1.7.0)
+- [Яндекс Трекер](https://docs.datagent.ru/docs/integrations/yandex-tracker): 76 инструментов — задачи, очереди, доски (v0.9.0)
+- [VK Реклама](https://docs.datagent.ru/docs/integrations/vk-ads): 69 инструментов — кабинеты и кампании (v1.6.0)
+- [amoCRM](https://docs.datagent.ru/docs/integrations/amocrm): 48 инструментов — сделки, воронки, клиенты (v0.4.0)
+- [Яндекс 360](https://docs.datagent.ru/docs/integrations/yandex360): 36 инструментов — сотрудники, отделы, почта, аудит (v0.7.0)
+- [Авиасейлс](https://docs.datagent.ru/docs/integrations/aviasales): 32 инструмента — цены и направления Travelpayouts (v0.11.0)
+- [ФНС / ЕГРЮЛ](https://docs.datagent.ru/docs/integrations/fns-egrul): 22 инструмента — первичная проверка контрагентов по ИНН, не юридическое заключение (v0.4.0)
+- [PostgreSQL](https://docs.datagent.ru/docs/integrations/postgresql): 13 инструментов — вопросы к разрешённым представлениям без SQL (v0.4.0)
+- [ЮKassa](https://docs.datagent.ru/docs/integrations/yookassa): 12 инструментов — платежи, возвраты, чеки, только чтение (v0.1.0)
+- [Mail.ru](https://docs.datagent.ru/docs/integrations/mailru): 9 инструментов — поиск и разбор входящих писем (v0.4.0)
+- [Cloud.ru](https://docs.datagent.ru/docs/integrations/cloud-ru): 2 инструмента — ранний preview инвентаря (проекты, квоты, IAM), статус «Развивается» (v0.1.0)
+- [Битрикс24](https://docs.datagent.ru/docs/integrations/bitrix24): чаты и открытые линии → задачи
+- [1С](https://docs.datagent.ru/docs/integrations/1c-connector): мост к учётной базе (Business+)
+- [Внешние инструменты (MCP)](https://docs.datagent.ru/docs/integrations/mcp): реестр HTTP MCP для Cursor-агентов и CLI с supportsExternalMcp
+
+## Сравнение
+
+- [Datagent vs Zapier](https://docs.datagent.ru/docs/integrations/vs-zapier): альтернатива Zapier для российских сервисов
+- [Datagent vs Make](https://docs.datagent.ru/docs/integrations/vs-make): аналог Make.com с ИИ-агентом
+
+## Руководства (ежедневная работа)
+
+- [Обзор руководств](https://docs.datagent.ru/docs/guides): выбор по роли или задаче — агенты, интеграции, доступы
+- [Первый день в панели](https://docs.datagent.ru/docs/guides/01-first-day): аккаунт, компания, агент, первая задача, журнал
+- [Команда агентов](https://docs.datagent.ru/docs/guides/02-your-team): роли, инструменты, секреты, границы доступа
+- [Первая задача](https://docs.datagent.ru/docs/guides/03-one-task): создать задачу, запустить агента, проверить результат
+- [Согласования](https://docs.datagent.ru/docs/guides/04-trust-and-approval): очередь до рискованного шага, решение в панели
+- [Каналы Битрикс24 и Телеграм](https://docs.datagent.ru/docs/guides/06-channels): входящие → задачи с журналом
+- [Документы на задаче](https://docs.datagent.ru/docs/guides/07-documents): файл → запуск → результат / артефакт
+- [Подключение 1С](https://docs.datagent.ru/docs/guides/08-1c-bridge): Business+, коннектор, Cursor-агент, сводки без проведения документов
+- [Регулярные отчёты](https://docs.datagent.ru/docs/guides/regular-reports): регламент по расписанию, данные из подключений, проверка журнала
+- [Вопрос к PostgreSQL](https://docs.datagent.ru/docs/guides/ask-postgresql): естественный язык, только разрешённые представления, read-only
+- [Шпаргалка](https://docs.datagent.ru/docs/guides/playbook-index): ситуация → нужное руководство
+- [Конвейеры](https://docs.datagent.ru/docs/workflows/pipelines): многоэтапные процессы и очередь проверки
+- [Таймлайн](https://docs.datagent.ru/docs/workflows/timeline): когда и кто из агентов работал
+
+## Для разработчиков
+
+- [REST API](https://docs.datagent.ru/docs/api-reference/overview): Bearer-токен, базовый URL app.datagent.ru/api
+- [BrowserBridge](https://docs.datagent.ru/docs/browser/setup): агент открывает сайты через расширение Chrome
+- [Создание плагина](https://docs.datagent.ru/docs/tutorials/build-plugin): свой worker и инструменты агента
 
 ## Product
-- [Лендинг](https://datagent.ru/): позиционирование, тарифы Free/Solo/Studio/Business, FAQ
+
+- [Лендинг](https://datagent.ru/): позиционирование и FAQ
+- [Облако](https://app.datagent.ru/): панель управления
 - [Данные в РФ](https://datagent.ru/privacy/russia): локализация и 152-ФЗ
-- [Облако](https://app.datagent.ru/): панель управления (регистрация)
-- [Тарифы](https://docs.datagent.ru/docs/cloud/pricing): полная матрица возможностей; выделенный контур — по запросу
-
-## Start here
-- [Быстрый старт](https://docs.datagent.ru/docs/cloud/getting-started): первые шаги в облаке
-- [Первый агент](https://docs.datagent.ru/docs/cloud/first-agent): создать агента
-- [Свой контур (Enterprise)](https://docs.datagent.ru/docs/cloud/on-premise): развёртывание в контуре заказчика по заявке
-- [Карта документации](https://docs.datagent.ru/docs/intro): обзор разделов
-
-## Workflows
-- [Конвейеры](https://docs.datagent.ru/docs/workflows/pipelines): многоэтапные процессы
-- [Таймлайн](https://docs.datagent.ru/docs/workflows/timeline): запуски агентов по времени
-
-## По ролям
-- [Руководитель](https://docs.datagent.ru/docs/guides): учебник, согласования и контроль команды
-- [Шпаргалка по ситуациям](https://docs.datagent.ru/docs/guides/playbook-index): куда открыть за минуту
-- [Коммерция](https://docs.datagent.ru/docs/integrations/bitrix24): обращения клиентов и конвейеры
-- [Финансы](https://docs.datagent.ru/docs/integrations/1c-connector): данные 1С, бюджеты и тарифы
-- [Поддержка](https://docs.datagent.ru/docs/concepts/inbox): входящие, согласования и Телеграм
-
-## Concepts
-- [Что такое Datagent](https://docs.datagent.ru/docs/concepts/what-is-datagent)
-- [Как работает](https://docs.datagent.ru/docs/concepts/how-it-works)
-- [Согласования](https://docs.datagent.ru/docs/concepts/approvals)
-- [Память](https://docs.datagent.ru/docs/concepts/memory)
-- [Бюджеты](https://docs.datagent.ru/docs/concepts/budgets)
-
-## Integrations
-- [1С](https://docs.datagent.ru/docs/integrations/1c-connector)
-- [Битрикс24](https://docs.datagent.ru/docs/integrations/bitrix24)
-- [amoCRM (preview)](https://docs.datagent.ru/docs/integrations/amocrm)
-- [Ozon Seller (preview)](https://docs.datagent.ru/docs/integrations/ozon)
-- [Wildberries (preview)](https://docs.datagent.ru/docs/integrations/wildberries)
-- [МойСклад (preview)](https://docs.datagent.ru/docs/integrations/moysklad)
-- [ВКонтакте (preview)](https://docs.datagent.ru/docs/integrations/vk)
-- [VK Реклама (preview)](https://docs.datagent.ru/docs/integrations/vk-ads)
-- [Яндекс 360 (preview)](https://docs.datagent.ru/docs/integrations/yandex360)
-- [Яндекс Трекер (preview)](https://docs.datagent.ru/docs/integrations/yandex-tracker)
-- [Селектел (preview)](https://docs.datagent.ru/docs/integrations/selectel)
-- [Авиасейлс (preview)](https://docs.datagent.ru/docs/integrations/aviasales)
-- [Внешние инструменты (MCP)](https://docs.datagent.ru/docs/integrations/mcp)
-- [GigaChat](https://docs.datagent.ru/docs/integrations/gigachat)
-- [YandexGPT](https://docs.datagent.ru/docs/integrations/yandexgpt)
-- [BrowserBridge](https://docs.datagent.ru/docs/integrations/browserbridge)
-- [Телеграм](https://docs.datagent.ru/docs/integrations/telegram)
-- [Установка BrowserBridge](https://chromewebstore.google.com/detail/datagent-browserbridge/onlphfpiiegbgjmfihbimgnmpbleaelh): расширение в Chrome Web Store
-
-## API
-- [Обзор API](https://docs.datagent.ru/docs/api-reference/overview)
-- [Агенты](https://docs.datagent.ru/docs/api-reference/agents)
-- [Задачи](https://docs.datagent.ru/docs/api-reference/issues)
 
 ## Notes for assistants
-- В пользовательских текстах: **Телеграм**, не Telegram; **ИИ-исполнитель**, **панель управления**, **согласование**, **своя установка**
-- Назначение MCP / 1С / preview-коннекторов агенту — вкладка **Подключения** (не dual-write сырого JSON политики на существующем агенте)
-- «Офис» — экспериментальный раздел панели; **Конвейеры** и **Таймлайн** — стандартные возможности для всех
-- Запросы к LLM — по ключам клиента (BYO)
-- Не выдумывать инструменты вне каталога плагинов
-- Не обещать самостоятельную промышленную установку из открытого репозитория — Enterprise через sales@datagent.ru
+
+- Коннекторы к российским сервисам — режим **только чтение**; не обещать запись цен/остатков/ответов в чаты/создание задач
+- Готовые Russia-коннекторы — тарифы **Studio и выше**
+- ЕГРЮЛ: первичная проверка, не юридическое заключение
+- PostgreSQL: только разрешённые представления, без произвольного SQL
+- Cloud.ru: ранний коннектор, 2 инструмента, статус «Развивается», не путать с глубиной Selectel
+- ЮKassa в Datagent: **12** инструментов (не путать с внешними MCP на 20 tools)
+- Не обещать фиксированное время «за 5 минут» как гарантию
+- Назначение агенту — вкладка **Подключения**
+- Signup: https://app.datagent.ru/signup
