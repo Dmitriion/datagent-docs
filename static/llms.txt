@@ -36,6 +36,7 @@
 - [Mail.ru](https://docs.datagent.ru/docs/integrations/mailru): 9 инструментов — поиск и разбор входящих писем (v0.4.0)
 - [Cloud.ru](https://docs.datagent.ru/docs/integrations/cloud-ru): 2 инструмента — ранний preview инвентаря (проекты, квоты, IAM), статус «Развивается» (v0.1.0)
 - [Битрикс24](https://docs.datagent.ru/docs/integrations/bitrix24): чаты и открытые линии → задачи
+- [Телеграм](https://docs.datagent.ru/docs/integrations/telegram): long poll getUpdates, токен только в секрете компании, уведомления и согласования
 - [1С](https://docs.datagent.ru/docs/integrations/1c-connector): мост к учётной базе (Business+)
 - [Внешние инструменты (MCP)](https://docs.datagent.ru/docs/integrations/mcp): реестр HTTP MCP для Cursor-агентов и CLI с supportsExternalMcp
 
