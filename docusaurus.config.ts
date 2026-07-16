@@ -194,6 +194,13 @@ const config: Config = {
       },
     },
     // ── OG / Social ────────────────────────────────────────────────────────────
+            {
+          tagName: 'meta',
+          attributes: {
+            property: 'og:type',
+            content: 'website',
+          },
+        },
     {
       tagName: 'meta',
       attributes: {
@@ -222,6 +229,78 @@ const config: Config = {
         content: 'Datagent — ИИ-агенты для бизнеса',
       },
     },
+            // — Schema.org JSON-LD ————————————————————————
+        {
+          tagName: 'script',
+          attributes: {
+            type: 'application/ld+json',
+          },
+          innerHTML: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@graph': [
+              {
+                '@type': 'Organization',
+                '@id': 'https://datagent.ru/#organization',
+                name: 'Datagent',
+                url: 'https://datagent.ru',
+                logo: {
+                  '@type': 'ImageObject',
+                  url: 'https://docs.datagent.ru/img/brand/favicon-light.svg',
+                },
+                description: 'Платформа ИИ-агентов для бизнеса: автоматизация задач, интеграции с Битрикс24, 1С, МойСклад, Wildberries, Ozon, YandexGPT.',
+                sameAs: [
+                  'https://app.datagent.ru',
+                  'https://docs.datagent.ru',
+                  'https://t.me/datagent_ru',
+                ],
+                contactPoint: {
+                  '@type': 'ContactPoint',
+                  contactType: 'customer support',
+                  url: 'https://app.datagent.ru',
+                  availableLanguage: 'Russian',
+                },
+              },
+              {
+                '@type': 'WebSite',
+                '@id': 'https://docs.datagent.ru/#website',
+                url: 'https://docs.datagent.ru',
+                name: 'Документация Datagent',
+                description: 'Документация платформы ИИ-агентов Datagent: Cloud, интеграции с российскими сервисами, руководства и API.',
+                publisher: {
+                  '@id': 'https://datagent.ru/#organization',
+                },
+                inLanguage: 'ru-RU',
+                potentialAction: {
+                  '@type': 'SearchAction',
+                  target: {
+                    '@type': 'EntryPoint',
+                    urlTemplate: 'https://docs.datagent.ru/search?q={search_term_string}',
+                  },
+                  'query-input': 'required name=search_term_string',
+                },
+              },
+              {
+                '@type': 'SoftwareApplication',
+                '@id': 'https://datagent.ru/#software',
+                name: 'Datagent',
+                applicationCategory: 'BusinessApplication',
+                operatingSystem: 'Web',
+                url: 'https://app.datagent.ru',
+                description: 'ИИ-агенты для автоматизации бизнес-задач: работа с CRM, ERP, маркетплейсами и корпоративными данными.',
+                offers: {
+                  '@type': 'Offer',
+                  price: '0',
+                  priceCurrency: 'RUB',
+                  description: 'Бесплатный план: до 3 агентов и 100 запусков в месяц',
+                  url: 'https://docs.datagent.ru/docs/cloud/pricing',
+                },
+                publisher: {
+                  '@id': 'https://datagent.ru/#organization',
+                },
+              },
+            ],
+          }),
+        },
     {
       tagName: 'link',
       attributes: {
