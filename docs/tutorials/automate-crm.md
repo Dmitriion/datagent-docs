@@ -59,12 +59,12 @@ description: Сценарий — чат Битрикс24, ответ агент
 
 [^tg-npm]: Ключ registry: `datagent.plugin-telegram`; npm-пакет и поля конфигурации — [Телеграм](../integrations/telegram).
 
-1. BotFather → token → company secret → `telegramBotTokenRef`.
+1. [@BotFather](https://t.me/BotFather) → токен → **Секреты компании** (не в git и не в текст задачи) → в плагине поле `telegramBotTokenRef`.
 2. **Менеджер плагинов** → установить плагин Телеграм → **Компания → Настройки Телеграм**.
-3. Укажите чаты команды для дайджестов и уведомлений.
-4. Подключите **доступ панели** — для кнопок согласования в мессенджере.
+3. Укажите чаты команды для дайджестов и уведомлений (`defaultChatId` / `approvalsChatId` и др.).
+4. Подключите **доступ панели** (`paperclipBoardApiTokenRef`) — для кнопок согласования в мессенджере.
 
-Входящие сообщения: worker **`getUpdates`** (long poll), не webhook Datagent. Публичный URL инстанса нужен для **ссылок на issues** в TG, не для приёма апдейтов.
+Входящие сообщения: worker **`getUpdates`** (long poll). Webhook Datagent / `setWebhook` / ngrok для этого плагина **не нужны**. Публичный URL инстанса — только для **ссылок на issues** в TG, не для приёма апдейтов.
 
 ## Шаг 4. Сквозной поток
 

@@ -13,7 +13,7 @@
 
 | Приоритет | Область | Находка | Доказательство | Исправление | Статус |
 |---|---|---|---|---|---|
-| P0 | Secrets | Активных API keys / PAT / private keys / `.env` в дереве не найдено | Pattern-scan ~229 файлов (ghp_/sk-/AKIA/PEM/webhooks/DB URLs); `git grep` по выборке истории без совпадений; build HTML без token-паттернов | — | Закрыто (мониторинг) |
+| P1 | Docs history | Старый blob `docs/integrations/telegram.md` (коммит `dd94d51…`) содержал примеры в формате bot token / webhook secret | Permalink на GitHub | На `main` страница переписана без литералов; webhook-путь удалён как неактуальный. **Владельцу:** если токен когда-то был боевым — revoke в BotFather. Rewrite history — только по явному решению | Исправлено в дереве; history — на владельце |
 | P1 | Actions | Deploy workflow не объявлял `contents: read` при явном `permissions` | `.github/workflows/deploy.yml` | Добавлен `contents: read` рядом с `pages: write` / `id-token: write` | Исправлено |
 | P1 | XSS / MDX | `JsonLd` писал `JSON.stringify` в `<script>` без экранирования `<` | `src/components/JsonLd/index.tsx` + `dangerouslySetInnerHTML` | `serializeJsonLd`: `<` → `\u003c` | Исправлено |
 | P1 | Actions | Security-scan без явных минимальных permissions; checkout на старом major | `.github/workflows/security-scan.yml` | `permissions: contents: read`; `checkout@v6`; `gitleaks-action@v3` | Исправлено |

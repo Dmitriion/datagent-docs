@@ -30,7 +30,7 @@ description: Хранение ключей GigaChat, Yandex и интеграц�
 | --- | --- |
 | **GigaChat** | Идентификатор и секрет OAuth Сбера; токен кэширует платформа |
 | **YandexGPT** | JSON ключа сервисного аккаунта + каталог (`folderId`) в настройках агента |
-| **Плагины** | Webhook Битрикс24, токены ботов |
+| **Плагины** | Webhook Битрикс24, токены ботов (в т.ч. **Телеграм** — только через секрет, см. [Телеграм](/docs/integrations/telegram)) |
 | **Браузер** | Параметры локальной службы управления браузером (**Studio+**) |
 
 Инструкции: [GigaChat](/docs/integrations/gigachat), [YandexGPT](/docs/integrations/yandexgpt).
