@@ -33,6 +33,8 @@ jobs:
 
       - name: Build
         run: npm run build
+              env:
+        YANDEX_VERIFICATION: ${{ secrets.YANDEX_VERIFICATION }}
 
       - name: Verify Pages artifact is Docusaurus build
         run: test -f build/index.html && ! grep -q "Локальный запуск" build/index.html
