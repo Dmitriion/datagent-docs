@@ -1,24 +1,20 @@
-name: Security — secrets scan
+name: Security Scan
 
 on:
   push:
-    branches: [main, master]
+    branches: [main]
   pull_request:
-    branches: [main, master]
-
-permissions:
-  contents: read
+    branches: [main]
 
 jobs:
   gitleaks:
-    name: Gitleaks scan
+    name: gitleaks
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
       - name: Run Gitleaks
-        uses: gitleaks/gitleaks-action@v3
+        uses: gitleaks/gitleaks-action@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
