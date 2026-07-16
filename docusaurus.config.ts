@@ -164,6 +164,36 @@ const config: Config = {
 
   headTags: [
     ...verificationHeadTags,
+    // ── Security Headers (via <meta> — работает для CSP и Referrer) ──────────
+    // Полные HTTP-заголовки (HSTS, X-Frame-Options, nosniff) — только через CDN/Cloudflare.
+    // Referrer-Policy через <meta> поддерживается всеми современными браузерами.
+    {
+      tagName: 'meta',
+      attributes: {
+        name: 'referrer',
+        content: 'strict-origin-when-cross-origin',
+      },
+    },
+    // CSP Report-Only: разрешаем Docusaurus + Yandex.Metrika.
+    // После инвентаря через Report-Only → переводить в Content-Security-Policy.
+    {
+      tagName: 'meta',
+      attributes: {
+        'http-equiv': 'Content-Security-Policy-Report-Only',
+        content: [
+          "default-src 'self'",
+          "script-src 'self' 'unsafe-inline' https://mc.yandex.ru https://mc.yandex.com",
+          "style-src 'self' 'unsafe-inline'",
+          "img-src 'self' data: https://mc.yandex.ru https://mc.yandex.com",
+          "connect-src 'self' https://mc.yandex.ru https://mc.yandex.com",
+          "font-src 'self' data:",
+          "frame-ancestors 'none'",
+          "object-src 'none'",
+          "base-uri 'self'",
+        ].join('; '),
+      },
+    },
+    // ── OG / Social ────────────────────────────────────────────────────────────
     {
       tagName: 'meta',
       attributes: {
