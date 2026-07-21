@@ -28,6 +28,7 @@ const config: Config = {
 
   url: 'https://docs.datagent.ru',
   baseUrl: '/',
+    trailingSlash: true,
   organizationName: 'Dmitriion',
   projectName: 'datagent-docs',
 
