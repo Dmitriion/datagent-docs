@@ -138,8 +138,9 @@ flowchart LR
 - Наборы коннекторов работают в режиме **только чтение** — без записи в сервисы, без операций с деньгами и без произвольного `raw_request`
 - Назначение агенту — Unified Connections (`plugin/<id>`), credentials — Settings → Integrations
 - Реестр [внешних MCP](../integrations/mcp) — другой контур (HTTP/SSE); Russia connectors туда **не** добавляют
+- Maturity honesty (июль 2026): dry harness live-ready для большинства HTTP packs **не** равен GA/live_pilot; у [Авито](../integrations/avito) нет silent Wizard default grant; sidecar PostgreSQL / Mail.ru / ЕГРЮЛ — до green `/ready`
 
-Операторские страницы: [МойСклад](../integrations/moysklad), [Wildberries](../integrations/wildberries), [Ozon](../integrations/ozon), [Авито](../integrations/avito), [Селектел](../integrations/selectel). Канон as-built — monorepo `doc/mcp-russia-connectors.md`.
+Операторские страницы: [МойСклад](../integrations/moysklad), [Wildberries](../integrations/wildberries), [Ozon](../integrations/ozon), [Авито](../integrations/avito), [Селектел](../integrations/selectel). Канон as-built — monorepo `doc/mcp-russia-connectors.md` · live-ready matrix `doc/evidence/mcp-russia-live-readiness-matrix-2026-07-23.md`.
 
 ## Plugins
 
