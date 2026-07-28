@@ -314,20 +314,24 @@ const config: Config = {
       attributes: {
         rel: 'preconnect',
         href: 'https://mc.yandex.ru',
+        crossorigin: 'anonymous',
       },
     },
-    // tag.js as real <script src> so checkers see it in HTML/DOM (not only after IIFE).
-    // npm docusaurus-plugin-yandex-metrica is incompatible (Docusaurus 3.0.1 / React 18).
-    {
-      tagName: 'script',
-      attributes: {
-        src: 'https://mc.yandex.ru/metrika/tag.js',
-      },
-    },
+    // Single owner: local bootstrap injects tag.js and runs one init.
+    // Do not add <script src="https://mc.yandex.ru/metrika/tag.js"> here.
     {
       tagName: 'script',
       attributes: {
         src: '/js/yandex-metrika.js',
+        defer: 'defer',
+      },
+    },
+    // Diagnostic marker for CI / humans — not a documented Webmaster recognition API.
+    {
+      tagName: 'meta',
+      attributes: {
+        name: 'yandex-metrika-counter',
+        content: '110571227',
       },
     },
   ],
