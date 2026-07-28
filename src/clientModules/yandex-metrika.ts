@@ -1,7 +1,7 @@
 /**
  * Яндекс.Метрика для docs.datagent.ru (счётчик 110571227).
- * Init is in docusaurus.config.ts headTags (SSR HTML for Yandex checker).
- * This client module only sends SPA hit on client-side navigations.
+ * Init живёт только в static/js/yandex-metrika.js (один bootstrap).
+ * Этот client module только шлёт SPA hit при клиентских переходах — без init.
  */
 declare global {
   interface Window {
