@@ -1,8 +1,9 @@
 /**
  * Яндекс.Метрика для docs.datagent.ru.
- * Init is in static/js/yandex-metrika.js (SSR HTML for Yandex checker).
- * This client module sends SPA hits to the counter that matches the path prefix
- * and reaches apps-contour goals on `/docs/apps/*` only.
+ * Первый init — в static/js/yandex-metrika.js (один bootstrap, без отдельного tag.js в HTML).
+ * Этот client module шлёт SPA hit на счётчик по префиксу пути
+ * и goals контура приложений только на `/docs/apps/*`.
+ * Init здесь только если bootstrap пропустил счётчик (изоляция /docs/apps/*).
  */
 import {
   APPS_DOCS_COUNTER_ID,

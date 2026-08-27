@@ -32,10 +32,30 @@ jobs:
         run: npm run build
         env:
           YANDEX_VERIFICATION: ${{ secrets.YANDEX_VERIFICATION }}
+      - name: Verify Yandex Metrika bootstrap artifact
+        run: |
+          set -euo pipefail
+          test -f build/js/yandex-metrika.js
+
+          # HTML: local bootstrap + decimal diagnostic marker.
+          grep -q '/js/yandex-metrika.js' build/index.html
+          grep -q '110571227' build/index.html
+
+          # Bootstrap: self-contained SDK load + one init.
+          grep -q 'mc.yandex.ru/metrika/tag.js' build/js/yandex-metrika.js
+          grep -q '110571227' build/js/yandex-metrika.js
+          grep -q "ym(110571227" build/js/yandex-metrika.js
+
+          # Regressions: no hex minify and no separate CDN SDK loader in HTML.
+          ! grep -q '0x6972edb' build/index.html build/js/yandex-metrika.js
+          ! grep -Eq '<script[^>]*mc\.yandex\.ru/metrika/tag\.js' build/index.html
+
+          # Exactly one local bootstrap reference.
+          test "$(grep -o '/js/yandex-metrika.js' build/index.html | wc -l)" -eq 1
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v6
       - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: build
 
@@ -51,4 +71,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
