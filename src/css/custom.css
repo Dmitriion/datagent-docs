@@ -597,6 +597,12 @@ main[class*='notFound'] h1 {
     color var(--duration) var(--ease-out);
 }
 
+/* Apps contour: no Cloud signup CTA on /docs/apps/* (Docusaurus sets docs-doc-id-apps/…) */
+html[class*='docs-doc-id-apps'] .navbar--cta,
+html[class*='docs-doc-id-apps'] div[class*='announcementBar'] {
+  display: none !important;
+}
+
 .navbar--cta {
   background: var(--ifm-color-primary) !important;
   border-color: var(--ifm-color-primary) !important;
