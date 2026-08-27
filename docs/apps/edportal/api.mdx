@@ -1,0 +1,90 @@
+---
+id: api
+slug: /apps/edportal/api
+title: Agent API EDPortal — /api/v1/agent
+sidebar_label: API агента
+description: "HTTP API EDPortal /api/v1/agent: токен из студии, скоупы, каталог, назначения, события. Не API панели Datagent."
+hide_title: true
+---
+
+import {
+  APPS_INSTALL_CTA_TEXT,
+  APPS_INSTALL_CTA_URL,
+  EDPORTAL_PRODUCT_URL,
+} from '@site/src/data/apps-contour';
+
+<ProductHero
+  eyebrow="EDPortal"
+  title="Agent API: /api/v1/agent"
+  lead="Публичный HTTP-интерфейс EDPortal для BI, HRIS и коннекторов. Токен выдаётся в студии. Это не REST панели Datagent и не чат-мост агентов."
+  primaryText={APPS_INSTALL_CTA_TEXT}
+  primaryUrl={APPS_INSTALL_CTA_URL}
+  secondaryText="Назад к продукту"
+  secondaryHref={EDPORTAL_PRODUCT_URL}
+  facts={['Bearer-токен', 'Скоупы', 'Каталог и назначения', 'События learning.*']}
+/>
+
+[Назад к продукту](https://datagent.ru/solutions/bitrix24/edportal)
+
+Базовый префикс: **`/api/v1/agent`**. Версия HTTP `v1` заморожена. LMS-данные не ходят через Битрикс24 REST как замена этого API.
+
+Datagent может быть **потребителем** этого API. Владелец контракта — EDPortal: это не board API Datagent (`/api` панели агентов) и не IdP Datagent Cloud.
+
+## Аутентификация
+
+Заголовок `Authorization: Bearer <token>`. Токен создаётся в студии (`/api/v1/admin/agent/*` — JWT методиста, не agent-токен), показывается **один раз**, в базе хранится только хеш.
+
+Токены выдаются активным тенантам, не демо. Актор в журнале: `actorType=agent`.
+
+На мутациях нужен `Idempotency-Key`: повтор с тем же телом — тот же ответ; другое тело — 409. Опционально `X-Correlation-Id` — корреляция клиента, не идентификатор запуска Datagent.
+
+Лимиты по умолчанию: 10 чтений в секунду и 2 записи на токен. В ответе — `X-RateLimit-Remaining` и `X-RateLimit-Reset`.
+
+## Скоупы
+
+| Скоуп | Зачем |
+| --- | --- |
+| любой активный токен | `GET /whoami`, MCP `initialize` / `ping` / `tools/list` |
+| `agent.read.users` | Пользователи и lookup |
+| `agent.read.catalog` | Опубликованные курсы, тесты, программы, компетенции |
+| `agent.read.analytics` | Сводки без ПДн ответов учеников |
+| `agent.write.enrollments` | Назначить или отозвать обучение |
+| `agent.write.content_draft` | Черновик правки контента (публикация агентом — 403) |
+| `agent.notify` | Уведомление по шаблону |
+| `agent.write.idp` | Черновик ИПР (публикация агентом — 403) |
+
+## Что можно вызвать
+
+Все пути ниже — относительно `/api/v1/agent`.
+
+- `GET /whoami` — проверка токена, скоупы, связь с Битрикс24
+- `GET /users`, `POST /users/lookup` — сотрудники тенанта
+- `GET /catalog/courses|tests|programs|competencies` — только опубликованное
+- `GET /analytics/overview`, `GET /analytics/funnel` — агрегаты assigned / passed / failed / overdue
+- `POST /enrollments`, `POST /enrollments/:id/revoke` — назначения; крупный список уходит в proposal на подтверждение в студии
+- `GET /agent-proposals/:id` — статус предложения
+- `POST /content/:entityType/:id/draft-patch` — черновик; `COURSE` / `LESSON` / `TEST` / `PROGRAM`
+- `POST /notify`, `POST /idp/draft`
+
+Публикация курса, теста или ИПР агентом **запрещена** (403). Методист принимает черновик в студии.
+
+MCP: `POST /api/v1/agent/mcp` — те же скоупы и лимиты, инструменты вида `edp_*`.
+
+## События
+
+Подписка HTTPS: URL, секрет, список `learning.*`. Подпись `X-EDP-Signature` (HMAC SHA-256 по `{timestamp}.{body}`). Только `https://`; внутренние адреса отклоняются.
+
+Примеры: назначение, просрочка, завершение курса, несданный тест, истечение сертификата, решение по proposal. Потребитель дедуплицирует по `eventId`. Если он сам вызвал мутацию, событие с тем же `correlationId` и `source=agent` не нужно обрабатывать повторно.
+
+## Чего здесь нет
+
+- Нет публичного API панели Datagent (задачи, heartbeat, агенты Cloud).
+- Нет обещания «полного REST Битрикс24» из этого документа.
+- Нет записи в CRM портала через Agent API.
+
+<CtaBanner
+  title="Установите EDPortal"
+  description="Токен API выдаётся в студии после установки приложения из Маркетплейса."
+  buttonText={APPS_INSTALL_CTA_TEXT}
+  buttonUrl={APPS_INSTALL_CTA_URL}
+/>

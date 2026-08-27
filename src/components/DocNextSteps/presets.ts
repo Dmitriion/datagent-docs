@@ -134,3 +134,66 @@ export const officeFieldNextSteps: NextStepItem[] = [
     tag: 'Каталог',
   },
 ];
+
+export const appsIndexNextSteps: NextStepItem[] = [
+  {
+    title: 'EDPortal',
+    description: 'Онбординг, тесты и сертификаты в Битрикс24.',
+    to: '/docs/apps/edportal',
+    tag: 'LMS',
+  },
+  {
+    title: 'Заявки PRO',
+    description: 'Каталог процессов портала и права доступа.',
+    to: '/docs/apps/requestspro',
+    tag: 'Заявки',
+  },
+];
+
+export const appsEdportalNextSteps: NextStepItem[] = [
+  {
+    title: 'Установка',
+    description: 'Маркетплейс, лицензия и первый запуск.',
+    to: '/docs/apps/edportal/installation',
+    tag: 'Старт',
+  },
+  {
+    title: 'Настройка',
+    description: 'Роли, отделы и оболочки после установки.',
+    to: '/docs/apps/edportal/setup',
+    tag: 'Настройка',
+  },
+  {
+    title: 'Курсы',
+    description: 'Публикация, назначения и сертификаты.',
+    to: '/docs/apps/edportal/courses',
+    tag: 'Обучение',
+  },
+  {
+    title: 'API агента',
+    description: 'HTTP /api/v1/agent для внешних систем.',
+    to: '/docs/apps/edportal/api',
+    tag: 'API',
+  },
+];
+
+export const appsRequestsproNextSteps: NextStepItem[] = [
+  {
+    title: 'Установка',
+    description: 'Маркетплейс, лицензия и пункт меню.',
+    to: '/docs/apps/requestspro/installation',
+    tag: 'Старт',
+  },
+  {
+    title: 'Каталог',
+    description: 'Группы и карточки процессов портала.',
+    to: '/docs/apps/requestspro/catalog',
+    tag: 'Каталог',
+  },
+  {
+    title: 'Доступ',
+    description: 'Всем, отделам или сотрудникам.',
+    to: '/docs/apps/requestspro/access',
+    tag: 'Права',
+  },
+];

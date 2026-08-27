@@ -1,0 +1,79 @@
+---
+id: installation
+slug: /apps/requestspro/installation
+title: Установка Заявки PRO из Маркетплейса Битрикс24
+sidebar_label: Установка
+description: "Как установить Заявки PRO: Маркетплейс, лицензия, мастер во iframe, пункт меню после успеха. Без доплаты вендору."
+hide_title: true
+---
+
+import {
+  APPS_INSTALL_CTA_TEXT,
+  APPS_INSTALL_CTA_URL,
+  REQUESTSPRO_PRODUCT_URL,
+} from '@site/src/data/apps-contour';
+
+<ProductHero
+  eyebrow="Заявки PRO"
+  title="Установка из Маркетплейса"
+  lead="Заявки PRO ставит администратор портала. Мастер идёт во iframe; пункт меню появляется только после успешного провижининга. Отдельной оплаты вендору нет."
+  primaryText={APPS_INSTALL_CTA_TEXT}
+  primaryUrl={APPS_INSTALL_CTA_URL}
+  secondaryText="Назад к продукту"
+  secondaryHref={REQUESTSPRO_PRODUCT_URL}
+  facts={['Только администратор', 'Подписка Маркета', 'Без доплаты вендору']}
+/>
+
+[Назад к продукту](https://datagent.ru/solutions/bitrix24/requestspro)
+
+<ProcessSteps
+  heading="Четыре шага"
+  howToName="Как установить Заявки PRO"
+  howToDescription="Установка приложения Заявки PRO на портал Битрикс24 из Маркетплейса."
+  pageUrl="https://docs.datagent.ru/docs/apps/requestspro/installation"
+  steps={[
+    {
+      title: 'Откройте Маркетплейс',
+      text: 'Войдите как администратор и найдите приложение «Заявки PRO».',
+    },
+    {
+      title: 'Примите лицензию',
+      text: 'Откройте лицензионное соглашение и политику конфиденциальности Заявки PRO — не оферту Datagent Cloud.',
+    },
+    {
+      title: 'Дождитесь мастера',
+      text: 'Приложение создаёт хранилища entity, снимает справочники отделов, сотрудников и процессов, подписывается на удаление и обновление.',
+    },
+    {
+      title: 'Соберите каталог',
+      text: 'Создайте первую группу и карточки. Сотрудники увидят только разрешённые процессы.',
+    },
+  ]}
+/>
+
+## Лицензия и конфиденциальность
+
+- [Лицензионное соглашение Заявки PRO](https://datagent.ru/legal/requestspro-license)
+- [Политика конфиденциальности Заявки PRO](https://datagent.ru/legal/requestspro-privacy)
+
+Не используйте оферту Datagent Cloud и политику платформы агентов как документы этого приложения.
+
+## Что происходит при установке
+
+Приложение создаёт схему `entity` (`rpro_groups`, `rpro_rights`), кэширует справочники и вешает `ONAPPUNINSTALL` / `ONAPPUPDATE`. `BX24.installFinish()` вызывается только после успеха.
+
+Повторная установка идемпотентна: каталог на месте. Удаление без очистки сбрасывает токены на стороне приложения; с очисткой (`CLEAN`) дополнительно очищается кэш тенанта, хранилище на портале убирает Битрикс24.
+
+Второй портал — другой `member_id`, каталоги не пересекаются.
+
+## После установки
+
+1. [Каталог](/docs/apps/requestspro/catalog) — группы и карточки
+2. [Доступ](/docs/apps/requestspro/access) — кому видна карточка
+
+<CtaBanner
+  title="Нужна помощь с установкой?"
+  description="Напишите sales@datagent.ru — подскажем, как найти Заявки PRO в Маркетплейсе и завершить мастер."
+  buttonText={APPS_INSTALL_CTA_TEXT}
+  buttonUrl={APPS_INSTALL_CTA_URL}
+/>
