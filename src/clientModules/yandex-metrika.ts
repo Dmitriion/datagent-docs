@@ -1,15 +1,93 @@
 /**
- * Яндекс.Метрика для docs.datagent.ru (счётчик 110571227).
- * Init is in docusaurus.config.ts headTags (SSR HTML for Yandex checker).
- * This client module only sends SPA hit on client-side navigations.
+ * Яндекс.Метрика для docs.datagent.ru.
+ * Init is in static/js/yandex-metrika.js (SSR HTML for Yandex checker).
+ * This client module sends SPA hits to the counter that matches the path prefix
+ * and reaches apps-contour goals on `/docs/apps/*` only.
  */
+import {
+  APPS_DOCS_COUNTER_ID,
+  isAppsDocsPath,
+  metrikaCounterIdForPath,
+} from '../data/yandex-metrika-ids';
+
 declare global {
   interface Window {
     ym?: (id: number, method: string, ...args: unknown[]) => void;
+    __datagentMetrikaInited?: Set<number>;
   }
 }
 
-const COUNTER_ID = 110571227;
+const INIT_OPTIONS = {
+  clickmap: true,
+  trackLinks: true,
+  accurateTrackBounce: true,
+  webvisor: true,
+} as const;
+
+function initedSet(): Set<number> {
+  if (!window.__datagentMetrikaInited) {
+    window.__datagentMetrikaInited = new Set();
+  }
+  return window.__datagentMetrikaInited;
+}
+
+function ensureInit(id: number): void {
+  if (!id || initedSet().has(id)) {
+    return;
+  }
+  window.ym?.(id, 'init', INIT_OPTIONS);
+  initedSet().add(id);
+}
+
+function hit(pathname: string, search: string, hash: string): void {
+  const id = metrikaCounterIdForPath(pathname);
+  if (!id) {
+    return;
+  }
+  ensureInit(id);
+  window.ym?.(id, 'hit', pathname + search + hash);
+}
+
+function installGoalForPath(pathname: string): string {
+  if (pathname.includes('/requestspro')) {
+    return 'cta_install_requestspro';
+  }
+  if (pathname.includes('/edportal')) {
+    return 'cta_install_edportal';
+  }
+  return 'cta_install_apps';
+}
+
+function onDocumentClick(event: MouseEvent): void {
+  if (!isAppsDocsPath(window.location.pathname)) {
+    return;
+  }
+  const id = APPS_DOCS_COUNTER_ID;
+  if (!id) {
+    return;
+  }
+  const target = event.target;
+  if (!(target instanceof Element)) {
+    return;
+  }
+  const anchor = target.closest('a');
+  if (!anchor) {
+    return;
+  }
+  const href = anchor.getAttribute('href') ?? '';
+  if (href.startsWith('mailto:sales@datagent.ru')) {
+    window.ym?.(id, 'reachGoal', 'cta_mailto_bitrix');
+    window.ym?.(id, 'reachGoal', installGoalForPath(window.location.pathname));
+    return;
+  }
+  if (href.includes('bitrix24.ru/apps') || href.includes('1c-bitrix.ru')) {
+    window.ym?.(id, 'reachGoal', installGoalForPath(window.location.pathname));
+  }
+}
+
+if (typeof window !== 'undefined' && typeof document !== 'undefined') {
+  document.addEventListener('click', onDocumentClick);
+}
 
 export function onRouteDidUpdate({
   location,
@@ -18,7 +96,13 @@ export function onRouteDidUpdate({
   location: {pathname: string; search: string; hash: string};
   previousLocation?: {pathname: string; search: string; hash: string} | null;
 }): void {
-  if (!previousLocation) return;
+  if (!previousLocation) {
+    const firstId = metrikaCounterIdForPath(location.pathname);
+    if (firstId) {
+      initedSet().add(firstId);
+    }
+    return;
+  }
   if (
     previousLocation.pathname === location.pathname &&
     previousLocation.search === location.search &&
@@ -26,5 +110,5 @@ export function onRouteDidUpdate({
   ) {
     return;
   }
-  window.ym?.(COUNTER_ID, 'hit', location.pathname + location.search + location.hash);
+  hit(location.pathname, location.search, location.hash);
 }
