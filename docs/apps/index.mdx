@@ -1,0 +1,100 @@
+---
+id: index
+slug: /apps
+title: Приложения Datagent для Битрикс24 — EDPortal и Заявки PRO
+sidebar_label: Обзор
+description: "Документация приложений Маркетплейса Битрикс24: EDPortal и Заявки PRO. Установка по подписке Маркета, без доплаты вендору."
+hide_title: true
+---
+
+import {
+  APPS_INSTALL_CTA_TEXT,
+  APPS_INSTALL_CTA_URL,
+  SOLUTIONS_HUB_URL,
+} from '@site/src/data/apps-contour';
+import {appsIndexNextSteps} from '@site/src/components/DocNextSteps/presets';
+
+<ProductHero
+  eyebrow="Приложения для Битрикс24"
+  title="EDPortal и Заявки PRO"
+  lead="Тиражные приложения для портала Битрикс24: обучение с тестами и сертификатами и каталог заявок с правами доступа. Доступ — в рамках подписки 1С-Битрикс24.Маркетплейс, без отдельной оплаты вендору."
+  primaryText={APPS_INSTALL_CTA_TEXT}
+  primaryUrl={APPS_INSTALL_CTA_URL}
+  secondaryText="Назад к решениям"
+  secondaryHref={SOLUTIONS_HUB_URL}
+  facts={[
+    'Маркетплейс Битрикс24',
+    'Без доплаты вендору',
+    'Подписка Маркета',
+  ]}
+/>
+
+Этот раздел — документация **приложений Маркетплейса**, не платформы ИИ-агентов Datagent Cloud. Чат-мост агента с CRM описан отдельно: [Битрикс24](/docs/integrations/bitrix24).
+
+<CompareOptions
+  heading="Какое приложение открыть"
+  options={[
+    {
+      title: 'EDPortal',
+      subtitle: 'Онбординг, тесты и сертификаты на портале.',
+      points: [
+        'Курсы, назначения и сертификаты',
+        'Обучение сотрудника в Битрикс24',
+        'HTTP API агента /api/v1/agent',
+      ],
+      ctaLabel: 'Документация EDPortal',
+      ctaHref: '/docs/apps/edportal',
+      recommended: true,
+    },
+    {
+      title: 'Заявки PRO',
+      subtitle: 'Каталог бизнес-процессов портала и ACL.',
+      points: [
+        'Карточки процессов bitrix_processes',
+        'Группы и права на портале клиента',
+        'Без собственного движка заявок',
+      ],
+      ctaLabel: 'Документация Заявки PRO',
+      ctaHref: '/docs/apps/requestspro',
+    },
+  ]}
+/>
+
+## Как получить доступ
+
+Устанавливает **администратор портала** из 1С-Битрикс24.Маркетплейс. Отдельной подписки у ООО «ДАТАДЖЕНТ» и оплаты через ЮKassa нет: условия оплаты — договор пользователя с Битриксом.
+
+Лицензия и политика каждого приложения — на datagent.ru, не оферта Cloud и не политика платформы агентов:
+
+- [EDPortal: лицензия](https://datagent.ru/legal/edportal-license) · [конфиденциальность](https://datagent.ru/legal/edportal-privacy)
+- [Заявки PRO: лицензия](https://datagent.ru/legal/requestspro-license) · [конфиденциальность](https://datagent.ru/legal/requestspro-privacy)
+
+<FaqSchema
+  pageUrl="https://docs.datagent.ru/docs/apps"
+  items={[
+    {
+      question: 'Нужно ли платить Datagent отдельно за приложение?',
+      answer:
+        'Нет. Доступ предоставляется в рамках подписки 1С-Битрикс24.Маркетплейс. Отдельной оплаты вендору нет.',
+    },
+    {
+      question: 'Это то же самое, что плагин Битрикс24 в Datagent Cloud?',
+      answer:
+        'Нет. EDPortal и Заявки PRO — приложения портала из Маркетплейса. Плагин Битрикс24 в документации агентов — чат-мост: сообщения CRM становятся задачами агента.',
+    },
+    {
+      question: 'Где лицензия и политика конфиденциальности?',
+      answer:
+        'У каждого приложения своя пара документов на datagent.ru/legal/. Не используйте оферту Datagent Cloud и политику платформы агентов как документы приложения.',
+    },
+  ]}
+/>
+
+<DocNextSteps heading="Дальше" items={appsIndexNextSteps} />
+
+<CtaBanner
+  title="Установите из Маркетплейса"
+  description="Администратор портала ставит приложение из 1С-Битрикс24.Маркетплейс. Напишите нам, если нужна помощь с установкой."
+  buttonText={APPS_INSTALL_CTA_TEXT}
+  buttonUrl={APPS_INSTALL_CTA_URL}
+/>
