@@ -373,6 +373,7 @@ const config: Config = {
           position: 'left',
         },
         {to: '/docs/guides', label: 'Руководства', position: 'left'},
+        {to: '/docs/apps', label: 'Приложения', position: 'left'},
         {
           to: '/docs/cloud/pricing',
           label: 'Тарифы',
@@ -442,6 +443,14 @@ const config: Config = {
             {label: 'Открыть Datagent', href: 'https://app.datagent.ru'},
             {label: 'Начать бесплатно', href: 'https://app.datagent.ru/signup'},
             {label: 'Сайт', href: 'https://datagent.ru'},
+          ],
+        },
+        {
+          title: 'Приложения',
+          items: [
+            {label: 'Обзор', to: '/docs/apps'},
+            {label: 'EDPortal', to: '/docs/apps/edportal'},
+            {label: 'Заявки PRO', to: '/docs/apps/requestspro'},
           ],
         },
         {
