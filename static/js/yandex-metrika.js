@@ -13,12 +13,12 @@
  */
 (function (window, document) {
   var TAG_SRC = 'https://mc.yandex.ru/metrika/tag.js';
-  var BOOTSTRAP_FLAG = '__datagentYmBootstrap';
+  var INIT_FLAG = '__datagentYmBootstrap';
 
-  if (window[BOOTSTRAP_FLAG]) {
+  if (window[INIT_FLAG]) {
     return;
   }
-  window[BOOTSTRAP_FLAG] = true;
+  window[INIT_FLAG] = true;
 
   window.ym =
     window.ym ||
@@ -26,6 +26,17 @@
       (window.ym.a = window.ym.a || []).push(arguments);
     };
   window.ym.l = 1 * new Date();
+
+  var AGENT_DOCS_COUNTER_ID = 110571227;
+  // PLACEHOLDER: dedicated counter for /docs/apps/* (EDPortal, Заявки PRO).
+  // Replace when ops creates the counter. 0 = do not init (no fallback to 110571227).
+  var APPS_DOCS_COUNTER_ID = 0;
+
+  function datagentDocsIsAppsPath(pathname) {
+    return pathname === '/docs/apps' || pathname.indexOf('/docs/apps/') === 0;
+  }
+
+  window.__datagentMetrikaInited = window.__datagentMetrikaInited || new Set();
 
   var scripts = document.scripts || document.getElementsByTagName('script');
   var tagAlreadyPresent = false;
@@ -51,32 +62,24 @@
     }
   }
 
-  var AGENT_DOCS_COUNTER_ID = 110571227;
-  // PLACEHOLDER: dedicated counter for /docs/apps/* (EDPortal, Заявки PRO).
-  // Replace when ops creates the counter. 0 = do not init (no fallback to 110571227).
-  var APPS_DOCS_COUNTER_ID = 0;
-
-  function datagentDocsIsAppsPath(pathname) {
-    return pathname === '/docs/apps' || pathname.indexOf('/docs/apps/') === 0;
-  }
-
-  window.__datagentMetrikaInited = window.__datagentMetrikaInited || new Set();
-
-  var initOptions = {
-    clickmap: true,
-    trackLinks: true,
-    accurateTrackBounce: true,
-    webvisor: true,
-  };
-
   if (datagentDocsIsAppsPath(location.pathname)) {
     if (APPS_DOCS_COUNTER_ID > 0) {
-      ym(APPS_DOCS_COUNTER_ID, 'init', initOptions);
+      ym(APPS_DOCS_COUNTER_ID, 'init', {
+        clickmap: true,
+        trackLinks: true,
+        accurateTrackBounce: true,
+        webvisor: true,
+      });
       window.__datagentMetrikaInited.add(APPS_DOCS_COUNTER_ID);
     }
     return;
   }
 
-  ym(110571227, 'init', initOptions);
+  ym(110571227, 'init', {
+    clickmap: true,
+    trackLinks: true,
+    accurateTrackBounce: true,
+    webvisor: true,
+  });
   window.__datagentMetrikaInited.add(AGENT_DOCS_COUNTER_ID);
 })(window, document);

@@ -1,9 +1,9 @@
 /**
  * Яндекс.Метрика для docs.datagent.ru.
- * Первый init — в static/js/yandex-metrika.js (один bootstrap, без отдельного tag.js в HTML).
+ * Init живёт в static/js/yandex-metrika.js (один bootstrap).
  * Этот client module шлёт SPA hit на счётчик по префиксу пути
  * и goals контура приложений только на `/docs/apps/*`.
- * Init здесь только если bootstrap пропустил счётчик (изоляция /docs/apps/*).
+ * ensureInit — только при SPA-переходе на другой счётчик (не дублирует first-load init).
  */
 import {
   APPS_DOCS_COUNTER_ID,
