@@ -187,6 +187,60 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: 'category',
+      label: 'Приложения',
+      collapsed: true,
+      link: {
+        type: 'doc',
+        id: 'apps/index',
+      },
+      items: [
+        {type: 'doc', id: 'apps/index', label: 'Обзор', key: 'apps-overview'},
+        {
+          type: 'category',
+          label: 'EDPortal',
+          collapsed: true,
+          link: {
+            type: 'doc',
+            id: 'apps/edportal/index',
+          },
+          items: [
+            {
+              type: 'doc',
+              id: 'apps/edportal/index',
+              label: 'Обзор',
+              key: 'apps-edportal-overview',
+            },
+            'apps/edportal/installation',
+            'apps/edportal/setup',
+            'apps/edportal/courses',
+            'apps/edportal/tests',
+            'apps/edportal/api',
+          ],
+        },
+        {
+          type: 'category',
+          label: 'Заявки PRO',
+          collapsed: true,
+          link: {
+            type: 'doc',
+            id: 'apps/requestspro/index',
+          },
+          items: [
+            {
+              type: 'doc',
+              id: 'apps/requestspro/index',
+              label: 'Обзор',
+              key: 'apps-requestspro-overview',
+            },
+            'apps/requestspro/installation',
+            'apps/requestspro/catalog',
+            'apps/requestspro/access',
+          ],
+        },
+      ],
+    },
+    {
+      type: 'category',
       label: 'Руководства',
       collapsed: false,
       link: {type: 'doc', id: 'guides/index'},

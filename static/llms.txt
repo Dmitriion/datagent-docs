@@ -35,7 +35,7 @@
 - [ЮKassa](https://docs.datagent.ru/docs/integrations/yookassa): 12 инструментов — платежи, возвраты, чеки, только чтение (v0.1.0)
 - [Mail.ru](https://docs.datagent.ru/docs/integrations/mailru): 9 инструментов — поиск и разбор входящих писем (v0.4.0)
 - [Cloud.ru](https://docs.datagent.ru/docs/integrations/cloud-ru): 2 инструмента — ранний preview инвентаря (проекты, квоты, IAM), статус «Развивается» (v0.1.0)
-- [Битрикс24](https://docs.datagent.ru/docs/integrations/bitrix24): чаты и открытые линии → задачи
+- [Битрикс24](https://docs.datagent.ru/docs/integrations/bitrix24): чаты и открытые линии → задачи; приложения Маркетплейса — в разделе Приложения, не на этой странице
 - [Телеграм](https://docs.datagent.ru/docs/integrations/telegram): long poll getUpdates, токен только в секрете компании, уведомления и согласования
 - [1С](https://docs.datagent.ru/docs/integrations/1c-connector): мост к учётной базе (Business+)
 - [Внешние инструменты (MCP)](https://docs.datagent.ru/docs/integrations/mcp): реестр HTTP MCP для Cursor-агентов и CLI с supportsExternalMcp
@@ -67,6 +67,25 @@
 - [BrowserBridge](https://docs.datagent.ru/docs/browser/setup): агент открывает сайты через расширение Chrome
 - [Создание плагина](https://docs.datagent.ru/docs/tutorials/build-plugin): свой worker и инструменты агента
 
+## Приложения Маркетплейса Битрикс24
+
+Отдельный контур от Datagent Cloud: без signup на app.datagent.ru, без оферты Cloud. Доступ — подписка 1С-Битрикс24.Маркетплейс, без доплаты вендору.
+
+- [Обзор приложений](https://docs.datagent.ru/docs/apps): EDPortal и Заявки PRO
+- [EDPortal](https://docs.datagent.ru/docs/apps/edportal): онбординг, тесты, сертификаты
+- [Установка EDPortal](https://docs.datagent.ru/docs/apps/edportal/installation)
+- [Настройка EDPortal](https://docs.datagent.ru/docs/apps/edportal/setup)
+- [Курсы EDPortal](https://docs.datagent.ru/docs/apps/edportal/courses)
+- [Тесты EDPortal](https://docs.datagent.ru/docs/apps/edportal/tests)
+- [Agent API EDPortal](https://docs.datagent.ru/docs/apps/edportal/api): `/api/v1/agent`, не board API Datagent
+- [Заявки PRO](https://docs.datagent.ru/docs/apps/requestspro): каталог процессов портала и ACL
+- [Установка Заявки PRO](https://docs.datagent.ru/docs/apps/requestspro/installation)
+- [Каталог Заявки PRO](https://docs.datagent.ru/docs/apps/requestspro/catalog)
+- [Доступ Заявки PRO](https://docs.datagent.ru/docs/apps/requestspro/access)
+- Посадочные: [хаб](https://datagent.ru/solutions/bitrix24/), [EDPortal](https://datagent.ru/solutions/bitrix24/edportal), [Заявки PRO](https://datagent.ru/solutions/bitrix24/requestspro)
+- EULA: [EDPortal](https://datagent.ru/legal/edportal-license), [Заявки PRO](https://datagent.ru/legal/requestspro-license)
+- Конфиденциальность: [EDPortal](https://datagent.ru/legal/edportal-privacy), [Заявки PRO](https://datagent.ru/legal/requestspro-privacy)
+
 ## Product
 
 - [Лендинг](https://datagent.ru/): позиционирование и FAQ
@@ -83,4 +102,5 @@
 - ЮKassa в Datagent: **12** инструментов (не путать с внешними MCP на 20 tools)
 - Не обещать фиксированное время «за 5 минут» как гарантию
 - Назначение агенту — вкладка **Подключения**
-- Signup: https://app.datagent.ru/signup
+- Signup Cloud: https://app.datagent.ru/signup — не использовать на страницах `/docs/apps/*`
+- Приложения Маркетплейса: CTA — Маркет или mailto:sales@datagent.ru, не Cloud signup
