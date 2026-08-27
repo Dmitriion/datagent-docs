@@ -1,0 +1,80 @@
+---
+id: installation
+slug: /apps/edportal/installation
+title: Установка EDPortal из Маркетплейса Битрикс24
+sidebar_label: Установка
+description: "Как установить EDPortal на портал Битрикс24: Маркетплейс, лицензия, мастер установки. Без доплаты вендору."
+hide_title: true
+---
+
+import {
+  APPS_INSTALL_CTA_TEXT,
+  APPS_INSTALL_CTA_URL,
+  EDPORTAL_PRODUCT_URL,
+} from '@site/src/data/apps-contour';
+
+<ProductHero
+  eyebrow="EDPortal"
+  title="Установка из Маркетплейса"
+  lead="EDPortal ставит администратор портала Битрикс24. Пункт меню появляется после успешного завершения мастера. Отдельной оплаты вендору нет."
+  primaryText={APPS_INSTALL_CTA_TEXT}
+  primaryUrl={APPS_INSTALL_CTA_URL}
+  secondaryText="Назад к продукту"
+  secondaryHref={EDPORTAL_PRODUCT_URL}
+  facts={['Только администратор', 'Подписка Маркета', 'Без доплаты вендору']}
+/>
+
+[Назад к продукту](https://datagent.ru/solutions/bitrix24/edportal)
+
+<ProcessSteps
+  heading="Четыре шага"
+  howToName="Как установить EDPortal"
+  howToDescription="Установка приложения EDPortal на портал Битрикс24 из Маркетплейса."
+  pageUrl="https://docs.datagent.ru/docs/apps/edportal/installation"
+  steps={[
+    {
+      title: 'Откройте Маркетплейс',
+      text: 'Войдите как администратор портала и найдите приложение EDPortal.',
+    },
+    {
+      title: 'Примите лицензию',
+      text: 'Откройте лицензионное соглашение и политику конфиденциальности EDPortal — не оферту Datagent Cloud.',
+    },
+    {
+      title: 'Дождитесь мастера',
+      text: 'Установка идёт во iframe. Пункт меню появляется только после успеха, не раньше.',
+    },
+    {
+      title: 'Откройте приложение',
+      text: 'Зайдите из меню портала. Дальше — роли, отделы и первый курс.',
+    },
+  ]}
+/>
+
+## Лицензия и конфиденциальность
+
+Перед установкой откройте документы **этого** приложения:
+
+- [Лицензионное соглашение EDPortal](https://datagent.ru/legal/edportal-license)
+- [Политика конфиденциальности EDPortal](https://datagent.ru/legal/edportal-privacy)
+
+Не используйте оферту Datagent Cloud и политику платформы агентов как документы EDPortal.
+
+## Что запрашивает приложение
+
+Права портала (scope): `user`, `im`, `department`. Нужны сотрудники, отделы и уведомления. Скоуп `crm` не запрашивается.
+
+Второй портал — отдельный тенант: данные курсов не смешиваются. Удаление с очисткой данных сбрасывает токены и карту пользователей; курсы при этом не удаляются как «чужой» контент другого портала.
+
+## После установки
+
+1. [Настройка](/docs/apps/edportal/setup) — кто куда попадает
+2. [Курсы](/docs/apps/edportal/courses) — публикация и назначения
+3. [Тесты](/docs/apps/edportal/tests) — попытки и проверка
+
+<CtaBanner
+  title="Нужна помощь с установкой?"
+  description="Напишите sales@datagent.ru — подскажем, как найти EDPortal в Маркетплейсе и завершить мастер."
+  buttonText={APPS_INSTALL_CTA_TEXT}
+  buttonUrl={APPS_INSTALL_CTA_URL}
+/>

@@ -1,5 +1,7 @@
 import React, {type ReactNode} from 'react';
+import {useLocation} from '@docusaurus/router';
 import Root from '@theme-original/Root';
+import {metrikaCounterIdForPath} from '@site/src/data/yandex-metrika-ids';
 
 type Props = {children: ReactNode};
 
@@ -49,20 +51,31 @@ function SearchLabelSync(): null {
   return null;
 }
 
+function MetrikaNoscript(): ReactNode {
+  const {pathname} = useLocation();
+  const id = metrikaCounterIdForPath(pathname);
+  if (!id) {
+    return null;
+  }
+  return (
+    <noscript>
+      <div>
+        <img
+          src={`https://mc.yandex.ru/watch/${id}`}
+          className="metrika-pixel"
+          alt=""
+        />
+      </div>
+    </noscript>
+  );
+}
+
 export default function RootWrapper(props: Props): ReactNode {
   return (
     <>
       <FaviconThemeSync />
       <SearchLabelSync />
-      <noscript>
-        <div>
-          <img
-            src="https://mc.yandex.ru/watch/110571227"
-            className="metrika-pixel"
-            alt=""
-          />
-        </div>
-      </noscript>
+      <MetrikaNoscript />
       <Root {...props} />
     </>
   );
