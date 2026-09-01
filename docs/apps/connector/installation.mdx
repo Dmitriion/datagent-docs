@@ -1,0 +1,79 @@
+---
+id: installation
+slug: /apps/connector/installation
+title: Установка Datagent Connector из Маркетплейса Битрикс24
+sidebar_label: Установка
+description: "Как установить Datagent Connector: Маркетплейс, лицензия, мастер во iframe, подключение каналов. Без доплаты вендору."
+hide_title: true
+---
+
+import {
+  APPS_INSTALL_CTA_TEXT,
+  APPS_INSTALL_CTA_URL,
+  CONNECTOR_PRODUCT_URL,
+} from '@site/src/data/apps-contour';
+
+<ProductHero
+  eyebrow="Datagent Connector"
+  title="Установка из Маркетплейса"
+  lead="Datagent Connector ставит администратор портала. Мастер идёт во iframe; каналы подключаются после согласия на обработку данных. Отдельной оплаты вендору нет."
+  primaryText={APPS_INSTALL_CTA_TEXT}
+  primaryUrl={APPS_INSTALL_CTA_URL}
+  secondaryText="Назад к продукту"
+  secondaryHref={CONNECTOR_PRODUCT_URL}
+  facts={['Только администратор', 'Подписка Маркета', 'Без доплаты вендору']}
+/>
+
+[Назад к продукту](https://datagent.ru/solutions/bitrix24/connector)
+
+<ProcessSteps
+  heading="Четыре шага"
+  howToName="Как установить Datagent Connector"
+  howToDescription="Установка приложения Datagent Connector на портал Битрикс24 из Маркетплейса."
+  pageUrl="https://docs.datagent.ru/docs/apps/connector/installation"
+  steps={[
+    {
+      title: 'Откройте Маркетплейс',
+      text: 'Войдите как администратор и найдите приложение «Datagent Connector».',
+    },
+    {
+      title: 'Примите лицензию',
+      text: 'Откройте лицензионное соглашение и политику конфиденциальности Connector — не оферту Datagent Cloud.',
+    },
+    {
+      title: 'Пройдите мастер',
+      text: 'Приложение регистрирует коннектор Открытых линий, запрашивает согласие на обработку данных и предлагает выбрать Открытую линию.',
+    },
+    {
+      title: 'Подключите канал',
+      text: 'В мастере выберите Telegram, VK или MAX и завершите OAuth или настройку бота. Сообщения пойдут в штатный чат линии.',
+    },
+  ]}
+/>
+
+## Лицензия и конфиденциальность
+
+- [Лицензионное соглашение Datagent Connector](https://datagent.ru/legal/connector-license)
+- [Политика конфиденциальности Datagent Connector](https://datagent.ru/legal/connector-privacy)
+
+Не используйте оферту Datagent Cloud и политику платформы агентов как документы этого приложения.
+
+## Что происходит при установке
+
+Приложение регистрирует пользовательский коннектор через `imconnector`, привязывает placement-виджеты (контакт-центр, карточка сделки, левое меню) и сохраняет OAuth-токены каналов на контуре вендора.
+
+Повторная установка на тот же портал восстанавливает привязки по `member_id`. Второй портал — другой тенант, каналы не пересекаются.
+
+При удалении приложения токены и кэш на стороне вендора сбрасываются; персональные данные удаляются в срок из политики конфиденциальности.
+
+## После установки
+
+1. [Каналы](/docs/apps/connector/channels) — Telegram, VK и MAX
+2. [Открытые линии](/docs/apps/connector/lines) — операторы и SLA
+
+<CtaBanner
+  title="Нужна помощь с установкой?"
+  description="Напишите sales@datagent.ru — подскажем, как найти Datagent Connector в Маркетплейсе и завершить мастер."
+  buttonText={APPS_INSTALL_CTA_TEXT}
+  buttonUrl={APPS_INSTALL_CTA_URL}
+/>

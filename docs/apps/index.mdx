@@ -1,9 +1,9 @@
 ---
 id: index
 slug: /apps
-title: Приложения Datagent для Битрикс24 — EDPortal и Заявки PRO
+title: Приложения Datagent для Битрикс24 — EDPortal, Заявки PRO и Datagent Connector
 sidebar_label: Обзор
-description: "Документация приложений Маркетплейса Битрикс24: EDPortal и Заявки PRO. Установка по подписке Маркета, без доплаты вендору."
+description: "Документация приложений Маркетплейса Битрикс24: EDPortal, Заявки PRO и Datagent Connector. Установка по подписке Маркета, без доплаты вендору."
 hide_title: true
 ---
 
@@ -16,8 +16,8 @@ import {appsIndexNextSteps} from '@site/src/components/DocNextSteps/presets';
 
 <ProductHero
   eyebrow="Приложения для Битрикс24"
-  title="EDPortal и Заявки PRO"
-  lead="Тиражные приложения для портала Битрикс24: обучение с тестами и сертификатами и каталог заявок с правами доступа. Доступ — в рамках подписки 1С-Битрикс24.Маркетплейс, без отдельной оплаты вендору."
+  title="Курсы, заявки и мессенджеры — в меню Битрикс24"
+  lead="Тиражные приложения для портала Битрикс24: обучение с тестами, каталог заявок с правами доступа и транспорт Telegram, VK и MAX в Открытые линии. Доступ — в рамках подписки 1С-Битрикс24.Маркетплейс, без отдельной оплаты вендору."
   primaryText={APPS_INSTALL_CTA_TEXT}
   primaryUrl={APPS_INSTALL_CTA_URL}
   secondaryText="Назад к решениям"
@@ -29,7 +29,7 @@ import {appsIndexNextSteps} from '@site/src/components/DocNextSteps/presets';
   ]}
 />
 
-Этот раздел — документация **приложений Маркетплейса**, не платформы ИИ-агентов Datagent Cloud. Чат-мост агента с CRM описан отдельно: [Битрикс24](/docs/integrations/bitrix24).
+Этот раздел — документация **приложений Маркетплейса**, не платформы ИИ-агентов Datagent Cloud. Чат-мост агента с CRM описан отдельно: [Битрикс24](/docs/integrations/bitrix24). Коннектор Открытых линий — не тот же продукт, что плагин агента.
 
 <CompareOptions
   heading="Какое приложение открыть"
@@ -57,6 +57,17 @@ import {appsIndexNextSteps} from '@site/src/components/DocNextSteps/presets';
       ctaLabel: 'Документация Заявки PRO',
       ctaHref: '/docs/apps/requestspro',
     },
+    {
+      title: 'Datagent Connector',
+      subtitle: 'Telegram, VK и MAX в Открытые линии.',
+      points: [
+        'Операторы в штатном чате линий',
+        'Без отдельного inbox',
+        'Данные на контуре вендора в РФ',
+      ],
+      ctaLabel: 'Документация Datagent Connector',
+      ctaHref: '/docs/apps/connector',
+    },
   ]}
 />
 
@@ -68,6 +79,7 @@ import {appsIndexNextSteps} from '@site/src/components/DocNextSteps/presets';
 
 - [EDPortal: лицензия](https://datagent.ru/legal/edportal-license) · [конфиденциальность](https://datagent.ru/legal/edportal-privacy)
 - [Заявки PRO: лицензия](https://datagent.ru/legal/requestspro-license) · [конфиденциальность](https://datagent.ru/legal/requestspro-privacy)
+- [Datagent Connector: лицензия](https://datagent.ru/legal/connector-license) · [конфиденциальность](https://datagent.ru/legal/connector-privacy)
 
 <FaqSchema
   pageUrl="https://docs.datagent.ru/docs/apps"
@@ -80,7 +92,7 @@ import {appsIndexNextSteps} from '@site/src/components/DocNextSteps/presets';
     {
       question: 'Это то же самое, что плагин Битрикс24 в Datagent Cloud?',
       answer:
-        'Нет. EDPortal и Заявки PRO — приложения портала из Маркетплейса. Плагин Битрикс24 в документации агентов — чат-мост: сообщения CRM становятся задачами агента.',
+        'Нет. EDPortal, Заявки PRO и Datagent Connector — приложения портала из Маркетплейса. Плагин Битрикс24 в документации агентов — чат-мост: сообщения CRM становятся задачами агента. Connector — транспорт мессенджеров в Открытые линии, без ИИ на пути доставки.',
     },
     {
       question: 'Где лицензия и политика конфиденциальности?',

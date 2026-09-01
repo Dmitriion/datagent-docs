@@ -237,6 +237,26 @@ const sidebars: SidebarsConfig = {
             'apps/requestspro/access',
           ],
         },
+        {
+          type: 'category',
+          label: 'Datagent Connector',
+          collapsed: true,
+          link: {
+            type: 'doc',
+            id: 'apps/connector/index',
+          },
+          items: [
+            {
+              type: 'doc',
+              id: 'apps/connector/index',
+              label: 'Обзор',
+              key: 'apps-connector-overview',
+            },
+            'apps/connector/installation',
+            'apps/connector/channels',
+            'apps/connector/lines',
+          ],
+        },
       ],
     },
     {
