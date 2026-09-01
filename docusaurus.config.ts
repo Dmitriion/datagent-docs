@@ -455,6 +455,7 @@ const config: Config = {
             {label: 'Обзор', to: '/docs/apps'},
             {label: 'EDPortal', to: '/docs/apps/edportal'},
             {label: 'Заявки PRO', to: '/docs/apps/requestspro'},
+            {label: 'Datagent Connector', to: '/docs/apps/connector'},
           ],
         },
         {

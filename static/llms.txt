@@ -71,7 +71,7 @@
 
 Отдельный контур от Datagent Cloud: без signup на app.datagent.ru, без оферты Cloud. Доступ — подписка 1С-Битрикс24.Маркетплейс, без доплаты вендору.
 
-- [Обзор приложений](https://docs.datagent.ru/docs/apps): EDPortal и Заявки PRO
+- [Обзор приложений](https://docs.datagent.ru/docs/apps): EDPortal, Заявки PRO и Datagent Connector
 - [EDPortal](https://docs.datagent.ru/docs/apps/edportal): онбординг, тесты, сертификаты
 - [Установка EDPortal](https://docs.datagent.ru/docs/apps/edportal/installation)
 - [Настройка EDPortal](https://docs.datagent.ru/docs/apps/edportal/setup)
@@ -82,9 +82,13 @@
 - [Установка Заявки PRO](https://docs.datagent.ru/docs/apps/requestspro/installation)
 - [Каталог Заявки PRO](https://docs.datagent.ru/docs/apps/requestspro/catalog)
 - [Доступ Заявки PRO](https://docs.datagent.ru/docs/apps/requestspro/access)
-- Посадочные: [хаб](https://datagent.ru/solutions/bitrix24/), [EDPortal](https://datagent.ru/solutions/bitrix24/edportal), [Заявки PRO](https://datagent.ru/solutions/bitrix24/requestspro)
-- EULA: [EDPortal](https://datagent.ru/legal/edportal-license), [Заявки PRO](https://datagent.ru/legal/requestspro-license)
-- Конфиденциальность: [EDPortal](https://datagent.ru/legal/edportal-privacy), [Заявки PRO](https://datagent.ru/legal/requestspro-privacy)
+- [Datagent Connector](https://docs.datagent.ru/docs/apps/connector): Telegram, VK и MAX в Открытые линии, не inbox и не плагин ИИ-агентов
+- [Установка Datagent Connector](https://docs.datagent.ru/docs/apps/connector/installation)
+- [Каналы Datagent Connector](https://docs.datagent.ru/docs/apps/connector/channels)
+- [Линии Datagent Connector](https://docs.datagent.ru/docs/apps/connector/lines)
+- Посадочные: [хаб](https://datagent.ru/solutions/bitrix24/), [EDPortal](https://datagent.ru/solutions/bitrix24/edportal), [Заявки PRO](https://datagent.ru/solutions/bitrix24/requestspro), [Datagent Connector](https://datagent.ru/solutions/bitrix24/connector)
+- EULA: [EDPortal](https://datagent.ru/legal/edportal-license), [Заявки PRO](https://datagent.ru/legal/requestspro-license), [Datagent Connector](https://datagent.ru/legal/connector-license)
+- Конфиденциальность: [EDPortal](https://datagent.ru/legal/edportal-privacy), [Заявки PRO](https://datagent.ru/legal/requestspro-privacy), [Datagent Connector](https://datagent.ru/legal/connector-privacy)
 
 ## Product
 

@@ -148,6 +148,12 @@ export const appsIndexNextSteps: NextStepItem[] = [
     to: '/docs/apps/requestspro',
     tag: 'Заявки',
   },
+  {
+    title: 'Datagent Connector',
+    description: 'Telegram, VK и MAX в Открытые линии.',
+    to: '/docs/apps/connector',
+    tag: 'OL',
+  },
 ];
 
 export const appsEdportalNextSteps: NextStepItem[] = [
@@ -195,5 +201,26 @@ export const appsRequestsproNextSteps: NextStepItem[] = [
     description: 'Всем, отделам или сотрудникам.',
     to: '/docs/apps/requestspro/access',
     tag: 'Права',
+  },
+];
+
+export const appsConnectorNextSteps: NextStepItem[] = [
+  {
+    title: 'Установка',
+    description: 'Маркетплейс, лицензия и мастер каналов.',
+    to: '/docs/apps/connector/installation',
+    tag: 'Старт',
+  },
+  {
+    title: 'Каналы',
+    description: 'Telegram, VK и MAX в Открытые линии.',
+    to: '/docs/apps/connector/channels',
+    tag: 'Каналы',
+  },
+  {
+    title: 'Открытые линии',
+    description: 'Операторы, SLA и аналитика смены.',
+    to: '/docs/apps/connector/lines',
+    tag: 'OL',
   },
 ];

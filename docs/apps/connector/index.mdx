@@ -1,0 +1,97 @@
+---
+id: index
+slug: /apps/connector
+title: Datagent Connector — мессенджеры в Открытых линиях Битрикс24
+sidebar_label: Обзор
+description: "Datagent Connector: Telegram, VK и MAX в Открытые линии Битрикс24. Операторы в штатном чате линий, без отдельного inbox. Установка из Маркетплейса."
+hide_title: true
+---
+
+import {
+  APPS_INSTALL_CTA_TEXT,
+  APPS_INSTALL_CTA_URL,
+  CONNECTOR_PRODUCT_URL,
+} from '@site/src/data/apps-contour';
+import {appsConnectorNextSteps} from '@site/src/components/DocNextSteps/presets';
+
+<ProductHero
+  eyebrow="Datagent Connector"
+  title="Мессенджеры — в Открытые линии Битрикс24"
+  lead="Операторы отвечают в штатном чате линий. Не inbox и не плагин ИИ-агентов."
+  primaryText={APPS_INSTALL_CTA_TEXT}
+  primaryUrl={APPS_INSTALL_CTA_URL}
+  secondaryText="Назад к продукту"
+  secondaryHref={CONNECTOR_PRODUCT_URL}
+  facts={['Telegram', 'VK', 'MAX', 'Открытые линии']}
+/>
+
+[Назад к продукту](https://datagent.ru/solutions/bitrix24/connector)
+
+## Что делает приложение
+
+- Подключает **Telegram**, **VK** и **MAX** как пользовательский коннектор **Открытых линий** Битрикс24.
+- Доставляет входящие сообщения и вложения в **штатный чат оператора** — не в отдельный inbox вроде Wazzup.
+- Привязывает канал к **Открытой линии** и показывает здоровье каналов в контакт-центре портала.
+- Опционально связывает диалог с лидом, контактом или сделкой CRM — запись в CRM только с явным согласием, не из AI.
+
+Транспорт идёт через `imconnector` и `imopenlines`. **Datagent Core** (ИИ-агенты Cloud) на путь доставки не ставится.
+
+## Кому это нужно
+
+| Роль | Что делает |
+| --- | --- |
+| Администратор портала | Устанавливает приложение, проходит мастер, подключает каналы |
+| Руководитель смены | Смотрит аналитику смены и SLA в виджетах портала |
+| Оператор | Отвечает клиенту в привычном интерфейсе Открытых линий |
+
+Установку завершает администратор. Данные обрабатываются на **контуре вендора в РФ** (152-ФЗ).
+
+## Скоупы Маркета
+
+`imconnector`, `imopenlines`, `im`, `crm`, `user`, `placement`.
+
+Скоуп `pull` (Push&Pull для live UI) в карточке не запрашивается, пока функция не включена в публикуемой версии.
+
+## Доступ и оплата
+
+Установка — из **1С-Битрикс24.Маркетплейс**. Доступ в рамках подписки Маркета; отдельной оплаты вендору нет.
+
+- [Лицензионное соглашение Datagent Connector](https://datagent.ru/legal/connector-license)
+- [Политика конфиденциальности Datagent Connector](https://datagent.ru/legal/connector-privacy)
+
+Это не оферта Datagent Cloud и не политика платформы агентов.
+
+<FaqSchema
+  pageUrl="https://docs.datagent.ru/docs/apps/connector"
+  items={[
+    {
+      question: 'Это плагин ИИ-агентов Datagent в CRM?',
+      answer:
+        'Нет. Datagent Connector — приложение Маркетплейса для транспорта мессенджеров в Открытые линии. Плагин Битрикс24 в Datagent Cloud — отдельный чат-мост агента с задачами в панели.',
+    },
+    {
+      question: 'Datagent Connector заменяет Wazzup или отдельный inbox?',
+      answer:
+        'Нет. Оператор работает в штатном чате Открытых линий Битрикс24. Отдельный inbox приложение не добавляет.',
+    },
+    {
+      question: 'Нужно ли платить Datagent отдельно?',
+      answer:
+        'Нет. Доступ предоставляется в рамках подписки 1С-Битрикс24.Маркетплейс.',
+    },
+    {
+      question: 'Где хранятся сообщения?',
+      answer:
+        'На контуре вендора в РФ, пока приложение установлено. После удаления данные удаляются в срок, указанный в политике конфиденциальности, если закон не требует иного.',
+    },
+  ]}
+/>
+
+<DocNextSteps heading="Дальше" items={appsConnectorNextSteps} />
+
+<CtaBanner
+  title="Установите Datagent Connector"
+  description="Администратор портала ставит приложение из Маркетплейса. Напишите нам, если нужна помощь с установкой."
+  buttonText={APPS_INSTALL_CTA_TEXT}
+  buttonUrl={APPS_INSTALL_CTA_URL}
+/>

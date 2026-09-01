@@ -50,6 +50,9 @@ function hit(pathname: string, search: string, hash: string): void {
 }
 
 function installGoalForPath(pathname: string): string {
+  if (pathname.includes('/connector')) {
+    return 'cta_install_connector';
+  }
   if (pathname.includes('/requestspro')) {
     return 'cta_install_requestspro';
   }

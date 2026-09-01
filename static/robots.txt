@@ -2,6 +2,7 @@
 # Policy: Search/Answer-first (aligned with datagent.ru)
 # Training crawlers (GPTBot, ClaudeBot, …) Disallow; search/user agents (OAI-SearchBot,
 # Perplexity*, Googlebot, Yandex) Allow — so answer engines can cite docs without bulk training scrape.
+# /docs/apps/ (edportal, requestspro, connector) stay crawlable (no Disallow).
 
 User-agent: *
 Allow: /
