@@ -54,4 +54,4 @@
 6. Framing: `X-Frame-Options: DENY` или CSP `frame-ancestors 'self'`.  
 7. CSP только **Report-Only** после инвентаря: Docusaurus inline, fonts, `mc.yandex.ru`, images, GitHub.
 
-CSP через `<meta>` **не** внедряли.
+CSP через `<meta>` внедрена в `docusaurus.config.ts` как baseline (Docusaurus + Яндекс.Метрика). HTTP-заголовки HSTS/XFO по-прежнему только через CDN перед Pages. **Enforce HTTPS** — ручной чекбокс Settings → Pages.

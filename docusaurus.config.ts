@@ -65,6 +65,10 @@ const config: Config = {
       {
         redirects: [
           {
+            from: '/markdown-page',
+            to: '/',
+          },
+          {
             from: '/docs/integrations',
             to: '/docs/integrations/overview',
           },
@@ -149,6 +153,8 @@ const config: Config = {
           ignorePatterns: [
             '/tags/**',
             '/search/**',
+            '/markdown-page',
+            '/markdown-page/',
             '**/SEO-GEO-MASTER-AUDIT/**',
             '**/SEO-CONTENT-BACKLOG/**',
             '**/VISUAL-REFINEMENT-AUDIT/**',
@@ -164,9 +170,11 @@ const config: Config = {
 
   headTags: [
     ...verificationHeadTags,
-    // ── Security Headers (via <meta> — работает для CSP и Referrer) ──────────
-    // Полные HTTP-заголовки (HSTS, X-Frame-Options, nosniff) — только через CDN/Cloudflare.
-    // Referrer-Policy через <meta> поддерживается всеми современными браузерами.
+    // ── Security Headers (via <meta> — best-effort; GitHub Pages не задаёт HTTP-заголовки)
+    // HSTS / X-Frame-Options / CSP как response headers — только если перед Pages
+    // стоит Cloudflare (или аналог). Проект CDN сам не подключает.
+    // Referrer-Policy через <meta> поддерживается современными браузерами.
+    // frame-ancestors в meta-CSP браузеры игнорируют — для анти-framing нужен HTTP-заголовок.
     {
       tagName: 'meta',
       attributes: {
@@ -174,19 +182,22 @@ const config: Config = {
         content: 'strict-origin-when-cross-origin',
       },
     },
-    // CSP Report-Only: разрешаем Docusaurus + Yandex.Metrika.
-    // После инвентаря через Report-Only → переводить в Content-Security-Policy.
+    // Baseline CSP для статического docs: Docusaurus (inline hydrate) + локальный поиск
+    // + Mermaid workers + Яндекс.Метрика (tag.js, пиксель, webvisor iframe).
     {
       tagName: 'meta',
       attributes: {
-        'http-equiv': 'Content-Security-Policy-Report-Only',
+        'http-equiv': 'Content-Security-Policy',
         content: [
           "default-src 'self'",
           "script-src 'self' 'unsafe-inline' https://mc.yandex.ru https://mc.yandex.com",
           "style-src 'self' 'unsafe-inline'",
-          "img-src 'self' data: https://mc.yandex.ru https://mc.yandex.com",
-          "connect-src 'self' https://mc.yandex.ru https://mc.yandex.com",
+          "img-src 'self' data: https://mc.yandex.ru https://mc.yandex.com https://mc.yandex.md",
+          "connect-src 'self' https://mc.yandex.ru https://mc.yandex.com wss://mc.yandex.ru",
           "font-src 'self' data:",
+          "worker-src 'self' blob:",
+          "frame-src https://mc.yandex.ru https://mc.yandex.com",
+          "form-action 'self'",
           "frame-ancestors 'none'",
           "object-src 'none'",
           "base-uri 'self'",

@@ -29,7 +29,7 @@ export default function SiteJsonLd(): ReactNode {
             sameAs: [
               'https://app.datagent.ru',
               'https://docs.datagent.ru',
-              'https://github.com/Dmitriion/datagent',
+              'https://t.me/datagent_ru',
             ],
           },
         ],

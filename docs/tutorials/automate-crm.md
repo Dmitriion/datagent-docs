@@ -46,9 +46,9 @@ description: Сценарий — чат Битрикс24, ответ агент
 
 1. **Менеджер плагинов** — установить `datagent.bitrix24`, включить для компании.
 2. **Компания → Битрикс24**:
-   - URL портала, webhook REST (`…/rest/USER/TOKEN/`);
+   - URL портала и webhook REST-плейсхолдер: `https://YOUR_BITRIX_PORTAL.bitrix24.ru/rest/USER_ID/WEBHOOK_CODE/` (не боевой портал и не настоящий код);
    - регистрация imbot (`imbot.v2.Bot.register`) или привязка существующего;
-   - **APPLICATION TOKEN** imbot в UI бота / `bot_token_secret_ref`.
+   - **APPLICATION TOKEN** imbot в UI бота / `bot_token_secret_ref` (значение — секрет компании, не текст задачи).
 3. **Привязка** — выбрать агента `bitrix-chat-assistant` (поле agent в связке бота); опционально project и ACL.
 4. **Запустить мост** — `poll_enabled`; job плагина **`bitrix-poll`** (cron `* * * * *`) вызывает `imbot.v2.Event.get`.
 5. **Проверить соединение** — `profile` + `imbot.v2.Event.get`.

@@ -12,7 +12,7 @@
 2. Проверить collaborators и права; убрать лишние admin.
 3. 2FA для всех maintainers.
 4. Branch protection на `main`: PR required; status checks `typecheck`/`build` (+ gitleaks при наличии); запрет force-push.
-5. Pages: Source = **GitHub Actions**; HTTPS для `docs.datagent.ru`; не публиковать `main/(root)`.
+5. Pages: Source = **GitHub Actions** (не `main/(root)`). **Enforce HTTPS** для `docs.datagent.ru`: Settings → Pages → чекбокс (см. README). Не публиковать `main/(root)`.
 6. Убедиться, что в Actions нет лишних repository secrets с prod-токенами docs (обычно достаточно `GITHUB_TOKEN`).
 7. Закрыть открытые P0/P1 из `SECURITY-HARDENING-REPORT.md` (на 2026-07-16 активных P0 нет).
 
@@ -43,17 +43,17 @@
 
 ## Host headers (GitHub Pages / CDN)
 
-Не симулировать через meta-теги в Docusaurus.
+GitHub Pages **не** выставляет произвольные HTTP-заголовки. В `docusaurus.config.ts` уже есть best-effort `<meta>`: Referrer-Policy и baseline CSP (Docusaurus + Яндекс.Метрика). `frame-ancestors` в meta браузеры игнорируют.
 
-Порядок:
+Порядок на CDN (если появится Cloudflare или аналог — проект его сам не подключает):
 
-1. HTTPS enforcement  
-2. HSTS (после проверки HTTPS)  
-3. `X-Content-Type-Options: nosniff`  
-4. `Referrer-Policy: strict-origin-when-cross-origin`  
-5. `Permissions-Policy`  
-6. `frame-ancestors 'self'` / XFO  
-7. CSP **Report-Only** после инвентаря источников (Docusaurus, Метрика, fonts, images)
+1. **Enforce HTTPS** в Settings → Pages (обязательный ручной шаг; API `https_enforced` из CI — 403)
+2. HSTS (после проверки HTTPS)
+3. `X-Content-Type-Options: nosniff`
+4. `Referrer-Policy: strict-origin-when-cross-origin`
+5. `Permissions-Policy`
+6. `X-Frame-Options: DENY` / CSP `frame-ancestors 'none'`
+7. CSP как HTTP-заголовок (сейчас baseline уже в HTML meta; не ломать `mc.yandex.ru` / `mc.yandex.com` и `/js/yandex-metrika.js`)
 
 ---
 

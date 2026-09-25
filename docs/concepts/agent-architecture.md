@@ -92,7 +92,7 @@ flowchart TB
 | **Shared contracts** | `packages/shared` | Общие типы, режимы деплоя (`local_trusted` / `authenticated`), константы для server и CLI. |
 | **LLM Adapters** | `packages/adapters/*` | `@datagent/adapter-*-local` / gateway: внешние CLI или HTTP к провайдеру; регистрация в `server/src/adapters/`. |
 | **Plugins** | `packages/plugins/*`, `packages/plugins/sdk` | Tools и jobs в **отдельном child-process** (JSON-RPC stdio через `PluginWorkerManager`); SDK для авторов плагинов. |
-| **BrowserBridge** | `packages/browserbridge-local` | Локальный демон `datagent-bridge` (CDP / Playwright); сервер подключается через tunnel/WebSocket, браузер не в процессе API. |
+| **BrowserBridge** | `packages/browserbridge-local` | Локальный демон `datagent-bridge` (CDP / Playwright) на **localhost**; порт `9247` не публикуется в интернет. Сервер подключается по `wss` через app/nginx (tunnel), не по `ws://host:9247`. |
 | **Infrastructure** | `packages/db`, embedded Postgres, Better Auth | Схема и миграции в `packages/db`; БД — embedded или внешний Postgres; сессии — Better Auth (`BETTER_AUTH_SECRET`). |
 
 Дополнительные workspace-пакеты: `packages/adapter-utils`, `packages/mcp-server`, `packages/skills-catalog` — утилиты адаптеров, MCP и каталог skills (**25** записей в manifest: 5 bundled + 3 optional + 17 community; Board `/{prefix}/skills/catalog`); приёмка и вендоринг — в репозитории Datagent: `doc/community-skills-acceptance.md`, `doc/community-skills-vendoring.md`.
@@ -167,7 +167,7 @@ flowchart LR
 
 ## BrowserBridge
 
-Пакет `@datagent/browserbridge-local`, CLI `datagent-bridge` (install / start / connect). Server использует relay/tunnel (`browserbridge-tunnel-ws` и связанные routes) к локальному демону — отдельный процесс от `PORT` API.
+Пакет `@datagent/browserbridge-local`, CLI `datagent-bridge` (install / start / connect). Локальный демон слушает порт **9247 только на localhost** машины разработчика / локального bridge; наружу этот порт не публикуется. Публичный путь — **`wss`** через приложение и nginx (`app.datagent.ru`, relay `browserbridge-tunnel-ws`), не `ws://host:9247`. Демон — отдельный процесс от `PORT` API.
 
 ## Infrastructure
 
