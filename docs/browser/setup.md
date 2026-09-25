@@ -117,6 +117,6 @@ description: Пошаговое подключение BrowserBridge — рас�
 
 Альтернативы для корпоративных сетей без Chrome Web Store: раздача расширения из мастера на Board (workstation-kit), локальный bridge на той же машине, что и сервер. Эти режимы не нужны обычному оператору облака.
 
-Технические детали: Local Service `:9247`, tunnel WebSocket, CLI `datagent-bridge`. См. [интеграцию BrowserBridge](../integrations/browserbridge).
+Технические детали: Local Service слушает **только** `127.0.0.1:9247` на машине разработчика / локальном bridge — это не публичный порт. Публичный канал — `wss` через приложение и nginx (`app.datagent.ru`), не `ws://host:9247`. CLI `datagent-bridge`. См. [интеграцию BrowserBridge](../integrations/browserbridge).
 
 </details>
