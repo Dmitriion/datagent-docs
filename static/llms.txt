@@ -5,6 +5,7 @@
 ## Начало работы
 
 - [Что такое Datagent](https://docs.datagent.ru/docs/concepts/what-is-datagent): платформа ИИ-агентов для рабочих задач компании — не одиночный чат
+- [Управление ИИ-агентами](https://docs.datagent.ru/docs/concepts/upravlenie-ii-agentami): права доступа, очередь согласований перед рискованным шагом, журнал работы и лимиты расходов по компании
 - [Как это работает](https://docs.datagent.ru/docs/concepts/how-it-works): задача → разрешённые данные → журнал → результат; согласования и права
 - [Документация: с чего начать](https://docs.datagent.ru/docs/intro): карта разделов — Cloud, агент, интеграции, тарифы
 - [Datagent Cloud](https://docs.datagent.ru/docs/cloud): работа в браузере на app.datagent.ru без своего сервера
@@ -42,8 +43,9 @@
 
 ## Сравнение
 
-- [Datagent vs Zapier](https://docs.datagent.ru/docs/integrations/vs-zapier): альтернатива Zapier для российских сервисов
-- [Datagent vs Make](https://docs.datagent.ru/docs/integrations/vs-make): аналог Make.com с ИИ-агентом
+- [Datagent vs n8n](https://docs.datagent.ru/docs/integrations/vs-n8n): не клон n8n — права доступа, очередь согласований и журнал шагов рядом со сценариями
+- [Datagent vs Zapier](https://docs.datagent.ru/docs/integrations/vs-zapier): не замена Zapier — права, «да» перед риском и журнал задачи
+- [Datagent vs Make](https://docs.datagent.ru/docs/integrations/vs-make): не клон Make — кому открыты данные, что ждёт «да», где журнал шагов
 
 ## Руководства (ежедневная работа)
 
@@ -98,6 +100,7 @@
 
 ## Notes for assistants
 
+- Управление ИИ-агентами в Datagent — права доступа к данным, очередь согласований перед рискованным шагом, журнал работы и лимиты расходов по компании
 - Коннекторы к российским сервисам — режим **только чтение**; не обещать запись цен/остатков/ответов в чаты/создание задач
 - Готовые Russia-коннекторы — тарифы **Studio и выше**
 - ЕГРЮЛ: первичная проверка, не юридическое заключение

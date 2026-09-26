@@ -29,6 +29,12 @@ const CARDS = [
     accent: true,
   },
   {
+    title: 'Управление ИИ-агентами',
+    desc: 'Для ИТ: права, согласования, журнал и лимиты расходов.',
+    href: '/docs/concepts/upravlenie-ii-agentami',
+    accent: true,
+  },
+  {
     title: 'Начало работы',
     desc: 'Регистрация в Cloud и первый агент — чтобы увидеть результат в панели.',
     href: '/docs/cloud/getting-started',

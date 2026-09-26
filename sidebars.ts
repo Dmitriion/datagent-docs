@@ -19,6 +19,12 @@ const sidebars: SidebarsConfig = {
         'concepts/what-is-datagent',
         {
           type: 'doc',
+          id: 'concepts/upravlenie-ii-agentami',
+          label: 'Управление ИИ-агентами',
+          key: 'start-upravlenie-ii-agentami',
+        },
+        {
+          type: 'doc',
           id: 'concepts/how-it-works',
           label: 'Как это работает',
         },
@@ -64,6 +70,12 @@ const sidebars: SidebarsConfig = {
             'concepts/heartbeat',
             'concepts/memory',
             'concepts/routines',
+            {
+              type: 'doc',
+              id: 'concepts/upravlenie-ii-agentami',
+              label: 'Управление ИИ-агентами',
+              key: 'concepts-upravlenie-near-approvals',
+            },
             'concepts/approvals',
             'concepts/inbox',
             'concepts/channels',
@@ -181,7 +193,11 @@ const sidebars: SidebarsConfig = {
           type: 'category',
           label: 'Сравнение',
           collapsed: true,
-          items: ['integrations/vs-zapier', 'integrations/vs-make'],
+          items: [
+            'integrations/vs-n8n',
+            'integrations/vs-zapier',
+            'integrations/vs-make',
+          ],
         },
       ],
     },
