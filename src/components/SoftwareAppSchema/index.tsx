@@ -7,6 +7,7 @@ export type SoftwareAppSchemaProps = {
   featureList: string[];
   url: string;
   offerDescription?: string;
+  alternateName?: string;
 };
 
 export default function SoftwareAppSchema({
@@ -15,6 +16,7 @@ export default function SoftwareAppSchema({
   featureList,
   url,
   offerDescription = 'Cloud: Free для старта; готовые Russia-коннекторы — Studio и выше',
+  alternateName,
 }: SoftwareAppSchemaProps): ReactNode {
   return (
     <JsonLd
@@ -22,6 +24,7 @@ export default function SoftwareAppSchema({
         '@context': 'https://schema.org',
         '@type': 'SoftwareApplication',
         name,
+        ...(alternateName ? {alternateName} : {}),
         applicationCategory: 'BusinessApplication',
         operatingSystem: 'Web',
         description,
