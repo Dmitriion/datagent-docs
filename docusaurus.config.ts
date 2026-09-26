@@ -365,6 +365,9 @@ const config: Config = {
       disableSwitch: false,
       respectPrefersColorScheme: true,
     },
+    // Kept after Cloud launch: dismissible (localStorage by id), not deleted.
+    // Closing the bar hides it permanently in that browser. Do not bump `id`
+    // unless the message itself changes — a new id re-shows the bar for everyone.
     announcementBar: {
       id: 'cloud_launch_2026',
       content:
@@ -379,6 +382,8 @@ const config: Config = {
         alt: 'Логотип Datagent',
         src: 'img/brand/mark-header.svg',
       },
+      // Thin chrome: «Тарифы» and «Сайт» live in the footer only.
+      // Progressive hide-* classes apply to the top bar, not the mobile drawer.
       items: [
         {
           type: 'docSidebar',
@@ -392,10 +397,9 @@ const config: Config = {
           position: 'left',
         },
         {to: '/docs/guides', label: 'Руководства', position: 'left'},
-        {to: '/docs/apps', label: 'Приложения', position: 'left'},
         {
-          to: '/docs/cloud/pricing',
-          label: 'Тарифы',
+          to: '/docs/apps',
+          label: 'Приложения',
           position: 'left',
           className: 'navbar__link--hide-lg',
         },
@@ -403,25 +407,19 @@ const config: Config = {
           to: '/docs/concepts/what-is-datagent',
           label: 'Концепции',
           position: 'left',
-          className: 'navbar__link--hide-lg',
+          className: 'navbar__link--hide-xl',
         },
         {
           href: 'https://app.datagent.ru/auth',
           label: 'Войти',
           position: 'right',
-          className: 'navbar__link--hide-md',
+          className: 'navbar__link--hide-xl',
         },
         {
           href: 'https://app.datagent.ru/signup',
           label: 'Начать бесплатно',
           position: 'right',
           className: 'navbar--cta',
-        },
-        {
-          href: 'https://datagent.ru',
-          label: 'Сайт',
-          position: 'right',
-          className: 'navbar__link--hide-md navbar--btn-outline',
         },
       ],
     },

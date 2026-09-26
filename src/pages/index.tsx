@@ -20,76 +20,50 @@ const JOURNEY_STEPS = [
   },
 ] as const;
 
-const INTEGRATIONS = [
-  'МойСклад',
-  'Wildberries',
-  'amoCRM',
-  'Битрикс24',
-  '1С',
-  'GigaChat',
-] as const;
-
-const CARDS = [
+const PRIMARY_CARDS = [
   {
     title: 'Что такое Datagent',
-    desc: 'Платформа управления ИИ-агентами в компании: задачи, права доступа, согласование и журнал.',
+    desc: 'Платформа для ИИ-агентов компании: задачи, права доступа, согласование и журнал.',
     href: '/docs/concepts/what-is-datagent',
-    accent: true,
   },
   {
     title: 'Управление ИИ-агентами',
     desc: 'Для ИТ: права, согласования, журнал и лимиты расходов.',
     href: '/docs/concepts/upravlenie-ii-agentami',
-    accent: true,
   },
   {
-    title: 'Начало работы',
-    desc: 'Регистрация в Cloud и первый агент — чтобы увидеть результат в панели.',
+    title: 'Начало работы / Cloud',
+    desc: 'Регистрация на app.datagent.ru и первый агент — без своего сервера.',
     href: '/docs/cloud/getting-started',
-    accent: true,
+  },
+  {
+    title: 'Согласования',
+    desc: 'Рискованный шаг ждёт «да». Кто разрешил и что сделано — в журнале задачи.',
+    href: '/docs/concepts/approvals',
   },
   {
     title: 'Интеграции',
     desc: 'МойСклад, WB, Ozon, CRM, почта и облако — ответы по живым данным, только чтение.',
     href: '/docs/integrations/overview',
-    accent: true,
-  },
-  {
-    title: 'Руководства',
-    desc: 'Ежедневная работа в панели: задачи, доступы, каналы и согласования.',
-    href: '/docs/guides',
-  },
-  {
-    title: 'Сценарии',
-    desc: 'Практические пути: CRM-канал, плагин и следующий шаг после онбординга.',
-    href: '/docs/tutorials',
-  },
-  {
-    title: 'Cloud',
-    desc: 'Работа в браузере на app.datagent.ru — без своего сервера для старта.',
-    href: '/docs/cloud',
-  },
-  {
-    title: 'Рабочие процессы',
-    desc: 'Конвейеры и Таймлайн — многоэтапная работа и контроль запусков.',
-    href: '/docs/workflows/pipelines',
-  },
-  {
-    title: 'API Reference',
-    desc: 'REST API Datagent — для разработчиков и автоматизации.',
-    href: '/docs/api-reference/overview',
-  },
-  {
-    title: 'Office и артефакты',
-    desc: 'Документы на задаче и каталог файлов, которые подготовил агент.',
-    href: '/docs/office/overview',
-  },
-  {
-    title: 'История обновлений',
-    desc: 'Что изменилось в панели для людей в компании.',
-    href: '/docs/changelog',
   },
 ] as const;
+
+const MORE_LINKS = [
+  {title: 'Руководства', href: '/docs/guides'},
+  {title: 'Сценарии', href: '/docs/tutorials'},
+  {title: 'Рабочие процессы', href: '/docs/workflows/pipelines'},
+  {title: 'API Reference', href: '/docs/api-reference/overview'},
+  {title: 'Office и артефакты', href: '/docs/office/overview'},
+  {title: 'История обновлений', href: '/docs/changelog'},
+] as const;
+
+/**
+ * Intentional stub until a real panel PNG exists. Do not invent a fake product UI.
+ * TODO(Dmitrii): drop a PNG of the panel (задача → «да» → журнал) at
+ * `static/img/product/task-approval.png` and set PRODUCT_SHOT to
+ * '/img/product/task-approval.png'.
+ */
+const PRODUCT_SHOT: string | null = null;
 
 export default function Home(): ReactNode {
   return (
@@ -106,69 +80,53 @@ export default function Home(): ReactNode {
                 Документация <span className="text-brand">Datagent</span>
               </h1>
               <p className={styles.heroSubline}>
-                Платформа ИИ-агентов для компании: задачи, права доступа,
-                согласование риска и журнал
+                Задачи агентам, права на данные, согласование риска и журнал.
               </p>
-              <p className={styles.heroSubline}>
-                Datagent помогает среднему бизнесу в РФ поручать агентам сводки,
-                поиск отклонений и регулярные отчёты по разрешённым данным. Это
-                не чат и не конструктор сценариев: результат — в задаче, шаги —
-                в журнале, рискованные действия — после вашего «да». Начните с
-                Cloud на app.datagent.ru или откройте разделы ниже.
+              <p className={styles.heroLead}>
+                Поручайте сводки и отчёты по разрешённым данным. Результат — в
+                задаче, шаги — в журнале, рискованные действия — после вашего
+                «да».
               </p>
-
-              <ul className={styles.chipRow} aria-label="Интеграции">
-                {INTEGRATIONS.map((name) => (
-                  <li key={name} className={styles.chip}>
-                    {name}
-                  </li>
-                ))}
-              </ul>
 
               <div className={styles.heroButtons}>
                 <a
                   className={clsx('button button--primary button--lg', styles.ctaPrimary)}
                   href="https://app.datagent.ru/signup">
-                  Открыть Cloud →
+                  Зарегистрироваться
                 </a>
                 <Link
                   className={clsx('button button--outline button--lg', styles.ghostOnDark)}
                   to="/docs/cloud/getting-started">
-                  Быстрый старт
+                  Начало работы
                 </Link>
               </div>
 
               <p className={styles.timeBadge}>
-                Free: до 3 агентов и 100 запусков в месяц · без карты
+                Бесплатно: до 3 агентов и 100 запусков в месяц, без карты
               </p>
             </div>
 
-            <div className={styles.heroPreview} aria-hidden="true">
-              <div className={styles.previewWindow}>
-                <div className={styles.previewChrome}>
-                  <span className={styles.previewDot} />
-                  <span className={styles.previewDot} />
-                  <span className={styles.previewDot} />
-                  <span className={styles.previewChromeTitle}>Задача · Битрикс24</span>
-                </div>
-                <div className={styles.previewBody}>
-                  <div className={styles.previewMeta}>
-                    <span className={styles.previewBadge}>GigaChat</span>
-                    <span className={styles.previewStatus}>Выполняется</span>
-                  </div>
-                  <p className={styles.previewLine}>
-                    Собрал 12 просроченных сделок из воронки «Продажи»
+            <figure className={styles.heroPreview}>
+              {PRODUCT_SHOT ? (
+                <img
+                  className={styles.previewImage}
+                  src={PRODUCT_SHOT}
+                  width={720}
+                  height={480}
+                  alt="Панель Datagent: задача, согласование и журнал"
+                />
+              ) : (
+                <div className={styles.previewPlaceholder}>
+                  <p className={styles.previewPlaceholderTitle}>Кадр панели</p>
+                  <p className={styles.previewPlaceholderHint}>
+                    задача, согласование, журнал
                   </p>
-                  <p className={styles.previewLineMuted}>
-                    Ожидает одобрения: отправить напоминания менеджерам
-                  </p>
-                  <div className={styles.previewFooter}>
-                    <span className={styles.previewBtnPrimary}>Одобрить</span>
-                    <span className={styles.previewBtnGhost}>Журнал</span>
-                  </div>
                 </div>
-              </div>
-            </div>
+              )}
+              <figcaption className={styles.previewCaption}>
+                Здесь будет кадр панели
+              </figcaption>
+            </figure>
           </div>
         </section>
 
@@ -208,14 +166,8 @@ export default function Home(): ReactNode {
           </header>
 
           <div className={styles.cardsGrid}>
-            {CARDS.map((card) => (
-              <Link
-                key={card.href}
-                className={clsx(
-                  styles.docCard,
-                  'accent' in card && card.accent && styles.docCardAccent,
-                )}
-                to={card.href}>
+            {PRIMARY_CARDS.map((card) => (
+              <Link key={card.href} className={clsx(styles.docCard, styles.docCardAccent)} to={card.href}>
                 <h3 className={styles.docCardTitle}>{card.title}</h3>
                 <p className={styles.docCardDesc}>{card.desc}</p>
                 <span className={styles.docCardArrow} aria-hidden="true">
@@ -224,6 +176,19 @@ export default function Home(): ReactNode {
               </Link>
             ))}
           </div>
+
+          <nav className={styles.moreNav} aria-label="Другие разделы">
+            <p className={styles.moreLabel}>Ещё в документации</p>
+            <ul className={styles.moreList}>
+              {MORE_LINKS.map((item) => (
+                <li key={item.href}>
+                  <Link className={styles.moreLink} to={item.href}>
+                    {item.title}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
         </section>
       </main>
     </Layout>
