@@ -579,12 +579,24 @@ mark,
     display: none;
   }
 
+  .breadcrumbs__item {
+    display: inline-flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    max-width: none;
+  }
+
   .breadcrumbs__item:not(.breadcrumbs__item--active) {
-    max-width: 48%;
+    max-width: calc(50% - 0.5rem);
   }
 
   .breadcrumbs__item--active {
-    max-width: 52%;
+    max-width: calc(50% - 0.5rem);
+  }
+
+  .breadcrumbs__item:not(:last-child)::after {
+    flex-shrink: 0;
+    margin-inline: 0.2rem 0.35rem;
   }
 }
 

@@ -60,10 +60,10 @@ const MORE_LINKS = [
 /**
  * Real product screenshot — not checked in yet (no PNG/WebP in static/).
  * TODO(Dmitrii): drop a PNG of the panel (задача → «да» → журнал) at
- * `static/img/product/task-approval.png` and point PRODUCT_SHOT at it.
- * Do not invent a fake product UI in the meantime.
+ * `static/img/product/task-approval.png` and set PRODUCT_SHOT to
+ * '/img/product/task-approval.png'. Do not invent a fake product UI.
  */
-const PRODUCT_SHOT = '/img/product/task-approval.placeholder.svg';
+const PRODUCT_SHOT: string | null = null;
 
 export default function Home(): ReactNode {
   return (
@@ -107,13 +107,25 @@ export default function Home(): ReactNode {
             </div>
 
             <figure className={styles.heroPreview}>
-              <img
-                className={styles.previewImage}
-                src={PRODUCT_SHOT}
-                width={720}
-                height={480}
-                alt="Место для скриншота панели Datagent: задача, согласование и журнал"
-              />
+              {PRODUCT_SHOT ? (
+                <img
+                  className={styles.previewImage}
+                  src={PRODUCT_SHOT}
+                  width={720}
+                  height={480}
+                  alt="Панель Datagent: задача, согласование и журнал"
+                />
+              ) : (
+                <div className={styles.previewPlaceholder}>
+                  <p className={styles.previewPlaceholderTitle}>Кадр панели</p>
+                  <p className={styles.previewPlaceholderHint}>
+                    задача, согласование, журнал
+                  </p>
+                  <p className={styles.previewPlaceholderPath}>
+                    static/img/product/task-approval.png
+                  </p>
+                </div>
+              )}
               <figcaption className={styles.previewCaption}>
                 Скриншот панели — файл ещё не добавлен
               </figcaption>
