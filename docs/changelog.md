@@ -1,194 +1,132 @@
 ---
 id: changelog
-title: История изменений
-sidebar_label: История изменений
-description: Что нового в Datagent — новые функции, улучшения и исправления для пользователей app.datagent.ru.
+title: История обновлений Datagent
+sidebar_label: История обновлений
+description: "История обновлений Datagent: что появилось в панели для людей в компании. Обновления платформы ИИ-агентов для бизнеса — задачи, подключения, согласования и журнал."
 ---
 
-# История изменений
+# История обновлений Datagent
 
-Здесь — значимые обновления продукта и справки на [docs.datagent.ru](https://docs.datagent.ru). Технические правки «под капотом» в список не попадают.
+Здесь — что реально изменилось в продукте для людей в компании: что появилось в панели, какие системы можно подключить, как стало проще ставить задачи агентам. Мелкий ремонт «внутри» не пишем.
 
----
+Если вы только знакомитесь с продуктом, начните со [старта в Cloud](./cloud/getting-started): регистрация и первая задача на [app.datagent.ru](https://app.datagent.ru).
 
-## Июль 2026 — Unified Company Connections
+## Сейчас в фокусе (сентябрь 2026)
 
-**Что нового в справке:**
+- Агент лучше держит в голове факты компании и ваши рабочие привычки — без свалки лишнего текста в каждый запрос.
+- Длинные и регулярные задачи реже «замирают» молча: проще опираться на расписание.
+- Подключение браузера и выбор нужного агента стали понятнее: видно, что реально подключено.
+- В справке проще найти ответы про управление агентами, согласования и работу с Битрикс24.
 
-- [Внешние инструменты (MCP)](./integrations/mcp) — назначение агенту через вкладку **Подключения**; роли manage vs assign; режим «нет доступа»; без ручного dual-write JSON политики на existing agent
-- [Архитектура](./concepts/agent-architecture) — facade grants → projection `mcpPolicy` / `datagentPluginToolsSync`; deny-all `toolSubset: []`; тот же путь для Russia connectors
+:::note[Когда это появится в облаке]
+Часть пунктов войдёт в облако после ближайшего выката.
+:::
 
-**Для инженеров (монорепо):** RBAC `integrations:manage` vs `integrations:assign`, atomic secret-ref materialization, manifest `connectionMetadata` + readiness probe — `doc/guides/company-connections.md`, `doc/DEVELOPING.md` § Board Company Connections.
+## Сентябрь 2026
 
-**Для кого:** админы Studio+ и операторы, которые выдают MCP / 1С / preview-коннекторы агентам без правки сырого JSON.
+### Память и контекст
 
----
+Компания задаёт правила: что агент может помнить и подставлять в работу. Личные заметки оператора не смешиваются с общими фактами фирмы. Подробнее — в разделе [память](./concepts/memory).
 
-## Июль 2026 — MCP hardening + границы коннекторов
+### Стабильность запусков
 
-**Что нового в справке:**
+Меньше обрывов на длинных задачах и ночных отчётах. Повторяющуюся работу задают через [расписание](./concepts/routines).
 
-- [Внешние инструменты (MCP)](./integrations/mcp) — уточнены адаптеры с `supportsExternalMcp` (не только Cursor); политика id / legacy `1c-*`; граница с Russia connectors через `datagent-plugins`
-- [Архитектура](./concepts/agent-architecture) — plugin tools / fail-closed `desiredTools` без изменений по сути; опора на тот же путь для preview-коннекторов
-- Preview-страницы [amoCRM](./integrations/amocrm), [Ozon](./integrations/ozon), [Wildberries](./integrations/wildberries), [МойСклад](./integrations/moysklad), [VK](./integrations/vk), [VK Ads](./integrations/vk-ads), [Selectel](./integrations/selectel), [Aviasales](./integrations/aviasales) — единый паттерн «установить → secret refs → allowlist tools → read-only»
+### Браузер и маршруты
 
-**Для инженеров (монорепо):** managed gateway origin (`DATAGENT_MCP_GATEWAY_ORIGIN` / listen port), redacted `cursor-config` vs internal `runtime-config`, live fail-closed smoke Russia connectors — `doc/guides/mcp-plugin.md`, `doc/DEVELOPING.md` § Russia connector plugins.
+Честнее показывается связь с расширением в Chrome. Задача уходит к тому агенту, которого вы выбрали. Как подключить браузер — в [инструкции](./browser/setup).
 
-**Для кого:** админы Studio+ с внешним MCP; операторы preview Russia connectors без путаницы с реестром MCP.
+### Справка
 
----
+Обновили тексты про [управление агентами](./concepts/upravlenie-ii-agentami), [согласования рискованных шагов](./concepts/approvals) и сценарии под российские CRM, в том числе [Битрикс24](./integrations/bitrix24). Пошагово согласование разобрано в [руководстве](./guides/04-trust-and-approval).
 
-## Июль 2026 — МойСклад (preview MCP)
+## Июль 2026
 
-**Что нового в справке:**
+### Подключения в одном месте
 
-- [МойСклад (preview)](./integrations/moysklad) — Official Remap JSON API 1.2 (**211** tools, Waves MS0–MS17 + MS-R…MS-R3b, `PLUGIN_VERSION` 1.12.0): read-only через `datagent-plugins`; weight bucket 20/3s; concurrency 2; dual probe; soft `moysklad-rate-limit-soft`; Accept charset+gzip; без write / Basic / Kaya embed / `raw_request`
-- Уточнены границы Russia connectors на [внешних инструментах (MCP)](./integrations/mcp) и в [плагинах](./cloud/plugins)
+Администратор выдаёт агенту доступ к нужным системам из вкладки «Подключения» — без ручной правки сложных настроек. Каталог систем — в [интеграциях](./integrations/overview), установка — в [плагинах](./cloud/plugins).
 
-**Для кого:** операторы склада / учёта МойСклад на preview; live pilot и GA — после harness evidence (`moysklad-pilot.json`).
+### Чтение российских сервисов
 
----
+Коннекторы «только чтение» для [МойСклад](./integrations/moysklad), [Ozon](./integrations/ozon), [Wildberries](./integrations/wildberries), [amoCRM](./integrations/amocrm), [ВКонтакте](./integrations/vk) и [VK Реклама](./integrations/vk-ads), [Яндекс 360](./integrations/yandex360), [Яндекс Трекер](./integrations/yandex-tracker), [Селектел](./integrations/selectel), [Авиасейлс](./integrations/aviasales). Ставите плагин, указываете ключи, отмечаете разрешённые действия.
 
-## Июль 2026 — Ozon Seller (preview MCP)
+### Конвейеры и Таймлайн
 
-**Что нового в справке:**
+Многошаговая работа и обзор запусков для команды: [конвейеры](./workflows/pipelines) и [Таймлайн](./workflows/timeline).
 
-- [Ozon Seller (preview)](./integrations/ozon) — Official Seller API (**105** tools, Waves O0–O9 + OR/OR2/OR3/OR4, `PLUGIN_VERSION` 1.6.0): read-only через `datagent-plugins`; SlidingWindow 20/s; dual probe; soft `ozon-rate-limit-soft`; без write / Performance ads / meta `call_method`
-- Уточнены границы Russia connectors на [внешних инструментах (MCP)](./integrations/mcp) и в [плагинах](./cloud/plugins)
+### Браузер из магазина Chrome
 
-**Для кого:** операторы маркетплейса Ozon на preview; live pilot и GA — после harness evidence (`ozon-seller-pilot.json`).
+Основной способ подключить управление браузером — через официальное расширение. Как поставить его и связать с панелью — в [инструкции](./browser/setup).
 
----
+### 1С
 
-## Июль 2026 — Wildberries (preview MCP)
+После настройки [коннектора](./integrations/1c-connector) агент видит только открытые ему операции.
 
-**Что нового в справке:**
+## Июнь 2026
 
-- [Wildberries (preview)](./integrations/wildberries) — Seller OpenAPI (**165** tools, Waves W0–W14 + W-R…W-R3, `PLUGIN_VERSION` 1.10.0): read-only через `datagent-plugins`; per-company 5 rps; soft 429; auth coalesce; без write / ZIP / keys
-- Уточнены границы Russia connectors на [внешних инструментах (MCP)](./integrations/mcp) и в [плагинах](./cloud/plugins)
+### Тарифы и лимиты
 
-**Для кого:** продавцы WB на preview; live pilot и GA — после harness evidence.
+Одна сетка от бесплатного старта до Enterprise: [тарифы](./cloud/pricing), [оплата](./billing/overview) и [лимиты](./billing/limits).
 
----
+### Навыки и плагины
 
-## Июль 2026 — Авиасейлс (preview MCP)
+Каталог сценариев (таблицы, отчёты, презентации) — в [навыках](./cloud/skills). [Битрикс24](./integrations/bitrix24), [Телеграм](./integrations/telegram) и другие подключения — в [настройках плагинов](./cloud/plugins).
 
-**Что нового в справке:**
+### Быстрый старт
 
-- [Авиасейлс (preview)](./integrations/aviasales) — Travelpayouts Data API + Flight Search (**32** tools, Waves AS\*–AS\*\*\*\*\*\* + AS-R–AS-R4, `PLUGIN_VERSION` 0.11.0): read-only через `datagent-plugins`; SlidingWindow RPM / FS 80/ч; soft 429 trip; без mass booking harvest / Hotellook live / write
-- Уточнены границы Russia connectors на [внешних инструментах (MCP)](./integrations/mcp) и в [плагинах](./cloud/plugins)
+Несколько минут от регистрации до первого ответа в браузере. По шагам — [старт в Cloud](./cloud/getting-started) и [первый агент](./cloud/first-agent).
 
-**Для кого:** операторы travel / аналитики цен на preview; live pilot и GA — после harness evidence.
+### API
 
----
+Краткая справка для интеграторов — [обзор API](./api-reference/overview).
 
-## Июль 2026 — Селектел (preview MCP)
+## Май 2026
 
-**Что нового в справке:**
+Публичная документация на [docs.datagent.ru](https://docs.datagent.ru). Инструкции: [GigaChat](./integrations/gigachat), [YandexGPT](./integrations/yandexgpt), [Битрикс24](./integrations/bitrix24), [Телеграм](./integrations/telegram).
 
-- [Селектел (preview)](./integrations/selectel) — облачный инвентарь Selectel (**139** tools, Waves SE0–SE12 + SE-R…SE-R3, `PLUGIN_VERSION` 1.10.0): read-only через `datagent-plugins`; dual probe; soft 429 с Retry-After; без write / kubeconfig / object body
-- Уточнены границы Russia connectors на [внешних инструментах (MCP)](./integrations/mcp) и в [плагинах](./cloud/plugins)
+## Апрель 2026
 
-**Для кого:** операторы облака Selectel на preview; live pilot и GA — после harness evidence.
+Первый публичный релиз: [задачи](./concepts/issues), журнал шагов, [согласование риска](./concepts/approvals), российские модели, первые плагины CRM и мессенджеров. Как устроен цикл от поручения до результата — в разделе [как это работает](./concepts/how-it-works).
 
----
+## Что планируем дальше
 
-## Июль 2026 — ВКонтакте и VK Реклама (preview MCP)
+- Понятнее память и контекст под правила компании
+- Больше сценариев для продаж и операций в РФ
+- Прозрачнее статусы запусков и согласований
+- Шире набор коннекторов «только чтение»
 
-**Что нового в справке:**
+Точные даты не обещаем.
 
-- [ВКонтакте (preview)](./integrations/vk) — group-scoped Social API (**93** tools, Wave **V-R3**): стена/медиа/маркет/LeadForms; flood soft-retry + light/heavy timeouts; без write / friends / newsfeed
-- [VK Реклама (preview)](./integrations/vk-ads) — Official ads.vk.com (**69** tools, Wave **VA-R3**): планы/кампании/баннеры/статистика; nested READ hint + 429 soft-trip; без write / `raw_request`
-- Уточнены границы Russia connectors на [внешних инструментах (MCP)](./integrations/mcp) и в [плагинах](./cloud/plugins)
-
-**Для кого:** операторы SMM / performance на preview; live pilot и GA — после harness evidence (`vk-pilot.json` / `vk-ads-pilot.json`).
-
----
-
-## Июль 2026 — Яндекс 360 и Трекер (preview MCP)
-
-**Что нового в справке:**
-
-- [Яндекс 360 (preview)](./integrations/yandex360) — Directory + Admin Mail + Security (**36** tools, Wave Y360-R3): read-only через `datagent-plugins`; audit по умолчанию 24ч; без write / Wiki / Forms
-- [Яндекс Трекер (preview)](./integrations/yandex-tracker) — issues/очереди + Official search scroll (**76** tools); отдельный плагин от 360; без write
-- Уточнены границы Russia connectors на [внешних инструментах (MCP)](./integrations/mcp) и в [плагинах](./cloud/plugins)
-
-**Для кого:** операторы Яндекс 360 / Трекер на preview; live pilot и GA — после harness evidence.
-
----
-
-## Июль 2026 — amoCRM preview (чтение CRM)
-
-**Что нового в справке:**
-
-- [amoCRM (preview)](./integrations/amocrm) — read-only коннектор воронки/сделок/контактов через plugin tools (`datagent-plugins`); не путать с [реестром внешних MCP](./integrations/mcp) и чат-мостом [Битрикс24](./integrations/bitrix24)
-- Уточнены границы «четырёх MCP» на странице [внешних инструментов](./integrations/mcp)
-
-**Для кого:** операторы CRM на preview; write в amoCRM — ещё не в продукте.
-
----
-
-## Июль 2026 — Конвейеры, Таймлайн, MCP и браузер из магазина
-
-**Что нового в справке:**
-
-- [Конвейеры](./workflows/pipelines) и [Таймлайн](./workflows/timeline) — стандартные рабочие процессы для всех пользователей
-- [Внешние инструменты (MCP)](./integrations/mcp) — реестр подключений для Cursor-агентов (Studio+)
-- [BrowserBridge](./integrations/browserbridge) — основной путь через [Chrome Web Store](https://chromewebstore.google.com/detail/datagent-browserbridge/onlphfpiiegbgjmfihbimgnmpbleaelh)
-- [1С](./integrations/1c-connector) — доступ Cursor-агента к разрешённым инструментам после настройки коннектора
-- [Свой сервер](./cloud/on-premise) — короткая Enterprise-страница с заявкой на [sales@datagent.ru](mailto:sales@datagent.ru)
-
-**Для кого:** операторы и руководители на [app.datagent.ru](https://app.datagent.ru).
-
----
-
-## Июнь 2026 — Биллинг, лимиты и справка API
-
-**Что нового:** страницы [Тарифы](./cloud/pricing), [Биллинг](./billing/overview) и [Лимиты по тарифам](./billing/limits) — единая сетка Free → Enterprise. Для разработчиков — [обзор REST API](./api-reference/overview) и [плагины (API)](./api-reference/plugins).
-
-**Для кого:** владельцы аккаунта и интеграторы. Цены без НДС; при годовой оплате действует скидка 20%.
-
----
-
-## Июнь 2026 — Каталог навыков и управление плагинами
-
-**Что нового:** в панели появился **каталог навыков** — готовые сценарии для агентов: таблицы, отчёты, презентации. В настройках — раздел **управления плагинами**: подключите Битрикс24, Телеграм и другие расширения без правки кода.
-
-**Для кого:** все пользователи облака. Платные навыки — по тарифу (**Solo** — 6 из 14, **Studio** — все 14). Подробнее — [Первый агент](./cloud/first-agent).
-
----
-
-## Июнь 2026 — Пять минут от регистрации до первого ответа
-
-**Что нового:** справка ведёт в [app.datagent.ru](https://app.datagent.ru) — регистрация, мастер первых шагов, первый агент и задача без установки программ на свой сервер.
-
-**Для кого:** все, кто начинает с нуля. Установка на своём оборудовании — [Свой сервер](./cloud/on-premise) (тариф **Enterprise**).
-
-Также обновили:
-
-- [Начало работы](./cloud/getting-started) — пошаговый путь в облаке
-- [Учебник](./guides) — сценарии от первого дня до Битрикс24 и 1С
-- [Управление браузером](./browser/setup) — подключение из облака
-- [Обзор API](./api-reference/overview) — для своих интеграций
-
----
-
-## Май 2026 — Публичная справка и российские модели
-
-**Что нового:** открыли docs.datagent.ru — можно разобраться с платформой без доступа к репозиторию. Пошаговые инструкции по **GigaChat**, **YandexGPT**, **Битрикс24** и **Телеграм**.
-
-**Для кого:** все пользователи.
-
----
-
-## Апрель 2026 — Первый релиз платформы
-
-**Что нового:** агенты работают в задачах с журналом каждого шага; перед рискованным действием вы подтверждаете его в панели. Встроены российские модели и плагины для CRM и мессенджеров.
-
-**Для кого:** все пользователи облака.
-
----
-
-## Что дальше?
-
-[Начать в Cloud →](./cloud/getting-started)
+<FaqSchema
+  heading="Частые вопросы"
+  pageUrl="https://docs.datagent.ru/docs/changelog"
+  items={[
+    {
+      question: 'Datagent — это чат с нейросетью?',
+      answer:
+        'Нет. Вы ставите задачу, а не ведёте бесконечный диалог. У задачи есть журнал шагов. Рискованное действие не уходит само: его нужно согласовать в панели.',
+    },
+    {
+      question: 'Подключения меняют данные в наших системах?',
+      answer:
+        'Готовые коннекторы в основном работают только на чтение: агент смотрит данные и не меняет заказы, цены и рекламу. Разрешённые действия отмечаете при подключении.',
+    },
+    {
+      question: 'Где посмотреть, что агент уже сделал?',
+      answer:
+        'В журнале задачи — шаги одного поручения. В Таймлайне — обзор запусков команды за выбранный период.',
+    },
+  ]}
+/>
+
+## Куда дальше
+
+- [Начать в Cloud](./cloud/getting-started) — регистрация и первая задача на [app.datagent.ru](https://app.datagent.ru).
+- Вопросы по внедрению — [sales@datagent.ru](mailto:sales@datagent.ru).
+
+<CtaBanner
+  title="Начать в Cloud"
+  description="Регистрация, компания и первая задача — на app.datagent.ru."
+  buttonText="Открыть панель"
+  buttonUrl="https://app.datagent.ru"
+/>
