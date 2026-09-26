@@ -6,10 +6,18 @@ import SiteJsonLd from '@site/src/components/SiteJsonLd';
 import styles from './index.module.css';
 
 const JOURNEY_STEPS = [
-  {n: '1', title: 'Зарегистрируйтесь', desc: 'Бесплатно, без карты — на app.datagent.ru'},
-  {n: '2', title: 'Запустите агента', desc: 'Шаблон или с нуля — первый ответ в журнале задачи.'},
-  {n: '3', title: 'Подключите данные', desc: 'CRM, маркетплейсы, склад, почта — только чтение.'},
-  {n: '4', title: 'Выстройте процесс', desc: 'Конвейеры, согласования и контроль по Таймлайну.'},
+  {n: '1', title: 'Зарегистрируйтесь', desc: 'Бесплатно, без карты, на app.datagent.ru'},
+  {n: '2', title: 'Запустите агента', desc: 'Шаблон или с нуля; первый итог — в журнале задачи'},
+  {
+    n: '3',
+    title: 'Подключите данные',
+    desc: 'CRM, маркетплейсы, склад, почта; готовые коннекторы — только чтение',
+  },
+  {
+    n: '4',
+    title: 'Выстройте работу',
+    desc: 'Регулярные задачи, согласования, обзор запусков',
+  },
 ] as const;
 
 const INTEGRATIONS = [
@@ -24,7 +32,7 @@ const INTEGRATIONS = [
 const CARDS = [
   {
     title: 'Что такое Datagent',
-    desc: 'Платформа ИИ-агентов для бизнеса: задачи, доступы и журнал — не одиночный чат.',
+    desc: 'Платформа управления ИИ-агентами в компании: задачи, права доступа, согласование и журнал.',
     href: '/docs/concepts/what-is-datagent',
     accent: true,
   },
@@ -86,8 +94,8 @@ const CARDS = [
 export default function Home(): ReactNode {
   return (
     <Layout
-      title="Документация Datagent — ИИ-агенты для бизнеса"
-      description="Документация Datagent: ИИ-агенты для рабочих задач, Cloud, интеграции с российскими сервисами, руководства оператора и API. Старт на app.datagent.ru.">
+      title="Документация Datagent — платформа ИИ-агентов для бизнеса"
+      description="Как запускать и вести ИИ-агентов компании в Datagent: задачи, права доступа, согласования, журнал и интеграции с российскими сервисами. Старт в Cloud без своего сервера.">
       <SiteJsonLd />
       <main className={styles.homePage}>
         <section className={styles.hero} aria-labelledby="home-title">
@@ -98,9 +106,15 @@ export default function Home(): ReactNode {
                 Документация <span className="text-brand">Datagent</span>
               </h1>
               <p className={styles.heroSubline}>
-                Поручайте ИИ-агентам сводки, контроль отклонений и регулярные
-                отчёты по разрешённым данным компании. Результат — в задаче, с
-                журналом шагов и согласованиями.
+                Платформа ИИ-агентов для компании: задачи, права доступа,
+                согласование риска и журнал
+              </p>
+              <p className={styles.heroSubline}>
+                Datagent помогает среднему бизнесу в РФ поручать агентам сводки,
+                поиск отклонений и регулярные отчёты по разрешённым данным. Это
+                не чат и не конструктор сценариев: результат — в задаче, шаги —
+                в журнале, рискованные действия — после вашего «да». Начните с
+                Cloud на app.datagent.ru или откройте разделы ниже.
               </p>
 
               <ul className={styles.chipRow} aria-label="Интеграции">
@@ -115,7 +129,7 @@ export default function Home(): ReactNode {
                 <a
                   className={clsx('button button--primary button--lg', styles.ctaPrimary)}
                   href="https://app.datagent.ru/signup">
-                  Начать бесплатно →
+                  Открыть Cloud →
                 </a>
                 <Link
                   className={clsx('button button--outline button--lg', styles.ghostOnDark)}

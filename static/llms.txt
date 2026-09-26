@@ -1,10 +1,10 @@
 # Datagent
 
-> Платформа ИИ-агентов для бизнеса: задачи, контроль доступов, интеграции с российскими сервисами (только чтение), Cloud на app.datagent.ru. Данные в РФ.
+> Datagent — платформа запуска и ведения ИИ-агентов компании: задачи, права доступа, согласование перед рискованными шагами, журнал; интеграции с российскими сервисами (только чтение); Cloud — app.datagent.ru; данные в РФ. Не конструктор чатов и не клон Zapier/n8n.
 
 ## Начало работы
 
-- [Что такое Datagent](https://docs.datagent.ru/docs/concepts/what-is-datagent): платформа ИИ-агентов для рабочих задач компании — не одиночный чат
+- [Что такое Datagent](https://docs.datagent.ru/docs/concepts/what-is-datagent): платформа управления ИИ-агентами в компании — задачи, права доступа, согласование, журнал
 - [Управление ИИ-агентами](https://docs.datagent.ru/docs/concepts/upravlenie-ii-agentami): права доступа, очередь согласований перед рискованным шагом, журнал работы и лимиты расходов по компании
 - [Как это работает](https://docs.datagent.ru/docs/concepts/how-it-works): задача → разрешённые данные → журнал → результат; согласования и права
 - [Документация: с чего начать](https://docs.datagent.ru/docs/intro): карта разделов — Cloud, агент, интеграции, тарифы
@@ -36,7 +36,7 @@
 - [ЮKassa](https://docs.datagent.ru/docs/integrations/yookassa): 12 инструментов — платежи, возвраты, чеки, только чтение (v0.1.0)
 - [Mail.ru](https://docs.datagent.ru/docs/integrations/mailru): 9 инструментов — поиск и разбор входящих писем (v0.4.0)
 - [Cloud.ru](https://docs.datagent.ru/docs/integrations/cloud-ru): 2 инструмента — ранний preview инвентаря (проекты, квоты, IAM), статус «Развивается» (v0.1.0)
-- [Битрикс24](https://docs.datagent.ru/docs/integrations/bitrix24): чаты и открытые линии → задачи; приложения Маркетплейса — в разделе Приложения, не на этой странице
+- [Битрикс24](https://docs.datagent.ru/docs/integrations/bitrix24): чат-мост Cloud — чаты CRM и Открытые линии, ответ клиенту после «да»; не приложения Маркетплейса
 - [Телеграм](https://docs.datagent.ru/docs/integrations/telegram): long poll getUpdates, токен только в секрете компании, уведомления и согласования
 - [1С](https://docs.datagent.ru/docs/integrations/1c-connector): мост к учётной базе (Business+)
 - [Внешние инструменты (MCP)](https://docs.datagent.ru/docs/integrations/mcp): реестр HTTP MCP для Cursor-агентов и CLI с supportsExternalMcp

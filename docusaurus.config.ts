@@ -258,7 +258,8 @@ const config: Config = {
                   '@type': 'ImageObject',
                   url: 'https://docs.datagent.ru/img/brand/favicon-light.svg',
                 },
-                description: 'Платформа ИИ-агентов для бизнеса: автоматизация задач, интеграции с Битрикс24, 1С, МойСклад, Wildberries, Ozon, YandexGPT.',
+                description:
+                  'Datagent — платформа ИИ-агентов для среднего бизнеса: права доступа, согласования и журнал, данные в РФ.',
                 sameAs: [
                   'https://app.datagent.ru',
                   'https://docs.datagent.ru',
@@ -276,7 +277,8 @@ const config: Config = {
                 '@id': 'https://docs.datagent.ru/#website',
                 url: 'https://docs.datagent.ru',
                 name: 'Документация Datagent',
-                description: 'Документация платформы ИИ-агентов Datagent: Cloud, интеграции с российскими сервисами, руководства и API.',
+                description:
+                  'Как запускать и вести ИИ-агентов компании в Datagent: задачи, права доступа, согласования, журнал и интеграции с российскими сервисами. Старт в Cloud без своего сервера.',
                 publisher: {
                   '@id': 'https://datagent.ru/#organization',
                 },
@@ -297,7 +299,9 @@ const config: Config = {
                 applicationCategory: 'BusinessApplication',
                 operatingSystem: 'Web',
                 url: 'https://app.datagent.ru',
-                description: 'ИИ-агенты для автоматизации бизнес-задач: работа с CRM, ERP, маркетплейсами и корпоративными данными.',
+                description:
+                  'Платформа для запуска и ведения ИИ-агентов компании: задачи, права доступа к данным, согласование рискованных шагов и журнал работы; интеграции с российскими сервисами в режиме только чтение.',
+                alternateName: 'ИИ-агенты компании — с доступом, согласованием и журналом',
                 offers: {
                   '@type': 'Offer',
                   price: '0',
@@ -353,7 +357,7 @@ const config: Config = {
       {
         name: 'description',
         content:
-          'Документация Datagent: ИИ-агенты для бизнеса, Cloud на app.datagent.ru, интеграции с CRM и маркетплейсами, руководства и API.',
+          'Как запускать и вести ИИ-агентов компании в Datagent: задачи, права доступа, согласования, журнал и интеграции с российскими сервисами. Старт в Cloud без своего сервера.',
       },
     ],
     colorMode: {
