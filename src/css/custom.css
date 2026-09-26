@@ -156,10 +156,11 @@ body {
 }
 
 .navbar__items--right {
-  flex: 0 0 auto;
+  flex: 0 1 auto;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.4rem;
+  min-width: 0;
 }
 
 .navbar__items--right .navbar__link svg {
@@ -169,29 +170,36 @@ body {
 .navbar__link {
   font-size: var(--text-small);
   font-weight: 500;
-  padding: 0.35rem 0.55rem;
+  padding: 0.35rem 0.5rem;
   white-space: nowrap;
 }
 
-.navbar__link--hide-lg {
-  display: inline-flex;
-}
+/*
+ * Progressive disclosure for the top bar only (.navbar__inner).
+ * Do not target .navbar-sidebar — Войти / Концепции / Приложения stay in the drawer.
+ */
+@media (max-width: 1399px) {
+  .navbar__inner .navbar__link--hide-xl {
+    display: none !important;
+  }
 
-.navbar__link--hide-md {
-  display: inline-flex;
-}
+  .navbar__search-input {
+    width: 8.5rem;
+    min-width: 0;
+  }
 
-@media (max-width: 1100px) {
-  .navbar__link--hide-lg {
+  [class*='searchHintContainer'] {
     display: none;
   }
 }
 
-@media (max-width: 768px) {
-  .navbar__link--hide-md {
+@media (max-width: 1199px) {
+  .navbar__inner .navbar__link--hide-lg {
     display: none !important;
   }
+}
 
+@media (max-width: 996px) {
   .navbar--cta,
   .navbar--btn-outline {
     padding: 0.4rem 0.75rem !important;
@@ -565,6 +573,21 @@ mark,
   font-weight: 600;
 }
 
+/* Narrow screens: parent + current only (no three truncated levels) */
+@media (max-width: 996px) {
+  .breadcrumbs__item:not(:nth-last-child(-n + 2)) {
+    display: none;
+  }
+
+  .breadcrumbs__item:not(.breadcrumbs__item--active) {
+    max-width: 48%;
+  }
+
+  .breadcrumbs__item--active {
+    max-width: 52%;
+  }
+}
+
 /* Blog reading flow */
 article header h1 {
   text-wrap: balance;
@@ -604,6 +627,7 @@ html[class*='docs-doc-id-apps'] div[class*='announcementBar'] {
 }
 
 .navbar--cta {
+  flex: 0 0 auto;
   background: var(--ifm-color-primary) !important;
   border-color: var(--ifm-color-primary) !important;
   color: var(--color-text-inverse) !important;
@@ -640,19 +664,13 @@ html[class*='docs-doc-id-apps'] div[class*='announcementBar'] {
   }
 }
 
-/* После pill-кнопок: hide-md должен перекрывать display:inline-flex !important */
-@media (max-width: 768px) {
-  .navbar__link--hide-md {
-    display: none !important;
-  }
-}
-
-/* Announcement bar */
+/* Announcement bar — dismissible (id in docusaurus.config.ts), compact on mobile */
 div[class*='announcementBar'] {
   font-size: var(--text-small);
   font-weight: 500;
   letter-spacing: 0.01em;
   padding-top: env(safe-area-inset-top, 0px);
+  min-height: 0;
 
   a {
     color: inherit;
@@ -665,13 +683,20 @@ div[class*='announcementBar'] {
       opacity: 0.92;
     }
   }
+
+  button {
+    width: 2.25rem;
+    height: 2.25rem;
+    padding: 0;
+    opacity: 0.9;
+  }
 }
 
 @media (max-width: 430px) {
   div[class*='announcementBar'] {
     font-size: 0.75rem;
-    line-height: 1.35;
-    padding-block: 0.35rem;
+    line-height: 1.3;
+    padding-block: 0.2rem;
   }
 }
 

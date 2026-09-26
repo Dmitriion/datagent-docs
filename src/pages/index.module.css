@@ -46,31 +46,22 @@
 }
 
 .heroSubline {
+  font-size: clamp(1.0625rem, 1.3vw, 1.1875rem);
+  line-height: var(--leading-body);
+  color: var(--color-hero-text);
+  margin: 0 0 0.75rem;
+  max-width: 34rem;
+  text-wrap: pretty;
+  font-weight: 500;
+}
+
+.heroLead {
   font-size: clamp(1rem, 1.2vw, 1.0625rem);
   line-height: var(--leading-body);
   color: var(--color-hero-muted);
-  margin: 0 0 1.35rem;
+  margin: 0 0 1.5rem;
   max-width: 34rem;
   text-wrap: pretty;
-}
-
-.chipRow {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-  list-style: none;
-  padding: 0;
-  margin: 0 0 1.5rem;
-}
-
-.chip {
-  font-size: var(--text-small);
-  font-weight: 500;
-  padding: 0.3rem 0.65rem;
-  border-radius: var(--radius-sm);
-  border: 1px solid oklch(0.78 0.02 250 / 0.28);
-  background: var(--color-hero-surface);
-  color: var(--color-hero-muted);
 }
 
 .heroButtons {
@@ -113,106 +104,29 @@
   background: transparent;
 }
 
-/* Product preview — flat, informational */
+/* Honest placeholder until a real panel PNG is checked in */
 .heroPreview {
   display: flex;
-  justify-content: flex-end;
+  flex-direction: column;
+  align-items: flex-end;
+  margin: 0;
+  gap: 0.5rem;
 }
 
-.previewWindow {
+.previewImage {
   width: min(100%, 22rem);
+  height: auto;
   border-radius: var(--radius-md);
   border: 1px solid oklch(0.78 0.02 250 / 0.28);
   background: var(--color-hero-surface);
-  box-shadow: none;
 }
 
-.previewChrome {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  padding: 0.7rem 1rem;
-  border-bottom: 1px solid oklch(0.78 0.02 250 / 0.2);
-}
-
-.previewDot {
-  width: 0.4rem;
-  height: 0.4rem;
-  border-radius: 50%;
-  background: oklch(0.5 0.02 250);
-}
-
-.previewChromeTitle {
-  margin-left: 0.45rem;
+.previewCaption {
+  width: min(100%, 22rem);
+  margin: 0;
   font-size: var(--text-caption);
-  font-weight: 600;
   color: var(--color-hero-muted);
-  letter-spacing: 0.02em;
-}
-
-.previewBody {
-  padding: 1.1rem 1.15rem 1.2rem;
-}
-
-.previewMeta {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem;
-  margin-bottom: 0.75rem;
-}
-
-.previewBadge {
-  font-size: var(--text-caption);
-  font-weight: 600;
-  padding: 0.15rem 0.45rem;
-  border-radius: var(--radius-sm);
-  border: 1px solid oklch(0.78 0.02 250 / 0.25);
-  background: transparent;
-  color: var(--color-hero-muted);
-}
-
-.previewStatus {
-  font-size: var(--text-caption);
-  font-weight: 600;
-  color: var(--color-hero-muted);
-}
-
-.previewLine {
-  font-size: 0.9rem;
-  line-height: 1.5;
-  margin: 0 0 0.45rem;
-  color: var(--color-hero-text);
-}
-
-.previewLineMuted {
-  font-size: var(--text-small);
-  line-height: 1.45;
-  margin: 0 0 1rem;
-  color: var(--color-hero-muted);
-}
-
-.previewFooter {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.previewBtnPrimary {
-  font-size: var(--text-small);
-  font-weight: 600;
-  padding: 0.35rem 0.75rem;
-  border-radius: var(--radius-sm);
-  background: var(--color-primary);
-  color: var(--color-text-inverse);
-}
-
-.previewBtnGhost {
-  font-size: var(--text-small);
-  font-weight: 600;
-  padding: 0.35rem 0.75rem;
-  border-radius: var(--radius-sm);
-  border: 1px solid oklch(0.78 0.02 250 / 0.3);
-  color: var(--color-hero-muted);
+  text-align: left;
 }
 
 /* ——— Sections ——— */
@@ -305,7 +219,7 @@
 /* ——— Doc cards ——— */
 .cardsGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 17.5rem), 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: var(--space-4);
   align-items: stretch;
 }
@@ -383,6 +297,46 @@
   padding-bottom: clamp(3.5rem, 7vw, 5rem);
 }
 
+.moreNav {
+  margin-top: var(--space-8);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--color-border);
+}
+
+.moreLabel {
+  font-size: var(--text-caption);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  margin: 0 0 0.75rem;
+}
+
+.moreList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.35rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.moreLink {
+  font-size: var(--text-ui);
+  font-weight: 500;
+  color: var(--color-text);
+  text-decoration: none;
+  min-height: 2.25rem;
+  display: inline-flex;
+  align-items: center;
+}
+
+.moreLink:hover {
+  color: var(--color-primary);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 /* ——— Responsive ——— */
 @media screen and (max-width: 996px) {
   .heroGrid {
@@ -390,14 +344,19 @@
   }
 
   .heroPreview {
-    justify-content: center;
+    align-items: center;
   }
 
-  .previewWindow {
+  .previewImage,
+  .previewCaption {
     width: min(100%, 20rem);
   }
 
   .journeySteps {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .cardsGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
@@ -408,6 +367,10 @@
   }
 
   .journeySteps {
+    grid-template-columns: 1fr;
+  }
+
+  .cardsGrid {
     grid-template-columns: 1fr;
   }
 

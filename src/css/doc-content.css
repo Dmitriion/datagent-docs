@@ -119,6 +119,32 @@
   padding-left: 0.75rem;
 }
 
+/*
+ * Mobile TOC (Docusaurus already collapsed by default).
+ * Quiet control so it does not dominate the band above H1.
+ */
+@media (max-width: 996px) {
+  .theme-doc-toc-mobile {
+    background: transparent !important;
+    margin: 0 0 0.65rem !important;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    width: fit-content;
+    max-width: 100%;
+    margin-left: 0 !important;
+  }
+
+  .theme-doc-toc-mobile button[class*='tocCollapsibleButton'] {
+    font-size: var(--text-small);
+    font-weight: 500;
+    color: var(--color-text-muted);
+    padding: 0.35rem 0.7rem;
+    min-height: 2.25rem;
+    width: auto;
+    gap: 0.35rem;
+  }
+}
+
 .table-of-contents__link {
   display: block;
   padding: 0.2rem 0;

@@ -22,5 +22,8 @@
   },
   "theme.SearchBar.label": {
     "message": "Поиск"
+  },
+  "theme.TOCCollapsible.toggleButtonLabel": {
+    "message": "Содержание"
   }
 }
