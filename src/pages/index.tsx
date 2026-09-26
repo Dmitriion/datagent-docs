@@ -2,6 +2,7 @@ import type {ReactNode} from 'react';
 import clsx from 'clsx';
 import Link from '@docusaurus/Link';
 import Layout from '@theme/Layout';
+import HeroClip from '@site/src/components/HeroClip';
 import SiteJsonLd from '@site/src/components/SiteJsonLd';
 import styles from './index.module.css';
 
@@ -57,14 +58,6 @@ const MORE_LINKS = [
   {title: 'История обновлений', href: '/docs/changelog'},
 ] as const;
 
-/**
- * Intentional stub until a real panel PNG exists. Do not invent a fake product UI.
- * TODO(Dmitrii): drop a PNG of the panel (задача → «да» → журнал) at
- * `static/img/product/task-approval.png` and set PRODUCT_SHOT to
- * '/img/product/task-approval.png'.
- */
-const PRODUCT_SHOT: string | null = null;
-
 export default function Home(): ReactNode {
   return (
     <Layout
@@ -106,27 +99,7 @@ export default function Home(): ReactNode {
               </p>
             </div>
 
-            <figure className={styles.heroPreview}>
-              {PRODUCT_SHOT ? (
-                <img
-                  className={styles.previewImage}
-                  src={PRODUCT_SHOT}
-                  width={720}
-                  height={480}
-                  alt="Панель Datagent: задача, согласование и журнал"
-                />
-              ) : (
-                <div className={styles.previewPlaceholder}>
-                  <p className={styles.previewPlaceholderTitle}>Кадр панели</p>
-                  <p className={styles.previewPlaceholderHint}>
-                    задача, согласование, журнал
-                  </p>
-                </div>
-              )}
-              <figcaption className={styles.previewCaption}>
-                Здесь будет кадр панели
-              </figcaption>
-            </figure>
+            <HeroClip />
           </div>
         </section>
 

@@ -16,7 +16,7 @@
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
   gap: clamp(1.75rem, 4vw, 3rem);
   align-items: center;
 }
@@ -102,55 +102,6 @@
   color: var(--color-hero-muted);
   border: none;
   background: transparent;
-}
-
-/* Honest placeholder until a real panel PNG is checked in */
-.heroPreview {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  margin: 0;
-  gap: 0.5rem;
-}
-
-.previewImage,
-.previewPlaceholder {
-  width: min(100%, 22rem);
-  height: auto;
-  border-radius: var(--radius-md);
-  border: 1px solid oklch(0.78 0.02 250 / 0.28);
-  background: var(--color-hero-surface);
-}
-
-.previewPlaceholder {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 0.35rem;
-  min-height: 14rem;
-  padding: 1.25rem 1.35rem;
-  border-style: dashed;
-}
-
-.previewPlaceholderTitle {
-  margin: 0;
-  font-size: var(--text-ui);
-  font-weight: 600;
-  color: var(--color-hero-text);
-}
-
-.previewPlaceholderHint {
-  margin: 0;
-  font-size: var(--text-small);
-  color: var(--color-hero-muted);
-}
-
-.previewCaption {
-  width: min(100%, 22rem);
-  margin: 0;
-  font-size: var(--text-caption);
-  color: var(--color-hero-muted);
-  text-align: left;
 }
 
 /* ——— Sections ——— */
@@ -365,16 +316,6 @@
 @media screen and (max-width: 996px) {
   .heroGrid {
     grid-template-columns: 1fr;
-  }
-
-  .heroPreview {
-    align-items: center;
-  }
-
-  .previewImage,
-  .previewPlaceholder,
-  .previewCaption {
-    width: min(100%, 20rem);
   }
 
   .journeySteps {
