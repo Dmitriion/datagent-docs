@@ -58,10 +58,10 @@ const MORE_LINKS = [
 ] as const;
 
 /**
- * Real product screenshot — not checked in yet (no PNG/WebP in static/).
+ * Intentional stub until a real panel PNG exists. Do not invent a fake product UI.
  * TODO(Dmitrii): drop a PNG of the panel (задача → «да» → журнал) at
  * `static/img/product/task-approval.png` and set PRODUCT_SHOT to
- * '/img/product/task-approval.png'. Do not invent a fake product UI.
+ * '/img/product/task-approval.png'.
  */
 const PRODUCT_SHOT: string | null = null;
 
@@ -121,13 +121,10 @@ export default function Home(): ReactNode {
                   <p className={styles.previewPlaceholderHint}>
                     задача, согласование, журнал
                   </p>
-                  <p className={styles.previewPlaceholderPath}>
-                    static/img/product/task-approval.png
-                  </p>
                 </div>
               )}
               <figcaption className={styles.previewCaption}>
-                Скриншот панели — файл ещё не добавлен
+                Здесь будет кадр панели
               </figcaption>
             </figure>
           </div>

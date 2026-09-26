@@ -139,16 +139,10 @@
   color: var(--color-hero-text);
 }
 
-.previewPlaceholderHint,
-.previewPlaceholderPath {
+.previewPlaceholderHint {
   margin: 0;
   font-size: var(--text-small);
   color: var(--color-hero-muted);
-}
-
-.previewPlaceholderPath {
-  font-family: var(--ifm-font-family-monospace);
-  font-size: var(--text-caption);
 }
 
 .previewCaption {
