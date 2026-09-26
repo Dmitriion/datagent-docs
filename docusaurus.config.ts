@@ -452,7 +452,7 @@ const config: Config = {
             {label: 'Биллинг', to: '/docs/billing/overview'},
             {label: 'Свой контур', to: '/docs/cloud/on-premise'},
             {label: 'Сценарии', to: '/docs/tutorials'},
-            {label: 'История изменений', to: '/docs/changelog'},
+            {label: 'История обновлений', to: '/docs/changelog'},
             {label: 'Поддержка', href: 'mailto:sales@datagent.ru'},
           ],
         },

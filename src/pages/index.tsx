@@ -85,8 +85,8 @@ const CARDS = [
     href: '/docs/office/overview',
   },
   {
-    title: 'История изменений',
-    desc: 'Релизы и обновления продукта.',
+    title: 'История обновлений',
+    desc: 'Что изменилось в панели для людей в компании.',
     href: '/docs/changelog',
   },
 ] as const;

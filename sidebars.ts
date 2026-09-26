@@ -418,7 +418,7 @@ const sidebars: SidebarsConfig = {
     {
       type: 'doc',
       id: 'changelog',
-      label: 'История изменений',
+      label: 'История обновлений',
     },
   ],
 };
