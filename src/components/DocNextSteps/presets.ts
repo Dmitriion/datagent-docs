@@ -138,21 +138,21 @@ export const officeFieldNextSteps: NextStepItem[] = [
 export const appsIndexNextSteps: NextStepItem[] = [
   {
     title: 'EDPortal',
-    description: 'Онбординг, тесты и сертификаты в Битрикс24.',
+    description: 'Курсы, тесты и сертификаты в меню портала.',
     to: '/docs/apps/edportal',
-    tag: 'LMS',
+    tag: 'Обучение',
   },
   {
     title: 'Заявки PRO',
-    description: 'Каталог процессов портала и права доступа.',
+    description: 'Сотрудник видит только разрешённые заявки.',
     to: '/docs/apps/requestspro',
     tag: 'Заявки',
   },
   {
     title: 'Datagent Connector',
-    description: 'Telegram, VK и MAX в Открытые линии.',
+    description: 'Telegram, VK и MAX в чат Открытых линий.',
     to: '/docs/apps/connector',
-    tag: 'OL',
+    tag: 'Линии',
   },
 ];
 
@@ -165,28 +165,28 @@ export const appsEdportalNextSteps: NextStepItem[] = [
   },
   {
     title: 'Настройка',
-    description: 'Роли, отделы и оболочки после установки.',
+    description: 'Кто собирает курсы, а кто только учится.',
     to: '/docs/apps/edportal/setup',
     tag: 'Настройка',
   },
   {
     title: 'Курсы',
-    description: 'Публикация, назначения и сертификаты.',
+    description: 'Публикация, назначения и сертификат.',
     to: '/docs/apps/edportal/courses',
     tag: 'Обучение',
   },
   {
-    title: 'API агента',
-    description: 'HTTP /api/v1/agent для внешних систем.',
+    title: 'Обмен данными',
+    description: 'Каталог и назначения для внешней системы.',
     to: '/docs/apps/edportal/api',
-    tag: 'API',
+    tag: 'Обмен',
   },
 ];
 
 export const appsRequestsproNextSteps: NextStepItem[] = [
   {
     title: 'Установка',
-    description: 'Маркетплейс, лицензия и пункт меню.',
+    description: 'Маркетплейс, лицензия и пункт в меню.',
     to: '/docs/apps/requestspro/installation',
     tag: 'Старт',
   },
@@ -197,8 +197,8 @@ export const appsRequestsproNextSteps: NextStepItem[] = [
     tag: 'Каталог',
   },
   {
-    title: 'Доступ',
-    description: 'Всем, отделам или сотрудникам.',
+    title: 'Права доступа',
+    description: 'Всем, отделу или конкретным людям.',
     to: '/docs/apps/requestspro/access',
     tag: 'Права',
   },
@@ -219,8 +219,8 @@ export const appsConnectorNextSteps: NextStepItem[] = [
   },
   {
     title: 'Открытые линии',
-    description: 'Операторы, SLA и аналитика смены.',
+    description: 'Операторы, срок ответа и сводка смены.',
     to: '/docs/apps/connector/lines',
-    tag: 'OL',
+    tag: 'Линии',
   },
 ];
