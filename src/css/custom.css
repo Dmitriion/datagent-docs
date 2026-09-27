@@ -753,27 +753,65 @@ div[class*='announcementBar'] {
   justify-content: center;
 }
 
-/* Drawer must fill the viewport (Infima default); reinforce after our chrome tweaks */
+/*
+ * Drawer must fill the viewport. Do not scroll or translate .navbar-sidebar__items:
+ * Infima already sets transform (translateZ(0), and translate3d when the doc
+ * sidebar slides in). overflow-y:auto on that same node forces overflow-x:auto
+ * and, with -webkit-overflow-scrolling:touch, iOS Safari paints an empty menu
+ * under a visible brand row (logo / theme / close).
+ * Panels are toggled with display; each panel scrolls on its own.
+ */
 .navbar-sidebar {
+  display: flex;
+  flex-direction: column;
   top: 0;
   bottom: 0;
   height: auto;
   max-height: none;
   padding-bottom: env(safe-area-inset-bottom, 0px);
   z-index: calc(var(--ifm-z-index-fixed) + 2);
+  background: var(--ifm-navbar-background-color);
+  color: var(--color-text);
 }
 
 .navbar-sidebar__brand {
+  flex: 0 0 auto;
+  height: auto;
   padding-top: env(safe-area-inset-top, 0px);
   min-height: calc(var(--ifm-navbar-height) + env(safe-area-inset-top, 0px));
 }
 
-.navbar-sidebar__items {
-  min-height: 0;
+.navbar-sidebar__items,
+.navbar-sidebar__items--show-secondary {
+  display: flex;
+  flex-direction: column;
   flex: 1 1 auto;
+  min-height: 0;
+  height: auto;
+  overflow: hidden;
+  transform: none;
+  transition: none;
+}
+
+.navbar-sidebar__items > .navbar-sidebar__item {
+  display: none;
+  width: 100%;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-x: hidden;
   overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;
+}
+
+.navbar-sidebar__items:not(.navbar-sidebar__items--show-secondary)
+  > .navbar-sidebar__item:first-child,
+.navbar-sidebar__items--show-secondary > .navbar-sidebar__item:last-child {
+  display: block;
+}
+
+/* hide-xl / hide-lg apply to the top bar only; the drawer keeps every link */
+.navbar-sidebar :is(.navbar__link--hide-xl, .navbar__link--hide-lg) {
+  display: flex !important;
 }
 
 .navbar-sidebar .menu__link {
@@ -781,6 +819,15 @@ div[class*='announcementBar'] {
   display: flex;
   align-items: center;
   padding-block: 0.55rem;
+  color: var(--color-text);
+}
+
+.navbar-sidebar .menu__link--active:not(.menu__link--sublist) {
+  color: var(--color-primary);
+}
+
+.navbar-sidebar__back {
+  color: var(--color-text);
 }
 
 .navbar-sidebar .menu__list-item-collapsible,
