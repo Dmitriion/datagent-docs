@@ -1,5 +1,3 @@
-Публичная сетка с 13.11.2026: только «Бесплатный» и «Корпоративный», без сумм. Старые имена планов в этом файле заменены.
-
 ---
 title: DOC-PLAN 2026 Q3
 description: Внутренний план закрытия пробелов документации Datagent (cloud-first). Не в публичном sidebar.
@@ -8,7 +6,7 @@ description: Внутренний план закрытия пробелов д�
 # DOC-PLAN-2026-Q3
 
 **Аудитория:** операторы [app.datagent.ru](https://app.datagent.ru) — люди, которые ведут агентов в облаке, без своего сервера.  
-**Self-hosted:** в публичной справке только Корпоративный-лендинг [`cloud/on-premise`](../cloud/on-premise.md), не пошаговый runbook.  
+**Self-hosted:** в публичной справке только enterprise-лендинг [`cloud/on-premise`](../cloud/on-premise.md), не пошаговый runbook.  
 **Снимок аудита:** [`audit-snapshot-2026-06-15.json`](./audit-snapshot-2026-06-15.json) (продукт `632e957d9`, docs `692f934`).
 
 ## Статус — Фаза 0 (Словарь и канон)
@@ -52,7 +50,7 @@ description: Внутренний план закрытия пробелов д�
 - **Изменено файлов:** 16 (блок concepts: how-it-works → agent-architecture)
 - **Технических терминов в пользовательском тексте:** 0 (вынесены в `<details>` для разработчиков)
 - **Блоки «Что дальше»:** все 16 страниц фазы
-- **Ключевые правки:** Gardener и sandbox BYOC → платные условия; декомпозиция задач → платные условия; Bitrix24 → платные условия; Telegram → все тарифы; GigaChat/Yandex BYO без paywall
+- **Ключевые правки:** Gardener и sandbox BYOC → Studio+; декомпозиция задач → Studio+; Bitrix24 → Studio+; Telegram → все тарифы; GigaChat/Yandex BYO без paywall
 - **Следующая фаза:** Phase 4 — Интеграции и браузер
 
 ## Статус — Фаза 4 (Интеграции и браузер)
@@ -60,7 +58,7 @@ description: Внутренний план закрытия пробелов д�
 - **Дата:** 15 июня 2026
 - **Статус:** ✅ Выполнено
 - **Изменено файлов:** 10 (`browser/overview`, `browser/setup`, `integrations/browserbridge`, `integrations/bitrix24`, `integrations/telegram`, `integrations/gigachat`, `integrations/yandexgpt`, `integrations/1c-connector`, `cloud/plugins`, `cloud/skills`)
-- **PRO → платные условия/платные условия исправлено:** подтверждено
+- **PRO → Studio/Business исправлено:** подтверждено
 - **Plan gates совпадают с pricing.md:** ✅
 - **Следующая фаза:** Phase 4 Polish → затем Phase 5 — Артефакты и Office
 
@@ -70,8 +68,8 @@ description: Внутренний план закрытия пробелов д�
 - **Статус:** ✅ Выполнено
 - **Изменено файлов:** 5 (`artifacts/overview`, `artifacts/agent-upload`, `office/overview`, `office/excel-pptx`, `guides/05-office-field`)
 - **Office помечен как experimental:** ✅
-- **Office Chat платные условия, Annotations платные условия:** ✅
-- **Артефакты платные условия, mobile disclaimer:** ✅
+- **Office Chat Solo+, Annotations Studio+:** ✅
+- **Артефакты Solo+, mobile disclaimer:** ✅
 - **Следующая фаза:** Phase 5 Polish → затем Phase 6 — API Reference
 
 ## Статус — Фаза 5 polish (Копирайтинг артефакты / Office)
@@ -88,7 +86,7 @@ description: Внутренний план закрытия пробелов д�
 - **Статус:** ✅ Выполнено
 - **Изменено файлов:** 7 (`api-reference/overview`, `agents`, `issues`, `memory`, `artifacts`, `plugins`, `access` + `meta/DOC-PLAN-2026-Q3.md`)
 - **Billing planned badge:** ✅
-- **Decompose платные условия добавлен:** ✅ (`POST /issues/:id/accepted-plan-decompositions`)
+- **Decompose Studio+ добавлен:** ✅ (`POST /issues/:id/accepted-plan-decompositions`)
 - **Memory operator/agent scope:** ✅
 - **Таблицы endpoints на всех страницах:** ✅
 - **Следующая фаза:** Phase 7 — Учебник и сценарии
@@ -106,8 +104,8 @@ description: Внутренний план закрытия пробелов д�
 - **Изменено файлов:** 12
 - **Gates совпадают с pricing.md:** ✅
 - **localhost/Docker в guides:** 0
-- **Аннотации платные условия добавлены:** ✅
-- **1С тариф Корпоративный уточнён:** ✅
+- **Аннотации Studio+ добавлены:** ✅
+- **1С Business+ уточнён:** ✅
 - **Следующая фаза:** Phase 7 Polish → затем Phase 8 — Навигация
 
 ## Статус — Фаза 7 polish (копирайтинг учебника)
@@ -123,7 +121,7 @@ description: Внутренний план закрытия пробелов д�
 - **sidebars.ts:** разделы русифицированы, порядок от простого к сложному (Начало → Концепции → Учебник → … → История изменений)
 - **src/pages/index.tsx:** карточки «Сценарии», «Office», «История изменений»; Артефакты — на месте
 - **llms.txt:** обновлён по итогам Фаз 1–7, тарифы = pricing.md
-- **Landing drift:** resolved — `datagent.ru#pricing` совпадает с docs (Free/платные условия/платные условия/платные условия/Корпоративный, CTA → app.datagent.ru)
+- **Landing drift:** resolved — `datagent.ru#pricing` совпадает с docs (Free/Solo/Studio/Business/Enterprise, CTA → app.datagent.ru)
 - **navbar CTA → app.datagent.ru:** ✅ («Открыть приложение»)
 - **footer:** Артефакты, API Reference, Сценарии, История изменений
 - **Следующая фаза:** Phase 9 — QA и публикация
@@ -155,7 +153,7 @@ description: Внутренний план закрытия пробелов д�
 
 ### Финальный drift-audit
 
-- Устаревшие тарифы PRO/платные условия: **0** (user-facing, без `meta/`)
+- Устаревшие тарифы PRO/Business: **0** (user-facing, без `meta/`)
 - localhost в user-facing контенте: **0** (исключения: `tutorials/build-plugin`, `concepts/agent-architecture` dev-блоки)
 - Paperclip (старый бренд): **0**
 - Битые ссылки: **0** (`onBrokenLinks: throw`)
@@ -165,14 +163,14 @@ description: Внутренний план закрытия пробелов д�
 
 | Функция | Тариф | Подтверждено |
 |---------|-------|-------------|
-| BrowserBridge | платные условия | ✅ |
-| Bitrix24 | платные условия | ✅ |
-| 1С-коннектор | тариф Корпоративный | ✅ |
-| Артефакты | платные условия | ✅ |
-| Office Chat | платные условия | ✅ |
-| Аннотации | платные условия | ✅ |
-| Декомпозиция задач | платные условия | ✅ |
-| Memory Gardener | платные условия | ✅ |
+| BrowserBridge | Studio+ | ✅ |
+| Bitrix24 | Studio+ | ✅ |
+| 1С-коннектор | Business+ | ✅ |
+| Артефакты | Solo+ | ✅ |
+| Office Chat | Solo+ | ✅ |
+| Аннотации | Studio+ | ✅ |
+| Декомпозиция задач | Studio+ | ✅ |
+| Memory Gardener | Studio+ | ✅ |
 | Telegram | Все тарифы | ✅ |
 | GigaChat / YandexGPT | BYO, без gate | ✅ |
 
@@ -279,9 +277,9 @@ description: Внутренний план закрытия пробелов д�
 | 46 | Playbooks | guides | ✅ playbook-index | — | — |
 | 47 | Troubleshooting | — | ✅ | memory/plugin errors | quick win |
 | 48 | Changelog | releases | ✅ changelog | — | — |
-| 49 | On-premise Корпоративный | — | ✅ on-premise | — | — |
+| 49 | On-premise enterprise | — | ✅ on-premise | — | — |
 | 50 | Self-hosted install | docker/, DEVELOPING | ⏸ | намеренно не публикуем | P4 |
-| 51 | Docker compose | `docker/` | ⏸ | Корпоративный-only | P4 |
+| 51 | Docker compose | `docker/` | ⏸ | enterprise-only | P4 |
 | 52 | Full env catalog | `config.ts` (231+) | ⏸ | 4 в .env.example | P4 |
 | 53 | CLI reference | `cli/` | ⏸ | не cloud path | P4 |
 | 54 | DB migrations guide | `packages/db` | ⏸ | contributor | P4 |

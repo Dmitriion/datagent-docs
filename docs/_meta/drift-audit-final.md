@@ -1,5 +1,3 @@
-Публичная сетка с 13.11.2026: только «Бесплатный» и «Корпоративный», без сумм. Старые имена планов в этом файле заменены.
-
 # Финальный drift-audit — 15 июня 2026
 
 Прогон: **Фаза 9** + **финальная QA** (`docs/sync-final-qa`).  
@@ -24,7 +22,7 @@
 
 | Проверка | Результат |
 |----------|-----------|
-| PRO / 2 000 run / платные условия  в user-facing `docs/` (без `meta/`) | **0** |
+| PRO / 2 000 run / Business 3 900 в user-facing `docs/` (без `meta/`) | **0** |
 | Paperclip | **0** |
 | localhost в intro / cloud / guides / `src/` | **0** |
 | localhost в tutorials/build-plugin, agent-architecture | Есть — **допустимо** (dev / API tutorial) |

@@ -1,5 +1,3 @@
-Публичная сетка с 13.11.2026: только «Бесплатный» и «Корпоративный», без сумм. Старые имена планов в этом файле заменены.
-
 ---
 id: guides-ux-seo-geo-audit
 title: Guides — UX / SEO / GEO аудит
@@ -16,7 +14,7 @@ unlisted: true
 ## Исследование
 
 ### Lazyweb
-MCP/skill **недоступен**. Паттерны: Stripe/Linear/Notion help centers, Корпоративный user guides, step-by-step with diagrams.
+MCP/skill **недоступен**. Паттерны: Stripe/Linear/Notion help centers, enterprise user guides, step-by-step with diagrams.
 
 ### Modern Web Guidance
 `figure`/`figcaption`, focus-visible, reduced-motion, accessible details/summary, responsive media (`max-width: 100%`).
@@ -33,9 +31,9 @@ MCP/skill **недоступен**. Паттерны: Stripe/Linear/Notion help 
 | 03-one-task | Оператор | Одна задача до результата | Рабочий | webp + mermaid | 04-trust | Слабый checkpoint |
 | 04-trust-and-approval | Руководитель / оператор | Согласования | Рабочий | webp + mermaid | 05 / channels | Ок, усилить шаблон |
 | 05-office-field | Руководитель | Обзор «Офис» | Рабочий | webp + mermaid | timeline | Experimental — пометить |
-| 06-channels | Оператор | Каналы → задачи | Рабочий | webp + mermaid | bitrix/telegram | платные условия для Bitrix |
+| 06-channels | Оператор | Каналы → задачи | Рабочий | webp + mermaid | bitrix/telegram | Studio для Bitrix |
 | 07-documents | Оператор | Excel/PPT | Рабочий | ? | artifacts | Проверить факты OfficeCLI |
-| 08-1c-bridge | Аналитик / ИТ | 1С | Админ / ИТ | webp | 1c-connector | тариф Корпоративный |
+| 08-1c-bridge | Аналитик / ИТ | 1С | Админ / ИТ | webp | 1c-connector | Business+ |
 | playbook-index | Все | Ситуация → ссылка | Все | нет | chapters | Хороший хаб, вынести выше |
 
 ## 2. Инвентарь SVG
