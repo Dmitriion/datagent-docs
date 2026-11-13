@@ -12,7 +12,7 @@ export default function ToolCount({
   count,
   serviceName,
   categories,
-  note = 'Только чтение · агент использует нужные данные для ответа · Studio и выше',
+  note = 'Только чтение. Агент берёт нужные данные для ответа. Не входит в бесплатный тариф, доступно на платных условиях: https://datagent.ru/#demo',
 }: ToolCountProps): ReactNode {
   return (
     <div className={styles.card} role="group" aria-label={`${count} инструментов для ${serviceName}`}>

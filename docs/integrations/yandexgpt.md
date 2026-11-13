@@ -2,7 +2,7 @@
 id: yandexgpt
 title: Как подключить YandexGPT к ИИ-агентам Datagent
 sidebar_label: YandexGPT
-description: "YandexGPT в Datagent: сервисный аккаунт Yandex Cloud, агент с действиями. Free на app.datagent.ru."
+description: "YandexGPT в Datagent: сервисный аккаунт Yandex Cloud, агент с действиями. Доступен на бесплатном тарифе."
 ---
 
 # Как подключить YandexGPT к AI-агентам — Datagent

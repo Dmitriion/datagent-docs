@@ -306,7 +306,7 @@ const config: Config = {
                   '@type': 'Offer',
                   price: '0',
                   priceCurrency: 'RUB',
-                  description: 'Бесплатный план: до 3 агентов и 100 запусков в месяц',
+                  description: 'Бесплатный тариф: до 3 агентов и 100 запусков в месяц',
                   url: 'https://docs.datagent.ru/docs/cloud/pricing',
                 },
                 publisher: {

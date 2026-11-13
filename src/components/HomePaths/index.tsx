@@ -34,9 +34,9 @@ const paths = [
   {
     title: 'Тарифы',
     description:
-      'Free, Solo 990 ₽, Studio 3 900 ₽, Business 12 900 ₽ — лимиты и состав.',
+      'Бесплатный и Корпоративный: лимиты бесплатного и условия по договору.',
     to: '/docs/cloud/pricing',
-    tag: 'Цены',
+    tag: 'Тарифы',
   },
   {
     title: 'Первый агент',
@@ -60,7 +60,7 @@ const paths = [
 
 const stackPills = [
   'Cloud SaaS',
-  'Free · 3 агента',
+  'Бесплатный · 3 агента',
   'GigaChat',
   'YandexGPT',
   '16 коннекторов',

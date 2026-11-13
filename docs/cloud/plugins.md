@@ -39,7 +39,7 @@ description: "Плагины Datagent: Битрикс24, amoCRM / Ozon / Wildber
 
 | Плагин | Зачем вам |
 | --- | --- |
-| [Битрикс24](../integrations/bitrix24) | Чаты CRM → задачи и ответы агента (**Studio+**) |
+| [Битрикс24](../integrations/bitrix24) | Чаты CRM, задачи и ответы агента (не входит в бесплатный тариф) |
 | [amoCRM (preview)](../integrations/amocrm) | Чтение воронки / сделок / контактов через tools (**preview**, без write) |
 | [Ozon Seller (preview)](../integrations/ozon) | Каталог / FBO/FBS / аналитика / финансы — **105** tools (**preview**, без write) |
 | [Wildberries (preview)](../integrations/wildberries) | Seller API — **165** tools (**preview**, без write / ZIP) |
@@ -51,9 +51,9 @@ description: "Плагины Datagent: Битрикс24, amoCRM / Ozon / Wildber
 | [Селектел (preview)](../integrations/selectel) | Облачный инвентарь Selectel — **139** tools (**preview**, без write/lifecycle) |
 | [Авиасейлс (preview)](../integrations/aviasales) | Travelpayouts цены / Flight Search — **32** tools (**preview**, без mass harvest / write) |
 | [Телеграм](../integrations/telegram) | Уведомления и согласования в мессенджере (все тарифы) |
-| [BrowserBridge](../integrations/browserbridge) | Сайты и формы на вашем ПК (**Studio+**) |
-| [Внешние инструменты (MCP)](../integrations/mcp) | Корпоративные сервисы и данные для Cursor-агентов (**Studio+**) |
-| [1С Коннектор](../integrations/1c-connector) | Данные учёта из 1С (**Business+**) |
+| [BrowserBridge](../integrations/browserbridge) | Сайты и формы на вашем ПК (не входит в бесплатный тариф) |
+| [Внешние инструменты (MCP)](../integrations/mcp) | Сервисы и данные для Cursor-агентов (не входит в бесплатный тариф) |
+| [1С Коннектор](../integrations/1c-connector) | Данные учёта из 1С (тариф Корпоративный) |
 | Excel / Office | Таблицы и слайды на задаче — [документы](../office/excel-pptx) |
 
 Список в панели может отличаться — смотрите **Менеджер плагинов** в своём аккаунте.
@@ -70,11 +70,11 @@ description: "Плагины Datagent: Битрикс24, amoCRM / Ozon / Wildber
 
 ## Тарифы и плагины
 
-| Возможность | Free, Solo | Studio, Business |
+| Возможность | Бесплатный | Платные условия / Корпоративный |
 | --- | --- | --- |
-| Телеграм, базовые плагины | ✅ | ✅ |
-| Битрикс24, BrowserBridge, внешний MCP | — | ✅ |
-| 1С | — | только **Business** |
+| Телеграм, базовые плагины | да | да |
+| Битрикс24, BrowserBridge, внешний MCP | нет | платные условия |
+| 1С | нет | тариф Корпоративный |
 
 [Тарифы →](./pricing)
 
@@ -87,7 +87,7 @@ description: "Плагины Datagent: Битрикс24, amoCRM / Ozon / Wildber
 **Нет.** Плагин — **действия**; адаптер — **модель**.
 
 **Можно ли на бесплатном тарифе?**  
-Телеграм и базовые плагины — да. **Битрикс24** и **браузер** — с **Studio**.
+Телеграм и базовые плагины: да. **Битрикс24** и **браузер** не входят в бесплатный тариф. Доступно на платных условиях, [уточните у нас](https://datagent.ru/#demo).
 
 ## Что дальше
 

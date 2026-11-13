@@ -15,7 +15,7 @@ export default function SoftwareAppSchema({
   description,
   featureList,
   url,
-  offerDescription = 'Cloud: Free для старта; готовые Russia-коннекторы — Studio и выше',
+  offerDescription = 'Бесплатный тариф: до 3 агентов и 100 запусков в месяц',
   alternateName,
 }: SoftwareAppSchemaProps): ReactNode {
   return (
@@ -29,10 +29,10 @@ export default function SoftwareAppSchema({
         operatingSystem: 'Web',
         description,
         url,
-        // Не указываем price: 0 — для Studio+/платных возможностей это вводит в заблуждение.
-        // Free-тариф и цены описаны на /docs/cloud/pricing и в видимом тексте страниц.
         offers: {
           '@type': 'Offer',
+          price: '0',
+          priceCurrency: 'RUB',
           description: offerDescription,
           url: 'https://docs.datagent.ru/docs/cloud/pricing',
           availability: 'https://schema.org/OnlineOnly',

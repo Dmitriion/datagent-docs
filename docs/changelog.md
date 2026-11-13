@@ -66,7 +66,7 @@ description: "История обновлений Datagent: что появил�
 
 ### Тарифы и лимиты
 
-Одна сетка от бесплатного старта до Enterprise: [тарифы](./cloud/pricing), [оплата](./billing/overview) и [лимиты](./billing/limits).
+Публично два тарифа, Бесплатный и Корпоративный: [тарифы](./cloud/pricing), [оплата](./billing/overview) и [лимиты](./billing/limits).
 
 ### Навыки и плагины
 

@@ -1,3 +1,5 @@
+Публичная сетка с 13.11.2026: только «Бесплатный» и «Корпоративный», без сумм. Старые имена планов в этом файле заменены.
+
 ---
 id: seo-geo-master-audit
 title: SEO / GEO Master Audit — docs.datagent.ru
@@ -26,7 +28,7 @@ unlisted: true
 | `/docs/cloud` | Pillar | Да | Cloud product | Datagent Cloud | docs | index | Да |
 | `/docs/cloud/getting-started` | How-to | Да | Онбординг | Как начать / регистрация | docs | index | Да |
 | `/docs/cloud/first-agent` | How-to | Да | Первый агент | Создать агента | docs | index | Да |
-| `/docs/cloud/on-premise` | Product | Да | Enterprise | Self-hosted / свой контур | docs | index | Да |
+| `/docs/cloud/on-premise` | Product | Да | Корпоративный | Self-hosted / свой контур | docs | index | Да |
 | `/docs/cloud/pricing` | Product | Да | Тарифы | Цены Datagent | docs | index | Да |
 | `/docs/guides` | Pillar | Да | Ежедневная работа | Как пользоваться панелью | docs | index | Да |
 | `/docs/guides/0*` | How-to | Да | Операционные how-to | Конкретные действия | docs | index | Да |
@@ -102,7 +104,7 @@ unlisted: true
 | Favicon | OK | light/dark sync в Root |
 | Duplicate title/desc | OK | 0 дублей среди публичных |
 | SearchAction | Не добавлять | Локальный search без crawlable `?q=` URL |
-| SoftwareApplication offers | **Риск** | `price: 0` при Studio+ — исправить |
+| SoftwareApplication offers | **Риск** | `price: 0` при платные условия — исправить |
 | BreadcrumbList JSON-LD | Нет | HTML breadcrumbs есть; JSON-LD — backlog P3 |
 | HowTo JSON-LD | Нет | Не внедрять массово без 1:1 с шагами |
 | CWV | Низкий риск | WebP guides; нет тяжёлых deps; Metrika third-party |
