@@ -10,7 +10,7 @@ description: Пошаговое подключение BrowserBridge — рас�
 
 <HowToSchema
   name="Как подключить BrowserBridge к Datagent"
-  description="Установите расширение Chrome, выпустите токен в панели и разрешите сайты для агента на тарифе Studio или Business."
+  description="Установите расширение Chrome, выпустите токен в панели и разрешите сайты для агента. Управление браузером не входит в бесплатный тариф."
   pageUrl="https://docs.datagent.ru/docs/browser/setup"
   steps={[
     {
@@ -28,7 +28,7 @@ description: Пошаговое подключение BrowserBridge — рас�
   ]}
 />
 
-Если вы уже на тарифе **Studio** или **Business**, путь простой:
+Если управление браузером уже открыто для компании, путь простой:
 
 1. Установите [Datagent BrowserBridge из Chrome Web Store](https://chromewebstore.google.com/detail/datagent-browserbridge/onlphfpiiegbgjmfihbimgnmpbleaelh?hl=ru).
 2. В [app.datagent.ru](https://app.datagent.ru) выпустите токен в разделе **BrowserBridge**.
@@ -38,11 +38,11 @@ description: Пошаговое подключение BrowserBridge — рас�
 
 ## Что нужно
 
-- Тариф **Studio** или **Business** ([тарифы →](/docs/cloud/pricing))
+- Не входит в бесплатный тариф, доступно на платных условиях, [уточните у нас](https://datagent.ru/#demo).
 - Браузер **Google Chrome** (рекомендуется; также поддерживаются Chromium-браузеры по сценарию компании)
 - Аккаунт на [app.datagent.ru](https://app.datagent.ru)
 
-> На **Free** и **Solo** BrowserBridge недоступен.
+> На бесплатном тарифе BrowserBridge недоступен.
 
 ## Шаг 1 — Установить расширение
 
@@ -100,8 +100,8 @@ description: Пошаговое подключение BrowserBridge — рас�
 **Нужен ли Node.js?**  
 Для обычного пути через Chrome Web Store — **нет**.
 
-**Работает на Solo?**  
-Нет — нужен **Studio** или выше.
+**Входит в бесплатный тариф?**  
+Нет. Не входит в бесплатный тариф, доступно на платных условиях, [уточните у нас](https://datagent.ru/#demo).
 
 **Где политика конфиденциальности?**  
 [datagent.ru/privacy](https://datagent.ru/privacy/)

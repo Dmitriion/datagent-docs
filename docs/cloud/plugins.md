@@ -39,21 +39,21 @@ description: "Плагины Datagent: Битрикс24, amoCRM / Ozon / Wildber
 
 | Плагин | Зачем вам |
 | --- | --- |
-| [Битрикс24](../integrations/bitrix24) | Чаты CRM → задачи и ответы агента (**Studio+**) |
-| [amoCRM (preview)](../integrations/amocrm) | Чтение воронки / сделок / контактов через tools (**preview**, без write) |
-| [Ozon Seller (preview)](../integrations/ozon) | Каталог / FBO/FBS / аналитика / финансы — **105** tools (**preview**, без write) |
-| [Wildberries (preview)](../integrations/wildberries) | Seller API — **165** tools (**preview**, без write / ZIP) |
-| [МойСклад (preview)](../integrations/moysklad) | Remap 1.2 склад / учёт — **211** tools (**preview**, без write / Basic / Kaya) |
-| [ВКонтакте (preview)](../integrations/vk) | Сообщества / стена / медиа / маркет — **93** tools (**preview**, без write) |
-| [VK Реклама (preview)](../integrations/vk-ads) | Кабинеты Ads / статистика — **69** tools (**preview**, без write) |
-| [Яндекс 360 (preview)](../integrations/yandex360) | Directory / Admin Mail / Security — **36** tools (**preview**, без write) |
-| [Яндекс Трекер (preview)](../integrations/yandex-tracker) | Issues / очереди / scroll search — **76** tools (**preview**, без write) |
-| [Селектел (preview)](../integrations/selectel) | Облачный инвентарь Selectel — **139** tools (**preview**, без write/lifecycle) |
-| [Авиасейлс (preview)](../integrations/aviasales) | Travelpayouts цены / Flight Search — **32** tools (**preview**, без mass harvest / write) |
-| [Телеграм](../integrations/telegram) | Уведомления и согласования в мессенджере (все тарифы) |
-| [BrowserBridge](../integrations/browserbridge) | Сайты и формы на вашем ПК (**Studio+**) |
-| [Внешние инструменты (MCP)](../integrations/mcp) | Корпоративные сервисы и данные для Cursor-агентов (**Studio+**) |
-| [1С Коннектор](../integrations/1c-connector) | Данные учёта из 1С (**Business+**) |
+| [Битрикс24](../integrations/bitrix24) | Чаты CRM, задачи и ответы агента (не входит в бесплатный тариф) |
+| [amoCRM (preview)](../integrations/amocrm) | Чтение воронки / сделок / контактов через tools (**preview**, без write). Не входит в бесплатный тариф, доступно на платных условиях, [уточните у нас](https://datagent.ru/#demo) |
+| [Ozon Seller (preview)](../integrations/ozon) | Каталог / FBO/FBS / аналитика / финансы — **105** tools (**preview**, без write). Не входит в бесплатный тариф, доступно на платных условиях, [уточните у нас](https://datagent.ru/#demo) |
+| [Wildberries (preview)](../integrations/wildberries) | Seller API — **165** tools (**preview**, без write / ZIP). Не входит в бесплатный тариф, доступно на платных условиях, [уточните у нас](https://datagent.ru/#demo) |
+| [МойСклад (preview)](../integrations/moysklad) | Remap 1.2 склад / учёт — **211** tools (**preview**, без write / Basic / Kaya). Не входит в бесплатный тариф, доступно на платных условиях, [уточните у нас](https://datagent.ru/#demo) |
+| [ВКонтакте (preview)](../integrations/vk) | Сообщества / стена / медиа / маркет — **93** tools (**preview**, без write). Не входит в бесплатный тариф, доступно на платных условиях, [уточните у нас](https://datagent.ru/#demo) |
+| [VK Реклама (preview)](../integrations/vk-ads) | Кабинеты Ads / статистика — **69** tools (**preview**, без write). Не входит в бесплатный тариф, доступно на платных условиях, [уточните у нас](https://datagent.ru/#demo) |
+| [Яндекс 360 (preview)](../integrations/yandex360) | Directory / Admin Mail / Security — **36** tools (**preview**, без write). Не входит в бесплатный тариф, доступно на платных условиях, [уточните у нас](https://datagent.ru/#demo) |
+| [Яндекс Трекер (preview)](../integrations/yandex-tracker) | Issues / очереди / scroll search — **76** tools (**preview**, без write). Не входит в бесплатный тариф, доступно на платных условиях, [уточните у нас](https://datagent.ru/#demo) |
+| [Селектел (preview)](../integrations/selectel) | Облачный инвентарь Selectel — **139** tools (**preview**, без write/lifecycle). Не входит в бесплатный тариф, доступно на платных условиях, [уточните у нас](https://datagent.ru/#demo) |
+| [Авиасейлс (preview)](../integrations/aviasales) | Travelpayouts цены / Flight Search — **32** tools (**preview**, без mass harvest / write). Не входит в бесплатный тариф, доступно на платных условиях, [уточните у нас](https://datagent.ru/#demo) |
+| [Телеграм](../integrations/telegram) | Уведомления и согласования в мессенджере. Не входит в бесплатный тариф, доступно на платных условиях, [уточните у нас](https://datagent.ru/#demo) |
+| [BrowserBridge](../integrations/browserbridge) | Сайты и формы на вашем ПК (не входит в бесплатный тариф) |
+| [Внешние инструменты (MCP)](../integrations/mcp) | Сервисы и данные для Cursor-агентов (не входит в бесплатный тариф) |
+| [1С Коннектор](../integrations/1c-connector) | Данные учёта из 1С (тариф Корпоративный) |
 | Excel / Office | Таблицы и слайды на задаче — [документы](../office/excel-pptx) |
 
 Список в панели может отличаться — смотрите **Менеджер плагинов** в своём аккаунте.
@@ -70,11 +70,9 @@ description: "Плагины Datagent: Битрикс24, amoCRM / Ozon / Wildber
 
 ## Тарифы и плагины
 
-| Возможность | Free, Solo | Studio, Business |
-| --- | --- | --- |
-| Телеграм, базовые плагины | ✅ | ✅ |
-| Битрикс24, BrowserBridge, внешний MCP | — | ✅ |
-| 1С | — | только **Business** |
+Плагин **Телеграм**, **Битрикс24**, **BrowserBridge** и внешний **MCP** не входят в бесплатный тариф, доступны на платных условиях, [уточните у нас](https://datagent.ru/#demo).
+
+**1С** входит в тариф Корпоративный. [Связаться](https://datagent.ru/#demo).
 
 [Тарифы →](./pricing)
 
@@ -87,7 +85,7 @@ description: "Плагины Datagent: Битрикс24, amoCRM / Ozon / Wildber
 **Нет.** Плагин — **действия**; адаптер — **модель**.
 
 **Можно ли на бесплатном тарифе?**  
-Телеграм и базовые плагины — да. **Битрикс24** и **браузер** — с **Studio**.
+Плагин **Телеграм**, **Битрикс24** и **браузер** не входят в бесплатный тариф, доступны на платных условиях, [уточните у нас](https://datagent.ru/#demo).
 
 ## Что дальше
 

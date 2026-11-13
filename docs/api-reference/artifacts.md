@@ -12,7 +12,7 @@ description: GET /api/companies/:id/artifacts — список файлов ко
 
 Обзор в панели — [каталог артефактов](/docs/artifacts/overview). Как агент прикрепляет файлы — [прикрепление агентом](/docs/artifacts/agent-upload).
 
-**Тариф:** каталог артефактов и Excel Workbench — **Solo и выше** ([тарифы](/docs/cloud/pricing)).
+**Тариф:** каталог артефактов и Excel Workbench не входят в бесплатный тариф, доступны на платных условиях, [уточните у нас](https://datagent.ru/#demo).
 
 **Аутентификация:** `Authorization: Bearer <your-api-key>` или сессия панели.
 

@@ -24,7 +24,7 @@ description: REST API задач Datagent — CRUD, checkout, разбиение
 | `PATCH` | `/issues/:id` | Обновить задачу — смена статуса из интеграции |
 | `DELETE` | `/issues/:id` | Удалить задачу — очистка тестовых карточек |
 | `POST` | `/issues/:id/checkout` | Взять задачу в работу — атомарно для одного агента |
-| `POST` | `/issues/:id/accepted-plan-decompositions` | Разбить принятый план на подзадачи (Studio+) |
+| `POST` | `/issues/:id/accepted-plan-decompositions` | Разбить принятый план на подзадачи (не входит в бесплатный тариф) |
 | `POST` | `/companies/:companyId/issues/:issueId/attachments` | Прикрепить файл — результат run или входной документ |
 
 ## Список и поиск
@@ -67,7 +67,7 @@ description: REST API задач Datagent — CRUD, checkout, разбиение
 
 ### POST /issues/:id/accepted-plan-decompositions
 
-**Доступно на тарифе Studio и выше** ([тарифы](/docs/cloud/pricing)).
+Не входит в бесплатный тариф, доступно на платных условиях, [уточните у нас](https://datagent.ru/#demo).
 
 Разбивает **принятый план** на дочерние задачи — когда большую задачу нужно распределить по исполнителям после согласования плана.
 

@@ -36,7 +36,7 @@ export const cloudFirstAgentNextSteps: NextStepItem[] = [
   },
   {
     title: 'Тарифы',
-    description: 'Бесплатный, Solo, Studio, Business и корпоративный.',
+    description: 'Бесплатный и Корпоративный.',
     to: '/docs/cloud/pricing',
     tag: 'Облако',
   },
